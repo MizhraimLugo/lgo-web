@@ -1,8 +1,11 @@
 // ════════════════════════════════════════════════════════════════
-//  DIAGNÓSTICO DE SALUD FISCAL — Grupo LGO
+//  DIAGNÓSTICO DE SALUD EMPRESARIAL — Grupo LGO
 // ════════════════════════════════════════════════════════════════
 //
 // Herramienta interactiva de auto-diagnóstico para empresarios.
+// Cubre cinco dimensiones del negocio: financiero, fiscal, contable,
+// corporativo y patrimonial — no solo lo fiscal.
+//
 // 50 preguntas organizadas en 5 territorios. Cada pregunta vale:
 //   "Sí"      = 2 puntos
 //   "Parcial" = 1 punto

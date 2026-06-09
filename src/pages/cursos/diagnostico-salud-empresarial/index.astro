@@ -8,8 +8,8 @@ import {
   OPCIONES_RESPUESTA
 } from '@data/diagnostico';
 
-const path = '/cursos/diagnostico-salud-fiscal/';
-const title = 'Diagnóstico de Salud Fiscal | Grupo LGO';
+const path = '/cursos/diagnostico-salud-empresarial/';
+const title = 'Diagnóstico de Salud Empresarial | Grupo LGO';
 const description =
   'Cincuenta preguntas que tu negocio debe poder contestar. Diagnóstico gratuito en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio.';
 
@@ -24,14 +24,14 @@ const breadcrumbLd = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
     { '@type': 'ListItem', position: 2, name: 'Cursos', item: business.url + '/cursos/' },
-    { '@type': 'ListItem', position: 3, name: 'Diagnóstico de Salud Fiscal', item: business.url + path }
+    { '@type': 'ListItem', position: 3, name: 'Diagnóstico de Salud Empresarial', item: business.url + path }
   ]
 };
 
 const courseLd = {
   '@context': 'https://schema.org',
   '@type': 'Course',
-  name: 'Diagnóstico de Salud Fiscal',
+  name: 'Diagnóstico de Salud Empresarial',
   description,
   url: business.url + path,
   provider: { '@id': `${business.url}/#organization` },
@@ -955,7 +955,7 @@ const courseLd = {
 
       const ok = await enviarLead(
         { ...data, etapa: 'Inició diagnóstico (1/2)' },
-        `Diagnóstico de Salud Fiscal — Lead inició (${data.empresa})`
+        `Diagnóstico de Salud Empresarial — Lead inició (${data.empresa})`
       );
 
       // Aunque FormSubmit falle, dejamos al usuario continuar (no bloquear UX)

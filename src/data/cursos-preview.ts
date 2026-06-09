@@ -21,15 +21,15 @@ export type Course = {
 
 export const cursos: Course[] = [
   {
-    slug: 'diagnostico-salud-fiscal',
-    name: 'Diagnóstico de Salud Fiscal',
-    shortName: 'Diagnóstico Fiscal',
+    slug: 'diagnostico-salud-empresarial',
+    name: 'Diagnóstico de Salud Empresarial',
+    shortName: 'Diagnóstico Empresarial',
     format: 'gratuito',
     formatLabel: 'Diagnóstico interactivo gratuito',
-    audience: 'Empresarios y directivos en cualquier régimen fiscal.',
+    audience: 'Empresarios y directivos de cualquier régimen y giro.',
     blurb:
-      'Cincuenta preguntas que tu negocio debe poder contestar, organizadas en cinco territorios de salud fiscal. Al final recibes un diagnóstico personalizado y una ruta de acción concreta.',
-    url: '/cursos/diagnostico-salud-fiscal/',
+      'Cincuenta preguntas que tu negocio debe poder contestar, organizadas en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio. Al final recibes un diagnóstico personalizado y una ruta de acción.',
+    url: '/cursos/diagnostico-salud-empresarial/',
     cta: 'Tomar el diagnóstico',
     featured: true
   },
