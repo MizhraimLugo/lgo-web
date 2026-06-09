@@ -1,0 +1,45 @@
+---
+// Photo.astro — Imagen optimizada con WebP + JPG fallback.
+// Las imágenes viven en /public/images/{id}.webp + {id}.jpg
+// width/height obligatorios para evitar CLS.
+
+export interface Props {
+  id: string;
+  width: number;
+  height: number;
+  alt: string;
+  priority?: boolean;
+  sizes?: string;
+  className?: string;
+}
+
+const {
+  id,
+  width,
+  height,
+  alt,
+  priority = false,
+  sizes = '(min-width: 1024px) 50vw, 100vw',
+  className
+} = Astro.props;
+
+const webp = `/images/${id}.webp`;
+const jpg  = `/images/${id}.jpg`;
+
+const loading: 'eager' | 'lazy' = priority ? 'eager' : 'lazy';
+const fetchpriority: 'high' | 'auto' = priority ? 'high' : 'auto';
+const decoding: 'sync' | 'async' = priority ? 'sync' : 'async';
+---
+<picture class={className}>
+  <source srcset={webp} type="image/webp" sizes={sizes} />
+  <img
+    src={jpg}
+    width={width}
+    height={height}
+    alt={alt}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={decoding}
+    sizes={sizes}
+  />
+</picture>

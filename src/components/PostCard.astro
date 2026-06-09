@@ -1,0 +1,103 @@
+---
+import type { PostEntry } from '@data/perspectivas';
+import { brandLabel } from '@data/perspectivas';
+
+export interface Props {
+  post: PostEntry;
+  showBrand?: boolean;  // true en landing agregada; false en sub-marcas donde ya se sabe
+}
+
+const { post, showBrand = true } = Astro.props;
+
+const href = `/perspectivas/${post.id}/`;
+const dateLabel = post.data.date.toLocaleDateString('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+<a class="post-card" href={href} data-brand={post.data.brand}>
+  <div class="post-meta">
+    {showBrand && <span class="post-brand">{brandLabel(post.data.brand)}</span>}
+    <span class="post-category">{post.data.category}</span>
+  </div>
+  <h3 class="post-title">{post.data.title}</h3>
+  <p class="post-excerpt">{post.data.excerpt}</p>
+  <div class="post-footer">
+    <time class="post-date" datetime={post.data.date.toISOString()}>{dateLabel}</time>
+    <span class="post-cta">Leer artículo →</span>
+  </div>
+</a>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+    min-height: 280px;
+  }
+  .post-card:hover {
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-2px);
+    border-top-color: var(--color-accent-deep);
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.85rem;     /* row-gap chico cuando wrap, column-gap más grande */
+    align-items: center;
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .post-brand { color: var(--color-accent); }
+  .post-category { color: var(--color-muted); }
+
+  .post-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    color: var(--color-foreground-strong);
+    margin: 0;
+  }
+
+  .post-excerpt {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+    flex: 1;
+    margin: 0;
+  }
+
+  .post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-divider);
+    margin-top: 0.25rem;
+  }
+  .post-date {
+    font-size: var(--text-xs);
+    color: var(--color-muted-soft);
+    letter-spacing: 0.01em;
+  }
+  .post-cta {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+</style>

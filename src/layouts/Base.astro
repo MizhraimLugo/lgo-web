@@ -1,0 +1,158 @@
+---
+import '../styles/global.css';
+import Seo from '@components/Seo.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import JsonLd from '@components/JsonLd.astro';
+import { business } from '@data/business';
+import { publishedSubBrands } from '@data/brands';
+
+export interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'business.business';
+  extraJsonLd?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, path, ogImage, noindex, type, extraJsonLd } = Astro.props;
+
+// Cada sub-marca publicada como Organization independiente.
+// Esto permite que Google y modelos de IA entiendan el ecosistema:
+// Grupo LGO opera múltiples prácticas complementarias bajo una identidad común.
+// Las sub-marcas reservadas (tecnologia, marketing) NO entran al schema hasta
+// que su `published: true` lo permita — evita confusión SEO sobre servicios
+// que aún no se ofrecen al público.
+const subBrandOrgs = publishedSubBrands.map((b) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${business.url}/#${b.id}`,
+  name: b.name,
+  alternateName: b.shortName,
+  description: b.description,
+  url: `${business.url}${b.url}`,
+  parentOrganization: { '@id': `${business.url}/#organization` }
+}));
+
+// Organization paraguas (Grupo LGO) — la entidad raíz del ecosistema.
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${business.url}/#organization`,
+  name: business.brand,
+  alternateName: 'Grupo LGO',
+  description: business.description,
+  url: business.url,
+  logo: `${business.url}/favicon.svg`,
+  email: business.email,
+  telephone: business.phoneE164,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.locality,
+    addressRegion: business.address.regionCode,
+    postalCode: business.address.postalCode,
+    addressCountry: business.address.countryCode
+  },
+  subOrganization: publishedSubBrands.map((b) => ({ '@id': `${business.url}/#${b.id}` })),
+  contactPoint: [{
+    '@type': 'ContactPoint',
+    telephone: business.phoneE164,
+    contactType: 'customer service',
+    email: business.email,
+    areaServed: 'MX',
+    availableLanguage: ['Spanish']
+  }]
+};
+
+// LocalBusiness para SEO local (geo + horario + dirección).
+// Tipo: ProfessionalService — más general que LegalService o AccountingService,
+// abarca cualquier práctica del ecosistema actual y futura (tecnología, marketing).
+const localBusinessLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${business.url}/#localbusiness`,
+  name: business.brand,
+  description: business.description,
+  url: business.url,
+  telephone: business.phoneE164,
+  email: business.email,
+  image: `${business.url}/og-default.jpg`,
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.locality,
+    addressRegion: business.address.regionCode,
+    postalCode: business.address.postalCode,
+    addressCountry: business.address.countryCode
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: business.geo.latitude,
+    longitude: business.geo.longitude
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Guadalajara' },
+    { '@type': 'City', name: 'Zapopan' },
+    { '@type': 'AdministrativeArea', name: 'Jalisco' },
+    { '@type': 'Country', name: 'México' }
+  ],
+  openingHoursSpecification: business.hours.openingHoursSpec,
+  parentOrganization: { '@id': `${business.url}/#organization` }
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${business.url}/#website`,
+  url: business.url,
+  name: business.brand,
+  inLanguage: 'es-MX',
+  publisher: { '@id': `${business.url}/#organization` }
+};
+
+const baseLd: Record<string, unknown>[] = [
+  organizationLd,
+  localBusinessLd,
+  websiteLd,
+  ...subBrandOrgs
+];
+const extraLd = extraJsonLd
+  ? (Array.isArray(extraJsonLd) ? extraJsonLd : [extraJsonLd])
+  : [];
+const allLd = [...baseLd, ...extraLd];
+---
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <Seo title={title} description={description} path={path} ogImage={ogImage} noindex={noindex} type={type} />
+  <JsonLd data={allLd} />
+</head>
+<body>
+  <Nav />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+
+  <script>
+    // Entrance choreography: una sola observación, sin scattered micro-interactions.
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      const els = document.querySelectorAll('.reveal-up');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      els.forEach((el) => observer.observe(el));
+    }
+  </script>
+</body>
+</html>

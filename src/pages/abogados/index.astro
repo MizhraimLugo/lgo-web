@@ -1,0 +1,375 @@
+---
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import Faq from '@components/Faq.astro';
+import Logo from '@components/Logo.astro';
+import PostCard from '@components/PostCard.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import { business } from '@data/business';
+import { getBrand } from '@data/brands';
+import { servicesByBrand } from '@data/services';
+import { sectores } from '@data/sectores';
+import { faqsAbogados } from '@data/faqs';
+import { postsByBrand } from '@data/perspectivas';
+
+const brand = getBrand('abogados')!;
+const path = brand.url;
+const title = `${brand.name} | Asesoría legal corporativa en Guadalajara`;
+const description =
+  'Asesoría jurídica corporativa, contratos, defensa fiscal, propiedad intelectual e inmobiliario. Práctica legal integrada con LGO Contadores y operada desde Guadalajara, Jalisco.';
+
+const services = servicesByBrand('abogados');
+const posts = (await postsByBrand('abogados')).slice(0, 3);
+
+// Servicios como Service en JSON-LD para que Google entienda el catálogo.
+const serviceLd = services.map((s) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: s.name,
+  description: s.blurb,
+  provider: { '@id': `${business.url}/#abogados` },
+  areaServed: { '@type': 'AdministrativeArea', name: 'Jalisco' }
+}));
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqsAbogados.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: brand.shortName, item: business.url + brand.url }
+  ]
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[...serviceLd, faqLd, breadcrumbLd]}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <div class="hero-logo reveal-up reveal-up--immediate">
+        <Logo brand="abogados" height={48} alt={brand.name} />
+      </div>
+      <h1 class="reveal-up reveal-up--immediate">
+        Asesoría legal con criterio, no con prisa.
+      </h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Práctica legal corporativa en Guadalajara. Estructuramos sociedades, redactamos
+        contratos que se sostienen, defendemos casos fiscales y prevenimos litigios
+        antes de que existan. Operamos junto a LGO Contadores bajo un mismo criterio.
+      </p>
+      <div class="hero-ctas reveal-up reveal-up--immediate">
+        <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
+        <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ HACEMOS -->
+  <section class="section band-cream">
+    <div class="container-base que-hacemos-grid">
+      <div>
+        <span class="eyebrow">Qué hacemos</span>
+        <h2>Una firma legal pensada para que tu empresa no llegue al problema.</h2>
+      </div>
+      <div class="prose-lgo">
+        <p>
+          Nuestra práctica está organizada para resolver lo legal-corporativo de empresas
+          que ya operan: constitución y reestructura de sociedades, redacción de contratos
+          comerciales y laborales, protección de marca y derechos de propiedad intelectual,
+          operaciones inmobiliarias, gobierno corporativo y defensa fiscal cuando el tema
+          ya escaló a la autoridad.
+        </p>
+        <p>
+          Trabajamos con empresarios y directivos que necesitan a alguien con criterio
+          técnico para decidir, no a alguien que solo ejecute instrucciones. Cada asunto
+          pasa por revisión estratégica antes de convertirse en expediente. Cada propuesta
+          que entregamos por escrito tiene fundamento legal, no opinión.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Servicios</span>
+        <h2>Cinco frentes de la práctica</h2>
+        <p class="lead">
+          Cinco áreas de trabajo continuo. Si tu tema no encaja exactamente en una,
+          probablemente cae en la intersección — y para eso existimos.
+        </p>
+      </header>
+
+      <div class="services-grid">
+        {services.map((s, i) => (
+          <ServiceCard
+            service={s}
+            number={String(i + 1).padStart(2, '0')}
+            featured={i === 0}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTORES -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Sectores con experiencia</span>
+        <h2>Conocemos las reglas de juego de tu industria.</h2>
+        <p class="lead">
+          No aprendemos con tu empresa. Estos son los sectores donde el despacho tiene
+          años de operación y conoce las dinámicas particulares — desde permisos hasta
+          riesgos típicos.
+        </p>
+      </header>
+
+      <div class="sectores-grid">
+        {sectores.map((sec) => (
+          <article class="sector-item">
+            <h3 class="sector-name">{sec.name}</h3>
+            <p class="sector-detail">{sec.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO TRABAJAMOS -->
+  <section class="section band-dark">
+    <div class="container-base como-grid">
+      <div>
+        <span class="eyebrow">Cómo trabajamos</span>
+        <h2>Cuatro principios que ordenan cada caso.</h2>
+      </div>
+      <ol class="como-list">
+        <li>
+          <span class="como-num" aria-hidden="true">01</span>
+          <div>
+            <h3>Estructura antes que litigio</h3>
+            <p>El mejor caso es el que nunca se presenta. La mayor parte del tiempo lo dedicamos a estructurar bien para que el conflicto no aparezca.</p>
+          </div>
+        </li>
+        <li>
+          <span class="como-num" aria-hidden="true">02</span>
+          <div>
+            <h3>Criterio fundamentado, no opinión</h3>
+            <p>Cada propuesta tiene sustento en ley vigente, criterios judiciales y doctrina. Si una recomendación no resiste por escrito, no se entrega.</p>
+          </div>
+        </li>
+        <li>
+          <span class="como-num" aria-hidden="true">03</span>
+          <div>
+            <h3>Honorario claro, sin reloj corriendo</h3>
+            <p>Por proyecto con presupuesto fijo, o por iguala continua. Nunca cobramos por hora sin techo: el incentivo correcto es resolver, no facturar.</p>
+          </div>
+        </li>
+        <li>
+          <span class="como-num" aria-hidden="true">04</span>
+          <div>
+            <h3>Coordinación con LGO Contadores</h3>
+            <p>Cada decisión legal considera el impacto fiscal antes de tomarse. Cuando hay una sola conversación, las brechas costosas desaparecen.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PERSPECTIVAS DE ABOGADOS -->
+  {posts.length > 0 && (
+    <section class="section">
+      <div class="container-base">
+        <header class="section-head section-head--row">
+          <div>
+            <span class="eyebrow">Perspectivas legales</span>
+            <h2>Últimos análisis del equipo legal</h2>
+          </div>
+          <a href="/abogados/perspectivas/" class="head-link">Ver todos los artículos →</a>
+        </header>
+        <div class="perspectivas-grid">
+          {posts.map((p) => <PostCard post={p} showBrand={false} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <Faq items={faqsAbogados} title="Preguntas frecuentes" />
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CtaBand
+    eyebrow="Hablemos"
+    title="Una primera conversación, sin compromiso"
+    body="Cuéntanos tu situación legal o corporativa. Te respondemos con propuesta y siguientes pasos."
+    primaryLabel="Solicitar consulta"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  />
+
+</Base>
+
+<style>
+  .hero-logo { margin-bottom: 1.5rem; }
+  .hero h1 { max-width: 18ch; margin: 0 0 1.5rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  .section-head {
+    margin-bottom: 2.5rem;
+    max-width: 38rem;
+  }
+  .section-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .section-head .lead { max-width: 52ch; }
+
+  .section-head--row {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: end;
+  }
+  @media (min-width: 1024px) {
+    .section-head--row { grid-template-columns: 1fr auto; gap: 3rem; }
+  }
+  .head-link {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    padding-block: 0.5rem;
+  }
+  .head-link:hover { color: var(--color-accent-deep); }
+
+  /* QUÉ HACEMOS */
+  .que-hacemos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .que-hacemos-grid h2 { max-width: 20ch; }
+  @media (min-width: 1024px) {
+    .que-hacemos-grid { grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+  }
+
+  /* SERVICIOS — grid asimétrico estilo Lorenzana */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* SECTORES */
+  .sectores-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px)  { .sectores-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .sectores-grid { grid-template-columns: repeat(3, 1fr); } }
+  .sector-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    transition: border-color 200ms ease;
+  }
+  .sector-item:hover { border-color: var(--color-accent); }
+  .sector-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .sector-detail {
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  /* CÓMO TRABAJAMOS */
+  .como-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .como-grid h2 { max-width: 18ch; margin: 1rem 0; }
+
+  .como-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .como-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .como-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: rgba(212,84,26,0.18);
+    color: var(--color-accent-soft);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .como-list h3 {
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-on-dark);
+    letter-spacing: -0.01em;
+  }
+  .como-list p {
+    font-size: 0.9375rem;
+    color: rgba(250,248,244,0.78);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 56ch;
+  }
+  @media (min-width: 1024px) {
+    .como-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; }
+    .como-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+  }
+
+  /* PERSPECTIVAS */
+  .perspectivas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .perspectivas-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .perspectivas-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

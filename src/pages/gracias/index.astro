@@ -1,0 +1,66 @@
+---
+import Base from '@layouts/Base.astro';
+import { business } from '@data/business';
+
+const title = 'Gracias — Grupo LGO';
+const description = 'Recibimos tu mensaje. Un consultor de Grupo LGO te responderá en horario hábil.';
+const path = '/gracias/';
+---
+<Base title={title} description={description} path={path} noindex={true}>
+
+  <section class="section-roomy">
+    <div class="container-narrow gracias-block">
+      <span class="eyebrow">Mensaje recibido</span>
+      <h1>Gracias. Recibimos tu mensaje.</h1>
+      <p class="lead">
+        Un consultor de {business.brand} revisa tu solicitud y se pone en contacto
+        contigo en horario hábil ({business.hours.label.toLowerCase()}) con propuesta
+        y siguientes pasos. Si en 24 horas no llega respuesta, revisa también la
+        carpeta de spam por si acaso.
+      </p>
+
+      <div class="gracias-divider"></div>
+
+      <h2 class="gracias-sub">¿Tu tema es urgente?</h2>
+      <p>
+        Si necesitas conversar antes, escríbenos directamente por WhatsApp al
+        <a href={`tel:${business.phoneE164}`}>{business.phone}</a>. Atendemos en
+        horario laboral.
+      </p>
+
+      <div class="gracias-ctas">
+        <a href={business.whatsappUrl} class="btn btn-primary" target="_blank" rel="noopener">
+          Abrir WhatsApp
+        </a>
+        <a href="/" class="btn btn-ghost">Volver al inicio</a>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .gracias-block { text-align: left; max-width: 44rem; }
+  .gracias-block h1 { margin: 1rem 0 1.25rem; max-width: 22ch; }
+  .gracias-block .lead { max-width: 56ch; }
+
+  .gracias-divider {
+    width: 3rem;
+    height: 2px;
+    background: var(--color-accent);
+    margin: 2.5rem 0;
+  }
+
+  .gracias-sub {
+    font-size: 1.375rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.012em;
+  }
+
+  .gracias-ctas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+</style>

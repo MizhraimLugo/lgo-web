@@ -1,0 +1,45 @@
+---
+import { business } from '@data/business';
+
+export interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'business.business';
+}
+
+const { title, description, path, ogImage, noindex, type = 'website' } = Astro.props;
+
+const canonicalUrl = new URL(path, business.url).toString();
+const ogImageUrl = new URL(ogImage ?? '/og-default.jpg', business.url).toString();
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+{/* Open Graph */}
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content="es_MX" />
+<meta property="og:site_name" content={business.brand} />
+
+{/* Twitter */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{/* Geo (apoyo SEO local) */}
+<meta name="geo.region" content={`MX-${business.address.regionCode}`} />
+<meta name="geo.placename" content={business.address.locality} />
+<meta name="geo.position" content={`${business.geo.latitude};${business.geo.longitude}`} />
+<meta name="ICBM" content={`${business.geo.latitude}, ${business.geo.longitude}`} />

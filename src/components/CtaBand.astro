@@ -1,0 +1,57 @@
+---
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  body?: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  variant?: 'dark' | 'surface' | 'cream';
+}
+
+const {
+  eyebrow,
+  title,
+  body,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+  variant = 'dark'
+} = Astro.props;
+
+const bandClass = variant === 'dark' ? 'band-dark' : variant === 'cream' ? 'band-cream' : 'band-surface';
+---
+<section class={`cta-band section-roomy ${bandClass}`}>
+  <div class="container-narrow cta-inner">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h2>{title}</h2>
+    {body && <p class="lead">{body}</p>}
+    <div class="cta-buttons">
+      <a href={primaryHref} class="btn btn-primary">{primaryLabel}</a>
+      {secondaryLabel && secondaryHref && (
+        <a href={secondaryHref} class="btn btn-ghost">{secondaryLabel}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .cta-inner h2 { max-width: 22ch; }
+  .cta-inner .lead { margin-inline: auto; }
+  .cta-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+</style>

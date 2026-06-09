@@ -1,0 +1,329 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import PostCard from '@components/PostCard.astro';
+import { business } from '@data/business';
+import { brandLabel, relatedPosts, isPublishablePost, type PostEntry } from '@data/perspectivas';
+import { getBrand } from '@data/brands';
+
+// Build estático: una página por cada post publicable.
+export async function getStaticPaths() {
+  const posts = await getCollection('perspectivas');
+  return posts.filter(isPublishablePost).map((post) => ({
+    params: { slug: post.id },
+    props: { post }
+  }));
+}
+
+interface Props { post: PostEntry }
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const path = `/perspectivas/${post.id}/`;
+const title = `${post.data.title} — Perspectivas Grupo LGO`;
+const description = post.data.excerpt;
+
+const dateLabel = post.data.date.toLocaleDateString('es-MX', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+const isoDate = post.data.date.toISOString();
+
+const brand = getBrand(post.data.brand === 'grupo' ? 'grupo' : post.data.brand);
+const brandHref = post.data.brand === 'grupo' ? '/' : `/${post.data.brand}/`;
+
+const related = await relatedPosts(post, 2);
+
+// JSON-LD Article + Breadcrumb + isPartOf el ecosistema.
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.excerpt,
+  datePublished: isoDate,
+  inLanguage: 'es-MX',
+  articleSection: post.data.category,
+  author: post.data.author ? {
+    '@type': 'Person',
+    name: post.data.author.name,
+    ...(post.data.author.role && { jobTitle: post.data.author.role })
+  } : { '@id': `${business.url}/#organization` },
+  publisher: { '@id': `${business.url}/#organization` },
+  isPartOf: { '@id': `${business.url}/#website` },
+  mainEntityOfPage: business.url + path
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Perspectivas', item: business.url + '/perspectivas/' },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: business.url + path }
+  ]
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  type="article"
+  extraJsonLd={[articleLd, breadcrumbLd]}
+>
+
+  <article class="article">
+    <div class="container-narrow article-wrap">
+
+      <!-- Meta de cabecera -->
+      <header class="article-header">
+        <div class="article-meta">
+          {brand && (
+            <a class="article-brand" href={brandHref}>{brandLabel(post.data.brand)}</a>
+          )}
+          <span class="article-category">{post.data.category}</span>
+        </div>
+        <h1 class="article-title">{post.data.title}</h1>
+        <p class="article-byline">
+          <time datetime={isoDate}>{dateLabel}</time>
+          {post.data.author && (
+            <>
+              {' · '}
+              <strong>{post.data.author.name}</strong>
+              {post.data.author.role && <span class="article-role">, {post.data.author.role}</span>}
+            </>
+          )}
+        </p>
+        <hr class="article-rule" aria-hidden="true" />
+      </header>
+
+      <!-- Cuerpo del artículo (Markdown renderizado) -->
+      <div class="article-body prose-lgo">
+        <Content />
+      </div>
+
+      <!-- Highlight: pregunta o frase de cierre destacada -->
+      {post.data.highlight && (
+        <aside class="article-highlight" aria-label="Punto de reflexión">
+          <p>{post.data.highlight}</p>
+        </aside>
+      )}
+
+      <!-- Firma del autor -->
+      {post.data.author && (
+        <footer class="article-firma">
+          <p class="article-firma-name">{post.data.author.name}</p>
+          {post.data.author.role && <p class="article-firma-role">{post.data.author.role}</p>}
+          {post.data.author.email && (
+            <p class="article-firma-contact">
+              <a href={`mailto:${post.data.author.email}`}>{post.data.author.email}</a>
+              {' · '}<a href={`tel:${business.phoneE164}`}>{business.phone}</a>
+            </p>
+          )}
+        </footer>
+      )}
+
+      <!-- CTA al final -->
+      <div class="article-cta">
+        <p>¿Tu empresa necesita resolver una situación como esta?</p>
+        <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- Artículos relacionados -->
+  {related.length > 0 && (
+    <section class="section band-cream related-section">
+      <div class="container-base">
+        <header class="related-head">
+          <span class="eyebrow">Seguir leyendo</span>
+          <h2>Otros artículos de {brandLabel(post.data.brand)}</h2>
+        </header>
+        <div class="related-grid">
+          {related.map((p) => <PostCard post={p} showBrand={false} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+</Base>
+
+<style>
+  .article { padding-block: 3rem 4rem; }
+  @media (min-width: 1024px) { .article { padding-block: 5rem 6rem; } }
+
+  .article-wrap { display: flex; flex-direction: column; }
+
+  /* Header */
+  .article-header { margin-bottom: 2rem; }
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+  }
+  .article-brand {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+  .article-brand:hover { color: var(--color-accent-deep); }
+  .article-category { color: var(--color-muted); }
+  .article-brand + .article-category::before {
+    content: '·';
+    margin-right: 0.5rem;
+    color: var(--color-border-strong);
+  }
+
+  .article-title {
+    font-size: clamp(1.875rem, 1.4rem + 2.4vw, 2.875rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+    color: var(--color-foreground-strong);
+    margin-bottom: 1.5rem;
+    max-width: 28ch;
+    text-wrap: balance;
+  }
+  .article-byline {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin-bottom: 1.75rem;
+  }
+  .article-byline strong { color: var(--color-foreground-strong); font-weight: 700; }
+  .article-role { color: var(--color-muted); }
+
+  .article-rule {
+    border: none;
+    border-top: 2px solid var(--color-accent);
+    width: 3.5rem;
+    margin: 0 0 2.25rem;
+  }
+
+  /* Cuerpo */
+  .article-body {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-foreground);
+  }
+  .article-body :global(p) {
+    margin-bottom: 1.5rem;
+    max-width: 68ch;
+  }
+  .article-body :global(p:last-child) { margin-bottom: 0; }
+  .article-body :global(strong) {
+    color: var(--color-foreground-strong);
+    font-weight: 700;
+  }
+  .article-body :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-soft);
+    text-underline-offset: 0.18em;
+  }
+  .article-body :global(a:hover) {
+    text-decoration-color: var(--color-accent);
+  }
+  .article-body :global(h2) {
+    font-size: 1.5rem;
+    margin: 2.5rem 0 1rem;
+    color: var(--color-foreground-strong);
+    letter-spacing: -0.012em;
+  }
+  .article-body :global(h3) {
+    font-size: 1.25rem;
+    margin: 2rem 0 0.75rem;
+  }
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin: 0 0 1.5rem 1.25rem;
+    max-width: 68ch;
+  }
+  .article-body :global(li) {
+    margin-bottom: 0.5rem;
+    list-style: disc;
+  }
+  .article-body :global(ol li) { list-style: decimal; }
+  .article-body :global(blockquote) {
+    margin: 1.75rem 0;
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    font-style: italic;
+    color: var(--color-foreground-strong);
+  }
+
+  /* Highlight de cierre */
+  .article-highlight {
+    background: var(--color-accent-soft);
+    border-left: 4px solid var(--color-accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2.5rem 0 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .article-highlight p {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    line-height: 1.55;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  /* Firma del autor */
+  .article-firma {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  .article-firma-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    margin: 0 0 0.25rem;
+  }
+  .article-firma-role {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin: 0 0 0.75rem;
+  }
+  .article-firma-contact {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin: 0;
+  }
+  .article-firma-contact a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .article-firma-contact a:hover { text-decoration: underline; }
+
+  /* CTA final */
+  .article-cta {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+  .article-cta p {
+    font-size: 1rem;
+    color: var(--color-foreground);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Sección relacionados */
+  .related-head { margin-bottom: 2.5rem; }
+  .related-head h2 { margin: 1rem 0 0; max-width: 24ch; }
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) { .related-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

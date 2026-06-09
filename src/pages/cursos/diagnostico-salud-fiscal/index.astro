@@ -1,0 +1,941 @@
+---
+import Base from '@layouts/Base.astro';
+import { business } from '@data/business';
+import {
+  territorios,
+  TOTAL_PREGUNTAS,
+  SCORE_MAX_TOTAL,
+  OPCIONES_RESPUESTA,
+  SEMAFORO
+} from '@data/diagnostico';
+
+const path = '/cursos/diagnostico-salud-fiscal/';
+const title = 'Diagnóstico de Salud Fiscal | Grupo LGO';
+const description =
+  'Cincuenta preguntas que tu negocio debe poder contestar. Diagnóstico gratuito en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio.';
+
+// FormSubmit endpoint igual que /contacto/.
+// El form de captura final adjunta el resumen del diagnóstico como hidden fields.
+const formEndpoint = `https://formsubmit.co/${business.email}`;
+const successUrl = new URL('/gracias/', Astro.url.origin).toString();
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Cursos', item: business.url + '/cursos/' },
+    { '@type': 'ListItem', position: 3, name: 'Diagnóstico de Salud Fiscal', item: business.url + path }
+  ]
+};
+
+const courseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Diagnóstico de Salud Fiscal',
+  description,
+  url: business.url + path,
+  provider: { '@id': `${business.url}/#organization` },
+  inLanguage: 'es-MX',
+  isAccessibleForFree: true,
+  educationalLevel: 'Empresarios y directivos',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'MXN',
+    availability: 'https://schema.org/InStock'
+  },
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'online',
+    courseWorkload: 'PT10M'
+  }
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, courseLd]}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base hero-grid">
+      <div>
+        <span class="eyebrow reveal-up reveal-up--immediate">Diagnóstico gratuito · 10 minutos</span>
+        <h1 class="reveal-up reveal-up--immediate">
+          Cincuenta preguntas que tu negocio debe poder contestar.
+        </h1>
+        <p class="lead reveal-up reveal-up--immediate">
+          Auto-diagnóstico en cinco territorios de salud fiscal. Al final recibes un
+          puntaje, un nivel de salud y una recomendación. Si quieres, un consultor
+          te contacta para revisar tu caso.
+        </p>
+        <div class="hero-ctas reveal-up reveal-up--immediate">
+          <a href="#cuestionario" class="btn btn-primary">Empezar diagnóstico</a>
+        </div>
+      </div>
+      <aside class="hero-aside reveal-up reveal-up--immediate">
+        <div class="hero-stat">
+          <div class="hero-stat-num">{TOTAL_PREGUNTAS}</div>
+          <div class="hero-stat-label">preguntas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">{territorios.length}</div>
+          <div class="hero-stat-label">territorios</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">~10</div>
+          <div class="hero-stat-label">minutos</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- BARRA DE PROGRESO STICKY -->
+  <div class="progress-bar" data-progress-bar role="status" aria-live="polite">
+    <div class="container-base progress-inner">
+      <div class="progress-meta">
+        <span class="progress-count">
+          <strong data-progress-answered>0</strong> de {TOTAL_PREGUNTAS} respondidas
+        </span>
+        <span class="progress-score">
+          Puntaje: <strong data-progress-score>0</strong> / {SCORE_MAX_TOTAL}
+        </span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" data-progress-fill style="width: 0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUESTIONARIO -->
+  <section id="cuestionario" class="section">
+    <div class="container-base">
+      <header class="cuestionario-head">
+        <span class="eyebrow">El diagnóstico</span>
+        <h2>Cinco territorios. Diez preguntas cada uno.</h2>
+        <p class="lead">
+          Contesta con honestidad: "Sí", "Parcial", "No" o "No sé". El cuestionario
+          se guarda en tu navegador, puedes pausar y volver. Los datos no salen de
+          tu dispositivo hasta que decidas enviarnos el resultado.
+        </p>
+      </header>
+
+      <form id="diagnostico-form" class="diagnostico" data-diagnostico>
+        {territorios.map((t) => (
+          <details class="territorio" data-territorio-id={t.id} open>
+            <summary class="territorio-summary">
+              <div class="territorio-head">
+                <span class="territorio-num">{t.num}</span>
+                <div>
+                  <h3 class="territorio-name">{t.fullTitle}</h3>
+                  <p class="territorio-oneline">"{t.oneLine}"</p>
+                </div>
+              </div>
+              <div class="territorio-meta">
+                <span class="territorio-score">
+                  <strong data-territorio-score={t.id}>0</strong>/<span>20</span>
+                </span>
+                <svg class="territorio-chevron" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                  <path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </summary>
+
+            <div class="territorio-body">
+              <p class="territorio-pitch">{t.pitch}</p>
+
+              <ol class="preguntas">
+                {t.questions.map((q, qi) => {
+                  const name = `t${t.id}_q${qi}`;
+                  return (
+                    <li class="pregunta" data-pregunta>
+                      <p class="pregunta-text">{q}</p>
+                      <div class="pregunta-options" role="radiogroup" aria-label={q}>
+                        {OPCIONES_RESPUESTA.map((opt) => (
+                          <label class="opcion" data-val={opt.val}>
+                            <input
+                              type="radio"
+                              name={name}
+                              value={opt.val}
+                              data-respuesta
+                              data-territorio={t.id}
+                            />
+                            <span>{opt.label}</span>
+                          </label>
+                        ))}
+                        <label class="opcion opcion--nose">
+                          <input
+                            type="radio"
+                            name={name}
+                            value="nose"
+                            data-respuesta
+                            data-territorio={t.id}
+                            data-nose
+                          />
+                          <span>No sé</span>
+                        </label>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          </details>
+        ))}
+
+        <div class="resultado-cta">
+          <button type="button" class="btn btn-primary btn-resultado" data-mostrar-resultado>
+            Ver mi diagnóstico
+          </button>
+          <p class="resultado-helper">
+            Puedes enviarlo en cualquier momento. Las preguntas sin responder cuentan como cero.
+          </p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- RESULTADO (oculto hasta que se calcule) -->
+  <section id="resultado" class="section band-cream" hidden data-resultado-section>
+    <div class="container-base">
+      <header class="resultado-head">
+        <span class="eyebrow">Tu diagnóstico</span>
+        <h2 data-resultado-titulo>Resultado: <span class="resultado-nivel"></span></h2>
+      </header>
+
+      <div class="resultado-card" data-resultado-card>
+        <div class="resultado-score">
+          <div class="resultado-score-num">
+            <span data-resultado-score>0</span>
+            <span class="resultado-score-max">/ {SCORE_MAX_TOTAL}</span>
+          </div>
+          <div class="resultado-score-label" data-resultado-label>—</div>
+        </div>
+        <p class="resultado-desc" data-resultado-desc>—</p>
+
+        <div class="resultado-breakdown" data-resultado-breakdown>
+          {territorios.map((t) => (
+            <div class="breakdown-item">
+              <div class="breakdown-num">{t.num}</div>
+              <div class="breakdown-body">
+                <div class="breakdown-name">{t.name}</div>
+                <div class="breakdown-score">
+                  <strong data-breakdown-score={t.id}>0</strong>/20
+                </div>
+              </div>
+              <div class="breakdown-bar">
+                <div class="breakdown-fill" data-breakdown-fill={t.id} style="width: 0%"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- FORM DE CAPTURA DE LEAD -->
+      <article class="lead-card" data-lead-card>
+        <header>
+          <span class="eyebrow">Recibir análisis personalizado</span>
+          <h3>¿Quieres que un consultor revise tu diagnóstico contigo?</h3>
+          <p class="lead-helper">
+            Te enviamos tu resultado completo por correo y un consultor de LGO Contadores
+            te contacta en horario hábil para revisar tu caso. Sin compromiso.
+          </p>
+        </header>
+
+        <form
+          class="lead-form"
+          action={formEndpoint}
+          method="POST"
+          enctype="application/x-www-form-urlencoded"
+          novalidate
+        >
+          <div class="row">
+            <div class="field">
+              <label for="lead-name">Nombre completo <span aria-hidden="true">*</span></label>
+              <input id="lead-name" name="name" type="text" required autocomplete="name" aria-required="true" />
+            </div>
+            <div class="field">
+              <label for="lead-empresa">Empresa</label>
+              <input id="lead-empresa" name="empresa" type="text" autocomplete="organization" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="lead-phone">Teléfono / WhatsApp <span aria-hidden="true">*</span></label>
+              <input id="lead-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" aria-required="true" />
+            </div>
+            <div class="field">
+              <label for="lead-email">Correo electrónico <span aria-hidden="true">*</span></label>
+              <input id="lead-email" name="email" type="email" required autocomplete="email" aria-required="true" />
+            </div>
+          </div>
+
+          <!-- Hidden: resumen del diagnóstico -->
+          <input type="hidden" name="diagnostico_score_total" data-hidden-score-total value="0" />
+          <input type="hidden" name="diagnostico_nivel" data-hidden-nivel value="" />
+          <input type="hidden" name="diagnostico_breakdown" data-hidden-breakdown value="" />
+          <input type="hidden" name="diagnostico_respondidas" data-hidden-respondidas value="0" />
+
+          <!-- Anti-spam honeypot -->
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <!-- FormSubmit config -->
+          <input type="hidden" name="_subject" value="Diagnóstico de Salud Fiscal — Nuevo lead" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value={successUrl} />
+
+          <button type="submit" class="btn btn-primary lead-submit">Enviar diagnóstico</button>
+        </form>
+      </article>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* HERO */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .hero h1 { max-width: 22ch; margin: 1.25rem 0 1.5rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; }
+
+  .hero-aside {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .hero-stat {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+  .hero-stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.35rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid { grid-template-columns: 1.5fr 1fr; gap: 4rem; }
+  }
+
+  /* PROGRESS BAR STICKY */
+  .progress-bar {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 100;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .progress-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+  .progress-meta strong {
+    color: var(--color-foreground-strong);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--text-sm);
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--color-surface-band);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--color-accent);
+    transition: width 200ms ease;
+  }
+
+  /* CUESTIONARIO */
+  .cuestionario-head { margin-bottom: 2.5rem; max-width: 44rem; }
+  .cuestionario-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .cuestionario-head .lead { max-width: 56ch; }
+
+  .diagnostico {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* TERRITORIO (details/summary) */
+  .territorio {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .territorio-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    transition: background 200ms ease;
+  }
+  .territorio-summary::-webkit-details-marker { display: none; }
+  .territorio-summary:hover { background: var(--color-surface-alt); }
+
+  .territorio-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .territorio-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .territorio-name {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+  }
+  .territorio-oneline {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    margin: 0;
+    font-style: italic;
+  }
+
+  .territorio-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+  .territorio-score {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .territorio-score strong {
+    color: var(--color-foreground-strong);
+    font-weight: 700;
+  }
+  .territorio-chevron { transition: transform 200ms ease; color: var(--color-muted); }
+  .territorio[open] .territorio-chevron { transform: rotate(180deg); }
+
+  .territorio-body {
+    padding: 0 1.75rem 1.75rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  .territorio-pitch {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.65;
+    margin: 1.25rem 0 1.75rem;
+    max-width: 60ch;
+    font-style: italic;
+  }
+
+  /* PREGUNTAS */
+  .preguntas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    counter-reset: pregunta;
+  }
+  .pregunta {
+    counter-increment: pregunta;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-divider);
+  }
+  .pregunta:first-child { border-top: none; }
+
+  .pregunta-text {
+    font-size: var(--text-base);
+    color: var(--color-foreground);
+    margin: 0 0 0.75rem;
+    line-height: 1.5;
+  }
+  .pregunta-text::before {
+    content: counter(pregunta) ". ";
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-right: 0.25rem;
+  }
+
+  .pregunta-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .opcion {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    background: transparent;
+    transition: all 150ms ease;
+    user-select: none;
+    min-height: 40px;
+  }
+  .opcion input { position: absolute; opacity: 0; pointer-events: none; }
+  .opcion:hover {
+    border-color: var(--color-accent);
+    color: var(--color-foreground-strong);
+  }
+  .opcion:has(input:checked) {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 700;
+  }
+  /* "No sé" se distingue visualmente (no contribuye al score) */
+  .opcion--nose:has(input:checked) {
+    background: var(--color-foreground);
+    border-color: var(--color-foreground);
+  }
+
+  /* CTA Ver resultado */
+  .resultado-cta {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-divider);
+    text-align: center;
+  }
+  .btn-resultado {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+  }
+  .resultado-helper {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    margin-top: 1rem;
+  }
+
+  /* RESULTADO */
+  .resultado-head { margin-bottom: 2rem; max-width: 44rem; }
+  .resultado-head h2 { margin: 1rem 0 0; max-width: 26ch; }
+  .resultado-nivel { color: var(--color-accent); }
+
+  .resultado-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 4px solid var(--resultado-color, var(--color-accent));
+    border-radius: var(--radius-sm);
+    padding: 2rem 2.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .resultado-score {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-divider);
+    margin-bottom: 1.5rem;
+  }
+  .resultado-score-num {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--resultado-color, var(--color-foreground-strong));
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .resultado-score-max {
+    font-size: 1rem;
+    color: var(--color-muted);
+    font-weight: 500;
+    margin-left: 0.25rem;
+  }
+  .resultado-score-label {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--resultado-color, var(--color-accent));
+    padding: 0.45rem 0.85rem;
+    background: var(--color-accent-soft);
+    border-radius: var(--radius-xs);
+  }
+  .resultado-desc {
+    font-size: var(--text-base);
+    line-height: 1.65;
+    color: var(--color-foreground);
+    margin: 0 0 2rem;
+    max-width: 60ch;
+  }
+
+  .resultado-breakdown {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  @media (min-width: 720px) {
+    .resultado-breakdown { grid-template-columns: 1fr 1fr; }
+  }
+  .breakdown-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.25rem 1rem;
+    align-items: center;
+    padding: 0.75rem 0;
+  }
+  .breakdown-num {
+    grid-row: 1 / span 2;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+  }
+  .breakdown-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .breakdown-name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+  .breakdown-score {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .breakdown-bar {
+    grid-column: 2;
+    height: 4px;
+    background: var(--color-surface-band);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .breakdown-fill {
+    height: 100%;
+    background: var(--color-accent);
+    transition: width 400ms ease;
+  }
+
+  /* LEAD CARD */
+  .lead-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 2rem 2.25rem;
+  }
+  .lead-card header { margin-bottom: 1.75rem; }
+  .lead-card h3 {
+    margin: 0.5rem 0 0.75rem;
+    font-size: 1.5rem;
+    letter-spacing: -0.015em;
+  }
+  .lead-helper {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+
+  .lead-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .lead-form .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 560px) { .lead-form .row { grid-template-columns: 1fr 1fr; } }
+
+  .lead-form .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .lead-form label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-foreground-strong);
+  }
+  .lead-form label span { color: var(--color-accent); margin-left: 2px; }
+  .lead-form input {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-foreground-strong);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.9rem;
+    width: 100%;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .lead-form input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212,84,26,0.12);
+  }
+  .lead-submit {
+    align-self: flex-start;
+    padding: 0.95rem 2rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  // ════════════════════════════════════════════════════════════════
+  //  DIAGNÓSTICO INTERACTIVO — Vanilla JS
+  // ════════════════════════════════════════════════════════════════
+
+  type Respuesta = number | 'nose';
+  const STORAGE_KEY = 'lgo_diagnostico_v1';
+
+  // Selectores
+  const form = document.querySelector<HTMLFormElement>('[data-diagnostico]');
+  const radios = Array.from(document.querySelectorAll<HTMLInputElement>('[data-respuesta]'));
+  const territorioEls = Array.from(document.querySelectorAll<HTMLDetailsElement>('[data-territorio-id]'));
+  const btnResultado = document.querySelector<HTMLButtonElement>('[data-mostrar-resultado]');
+  const resultadoSection = document.querySelector<HTMLElement>('[data-resultado-section]');
+  if (!form || !btnResultado || !resultadoSection) {
+    // Si algún selector falla, salir limpio (probablemente el script corre en otra página).
+    throw new Error('Diagnóstico: estructura DOM no encontrada');
+  }
+
+  // Progress bar
+  const progressAnswered = document.querySelector<HTMLElement>('[data-progress-answered]');
+  const progressScore = document.querySelector<HTMLElement>('[data-progress-score]');
+  const progressFill = document.querySelector<HTMLElement>('[data-progress-fill]');
+
+  // Resultado
+  const resultadoScoreEl = document.querySelector<HTMLElement>('[data-resultado-score]');
+  const resultadoLabelEl = document.querySelector<HTMLElement>('[data-resultado-label]');
+  const resultadoDescEl = document.querySelector<HTMLElement>('[data-resultado-desc]');
+  const resultadoCard = document.querySelector<HTMLElement>('[data-resultado-card]');
+  const resultadoTituloNivelEl = document.querySelector<HTMLElement>('.resultado-nivel');
+
+  // Hidden inputs del lead form
+  const hiddenScoreTotal = document.querySelector<HTMLInputElement>('[data-hidden-score-total]');
+  const hiddenNivel = document.querySelector<HTMLInputElement>('[data-hidden-nivel]');
+  const hiddenBreakdown = document.querySelector<HTMLInputElement>('[data-hidden-breakdown]');
+  const hiddenRespondidas = document.querySelector<HTMLInputElement>('[data-hidden-respondidas]');
+
+  // Semáforo (igualar al data layer en runtime — duplicamos aquí para no importar TS al cliente)
+  type Nivel = 'sano' | 'vigilar' | 'atender' | 'prioritario';
+  const SEMAFORO: Record<Nivel, { label: string; desc: string; color: string }> = {
+    sano: {
+      label: 'SANO',
+      desc: 'Tu negocio muestra una base fiscal y administrativa razonablemente ordenada. Te recomendamos mantener revisiones preventivas, especialmente si vas a crecer, contratar personal, comprar activos o asociarte.',
+      color: 'var(--color-success)'
+    },
+    vigilar: {
+      label: 'VIGILAR',
+      desc: 'Hay puntos que conviene mejorar antes de que se vuelvan costosos. Recomendamos una revisión de las áreas con menor puntaje y un plan de orden a 3-6 meses.',
+      color: 'var(--color-accent)'
+    },
+    atender: {
+      label: 'ATENDER',
+      desc: 'Es posible que estés pagando de más, deduciendo mal o usando una estructura que ya no corresponde. Recomendamos una revisión preventiva con prioridad para evitar contingencias mayores.',
+      color: 'var(--color-accent-deep)'
+    },
+    prioritario: {
+      label: 'PRIORITARIO',
+      desc: 'Tus respuestas reflejan áreas sensibles que pueden generar riesgos fiscales, contables o patrimoniales. No es para alarmarse — es para ordenar. Conversemos antes de que el problema escale.',
+      color: 'var(--color-alert)'
+    }
+  };
+  const semaforoFromScore = (score: number): Nivel => {
+    if (score >= 80) return 'sano';
+    if (score >= 60) return 'vigilar';
+    if (score >= 40) return 'atender';
+    return 'prioritario';
+  };
+
+  // ─── State ───
+  const TOTAL_PREGUNTAS = radios.length / 4; // 4 opciones por pregunta
+  const respuestas = new Map<string, Respuesta>(); // key: input.name
+
+  // ─── Persistencia (localStorage) ───
+  const persist = () => {
+    try {
+      const payload: Record<string, Respuesta> = {};
+      respuestas.forEach((v, k) => { payload[k] = v; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {}
+  };
+  const restore = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const payload = JSON.parse(raw) as Record<string, Respuesta>;
+      Object.entries(payload).forEach(([name, val]) => {
+        respuestas.set(name, val);
+        const radio = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${val}"]`);
+        if (radio) radio.checked = true;
+      });
+    } catch {}
+  };
+
+  // ─── Cálculo de scores ───
+  type TerritorioScore = { id: number; score: number; answered: number };
+
+  const computeScores = (): { total: number; perTerritorio: TerritorioScore[]; answered: number } => {
+    const territorios = new Map<number, TerritorioScore>();
+    let total = 0;
+    let answered = 0;
+
+    radios.forEach((r) => {
+      if (!r.checked) return;
+      const tid = parseInt(r.dataset.territorio!, 10);
+      const t = territorios.get(tid) ?? { id: tid, score: 0, answered: 0 };
+      t.answered += 1;
+      answered += 1;
+      const val = r.value === 'nose' ? 0 : parseInt(r.value, 10);
+      t.score += val;
+      total += val;
+      territorios.set(tid, t);
+    });
+
+    // Asegurar entries para los 5 territorios aunque tengan 0 respuestas
+    territorioEls.forEach((el) => {
+      const tid = parseInt(el.dataset.territorioId!, 10);
+      if (!territorios.has(tid)) {
+        territorios.set(tid, { id: tid, score: 0, answered: 0 });
+      }
+    });
+
+    return { total, answered, perTerritorio: Array.from(territorios.values()).sort((a, b) => a.id - b.id) };
+  };
+
+  // ─── Render del progress y scores por territorio (en vivo) ───
+  const renderLive = () => {
+    const { total, answered, perTerritorio } = computeScores();
+    if (progressAnswered) progressAnswered.textContent = String(answered);
+    if (progressScore) progressScore.textContent = String(total);
+    if (progressFill) progressFill.style.width = `${Math.round((answered / TOTAL_PREGUNTAS) * 100)}%`;
+
+    perTerritorio.forEach(({ id, score }) => {
+      const el = document.querySelector(`[data-territorio-score="${id}"]`);
+      if (el) el.textContent = String(score);
+    });
+  };
+
+  // ─── Render del resultado completo (al pedir diagnóstico) ───
+  const renderResultado = () => {
+    const { total, answered, perTerritorio } = computeScores();
+    const nivel = semaforoFromScore(total);
+    const cfg = SEMAFORO[nivel];
+
+    if (resultadoScoreEl) resultadoScoreEl.textContent = String(total);
+    if (resultadoLabelEl) resultadoLabelEl.textContent = cfg.label;
+    if (resultadoDescEl) resultadoDescEl.textContent = cfg.desc;
+    if (resultadoTituloNivelEl) resultadoTituloNivelEl.textContent = cfg.label;
+    if (resultadoCard) {
+      resultadoCard.style.setProperty('--resultado-color', cfg.color);
+    }
+
+    perTerritorio.forEach(({ id, score }) => {
+      const scoreEl = document.querySelector(`[data-breakdown-score="${id}"]`);
+      const fillEl = document.querySelector<HTMLElement>(`[data-breakdown-fill="${id}"]`);
+      if (scoreEl) scoreEl.textContent = String(score);
+      if (fillEl) fillEl.style.width = `${Math.round((score / 20) * 100)}%`;
+    });
+
+    // Rellenar hidden inputs para FormSubmit
+    if (hiddenScoreTotal) hiddenScoreTotal.value = `${total} / 100`;
+    if (hiddenNivel) hiddenNivel.value = cfg.label;
+    if (hiddenRespondidas) hiddenRespondidas.value = `${answered} / ${TOTAL_PREGUNTAS}`;
+    if (hiddenBreakdown) {
+      hiddenBreakdown.value = perTerritorio
+        .map(({ id, score }) => {
+          const el = document.querySelector(`[data-territorio-id="${id}"] .territorio-name`);
+          const name = el?.textContent?.trim() ?? `Territorio ${id}`;
+          return `${name}: ${score}/20`;
+        })
+        .join(' · ');
+    }
+
+    // Mostrar la sección y desplazar
+    resultadoSection.removeAttribute('hidden');
+    resultadoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // ─── Listeners ───
+  radios.forEach((r) => {
+    r.addEventListener('change', () => {
+      const val: Respuesta = r.value === 'nose' ? 'nose' : parseInt(r.value, 10);
+      respuestas.set(r.name, val);
+      persist();
+      renderLive();
+    });
+  });
+
+  btnResultado.addEventListener('click', () => {
+    renderResultado();
+  });
+
+  // ─── Bootstrap ───
+  restore();
+  renderLive();
+</script>

@@ -1,0 +1,390 @@
+---
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import PostCard from '@components/PostCard.astro';
+import CourseCard from '@components/CourseCard.astro';
+import { business } from '@data/business';
+import { ecosystemBrands } from '@data/brands';
+import { recentPosts } from '@data/perspectivas';
+import { featuredCourse, nonFeaturedCourses } from '@data/cursos-preview';
+
+const title = 'Grupo LGO — Ecosistema empresarial integrado | Guadalajara, Jalisco';
+const description = business.description;
+const path = '/';
+
+const posts = await recentPosts(3);
+const courseFeatured = featuredCourse();
+const otherCourses = nonFeaturedCourses();
+---
+<Base title={title} description={description} path={path}>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up">Grupo LGO · Guadalajara, Jalisco</span>
+      <h1 class="reveal-up reveal-up--delay-1">
+        Un ecosistema empresarial integrado.
+      </h1>
+      <p class="lead reveal-up reveal-up--delay-2">
+        Grupo LGO integra firmas consultoras complementarias bajo un mismo criterio.
+        Cuando las decisiones críticas de tu empresa viven bajo una sola mesa, los
+        problemas se resuelven antes de existir.
+      </p>
+      <div class="hero-ctas reveal-up reveal-up--delay-3">
+        <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
+        <a href="#ecosistema" class="btn btn-ghost">Conocer el ecosistema</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LO QUE SOMOS -->
+  <section class="section band-cream">
+    <div class="container-base nosotros-grid">
+      <div>
+        <span class="eyebrow">Quiénes somos</span>
+        <h2>No somos un despacho. Somos un ecosistema.</h2>
+      </div>
+      <div class="prose-lgo">
+        <p>
+          Grupo LGO es un ecosistema empresarial mexicano. Lo que para nuestros clientes
+          aparece como una sola conversación, internamente se sostiene en firmas
+          consultoras complementarias que trabajan bajo el mismo criterio: una práctica
+          legal, una práctica contable, una casa empresarial donde se materializa la
+          operación, y nuevas divisiones que vamos integrando conforme las empresas
+          que acompañamos las necesitan.
+        </p>
+        <p>
+          El visitante que nos busca no llega curioso. Llega con una preocupación real:
+          una obligación fiscal vencida, una expansión que necesita estructura, un socio
+          difícil, una operación inmobiliaria con cabos sueltos. Nuestro trabajo es
+          convertir esa complejidad en una ruta de acción documentada, ejecutable y
+          defendible. Y hacerlo desde una sola mesa.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSISTEMA -->
+  <section id="ecosistema" class="section">
+    <div class="container-base">
+      <span class="eyebrow">El ecosistema</span>
+      <h2>Firmas complementarias, un mismo criterio</h2>
+      <div class="ecosystem-grid">
+        {ecosystemBrands.map((b) => (
+          <a
+            class="card"
+            href={b.url}
+            target={b.internal ? undefined : '_blank'}
+            rel={b.internal ? undefined : 'noopener'}
+          >
+            <div class="card-eyebrow">
+              {b.specialty}
+              {!b.internal && <span aria-hidden="true"> ↗</span>}
+            </div>
+            <h3>{b.name}</h3>
+            <p>{b.description}</p>
+            <span class="card-cta">{b.internal ? 'Conocer →' : 'Visitar sitio →'}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ INTEGRADO IMPORTA — la tesis -->
+  <section class="section band-dark">
+    <div class="container-base tesis-grid">
+      <div>
+        <span class="eyebrow">Por qué integrado importa</span>
+        <h2>Cuando las firmas se hablan entre sí, las decisiones llegan antes.</h2>
+        <p class="lead">
+          La diferencia entre un despacho que ejecuta instrucciones y un ecosistema que
+          previene el problema está en estos cuatro hábitos.
+        </p>
+      </div>
+
+      <ol class="tesis-list">
+        <li>
+          <span class="tesis-num" aria-hidden="true">01</span>
+          <div>
+            <h3>Una sola conversación, una sola responsabilidad</h3>
+            <p>
+              Sin coordinación forzada entre firmas distintas, sin brechas entre la
+              estrategia y su ejecución. Cada decisión considera el impacto en todos
+              los frentes del ecosistema antes de tomarse.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="tesis-num" aria-hidden="true">02</span>
+          <div>
+            <h3>Criterio, no trámite</h3>
+            <p>
+              No ejecutamos órdenes: analizamos, prevenimos y estructuramos. Cada
+              asignación pasa por revisión estratégica antes de llegar al expediente.
+              Lo que firmas tiene fundamento, no rutina.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="tesis-num" aria-hidden="true">03</span>
+          <div>
+            <h3>Decisiones antes de que el problema exista</h3>
+            <p>
+              El ahorro fiscal no nace en la declaración: nace en cada decisión de
+              compra, contratación y cobranza del año. El cumplimiento legal no nace
+              en el litigio: nace en el contrato bien redactado tres años antes.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="tesis-num" aria-hidden="true">04</span>
+          <div>
+            <h3>Relación de largo plazo</h3>
+            <p>
+              Trabajamos con clientes que buscan un aliado, no un proveedor de
+              honorarios por hora. El objetivo es que cada año tu empresa esté mejor
+              estructurada que el anterior.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PERSPECTIVAS (blog agregado: mezcla Abogados + Contadores + Grupo) -->
+  <section id="perspectivas" class="section">
+    <div class="container-base">
+      <header class="perspectivas-head">
+        <div>
+          <span class="eyebrow">Perspectivas</span>
+          <h2>Lo último que estamos pensando</h2>
+          <p class="lead">
+            Análisis y contexto sobre temas que afectan a las empresas en México.
+            Escrito por los equipos del ecosistema, desde su práctica.
+          </p>
+        </div>
+        <a href="/perspectivas/" class="perspectivas-all">
+          Ver todos los artículos <span aria-hidden="true">→</span>
+        </a>
+      </header>
+
+      <div class="perspectivas-grid">
+        {posts.map((post) => (
+          <PostCard post={post} showBrand={true} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CURSOS -->
+  <section id="cursos" class="section band-cream">
+    <div class="container-base">
+      <header class="cursos-head">
+        <div>
+          <span class="eyebrow">Cursos y herramientas</span>
+          <h2>Aprende cómo decidimos. Aplícalo a tu negocio.</h2>
+          <p class="lead">
+            Diagnósticos gratuitos, cursos online y masterclasses presenciales en
+            Lorenzana 781. Tres formatos, un mismo criterio.
+          </p>
+        </div>
+        <a href="/cursos/" class="cursos-all">
+          Ver todos los cursos <span aria-hidden="true">→</span>
+        </a>
+      </header>
+
+      {courseFeatured && (
+        <div class="cursos-featured-wrap">
+          <CourseCard course={courseFeatured} layout="featured" />
+        </div>
+      )}
+
+      <div class="cursos-grid">
+        {otherCourses.map((c) => (
+          <CourseCard course={c} layout="standard" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Hablemos"
+    title="Cuéntanos qué necesita tu empresa"
+    body="Una primera llamada para entender tu situación. Sin compromiso."
+    primaryLabel="Solicitar consulta"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  />
+
+</Base>
+
+<style>
+  .hero h1 { max-width: 18ch; margin: 1.25rem 0 1.5rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  .ecosystem-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  @media (min-width: 720px)  { .ecosystem-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .ecosystem-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card { text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; }
+  .card-eyebrow {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .card h3 { margin: 0; }
+  .card p { color: var(--color-muted); font-size: var(--text-sm); flex: 1; }
+  .card-cta {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    margin-top: 0.5rem;
+  }
+
+  /* LO QUE SOMOS */
+  .nosotros-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .nosotros-grid h2 { max-width: 20ch; }
+  .nosotros-grid .prose-lgo p { max-width: 60ch; }
+  .nosotros-grid .prose-lgo strong { color: var(--color-foreground-strong); font-weight: 700; }
+  @media (min-width: 1024px) {
+    .nosotros-grid { grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+  }
+
+  /* POR QUÉ INTEGRADO IMPORTA — la tesis */
+  .tesis-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .tesis-grid h2 { max-width: 18ch; margin: 1rem 0 1rem; }
+  .tesis-grid .lead { max-width: 36ch; }
+
+  .tesis-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .tesis-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .tesis-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: rgba(212,84,26,0.18);
+    color: var(--color-accent-soft);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .tesis-list h3 {
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-on-dark);
+    letter-spacing: -0.01em;
+  }
+  .tesis-list p {
+    font-size: 0.9375rem;
+    color: rgba(250,248,244,0.78);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  @media (min-width: 1024px) {
+    .tesis-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; }
+    .tesis-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+  }
+
+  /* PERSPECTIVAS */
+  .perspectivas-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+  }
+  .perspectivas-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .perspectivas-head .lead { max-width: 52ch; }
+
+  .perspectivas-all {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    padding-block: 0.5rem;
+  }
+  .perspectivas-all:hover { color: var(--color-accent-deep); }
+
+  @media (min-width: 1024px) {
+    .perspectivas-head { grid-template-columns: 1fr auto; gap: 3rem; }
+  }
+
+  .perspectivas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .perspectivas-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .perspectivas-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* CURSOS */
+  .cursos-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+  }
+  .cursos-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .cursos-head .lead { max-width: 52ch; }
+
+  .cursos-all {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    padding-block: 0.5rem;
+  }
+  .cursos-all:hover { color: var(--color-accent-deep); }
+
+  @media (min-width: 1024px) {
+    .cursos-head { grid-template-columns: 1fr auto; gap: 3rem; }
+  }
+
+  .cursos-featured-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .cursos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) { .cursos-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

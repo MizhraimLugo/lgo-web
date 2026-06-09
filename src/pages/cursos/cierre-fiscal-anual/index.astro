@@ -1,0 +1,168 @@
+---
+import Base from '@layouts/Base.astro';
+import { business } from '@data/business';
+import { cursos } from '@data/cursos-preview';
+
+const course = cursos.find((c) => c.slug === 'cierre-fiscal-anual')!;
+const path = course.url;
+const title = `${course.name} | Curso online de Grupo LGO`;
+const description = course.blurb;
+
+const formEndpoint = `https://formsubmit.co/${business.email}`;
+const successUrl = new URL('/gracias/', Astro.url.origin).toString();
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Cursos', item: business.url + '/cursos/' },
+    { '@type': 'ListItem', position: 3, name: course.name, item: business.url + path }
+  ]
+};
+
+const courseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: course.name,
+  description: course.blurb,
+  url: business.url + path,
+  provider: { '@id': `${business.url}/#organization` },
+  inLanguage: 'es-MX',
+  educationalLevel: 'Contadores internos, dueños de PyME, socios administradores',
+  hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online' }
+};
+---
+<Base title={title} description={description} path={path} extraJsonLd={[breadcrumbLd, courseLd]}>
+
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up reveal-up--immediate">{course.formatLabel}</span>
+      <h1 class="reveal-up reveal-up--immediate">{course.name}</h1>
+      <p class="lead reveal-up reveal-up--immediate">{course.blurb}</p>
+    </div>
+  </section>
+
+  <section class="section band-cream">
+    <div class="container-base soon-grid">
+
+      <div class="prose-lgo">
+        <span class="eyebrow">Para quién</span>
+        <h2>{course.audience}</h2>
+        <p>
+          El cierre fiscal se planea desde octubre, no se calcula en marzo. Este curso
+          está pensado para empresarios y contadores internos que quieren llegar al
+          cierre del ejercicio con visibilidad, no con sorpresas.
+        </p>
+        <p>
+          Cuatro módulos compactos con plantillas de planeación y checklist por régimen.
+          Pago único, acceso permanente.
+        </p>
+      </div>
+
+      <aside class="lista-espera">
+        <div class="lista-espera-card">
+          <span class="eyebrow">Próximamente</span>
+          <h3>Apúntate a la lista de espera</h3>
+          <p>
+            Te avisamos cuando esté disponible. Sin spam — solo cuando abramos
+            inscripciones.
+          </p>
+          <form
+            class="ws-form"
+            action={formEndpoint}
+            method="POST"
+            enctype="application/x-www-form-urlencoded"
+            novalidate
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="tu@correo.com"
+              aria-required="true"
+              aria-label="Correo electrónico"
+            />
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+            <input type="hidden" name="curso" value={course.name} />
+            <input type="hidden" name="_subject" value={`Lista de espera — ${course.name}`} />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" value={successUrl} />
+            <button type="submit" class="btn btn-primary">Avisarme</button>
+          </form>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-base">
+      <p class="back-link"><a href="/cursos/">← Ver todos los cursos</a></p>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero h1 { max-width: 24ch; margin: 1.25rem 0 1.5rem; }
+
+  .soon-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .soon-grid { grid-template-columns: 1.4fr 1fr; gap: 4rem; }
+  }
+
+  .prose-lgo h2 { margin: 1rem 0 1.25rem; max-width: 24ch; }
+
+  .lista-espera-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 2rem 1.75rem;
+  }
+  .lista-espera-card h3 { margin: 0.75rem 0; font-size: 1.375rem; }
+  .lista-espera-card p {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .ws-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .ws-form input[type="email"] {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    padding: 0.7rem 0.9rem;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+  }
+  .ws-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212,84,26,0.12);
+  }
+
+  .back-link {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+  .back-link a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+  }
+  .back-link a:hover { color: var(--color-accent-deep); }
+</style>

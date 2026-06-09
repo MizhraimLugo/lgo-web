@@ -1,0 +1,297 @@
+---
+import Base from '@layouts/Base.astro';
+import { business } from '@data/business';
+
+const title = 'Contacto y consulta | Grupo LGO — Guadalajara';
+const description =
+  'Cuéntanos qué necesita tu empresa y recibe una propuesta a tu medida. Sin compromiso. Te respondemos en horario hábil.';
+const path = '/contacto/';
+
+const contactPageLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: business.url + path,
+  name: title,
+  description,
+  about: { '@id': `${business.url}/#organization` }
+};
+
+const contactPointLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPoint',
+  telephone: business.phoneE164,
+  contactType: 'customer service',
+  email: business.email,
+  areaServed: 'MX',
+  availableLanguage: ['Spanish']
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Contacto', item: business.url + path }
+  ]
+};
+
+// FormSubmit como backend (sin requerir cuenta).
+// Primer envío dispara confirmación a `business.email`; confirmada,
+// los siguientes llegan directo. Misma estrategia que Lorenzana 781.
+const formEndpoint = `https://formsubmit.co/${business.email}`;
+const successUrl = new URL('/gracias/', Astro.url.origin).toString();
+const autoResponse =
+  `Recibimos tu mensaje en ${business.brand}. ` +
+  `Un consultor te responderá en horario hábil (${business.hours.label.toLowerCase()}) ` +
+  `con propuesta y siguientes pasos. ` +
+  `Si tu tema es urgente, puedes escribirnos por WhatsApp al ${business.phone}. ` +
+  `— Equipo ${business.brand}.`;
+---
+<Base title={title} description={description} path={path} extraJsonLd={[contactPageLd, contactPointLd, breadcrumbLd]}>
+
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up reveal-up--immediate">Contacto y consulta</span>
+      <h1 class="reveal-up reveal-up--immediate">Hablemos de lo que tu empresa necesita</h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Cuéntanos tu situación y recibe una propuesta a tu medida. Sin compromiso. Si
+        prefieres una primera llamada para conocernos, también podemos agendarla.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container-base contact-grid">
+
+      <article class="form-card">
+        <header>
+          <span class="eyebrow">Formulario</span>
+          <h2>Solicita tu consulta</h2>
+          <p class="form-helper">Te respondemos en horario hábil con propuesta y siguientes pasos.</p>
+        </header>
+
+        <form
+          class="contact-form"
+          action={formEndpoint}
+          method="POST"
+          enctype="application/x-www-form-urlencoded"
+          novalidate
+        >
+          <div class="field">
+            <label for="name">Nombre completo <span aria-hidden="true">*</span></label>
+            <input id="name" name="name" type="text" required autocomplete="name" aria-required="true" />
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="phone">Teléfono / WhatsApp <span aria-hidden="true">*</span></label>
+              <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" aria-required="true" />
+            </div>
+            <div class="field">
+              <label for="email">Correo electrónico <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" required autocomplete="email" aria-required="true" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization" />
+          </div>
+
+          <div class="field">
+            <label for="interest">¿Sobre qué te interesa platicar? <span aria-hidden="true">*</span></label>
+            <select id="interest" name="interest" required aria-required="true">
+              <option value="">Elige una opción</option>
+              <option>LGO Abogados — asesoría legal o corporativa</option>
+              <option>LGO Contadores — asesoría fiscal o contable</option>
+              <option>Ambas prácticas</option>
+              <option>Cursos y masterclasses</option>
+              <option>Consulta general</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Cuéntanos brevemente tu situación <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="5" required aria-required="true"
+              placeholder="Una situación, una pregunta o un problema. Sin detalle técnico, lo entendemos al hablar."></textarea>
+          </div>
+
+          {/* Anti-spam: campo trampa invisible para bots */}
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+
+          {/* Configuración FormSubmit */}
+          <input type="hidden" name="_subject" value={`Nueva consulta — ${business.brand}`} />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value={successUrl} />
+          <input type="hidden" name="_autoresponse" value={autoResponse} />
+
+          <button type="submit" class="btn btn-primary form-submit">Enviar consulta</button>
+        </form>
+      </article>
+
+      <aside class="contact-info">
+        <span class="eyebrow">Otras vías</span>
+        <h2 class="contact-info-title">Si prefieres escribir directamente</h2>
+
+        <div class="contact-block">
+          <div class="contact-label">Correo</div>
+          <a href={`mailto:${business.email}`} class="contact-value">{business.email}</a>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-label">Teléfono / WhatsApp</div>
+          <a href={`tel:${business.phoneE164}`} class="contact-value">{business.phone}</a>
+          <div>
+            <a href={business.whatsappUrl} target="_blank" rel="noopener" class="contact-secondary">
+              Abrir WhatsApp <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-label">Casa empresarial</div>
+          <p class="contact-value-text">{business.address.full}</p>
+        </div>
+
+        <div class="contact-block">
+          <div class="contact-label">Horario de atención</div>
+          <p class="contact-value-text">{business.hours.label}</p>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero h1 { max-width: 22ch; margin: 1.25rem 0 1.5rem; }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 960px) {
+    .contact-grid { grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: start; }
+  }
+
+  .form-card { background: transparent; }
+  .form-card header { margin-bottom: 1.75rem; }
+  .form-card h2 { margin: 0.5rem 0; }
+  .form-helper {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 560px) { .row { grid-template-columns: 1fr 1fr; } }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .field label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-foreground-strong);
+  }
+  .field label span { color: var(--color-accent); margin-left: 2px; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-foreground-strong);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.9rem;
+    width: 100%;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212,84,26,0.12);
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--color-muted-soft); }
+
+  .form-submit {
+    align-self: flex-start;
+    padding: 0.95rem 2rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Aside con vías alternativas */
+  .contact-info {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .contact-info-title {
+    font-size: 1.375rem;
+    margin: 0.5rem 0 0;
+    letter-spacing: -0.012em;
+    max-width: 18ch;
+  }
+  .contact-block {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .contact-block:first-of-type { border-top: none; padding-top: 0; }
+  .contact-label {
+    font-size: var(--text-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 700;
+  }
+  .contact-value {
+    font-size: 1rem;
+    color: var(--color-foreground-strong);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .contact-value:hover { color: var(--color-accent); }
+  .contact-value-text {
+    font-size: 0.9375rem;
+    color: var(--color-foreground);
+    margin: 0;
+    line-height: 1.55;
+  }
+  .contact-secondary {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .contact-secondary:hover { color: var(--color-accent-deep); }
+</style>

@@ -1,0 +1,40 @@
+---
+// Logo.astro — render de un logo de marca del ecosistema.
+//
+// Los archivos viven en public/images/logos/{id}.png y se generan
+// recortados a partir de los originales en source/ corriendo:
+//   node scripts/trim-logos.mjs
+
+import type { BrandId } from '@data/brands';
+import { getBrand } from '@data/brands';
+
+export interface Props {
+  brand: Extract<BrandId, 'grupo' | 'abogados' | 'contadores' | 'tecnologia' | 'marketing'>;
+  /** Altura del logo en px. El ancho se calcula con aspect-ratio. */
+  height?: number;
+  /** Clase CSS adicional. */
+  class?: string;
+  /** Texto alternativo. Si no se da, se usa el nombre de la marca. */
+  alt?: string;
+}
+
+const { brand, height = 32, class: className, alt } = Astro.props;
+const brandData = getBrand(brand);
+const src = `/images/logos/${brand === 'grupo' ? 'grupo-lgo' : `lgo-${brand}`}.png`;
+const altText = alt ?? brandData?.name ?? brand;
+---
+<img
+  src={src}
+  alt={altText}
+  class:list={['logo', className]}
+  style={`height: ${height}px; width: auto;`}
+  loading="lazy"
+  decoding="async"
+/>
+
+<style>
+  .logo {
+    display: block;
+    object-fit: contain;
+  }
+</style>
