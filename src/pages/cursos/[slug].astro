@@ -1,15 +1,31 @@
 ---
+// Plantilla dinámica para todos los cursos del catálogo, excepto los que
+// tienen su propia página personalizada (Diagnóstico).
+//
+// Para cada curso en cursos-preview.ts (sin customPage), genera una
+// página landing con hero + descripción extendida + outcomes + lista de
+// espera. Cuando el curso esté disponible, solo cambia el formatLabel
+// y el CTA en cursos-preview.ts.
+
 import Base from '@layouts/Base.astro';
 import { business } from '@data/business';
-import { cursos } from '@data/cursos-preview';
+import { cursos, templatedCourses, type Course } from '@data/cursos-preview';
 
-const course = cursos.find((c) => c.slug === 'gobierno-corporativo-pyme')!;
+export async function getStaticPaths() {
+  return templatedCourses().map((course) => ({
+    params: { slug: course.slug },
+    props: { course }
+  }));
+}
+
+interface Props { course: Course }
+const { course } = Astro.props;
+
 const path = course.url;
-const title = `${course.name} | Masterclass presencial — Grupo LGO`;
+const title = `${course.name} | Curso de Grupo LGO`;
 const description = course.blurb;
 
 const formEndpoint = `https://formsubmit.co/${business.email}`;
-// _next se setea en cliente con window.location.origin (ver script abajo)
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
@@ -29,27 +45,21 @@ const courseLd = {
   url: business.url + path,
   provider: { '@id': `${business.url}/#organization` },
   inLanguage: 'es-MX',
-  educationalLevel: 'Dueños y socios de empresas familiares y PyMEs',
+  educationalLevel: course.audience,
   hasCourseInstance: {
     '@type': 'CourseInstance',
-    courseMode: 'onsite',
-    location: {
-      '@type': 'Place',
-      name: 'Lorenzana 781',
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: business.address.street,
-        addressLocality: business.address.locality,
-        addressRegion: business.address.regionCode,
-        postalCode: business.address.postalCode,
-        addressCountry: business.address.countryCode
-      }
-    }
+    courseMode: course.format === 'presencial' ? 'onsite' : 'online'
   }
 };
+
+const subjectLabel =
+  course.format === 'presencial' ? 'Reserva' :
+  course.format === 'online' ? 'Lista de espera' :
+  'Inscripción';
 ---
 <Base title={title} description={description} path={path} extraJsonLd={[breadcrumbLd, courseLd]}>
 
+  <!-- HERO -->
   <section class="hero section-roomy">
     <div class="container-base">
       <span class="eyebrow reveal-up reveal-up--immediate">{course.formatLabel}</span>
@@ -58,30 +68,44 @@ const courseLd = {
     </div>
   </section>
 
+  <!-- QUÉ APRENDES + LISTA DE ESPERA -->
   <section class="section band-cream">
     <div class="container-base soon-grid">
 
+      <!-- Columna izquierda: descripción larga + outcomes -->
       <div class="prose-lgo">
         <span class="eyebrow">Para quién</span>
         <h2>{course.audience}</h2>
-        <p>
-          Una jornada de trabajo intensivo para socios de empresas familiares y PyMEs.
-          Cómo estructurar los acuerdos entre socios, las políticas de retiro y la
-          sucesión, antes de que el conflicto exista.
-        </p>
-        <p>
-          Sesiones en grupos pequeños en nuestra casa empresarial de Guadalajara.
-          Material impreso, comida y networking incluidos.
-        </p>
+
+        {course.longDescription?.map((para) => (
+          <p>{para}</p>
+        ))}
+
+        {course.outcomes && course.outcomes.length > 0 && (
+          <>
+            <h3 class="outcomes-title">Lo que te llevas al terminar</h3>
+            <ul class="outcomes-list">
+              {course.outcomes.map((item) => (
+                <li>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <polyline points="2,8 6,12 14,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
 
+      <!-- Columna derecha: lista de espera -->
       <aside class="lista-espera">
         <div class="lista-espera-card">
-          <span class="eyebrow">Próxima fecha</span>
-          <h3>Reserva tu lugar</h3>
+          <span class="eyebrow">{subjectLabel}</span>
+          <h3>Apúntate a la lista de espera</h3>
           <p>
-            Los grupos son de cupo limitado para garantizar atención personalizada.
-            Déjanos tus datos y te confirmamos próxima fecha y disponibilidad.
+            Te avisamos en cuanto abramos inscripciones. Sin spam, sin promociones
+            cruzadas. Solo el aviso cuando el curso esté disponible.
           </p>
           <form
             class="ws-form"
@@ -117,11 +141,11 @@ const courseLd = {
             />
             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
             <input type="hidden" name="curso" value={course.name} />
-            <input type="hidden" name="_subject" value={`Reserva — ${course.name}`} />
+            <input type="hidden" name="_subject" value={`${subjectLabel} — ${course.name}`} />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" data-next-redirect />
-            <button type="submit" class="btn btn-primary">Reservar lugar</button>
+            <button type="submit" class="btn btn-primary">{course.cta}</button>
           </form>
         </div>
       </aside>
@@ -138,7 +162,7 @@ const courseLd = {
 </Base>
 
 <style>
-  .hero h1 { max-width: 24ch; margin: 1.25rem 0 1.5rem; }
+  .hero h1 { max-width: 26ch; margin: 1.25rem 0 1.5rem; }
 
   .soon-grid {
     display: grid;
@@ -147,19 +171,62 @@ const courseLd = {
     align-items: start;
   }
   @media (min-width: 1024px) {
-    .soon-grid { grid-template-columns: 1.4fr 1fr; gap: 4rem; }
+    .soon-grid { grid-template-columns: 1.5fr 1fr; gap: 4rem; }
   }
 
-  .prose-lgo h2 { margin: 1rem 0 1.25rem; max-width: 24ch; }
+  .prose-lgo h2 {
+    margin: 1rem 0 1.5rem;
+    max-width: 24ch;
+  }
+  .prose-lgo p {
+    margin-bottom: 1.25rem;
+    max-width: 64ch;
+    line-height: 1.7;
+  }
 
+  .outcomes-title {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+    letter-spacing: -0.012em;
+  }
+  .outcomes-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .outcomes-list li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .outcomes-list svg {
+    color: var(--color-accent);
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  /* LISTA DE ESPERA */
   .lista-espera-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-top: 3px solid var(--color-accent);
     border-radius: var(--radius-sm);
     padding: 2rem 1.75rem;
+    position: sticky;
+    top: calc(var(--nav-h) + 1rem);
   }
-  .lista-espera-card h3 { margin: 0.75rem 0; font-size: 1.375rem; }
+  .lista-espera-card h3 {
+    margin: 0.75rem 0;
+    font-size: 1.375rem;
+    letter-spacing: -0.012em;
+  }
   .lista-espera-card p {
     font-size: var(--text-sm);
     color: var(--color-muted);
