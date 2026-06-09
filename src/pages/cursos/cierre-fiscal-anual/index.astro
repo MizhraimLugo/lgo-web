@@ -9,7 +9,7 @@ const title = `${course.name} | Curso online de Grupo LGO`;
 const description = course.blurb;
 
 const formEndpoint = `https://formsubmit.co/${business.email}`;
-const successUrl = new URL('/gracias/', Astro.url.origin).toString();
+// _next se setea en cliente con window.location.origin (ver script abajo)
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
@@ -89,7 +89,7 @@ const courseLd = {
             <input type="hidden" name="_subject" value={`Lista de espera — ${course.name}`} />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value={successUrl} />
+            <input type="hidden" name="_next" data-next-redirect />
             <button type="submit" class="btn btn-primary">Avisarme</button>
           </form>
         </div>
@@ -166,3 +166,9 @@ const courseLd = {
   }
   .back-link a:hover { color: var(--color-accent-deep); }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLInputElement>('[data-next-redirect]').forEach((el) => {
+    el.value = `${window.location.origin}/gracias/`;
+  });
+</script>

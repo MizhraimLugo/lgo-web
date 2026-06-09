@@ -39,7 +39,8 @@ const breadcrumbLd = {
 // Primer envío dispara confirmación a `business.email`; confirmada,
 // los siguientes llegan directo. Misma estrategia que Lorenzana 781.
 const formEndpoint = `https://formsubmit.co/${business.email}`;
-const successUrl = new URL('/gracias/', Astro.url.origin).toString();
+// _next se setea dinámicamente en cliente con window.location.origin
+// para que el redirect funcione en cualquier dominio (sin romper SSL).
 const autoResponse =
   `Recibimos tu mensaje en ${business.brand}. ` +
   `Un consultor te responderá en horario hábil (${business.hours.label.toLowerCase()}) ` +
@@ -123,7 +124,7 @@ const autoResponse =
           <input type="hidden" name="_subject" value={`Nueva consulta — ${business.brand}`} />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_next" value={successUrl} />
+          <input type="hidden" name="_next" data-next-redirect />
           <input type="hidden" name="_autoresponse" value={autoResponse} />
 
           <button type="submit" class="btn btn-primary form-submit">Enviar consulta</button>
@@ -295,3 +296,12 @@ const autoResponse =
   }
   .contact-secondary:hover { color: var(--color-accent-deep); }
 </style>
+
+<script>
+  // Setea _next al dominio actual para que el redirect funcione en cualquier
+  // dominio (URL temporal de Netlify, lgo.mx cuando se configure, localhost, etc).
+  // Sin esto, _next siempre apuntaría a lgo.mx que puede no estar en HTTPS válido.
+  document.querySelectorAll<HTMLInputElement>('[data-next-redirect]').forEach((el) => {
+    el.value = `${window.location.origin}/gracias/`;
+  });
+</script>
