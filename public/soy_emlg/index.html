@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>_emlg · Edgar Lugo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Hanken+Grotesk:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde:#1C4A3F; --crema:#F3EBDD; --crema-claro:#FAF5EC; --tinta:#221F1A;
+    --naranja:#D4541A; --naranja-osc:#8B2D0E; --arena:#CBB89B; --muted:#6a655b;
+    --serif:'Fraunces',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:var(--sans); background:var(--crema); color:var(--tinta);
+    min-height:100vh; -webkit-font-smoothing:antialiased;
+    border-top:5px solid var(--naranja);
+    display:flex; justify-content:center;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .page{ width:100%; max-width:520px; position:relative; z-index:1; padding:26px 26px 54px; }
+
+  /* MASTHEAD superior */
+  .masthead{ display:flex; justify-content:space-between; align-items:baseline;
+    font-size:.64rem; letter-spacing:.26em; text-transform:uppercase; font-weight:700;
+    color:var(--verde); padding-bottom:12px; border-bottom:1px solid var(--tinta); }
+  .masthead .r{ color:var(--naranja-osc); }
+
+  /* SELLO circular con monograma _emlg */
+  .seal-wrap{ text-align:center; margin:38px 0 0; }
+  .seal{
+    width:148px; height:148px; border-radius:50%; margin:0 auto;
+    background:var(--verde); color:var(--crema);
+    display:flex; align-items:center; justify-content:center;
+    border:4px solid var(--naranja);
+    box-shadow:0 14px 34px -16px rgba(20,58,48,.7);
+    font-family:var(--serif); font-weight:360; font-size:2.5rem; letter-spacing:-.02em;
+  }
+  .seal .us{ color:var(--naranja); }
+  .kicker{ font-size:.66rem; letter-spacing:.3em; text-transform:uppercase; font-weight:700;
+    color:var(--naranja-osc); margin-top:20px; text-align:center; }
+
+  .name{ font-family:var(--serif); font-weight:360; letter-spacing:-.02em; line-height:1;
+    font-size:clamp(2.6rem,11vw,3.6rem); color:var(--verde); text-align:center; margin-top:8px; }
+  .tagline{ font-family:var(--serif); font-style:italic; font-weight:380;
+    font-size:clamp(1.2rem,5vw,1.55rem); color:var(--tinta); line-height:1.25;
+    letter-spacing:-.01em; margin:16px auto 12px; text-align:center; max-width:400px; }
+  .byline{ font-size:.9rem; color:var(--muted); line-height:1.5; max-width:380px;
+    margin:0 auto; text-align:center; }
+  .byline em{ font-family:var(--serif); font-style:italic; color:var(--verde); }
+
+  /* etiqueta ÍNDICE */
+  .index-label{ display:flex; align-items:center; gap:14px; margin:44px 0 4px; }
+  .index-label span{ font-size:.66rem; letter-spacing:.3em; text-transform:uppercase;
+    font-weight:700; color:var(--verde); white-space:nowrap; }
+  .index-label .rule{ flex:1; height:1px; background:var(--tinta); }
+
+  /* ÍNDICE de enlaces */
+  a.entry{ display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:baseline;
+    text-decoration:none; color:var(--tinta); padding:22px 6px 20px;
+    border-bottom:1px solid rgba(34,31,26,.16); transition:padding .18s, background .18s; }
+  a.entry:first-of-type{ border-top:1px solid rgba(34,31,26,.16); }
+  a.entry .num{ font-family:var(--serif); font-style:italic; font-weight:400;
+    font-size:1.5rem; color:var(--naranja); line-height:1; }
+  a.entry .title{ font-family:var(--serif); font-weight:440; letter-spacing:-.01em;
+    font-size:clamp(1.45rem,6vw,1.9rem); color:var(--verde); line-height:1.05; }
+  a.entry .desc{ font-size:.82rem; color:var(--muted); margin-top:7px; letter-spacing:.01em; line-height:1.4; }
+  a.entry .arrow{ font-family:var(--serif); font-size:1.5rem; color:var(--arena);
+    align-self:center; transition:color .18s, transform .18s; }
+  a.entry:hover{ background:rgba(212,84,26,.05); padding-left:14px; padding-right:0; }
+  a.entry:hover .title{ color:var(--naranja); }
+  a.entry:hover .arrow{ color:var(--naranja); transform:translateX(4px); }
+  .tag-free{ display:inline-block; font-family:var(--sans); font-size:.6rem; font-weight:700;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--crema-claro);
+    background:var(--naranja); padding:3px 8px; border-radius:3px; margin-left:10px; vertical-align:middle; }
+
+  /* PIE / colofón */
+  .colophon{ margin-top:46px; padding-top:16px; border-top:1px solid var(--tinta);
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; font-weight:700; color:var(--verde); }
+  .colophon .r{ color:var(--muted); font-weight:600; }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="masthead">
+      <span>Edgar Lugo</span>
+      <span class="r">Guadalajara · MX</span>
+    </div>
+
+    <div class="seal-wrap">
+      <!-- Si más adelante quieres tu foto, reemplaza .seal por <img class="seal" src="edgar.jpg"> -->
+      <div class="seal"><span class="us">_</span>emlg</div>
+      <div class="kicker">Marca personal · Instagram</div>
+    </div>
+
+    <div class="name">Edgar Lugo</div>
+    <p class="tagline">Emprender con los pies en la tierra.</p>
+    <p class="byline">Vender sin perder, ordenar y no crecer a ciegas. Autor de <em>¿Qué onda con ser emprendedor?</em></p>
+
+    <div class="index-label"><span>Índice</span><div class="rule"></div></div>
+
+    <a class="entry" href="https://lgo.mx/cursos/diagnostico-salud-empresarial/">
+      <span class="num">01</span>
+      <span>
+        <span class="title">Diagnóstico de tu negocio<span class="tag-free">Gratis</span></span>
+        <span class="desc">50 preguntas · resultado al instante · sin compromiso</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="entry" href="https://a.co/d/0eFNQQ7a" target="_blank" rel="noopener">
+      <span class="num">02</span>
+      <span>
+        <span class="title">El libro</span>
+        <span class="desc">¿Qué onda con ser emprendedor?</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="entry" href="https://lgo.mx/cursos/">
+      <span class="num">03</span>
+      <span>
+        <span class="title">Cursos</span>
+        <span class="desc">Apúntate a la lista de espera</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+
+    <a class="entry" href="https://lgo.mx">
+      <span class="num">04</span>
+      <span>
+        <span class="title">Grupo LGO</span>
+        <span class="desc">El despacho detrás</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+
+    <div class="colophon">
+      <span>_emlg</span>
+      <span class="r">Familia Grupo LGO · 2026</span>
+    </div>
+
+  </div>
+</body>
+</html>

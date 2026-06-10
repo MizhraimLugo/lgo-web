@@ -12,8 +12,16 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      // /gracias/ y /404 no deben indexarse.
-      filter: (page) => !page.includes('/gracias/') && !page.includes('/404')
+      // Páginas excluidas del sitemap:
+      //  - /gracias/  → confirmación post-form (noindex)
+      //  - /404       → página de error
+      //  - /soy_emlg/ → página oculta en public/ (marca personal, noindex)
+      // Las páginas en public/ tampoco entran al sitemap por defecto, pero
+      // dejamos el filtro explícito por claridad.
+      filter: (page) =>
+        !page.includes('/gracias/') &&
+        !page.includes('/404') &&
+        !page.includes('/soy_emlg')
     })
   ],
   vite: {
