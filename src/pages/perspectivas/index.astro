@@ -3,7 +3,7 @@ import Base from '@layouts/Base.astro';
 import PostCard from '@components/PostCard.astro';
 import CtaBand from '@components/CtaBand.astro';
 import { business } from '@data/business';
-import { allPosts } from '@data/perspectivas';
+import { allPosts, brandLabel } from '@data/perspectivas';
 
 const title = 'Perspectivas | Análisis legal, fiscal y empresarial — Grupo LGO';
 const description =
@@ -11,6 +11,23 @@ const description =
 const path = '/perspectivas/';
 
 const posts = await allPosts();
+
+// Categorías únicas en orden de aparición (preservamos el orden cronológico
+// que ya viene en allPosts), para que los chips reflejen el contenido real.
+const categories = Array.from(new Set(posts.map((p) => p.data.category)));
+
+// Texto pre-normalizado por post para el buscador: título + excerpt + categoría
+// + brand label. Strip de acentos para que "tecnologia" matchee "tecnología".
+const stripAccents = (s: string) =>
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+const searchablePosts = posts.map((post) => ({
+  post,
+  category: post.data.category,
+  search: stripAccents(
+    [post.data.title, post.data.excerpt, post.data.category, brandLabel(post.data.brand)].join(' ')
+  )
+}));
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
@@ -46,13 +63,72 @@ const collectionLd = {
 
   <section class="section">
     <div class="container-base">
+
       {posts.length === 0 ? (
         <p class="empty">Aún no hay artículos publicados. Vuelve pronto.</p>
       ) : (
-        <div class="posts-grid">
-          {posts.map((post) => <PostCard post={post} showBrand={true} />)}
-        </div>
+        <>
+          <!-- TOOLBAR: búsqueda + filtros por categoría -->
+          <div class="toolbar" data-toolbar>
+            <div class="search-wrap">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <input
+                type="search"
+                class="search-input"
+                placeholder="Buscar por título, tema o palabra clave..."
+                aria-label="Buscar perspectivas"
+                data-search-input
+                autocomplete="off"
+              />
+              <button
+                type="button"
+                class="search-clear"
+                aria-label="Limpiar búsqueda"
+                data-search-clear
+                hidden
+              >×</button>
+            </div>
+
+            <div class="chips-wrap" role="tablist" aria-label="Filtrar por tema">
+              <button
+                type="button"
+                class="chip is-active"
+                data-chip="__all__"
+                role="tab"
+                aria-selected="true"
+              >Todos<span class="chip-count" data-count-for="__all__">{posts.length}</span></button>
+              {categories.map((cat) => (
+                <button
+                  type="button"
+                  class="chip"
+                  data-chip={cat}
+                  role="tab"
+                  aria-selected="false"
+                >{cat}<span class="chip-count" data-count-for={cat}>{posts.filter((p) => p.data.category === cat).length}</span></button>
+              ))}
+            </div>
+          </div>
+
+          <!-- RESULTADOS -->
+          <div class="posts-grid" data-posts-grid>
+            {searchablePosts.map(({ post, category, search }) => (
+              <div class="post-wrap" data-category={category} data-search={search}>
+                <PostCard post={post} showBrand={true} />
+              </div>
+            ))}
+          </div>
+
+          <!-- ESTADO: sin resultados -->
+          <p class="no-results" data-no-results hidden>
+            No encontramos perspectivas con esos filtros. Prueba con otra palabra
+            o pulsa <strong>Todos</strong>.
+          </p>
+        </>
       )}
+
     </div>
   </section>
 
@@ -72,6 +148,133 @@ const collectionLd = {
 <style>
   .hero h1 { max-width: 18ch; margin: 1.25rem 0 1.5rem; }
 
+  /* ── TOOLBAR ─────────────────────────────────────────────────────── */
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* — Buscador */
+  .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.85rem 2.75rem 0.85rem 2.75rem;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-foreground-strong);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212, 84, 26, 0.12);
+  }
+  .search-input::placeholder { color: var(--color-muted-soft); }
+
+  .search-clear {
+    position: absolute;
+    right: 0.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: none;
+    background: var(--color-surface-band);
+    border-radius: 50%;
+    color: var(--color-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .search-clear:hover {
+    background: var(--color-accent);
+    color: var(--color-on-dark);
+  }
+
+  /* — Chips de categoría */
+  .chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  /* En mobile, scroll horizontal sin wrap para que no llenen 3 filas */
+  @media (max-width: 640px) {
+    .chips-wrap {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-inline: calc(var(--container-pad, 1rem) * -1);
+      padding-inline: var(--container-pad, 1rem);
+    }
+    .chips-wrap::-webkit-scrollbar { display: none; }
+    .chip { flex-shrink: 0; }
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    padding: 0.5rem 0.95rem;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-foreground);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+  .chip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-deep);
+  }
+  .chip.is-active {
+    background: var(--color-foreground-strong);
+    border-color: var(--color-foreground-strong);
+    color: var(--color-on-dark);
+  }
+  .chip-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--color-surface-band);
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+  .chip.is-active .chip-count {
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--color-on-dark);
+  }
+  /* Cuenta a cero → chip se ve apagado pero no oculto (deja UX coherente) */
+  .chip.is-empty {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ── GRID DE POSTS ────────────────────────────────────────────────── */
   .posts-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -80,9 +283,187 @@ const collectionLd = {
   @media (min-width: 720px)  { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1100px) { .posts-grid { grid-template-columns: repeat(3, 1fr); } }
 
-  .empty {
+  /* Cada wrapper hace que .post-card herede el ancho de la celda del grid. */
+  .post-wrap { display: contents; }
+  .post-wrap[hidden] { display: none; }
+
+  .empty,
+  .no-results {
     text-align: center;
     color: var(--color-muted);
     padding-block: 4rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+  .no-results strong { color: var(--color-foreground-strong); }
+
+  /* Desktop: toolbar en grid de dos columnas — search ancho, chips a la derecha */
+  @media (min-width: 900px) {
+    .toolbar {
+      flex-direction: row;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .search-wrap { flex: 0 0 360px; }
+    .chips-wrap { flex: 1; justify-content: flex-end; }
   }
 </style>
+
+<script>
+  // ─────────────────────────────────────────────────────────────────
+  //  Filtro de Perspectivas: chip de categoría + búsqueda libre
+  //
+  //  AND entre ambos filtros. Search es case-insensitive y sin acentos
+  //  (los data-search del wrapper vienen pre-normalizados desde el SSR).
+  //  Mantenemos el estado en hash de URL para que sea linkeable.
+  // ─────────────────────────────────────────────────────────────────
+
+  const toolbar = document.querySelector<HTMLElement>('[data-toolbar]');
+  if (toolbar) {
+    const input = document.querySelector<HTMLInputElement>('[data-search-input]')!;
+    const clearBtn = document.querySelector<HTMLButtonElement>('[data-search-clear]')!;
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-chip]'));
+    const wraps = Array.from(document.querySelectorAll<HTMLElement>('.post-wrap'));
+    const grid = document.querySelector<HTMLElement>('[data-posts-grid]')!;
+    const noResults = document.querySelector<HTMLElement>('[data-no-results]')!;
+    const countEls = Array.from(document.querySelectorAll<HTMLElement>('[data-count-for]'));
+
+    const stripAccents = (s: string) =>
+      s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+    let activeChip = '__all__';
+    let query = '';
+
+    function applyFilters() {
+      const q = stripAccents(query.trim());
+      let visibleCount = 0;
+
+      for (const wrap of wraps) {
+        const cat = wrap.dataset.category ?? '';
+        const search = wrap.dataset.search ?? '';
+
+        const matchesCategory = activeChip === '__all__' || cat === activeChip;
+        const matchesQuery = q === '' || search.includes(q);
+        const visible = matchesCategory && matchesQuery;
+
+        wrap.hidden = !visible;
+        if (visible) visibleCount += 1;
+      }
+
+      noResults.hidden = visibleCount > 0;
+      grid.style.display = visibleCount > 0 ? '' : 'none';
+
+      // Actualizar cuentas de chips según query (sin tomar en cuenta el chip
+      // activo — la cuenta refleja "cuántos hay con este tema dentro de la
+      // búsqueda actual"). El chip "Todos" siempre muestra total filtrado por search.
+      const countsByCategory = new Map<string, number>();
+      let totalForSearch = 0;
+      for (const wrap of wraps) {
+        const search = wrap.dataset.search ?? '';
+        const matchesQuery = q === '' || search.includes(q);
+        if (!matchesQuery) continue;
+        totalForSearch += 1;
+        const cat = wrap.dataset.category ?? '';
+        countsByCategory.set(cat, (countsByCategory.get(cat) ?? 0) + 1);
+      }
+
+      for (const el of countEls) {
+        const key = el.dataset.countFor!;
+        const count = key === '__all__' ? totalForSearch : (countsByCategory.get(key) ?? 0);
+        el.textContent = String(count);
+        const chip = el.closest<HTMLButtonElement>('[data-chip]');
+        if (chip && key !== '__all__') {
+          chip.classList.toggle('is-empty', count === 0);
+        }
+      }
+    }
+
+    function setActiveChip(value: string) {
+      activeChip = value;
+      for (const chip of chips) {
+        const isActive = chip.dataset.chip === value;
+        chip.classList.toggle('is-active', isActive);
+        chip.setAttribute('aria-selected', String(isActive));
+      }
+      syncHash();
+      applyFilters();
+    }
+
+    function syncHash() {
+      // Construye un hash navegable: #tema=Fiscal&q=sat
+      const parts: string[] = [];
+      if (activeChip !== '__all__') parts.push(`tema=${encodeURIComponent(activeChip)}`);
+      if (query.trim()) parts.push(`q=${encodeURIComponent(query.trim())}`);
+      const hash = parts.length ? '#' + parts.join('&') : ' ';
+      // history.replaceState evita ensuciar back/forward por cada tecla
+      history.replaceState(null, '', window.location.pathname + (hash === ' ' ? '' : hash));
+    }
+
+    function readHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const params = new URLSearchParams(hash);
+      const tema = params.get('tema');
+      const q = params.get('q');
+      if (q) {
+        query = q;
+        input.value = q;
+        clearBtn.hidden = false;
+      }
+      if (tema && chips.some((c) => c.dataset.chip === tema)) {
+        activeChip = tema;
+        for (const chip of chips) {
+          const isActive = chip.dataset.chip === tema;
+          chip.classList.toggle('is-active', isActive);
+          chip.setAttribute('aria-selected', String(isActive));
+        }
+      }
+    }
+
+    // ── Eventos ────────────────────────────────────────────────────
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        if (chip.classList.contains('is-empty') && chip.dataset.chip !== '__all__') return;
+        setActiveChip(chip.dataset.chip!);
+      });
+    }
+
+    let debounceTimer: number | undefined;
+    input.addEventListener('input', () => {
+      query = input.value;
+      clearBtn.hidden = !query;
+      window.clearTimeout(debounceTimer);
+      debounceTimer = window.setTimeout(() => {
+        syncHash();
+        applyFilters();
+      }, 120);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      query = '';
+      input.value = '';
+      clearBtn.hidden = true;
+      input.focus();
+      syncHash();
+      applyFilters();
+    });
+
+    // Escape limpia búsqueda
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) {
+        e.preventDefault();
+        clearBtn.click();
+      }
+    });
+
+    // Cambios al hash (atrás/adelante del navegador o link compartido)
+    window.addEventListener('hashchange', () => {
+      readHash();
+      applyFilters();
+    });
+
+    // Init
+    readHash();
+    applyFilters();
+  }
+</script>
