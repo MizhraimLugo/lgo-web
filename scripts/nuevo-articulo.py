@@ -393,16 +393,22 @@ def generar_markdown(titulo: str, parrafos: list, pregunta: str,
 # ── Publicación en GitHub ─────────────────────────────────────────────────────
 
 def publicar_en_github(nombre_archivo: str) -> bool:
-    """Hace git add / commit / push tras crear un artículo."""
+    """Hace git add / commit / push del .md generado.
+
+    Solo añade ese archivo específico — NO usa 'git add .' para evitar
+    arrastrar trabajo en curso del repo al commit del blog. Si tienes
+    cambios no commiteados (otros scripts, ajustes al sitio), quedan
+    intactos para que los committees aparte."""
+    ruta_relativa = f"src/content/perspectivas/{nombre_archivo}"
     try:
         subprocess.run(
-            ["git", "add", "."],
+            ["git", "add", "--", ruta_relativa],
             cwd=PROYECTO_DIR,
             check=True,
             capture_output=True,
         )
         result = subprocess.run(
-            ["git", "diff", "--cached", "--quiet"],
+            ["git", "diff", "--cached", "--quiet", "--", ruta_relativa],
             cwd=PROYECTO_DIR,
             capture_output=True,
         )

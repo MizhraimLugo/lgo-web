@@ -2,6 +2,14 @@
 
 Automatizaciones para la operación del sitio.
 
+| Script | Para qué sirve |
+|---|---|
+| `nuevo-articulo.py` | Convierte `linkedin_post.txt` → `.md` con frontmatter y publica en git. Es el motor de publicación. |
+| `watch-contenido.py` | Vigila la carpeta de Cowork y llama a `nuevo-articulo.py` apenas aparece carpeta nueva. Es el disparador automático. |
+| `watch-contenido.bat` | Arranca el watcher con ventana visible (debug). |
+| `watch-contenido.vbs` | Arranca el watcher oculto (modo Inicio de Windows). |
+| `trim-logos.mjs` | Recorta whitespace de los logos PNG con sharp. |
+
 ## `nuevo-articulo.py` — Publicación del blog
 
 Convierte carpetas de contenido (`linkedin_post.txt`) en archivos Markdown
@@ -221,39 +229,104 @@ Líneas tipo:
 El script usa este log para saber qué carpetas ya procesó. Si quieres
 reprocesar manualmente, usa `--carpeta NOMBRE` (ignora el log para esa carpeta).
 
-### Programar ejecución automática para que Cowork → blog sea sin manos
+### Ejecución automática — modo recomendado: `watch-contenido.py` (watcher en vivo)
 
-**Una sola tarea programada de Windows** que corre cada día a una hora razonable
-*después* de que Cowork haya terminado de generar el contenido.
+El watcher vigila `C:\Users\edgar\Contenido Grupo LGO\` en tiempo real. Cuando
+Cowork deja una carpeta nueva con `linkedin_post.txt` dentro, el watcher espera
+unos segundos a que termine de escribir todo, e invoca `nuevo-articulo.py
+--carpeta NOMBRE` automáticamente. No tienes que abrir terminal.
 
-Pasos:
+#### Setup (una sola vez)
+
+1. **Instalar la dependencia** (la única que no es estándar de Python):
+
+   ```powershell
+   pip install watchdog
+   ```
+
+2. **Probar que funciona** procesando lo pendiente del día sin entrar en modo vigilancia:
+
+   ```powershell
+   python "C:\Users\edgar\LGO web\scripts\watch-contenido.py" --once
+   ```
+
+   Si encuentra carpeta pendiente, la publica y termina. Si no hay nada, sale limpio.
+
+3. **Arrancar en modo vigilancia (con ventana visible — útil al inicio):**
+
+   Doble click a `scripts\watch-contenido.bat`. Aparece una consola mostrando logs
+   en vivo. Mientras esa ventana esté abierta, el watcher está activo. Cierra la
+   ventana para detenerlo.
+
+4. **Arrancar oculto al iniciar Windows (modo definitivo):**
+
+   - Pulsa `Win+R`, escribe `shell:startup` y Enter (abre la carpeta de Inicio).
+   - Pega ahí un acceso directo a `C:\Users\edgar\LGO web\scripts\watch-contenido.vbs`.
+   - La próxima vez que enciendas la PC, el watcher arrancará solo, sin ventana.
+
+#### Cómo funciona el flujo
+
+```
+Cowork deja: 2026-06-12\linkedin_post.txt (10:14:32)
+   ↓ (apenas se crea el archivo)
+Watcher: VISTO 2026-06-12/linkedin_post.txt → procesado en 8s
+   ↓ (8 segundos de debounce, por si Cowork sigue escribiendo)
+Watcher: PROCESANDO 2026-06-12
+   ↓ (llama a nuevo-articulo.py --carpeta 2026-06-12)
+nuevo-articulo.py: genera .md, git add + commit + push
+   ↓
+Netlify: detecta el push y rebuildea (1-2 min)
+   ↓
+lgo.mx/perspectivas: artículo nuevo en línea
+```
+
+#### Idempotencia y robustez
+
+- **No publica dos veces lo mismo**: `nuevo-articulo.py` lleva su propio log de
+  procesadas (`logs/blog-auto.log`). Si el watcher se dispara dos veces para la
+  misma carpeta (modificaciones intermedias), la segunda corrida sale con "OMITIDO".
+- **Aguanta reescrituras**: si el `.txt` se escribe en varios chunks, el debounce
+  se resetea cada vez. Solo dispara cuando el archivo se asienta.
+- **Maneja carpetas V2/V3**: cada una se trata como independiente.
+- **Sobrevive errores**: si el script publicador falla, el watcher lo loguea y
+  sigue vigilando. No se cae.
+
+#### Logs
+
+| Archivo | Contenido |
+|---|---|
+| `logs/watcher.log` | Eventos del watcher (VISTO, PROCESANDO, OK, FALLO) |
+| `logs/blog-auto.log` | Resultado de cada publicación (PROCESADO, PUBLICADO EN GITHUB) |
+
+Revisa cualquiera con:
+
+```powershell
+Get-Content "C:\Users\edgar\LGO web\logs\watcher.log" -Tail 20
+```
+
+#### Detener el watcher
+
+- Modo ventana: cierra la ventana de la consola.
+- Modo oculto (.vbs): abre el Administrador de Tareas, busca `python.exe` y termina ese proceso.
+
+---
+
+### Alternativa: Tarea programada de Windows (cron-like)
+
+Si prefieres una sola corrida diaria a hora fija en vez del watcher en vivo, también funciona:
 
 1. Abrir **Programador de tareas** de Windows (`taskschd.msc`)
 2. Acción → "Crear tarea básica"
 3. **Nombre:** `LGO Blog Auto`
-4. **Disparador:** "Diariamente", hora que prefieras
-   - Recomendado: **30 minutos después** de la hora a la que corre Cowork
-   - Por ejemplo, si Cowork corre a las 10:00, tu script a las 10:30
+4. **Disparador:** "Diariamente", hora que prefieras (30 min después de Cowork)
 5. **Acción:** "Iniciar un programa"
-   - **Programa:** `python.exe` (o ruta completa: `C:\Python314\python.exe`)
+   - **Programa:** `python.exe` (o ruta completa)
    - **Argumentos:** `"C:\Users\edgar\LGO web\scripts\nuevo-articulo.py"`
    - **Iniciar en:** `C:\Users\edgar\LGO web`
-6. Click "Finalizar"
 
-Lo que pasa cada día:
-- Lunes-Viernes: encuentra carpeta `YYYY-MM-DD`, genera .md, hace push → Netlify deploya
-- Sábado: encuentra carpeta `YYYY-MM-DD`, NO encuentra `linkedin_post.txt`, log dice "SIN CONTENIDO" y sale limpio
-- Domingo: no hay carpeta del día, log dice "SIN CONTENIDO" y sale limpio
-- Si por algún motivo Cowork no generó: log dice "SIN CONTENIDO" y sale limpio. Cero error.
-
-#### Si generas 2 contenidos diarios (carpetas V2)
-
-Cowork puede crear `2026-05-15` en la mañana y `2026-05-15V2` en la tarde.
-Tu tarea programada con una sola corrida diaria procesará ambas en su próxima
-ejecución (el script busca todas las variantes V2, V3, etc.).
-
-Alternativa: crear **dos** tareas programadas (ej. una a las 10:30 y otra a
-las 16:30) para que los V2 se publiquen el mismo día sin esperar al siguiente.
+Trade-off vs. watcher: más simple, no requiere watchdog, pero el blog se publica
+con retraso (hasta 24h) si Cowork tarda en dejar la carpeta. Para carpetas V2
+del mismo día, considera crear dos tareas (ej. 10:30 y 16:30).
 
 ---
 
