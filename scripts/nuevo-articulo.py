@@ -71,10 +71,11 @@ AUTOR_EMAIL    = "contacto@lgo.mx"
 
 DIA_A_BRAND = {
     0: {"brand": "grupo",      "category": "Emprendimiento"},          # Lunes
-    1: {"brand": "abogados",   "category": "Laboral",                  # Martes
+    1: {"brand": "abogados",   "category": "Derecho",                  # Martes
         # En martes la brand es fija (abogados) pero la categoría se
         # auto-detecta entre estas opciones según las keywords del texto.
-        # Si nada matchea, se usa la "category" default (Laboral).
+        # Si nada matchea, se usa la "category" default (Derecho — genérica,
+        # cuando no se puede determinar la subespecialidad).
         "category_auto": ["Laboral", "Corporativo", "Mercantil", "Administrativo"]},
     2: {"brand": "grupo",      "category": "Tecnología"},               # Miércoles
     3: {"brand": "contadores", "category": "Fiscal"},                  # Jueves
