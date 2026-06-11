@@ -71,7 +71,11 @@ AUTOR_EMAIL    = "contacto@lgo.mx"
 
 DIA_A_BRAND = {
     0: {"brand": "grupo",      "category": "Emprendimiento"},          # Lunes
-    1: {"brand": "abogados",   "category": "Laboral"},                 # Martes
+    1: {"brand": "abogados",   "category": "Laboral",                  # Martes
+        # En martes la brand es fija (abogados) pero la categoría se
+        # auto-detecta entre estas opciones según las keywords del texto.
+        # Si nada matchea, se usa la "category" default (Laboral).
+        "category_auto": ["Laboral", "Corporativo", "Mercantil", "Administrativo"]},
     2: {"brand": "grupo",      "category": "Tecnología"},               # Miércoles
     3: {"brand": "contadores", "category": "Fiscal"},                  # Jueves
     4: {"brand": "grupo",      "category": "Liderazgo"},               # Viernes
@@ -91,35 +95,81 @@ CATEGORIAS = [
                      "retencion", "código fiscal", "codigo fiscal", "contribuyente",
                      "isr", "iva", "cfdi", "factura", "deducción", "deduccion"],
     },
+    # ── Familia DERECHO (brand: abogados) ───────────────────────────────────
+    # El martes el script auto-detecta entre estas categorías según el texto.
+    # Orden importa: la primera con match gana. Las más específicas van antes
+    # de las más amplias para evitar que una palabra genérica robe el match.
     {
         "category": "Laboral",
         "brand":    "abogados",
         "keywords": ["contrato de trabajo", "jornada", "nómina", "nomina",
                      "trabajador", "patrón", "patron", "stps",
-                     "ley federal del trabajo", "despido", "sindicato",
+                     "ley federal del trabajo", "lft", "despido", "sindicato",
                      "horas extra", "finiquito", "liquidación", "liquidacion",
-                     "desconexión digital", "desconexion digital"],
+                     "desconexión digital", "desconexion digital",
+                     "infonavit", "imss", "afore", "salario",
+                     "reparto de utilidades", "ptu", "outsourcing", "rep",
+                     "reglamento interior de trabajo"],
+    },
+    {
+        "category": "Corporativo",
+        "brand":    "abogados",
+        "keywords": ["accionistas", "asamblea", "estatutos", "gobernanza",
+                     "gobierno corporativo", "consejo de administración",
+                     "consejo de administracion", "comisario", "capital social",
+                     "dividendo", "dividendos", "fusión", "fusion",
+                     "escisión", "escision", "transformación societaria",
+                     "transformacion societaria", "s.a. de c.v.", "s.a.p.i.",
+                     "s. de r.l.", "s.a.s.", "sociedad anónima", "sociedad anonima",
+                     "acta constitutiva", "escritura pública", "escritura publica",
+                     "poder general", "representante legal", "rfc moral"],
+    },
+    {
+        "category": "Mercantil",
+        "brand":    "abogados",
+        "keywords": ["código de comercio", "codigo de comercio", "comerciante",
+                     "pagaré", "pagare", "letra de cambio", "cheque",
+                     "título de crédito", "titulo de credito",
+                     "concurso mercantil", "quiebra", "insolvencia",
+                     "factoraje", "arrendamiento financiero",
+                     "garantía mobiliaria", "garantia mobiliaria",
+                     "compraventa mercantil", "contrato de distribución",
+                     "contrato de distribucion", "contrato de suministro",
+                     "comisión mercantil", "comision mercantil",
+                     "transporte de mercancías", "transporte de mercancias",
+                     "franquicia"],
+    },
+    {
+        "category": "Administrativo",
+        "brand":    "abogados",
+        "keywords": ["cofepris", "cofece", "profeco", "prodecon", "ift",
+                     "cnbv", "cre ", "asea", "semarnat", "indaabin",
+                     "procedimiento administrativo", "recurso de revisión",
+                     "recurso de revision", "recurso administrativo",
+                     "acto administrativo", "multa administrativa",
+                     "sanción administrativa", "sancion administrativa",
+                     "juicio contencioso administrativo", "tfja", "tfjfa",
+                     "norma oficial mexicana", "nom-", "permiso administrativo",
+                     "licencia administrativa", "autorización administrativa",
+                     "autorizacion administrativa", "verificación administrativa",
+                     "verificacion administrativa"],
     },
     {
         "category": "Propiedad Intelectual",
         "brand":    "abogados",
-        "keywords": ["marca", "impi", "propiedad intelectual", "uspto",
-                     "madrid", "diseño industrial", "patente",
-                     "derechos de autor", "copyright"],
+        "keywords": ["impi", "propiedad intelectual", "uspto",
+                     "registro de marca", "diseño industrial",
+                     "patente", "derechos de autor", "copyright",
+                     "marca registrada", "signo distintivo"],
     },
     {
         "category": "Contratos",
         "brand":    "abogados",
         "keywords": ["arrendamiento", "cláusula", "clausula", "convenio",
-                     "obligación", "obligacion", "garantía", "garantia",
-                     "contrato de prestación", "contrato de servicios"],
-    },
-    {
-        "category": "Derecho Corporativo",
-        "brand":    "abogados",
-        "keywords": ["sociedad", "accionistas", "asamblea", "estatutos",
-                     "gobierno corporativo", "fusión", "fusion", "escisión",
-                     "escision", "s.a.", "s.a.p.i.", "s. de r.l."],
+                     "obligación contractual", "obligacion contractual",
+                     "contrato de prestación", "contrato de prestacion",
+                     "contrato de servicios", "rescisión", "rescision",
+                     "incumplimiento contractual"],
     },
     {
         "category": "Tecnología Empresarial",
@@ -211,11 +261,18 @@ def nombre_archivo_disponible(slug_base: str) -> str:
     return nombre
 
 
-def detectar_categoria_por_keywords(texto: str) -> dict:
+def detectar_categoria_por_keywords(texto: str, candidatas: list[str] | None = None) -> dict:
     """Detecta categoría escaneando palabras clave en el texto.
-    Fallback final si no hay override ni mapeo de día disponible."""
+
+    Si `candidatas` está dado, solo considera categorías cuya 'category'
+    esté en esa lista (útil para acotar la detección a un subconjunto
+    compatible con la brand del día — ej. martes solo derecho).
+
+    Si no hay match, devuelve FALLBACK_CATEGORIA."""
     texto_lower = texto.lower()
     for cat in CATEGORIAS:
+        if candidatas is not None and cat["category"] not in candidatas:
+            continue
         for kw in cat["keywords"]:
             if kw in texto_lower:
                 return cat
@@ -231,27 +288,38 @@ def resolver_brand_y_categoria(
 
     1. Override explícito desde el .txt (BRAND: x / CATEGORY: y)
     2. Día de la semana de la carpeta (calendario Cowork)
-    3. Detección por keywords (fallback)
+       — Algunos días (martes) tienen `category_auto`: lista de categorías
+         candidatas que se intentan detectar por keywords. Si nada matchea,
+         se usa la `category` default del día.
+    3. Detección por keywords sin filtro (fallback: domingo o sin fecha)
 
     Devuelve {"brand": ..., "category": ...}.
     """
-    # 1. Override desde .txt
+    weekday = fecha.weekday()
+    base = DIA_A_BRAND.get(weekday)
+
+    # ── 1. Override desde .txt ────────────────────────────────────────
     if overrides.get("brand") or overrides.get("category"):
-        # Si hay override parcial (solo brand o solo category), completa con
-        # el mapeo del día como base.
-        weekday = fecha.weekday()
-        base = DIA_A_BRAND.get(weekday) or detectar_categoria_por_keywords(texto)
+        # Completa con el mapeo del día (o keywords) si el override es parcial.
+        fallback = base or detectar_categoria_por_keywords(texto)
         return {
-            "brand":    overrides.get("brand")    or base["brand"],
-            "category": overrides.get("category") or base["category"]
+            "brand":    overrides.get("brand")    or fallback["brand"],
+            "category": overrides.get("category") or fallback["category"],
         }
 
-    # 2. Día de la semana
-    weekday = fecha.weekday()
-    if weekday in DIA_A_BRAND:
-        return DIA_A_BRAND[weekday]
+    # ── 2. Día de la semana ──────────────────────────────────────────
+    if base:
+        # Si el día tiene category_auto, intenta detectar entre las candidatas
+        candidatas = base.get("category_auto")
+        if candidatas:
+            detectada = detectar_categoria_por_keywords(texto, candidatas=candidatas)
+            # Si la detección encontró algo dentro de las candidatas, la usamos.
+            # Si cayó a FALLBACK_CATEGORIA (no match), nos quedamos con el default del día.
+            if detectada["category"] in candidatas:
+                return {"brand": base["brand"], "category": detectada["category"]}
+        return {"brand": base["brand"], "category": base["category"]}
 
-    # 3. Fallback por keywords (caso atípico: carpeta de domingo o sin fecha)
+    # ── 3. Fallback por keywords (domingo o sin fecha) ────────────────
     return detectar_categoria_por_keywords(texto)
 
 
