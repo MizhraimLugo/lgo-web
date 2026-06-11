@@ -2,7 +2,7 @@
 title: "La reforma laboral publicada el 1 de mayo de 2026 no es una promesa. Es un decreto vigente."
 excerpt: "El Diario Oficial de la Federación publicó el decreto que modifica la Ley Federal del Trabajo para establecer la reducción gradual de la jornada máxima semanal: de las 48 horas actuales, se llegará a…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-05-26
 author:
   name: "Edgar Mizhraim Lugo García"

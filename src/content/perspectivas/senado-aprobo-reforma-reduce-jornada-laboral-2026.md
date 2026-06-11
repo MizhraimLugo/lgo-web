@@ -2,7 +2,7 @@
 title: "El Senado aprobó la reforma que reduce la jornada laboral ordinaria a 40 horas semanales. Lo que muchos desconocen es que la transición será gradual y el tiempo de preparación para los empleadores es limitado."
 excerpt: "La reforma secundaria a la Ley Federal del Trabajo establece una reducción escalonada: en 2026 la jornada máxima es de 48 horas; en 2027 baja a 46; en 2028, a 44; en 2029, a 42; y en 2030 llegará a…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-04-28
 author:
   name: "Edgar Mizhraim Lugo García"

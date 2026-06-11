@@ -2,7 +2,7 @@
 title: "Derecho a la desconexión digital: ya es ley y tu empresa necesita una política documentada"
 excerpt: "Una nueva obligación ya está en vigor. Queda prohibido contactar colaboradores fuera de la jornada. El incumplimiento genera multas por trabajador afectado."
 brand: abogados
-category: Derecho Laboral
+category: "Laboral"
 date: 2026-04-20
 author:
   name: "Edgar Mizhraim Lugo García"

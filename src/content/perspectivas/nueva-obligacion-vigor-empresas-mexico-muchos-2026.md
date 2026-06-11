@@ -2,7 +2,7 @@
 title: "Una nueva obligación ya está en vigor para las empresas en México. Y muchos patrones todavía no lo saben."
 excerpt: "La Cámara de Diputados aprobó la reforma al artículo 132 de la Ley Federal del Trabajo que reconoce formalmente el derecho a la desconexión digital. A partir de su entrada en vigor, queda prohibido…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-04-28
 author:
   name: "Edgar Mizhraim Lugo García"

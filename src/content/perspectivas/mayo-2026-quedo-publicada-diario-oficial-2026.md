@@ -2,7 +2,7 @@
 title: "El 1 de mayo de 2026 quedó publicada en el Diario Oficial de la Federación la reforma a la Ley Federal del Trabajo que reduce gradualmente la jornada laboral máxima semanal. No es una reforma que entra en vigor \"después\". Algunas de sus obligaciones ya son exigibles."
 excerpt: "La reforma establece una reducción escalonada: de las 48 horas actuales, el tope bajará a 46 en 2027, 44 en 2028, 42 en 2029 y 40 en 2030, sin reducción de salarios ni prestaciones. Paralelamente…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-05-19
 author:
   name: "Edgar Mizhraim Lugo García"

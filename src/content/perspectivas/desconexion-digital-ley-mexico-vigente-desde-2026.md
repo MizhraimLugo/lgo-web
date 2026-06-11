@@ -2,7 +2,7 @@
 title: "La desconexión digital ya es ley en México. Vigente desde el 1 de mayo de 2026, la reforma a la Ley Federal del Trabajo reconoce formalmente el derecho de los trabajadores a no responder mensajes, correos ni llamadas una vez concluida su jornada laboral."
 excerpt: "Lo que muchas empresas todavía no dimensionan es que esta reforma no solo protege al trabajador: también crea una obligación patronal concreta. El artículo 132, fracción XXXIV de la Ley Federal del…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-05-12
 author:
   name: "Edgar Mizhraim Lugo García"

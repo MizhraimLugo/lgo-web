@@ -71,7 +71,7 @@ AUTOR_EMAIL    = "contacto@lgo.mx"
 
 DIA_A_BRAND = {
     0: {"brand": "grupo",      "category": "Emprendimiento"},          # Lunes
-    1: {"brand": "abogados",   "category": "Derecho"},                 # Martes
+    1: {"brand": "abogados",   "category": "Laboral"},                 # Martes
     2: {"brand": "grupo",      "category": "Tecnología"},               # Miércoles
     3: {"brand": "contadores", "category": "Fiscal"},                  # Jueves
     4: {"brand": "grupo",      "category": "Liderazgo"},               # Viernes
@@ -92,7 +92,7 @@ CATEGORIAS = [
                      "isr", "iva", "cfdi", "factura", "deducción", "deduccion"],
     },
     {
-        "category": "Derecho Laboral",
+        "category": "Laboral",
         "brand":    "abogados",
         "keywords": ["contrato de trabajo", "jornada", "nómina", "nomina",
                      "trabajador", "patrón", "patron", "stps",

@@ -2,7 +2,7 @@
 title: "La reforma laboral de 40 horas ya está publicada en el Diario Oficial de la Federación. Si tienes una empresa, esto no es una tendencia por venir; es una obligación legal vigente."
 excerpt: "El pasado 1 de mayo de 2026 se publicó la reforma a la Ley Federal del Trabajo que reglamenta la reducción gradual de la jornada máxima semanal. El primer ajuste opera a partir del 1 de enero de…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-06-09
 author:
   name: "Edgar Mizhraim Lugo García"

@@ -2,7 +2,7 @@
 title: "Jornada de 40 horas: lo que cada empleador necesita revisar antes del siguiente escalón"
 excerpt: "La reducción es gradual: 48h en 2026, bajando a 40h en 2030. Horas extra al triple si superas el límite semanal. El tiempo de preparación es limitado."
 brand: abogados
-category: Derecho Laboral
+category: "Laboral"
 date: 2026-04-15
 author:
   name: "Edgar Mizhraim Lugo García"

@@ -2,7 +2,7 @@
 title: "La jornada de 40 horas ya es ley en México. Pero entrar en vigor no es lo mismo que estar listo para cumplirla."
 excerpt: "El 1 de mayo de 2026 se publicó en el Diario Oficial de la Federación el decreto que reforma la Ley Federal del Trabajo para reducir gradualmente la jornada máxima semanal: de las 48 horas actuales…"
 brand: abogados
-category: "Derecho"
+category: "Laboral"
 date: 2026-06-02
 author:
   name: "Edgar Mizhraim Lugo García"
