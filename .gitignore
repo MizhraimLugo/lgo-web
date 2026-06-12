@@ -36,3 +36,8 @@ _fuentes/
 # Por defecto los excluimos: las versiones recortadas y optimizadas
 # de public/images/logos/*.png sí se commitean.
 # public/images/logos/source/
+
+# Local Netlify folder
+.netlify
+# Lockfile que genera `netlify dev` para el runtime Deno de Edge Functions (no las usamos)
+deno.lock

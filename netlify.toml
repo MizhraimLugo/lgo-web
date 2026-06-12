@@ -1,0 +1,16 @@
+# Configuración Netlify — Grupo LGO
+# El sitio se queda ESTÁTICO (Astro SSG): NO hay adapter SSR.
+# Solo las funciones de /contratos corren como endpoints serverless.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Para `netlify dev`: Astro corre en :4321 y Netlify lo proxea + sirve las
+# funciones en /.netlify/functions/<nombre>.
+[dev]
+  targetPort = 4321

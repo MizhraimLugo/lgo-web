@@ -163,6 +163,7 @@ import { business } from '@data/business';
   .chat-msg--bot { background: var(--color-surface-alt); color: var(--color-foreground); align-self: flex-start; border-bottom-left-radius: var(--radius-xs); }
   .chat-msg--user { background: var(--color-accent); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
   .chat-msg :global(a) { color: inherit; font-weight: 700; text-decoration: underline; }
+  .chat-typing { opacity: 0.55; letter-spacing: 0.25em; }
 
   .chat-form { display: flex; gap: 0.5rem; padding: 1rem 1.25rem; border-top: 1px solid var(--color-divider); }
   .chat-input {
@@ -193,11 +194,16 @@ import { business } from '@data/business';
     const chatInput = root.querySelector<HTMLInputElement>('.chat-input')!;
 
     let lead: { nombre: string; telefono: string; correo: string } | null = null;
+    const historial: { role: 'user' | 'assistant'; content: string }[] = [];
 
-    const addMsg = (html: string, who: 'bot' | 'user') => {
+    const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const linkify = (t: string) =>
+      escapeHtml(t).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+
+    const addMsg = (text: string, who: 'bot' | 'user') => {
       const el = document.createElement('div');
       el.className = `chat-msg chat-msg--${who}`;
-      if (who === 'user') el.textContent = html; else el.innerHTML = html;
+      if (who === 'user') el.textContent = text; else el.innerHTML = linkify(text);
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
     };
@@ -222,36 +228,56 @@ import { business } from '@data/business';
       if (err) return;
 
       lead = { nombre, telefono, correo };
-      // PASO 3 (backend): POST a /.netlify/functions/registrar-lead → correo + ClickUp.
-      try { sessionStorage.setItem('lgo_lead', JSON.stringify({ ...lead, ts: Date.now() })); } catch {}
+      // Registra el lead (ClickUp + correo) en segundo plano; no bloquea la conversación.
+      fetch('/.netlify/functions/registrar-lead', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(lead)
+      }).catch(() => {});
 
       gate.hidden = true;
       chat.hidden = false;
 
       const nombreCorto = nombre.split(' ')[0];
-      addMsg(
-        `Hola ${nombreCorto}, gusto en saludarte. Soy el asistente de Grupo LGO y te ayudo a preparar tu documento. ` +
-        `Para empezar: <strong>¿ya sabes qué documento necesitas</strong>, o prefieres contarme tu situación y yo te recomiendo el adecuado?`,
-        'bot'
-      );
+      const saludo = `Hola ${nombreCorto}, gusto en saludarle. Soy el asistente de Grupo LGO y le ayudo a preparar su documento. Para empezar: ¿ya sabe qué documento necesita, o prefiere contarme su situación y le recomiendo el adecuado?`;
+      addMsg(saludo, 'bot');
+      historial.push({ role: 'assistant', content: saludo });
       chatInput.focus();
     });
 
-    // ── Envío de mensajes (stub — el cerebro IA es el PASO 3) ──
-    chatForm.addEventListener('submit', (e) => {
+    // ── Envío de mensajes → función de chat (Claude) ──
+    chatForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const msg = chatInput.value.trim();
       if (!msg) return;
       addMsg(msg, 'user');
       chatInput.value = '';
-      setTimeout(() => {
-        addMsg(
-          'Estoy a punto de conectarme: el asistente con IA se activa en el siguiente paso del proyecto. ' +
-          `Mientras tanto puedes revisar los documentos disponibles más abajo, o si prefieres que te atendamos en persona, ` +
-          `escríbenos por <a href="${business.whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a> y un asesor te busca.`,
-          'bot'
-        );
-      }, 400);
+      chatInput.disabled = true;
+
+      const typing = document.createElement('div');
+      typing.className = 'chat-msg chat-msg--bot chat-typing';
+      typing.textContent = '…';
+      log.appendChild(typing);
+      log.scrollTop = log.scrollHeight;
+
+      try {
+        const r = await fetch('/.netlify/functions/chat', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ mensaje: msg, historial })
+        });
+        const data = await r.json().catch(() => ({}));
+        typing.remove();
+        const reply = r.ok
+          ? (data.reply || '…')
+          : (data.error || `Tuvimos un problema. Si prefiere, escríbanos por WhatsApp: ${business.whatsappUrl}`);
+        addMsg(reply, 'bot');
+        historial.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
+      } catch {
+        typing.remove();
+        addMsg(`Tuvimos un problema de conexión. Si prefiere, escríbanos por WhatsApp: ${business.whatsappUrl}`, 'bot');
+      } finally {
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
     });
   }
 </script>
