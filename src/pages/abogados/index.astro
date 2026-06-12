@@ -5,6 +5,7 @@ import Faq from '@components/Faq.astro';
 import Logo from '@components/Logo.astro';
 import PostCard from '@components/PostCard.astro';
 import ServiceCard from '@components/ServiceCard.astro';
+import ContratosFeature from '@components/contratos/ContratosFeature.astro';
 import { business } from '@data/business';
 import { getBrand } from '@data/brands';
 import { servicesByBrand } from '@data/services';
@@ -126,6 +127,13 @@ const breadcrumbLd = {
       </div>
     </div>
   </section>
+
+  <!-- CONTRATOS — autoservicio de documentos -->
+  <ContratosFeature
+    eyebrow="Documentos legales · Autoservicio"
+    title="¿Necesitas un contrato hoy mismo?"
+    body="Prepara documentos redactados por LGO Abogados con nuestro asistente: cuéntale tu situación, lo llena contigo y lo descargas listo para firmar."
+  />
 
   <!-- SECTORES -->
   <section class="section band-cream">

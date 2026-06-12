@@ -3,6 +3,7 @@ import Base from '@layouts/Base.astro';
 import CtaBand from '@components/CtaBand.astro';
 import PostCard from '@components/PostCard.astro';
 import CourseCard from '@components/CourseCard.astro';
+import ContratosFeature from '@components/contratos/ContratosFeature.astro';
 import { business } from '@data/business';
 import { ecosystemBrands } from '@data/brands';
 import { recentPosts } from '@data/perspectivas';
@@ -89,6 +90,9 @@ const otherCourses = nonFeaturedCourses();
       </div>
     </div>
   </section>
+
+  <!-- CONTRATOS — autoservicio de documentos -->
+  <ContratosFeature />
 
   <!-- POR QUÉ INTEGRADO IMPORTA — la tesis -->
   <section class="section band-dark">
