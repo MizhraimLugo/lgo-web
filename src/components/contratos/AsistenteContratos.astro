@@ -1,0 +1,257 @@
+---
+// Asistente de contratos — pieza central del flujo /contratos.
+// 1) Puerta de registro: nombre, teléfono y correo (lead para Grupo LGO,
+//    NO datos del contrato). Hasta no completarlo, el chat está bloqueado.
+// 2) Chat: la IA (PASO 3) lleva la conversación — pregunta si ya sabe qué
+//    documento necesita, recomienda el adecuado según el contexto, o deriva a
+//    WhatsApp si no lo tenemos, y llena el formulario conversando.
+// Por ahora el "cerebro" está en stub; la UI y la captura de lead ya quedan.
+import { business } from '@data/business';
+---
+<section class="asistente" id="asistente" data-asistente>
+  <div class="container-narrow">
+    <span class="eyebrow reveal-up reveal-up--immediate">Asistente de contratos</span>
+    <h1 class="asistente-title reveal-up reveal-up--immediate">
+      Cuéntanos qué necesitas. Te decimos el documento exacto.
+    </h1>
+    <p class="lead asistente-lead reveal-up reveal-up--immediate">
+      No tienes que saber cómo se llama el contrato. Describe tu situación y el asistente
+      de Grupo LGO te guía, lo prepara contigo y lo dejas listo para firmar.
+    </p>
+
+    <div class="asistente-panel reveal-up reveal-up--immediate">
+
+      <!-- 1) PUERTA DE REGISTRO -->
+      <div class="gate" data-gate>
+        <div class="gate-head">
+          <h2 class="gate-title">Empecemos</h2>
+          <p class="gate-note">
+            Déjanos tus datos para darte seguimiento. Son para el registro de Grupo LGO,
+            <strong>no aparecen en tu contrato</strong>.
+          </p>
+        </div>
+        <form class="gate-form" data-gate-form novalidate>
+          <div class="gf-field">
+            <label for="lead-nombre">Nombre completo</label>
+            <input id="lead-nombre" name="nombre" type="text" autocomplete="name" required />
+          </div>
+          <div class="gf-field">
+            <label for="lead-tel">Teléfono (WhatsApp)</label>
+            <input id="lead-tel" name="telefono" type="tel" inputmode="tel" autocomplete="tel"
+              placeholder="10 dígitos" required />
+          </div>
+          <div class="gf-field">
+            <label for="lead-correo">Correo electrónico</label>
+            <input id="lead-correo" name="correo" type="email" autocomplete="email" required />
+          </div>
+          <p class="gf-error" data-gate-error hidden></p>
+          <button type="submit" class="btn btn-primary gate-btn">Iniciar conversación →</button>
+          <p class="gate-legal">
+            Al continuar aceptas que Grupo LGO te contacte sobre tu solicitud.
+          </p>
+        </form>
+      </div>
+
+      <!-- 2) CHAT (oculto hasta registrar) -->
+      <div class="chat" data-chat hidden>
+        <header class="chat-head">
+          <div class="chat-id">
+            <span class="chat-dot" aria-hidden="true"></span>
+            <div>
+              <strong>Asistente de contratos</strong>
+              <span>Grupo LGO · normalmente responde al instante</span>
+            </div>
+          </div>
+          <a href={business.whatsappUrl} target="_blank" rel="noopener" class="chat-wa" data-wa>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-1-.3-1.6-.6-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.8.9.8 1.7 1.1 2 1.2.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.6-.1 1.1Z"/>
+            </svg>
+            WhatsApp
+          </a>
+        </header>
+
+        <div class="chat-log" data-chat-log aria-live="polite"></div>
+
+        <form class="chat-form" data-chat-form>
+          <input type="text" class="chat-input" name="mensaje" placeholder="Escribe tu mensaje…"
+            autocomplete="off" aria-label="Tu mensaje" required />
+          <button type="submit" class="chat-send" aria-label="Enviar">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 11l18-8-8 18-2-7-8-3Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .asistente { padding-block: 3rem 2rem; }
+  @media (min-width: 1024px) { .asistente { padding-block: 4.5rem 2.5rem; } }
+
+  .asistente-title { max-width: 20ch; margin: 1.1rem 0 1rem; }
+  .asistente-lead { max-width: 42rem; margin-bottom: 2rem; }
+
+  .asistente-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  /* ---------- Gate ---------- */
+  .gate { padding: 1.75rem; }
+  @media (min-width: 768px) { .gate { padding: 2.5rem; } }
+  .gate-head { margin-bottom: 1.5rem; }
+  .gate-title { font-size: var(--text-xl); margin: 0 0 0.4rem; }
+  .gate-note { font-size: var(--text-sm); color: var(--color-muted); margin: 0; max-width: 44rem; }
+  .gate-note strong { color: var(--color-foreground-strong); }
+
+  .gate-form { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 30rem; }
+  @media (min-width: 720px) { .gate-form { grid-template-columns: 1fr 1fr; max-width: none; } }
+  .gf-field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .gf-field:first-child { grid-column: 1 / -1; }
+  .gf-field label { font-size: var(--text-sm); font-weight: 600; color: var(--color-foreground-strong); }
+  .gf-field input {
+    font-family: inherit; font-size: var(--text-base);
+    padding: 0.7rem 0.85rem; border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); background: var(--color-surface); width: 100%;
+  }
+  .gf-field input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .gf-field input[aria-invalid="true"] { border-color: var(--color-alert); }
+
+  .gf-error {
+    grid-column: 1 / -1; margin: 0;
+    font-size: var(--text-sm); color: var(--color-alert); font-weight: 600;
+  }
+  .gate-btn { grid-column: 1 / -1; justify-self: start; margin-top: 0.25rem; }
+  .gate-legal { grid-column: 1 / -1; font-size: var(--text-xs); color: var(--color-muted-soft); margin: 0; }
+
+  /* ---------- Chat ---------- */
+  .chat { display: flex; flex-direction: column; min-height: 30rem; }
+  .chat[hidden] { display: none; }
+
+  .chat-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--color-divider);
+    background: var(--color-surface-alt);
+  }
+  .chat-id { display: flex; align-items: center; gap: 0.7rem; }
+  .chat-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-success); flex-shrink: 0; }
+  .chat-id strong { display: block; font-size: var(--text-sm); color: var(--color-foreground-strong); }
+  .chat-id span { font-size: var(--text-xs); color: var(--color-muted); }
+  .chat-wa {
+    display: inline-flex; align-items: center; gap: 0.4rem; flex-shrink: 0;
+    font-size: var(--text-sm); font-weight: 600; color: var(--color-success);
+    text-decoration: none; padding: 0.4rem 0.7rem; border-radius: var(--radius-sm);
+    border: 1px solid var(--color-success);
+  }
+  .chat-wa:hover { background: var(--color-success); color: #fff; }
+
+  .chat-log {
+    flex: 1; display: flex; flex-direction: column; gap: 0.75rem;
+    padding: 1.5rem 1.25rem; overflow-y: auto; max-height: 26rem;
+  }
+  .chat-msg {
+    font-size: var(--text-sm); line-height: 1.55;
+    padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 85%;
+  }
+  .chat-msg--bot { background: var(--color-surface-alt); color: var(--color-foreground); align-self: flex-start; border-bottom-left-radius: var(--radius-xs); }
+  .chat-msg--user { background: var(--color-accent); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
+  .chat-msg :global(a) { color: inherit; font-weight: 700; text-decoration: underline; }
+
+  .chat-form { display: flex; gap: 0.5rem; padding: 1rem 1.25rem; border-top: 1px solid var(--color-divider); }
+  .chat-input {
+    flex: 1; min-width: 0; font-family: inherit; font-size: var(--text-base);
+    padding: 0.7rem 0.9rem; border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm); background: var(--color-surface);
+  }
+  .chat-input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .chat-send {
+    display: inline-flex; align-items: center; justify-content: center; width: 46px; flex-shrink: 0;
+    background: var(--color-accent); color: var(--color-on-accent); border: none;
+    border-radius: var(--radius-sm); cursor: pointer; transition: background 200ms ease;
+  }
+  .chat-send:hover { background: var(--color-accent-hover); }
+</style>
+
+<script>
+  import { business } from '../../data/business';
+
+  const root = document.querySelector<HTMLElement>('[data-asistente]');
+  if (root) {
+    const gate = root.querySelector<HTMLElement>('[data-gate]')!;
+    const gateForm = root.querySelector<HTMLFormElement>('[data-gate-form]')!;
+    const gateError = root.querySelector<HTMLElement>('[data-gate-error]')!;
+    const chat = root.querySelector<HTMLElement>('[data-chat]')!;
+    const log = root.querySelector<HTMLElement>('[data-chat-log]')!;
+    const chatForm = root.querySelector<HTMLFormElement>('[data-chat-form]')!;
+    const chatInput = root.querySelector<HTMLInputElement>('.chat-input')!;
+
+    let lead: { nombre: string; telefono: string; correo: string } | null = null;
+
+    const addMsg = (html: string, who: 'bot' | 'user') => {
+      const el = document.createElement('div');
+      el.className = `chat-msg chat-msg--${who}`;
+      if (who === 'user') el.textContent = html; else el.innerHTML = html;
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+    };
+
+    // ── Registro de lead ──
+    gateForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(gateForm);
+      const nombre = String(data.get('nombre') || '').trim();
+      const telefono = String(data.get('telefono') || '').trim();
+      const correo = String(data.get('correo') || '').trim();
+
+      const telDigits = telefono.replace(/\D/g, '');
+      const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo);
+      let err = '';
+      if (!nombre) err = 'Escribe tu nombre.';
+      else if (telDigits.length < 10) err = 'Escribe un teléfono válido (10 dígitos).';
+      else if (!emailOk) err = 'Escribe un correo electrónico válido.';
+
+      gateError.hidden = !err;
+      gateError.textContent = err;
+      if (err) return;
+
+      lead = { nombre, telefono, correo };
+      // PASO 3 (backend): POST a /.netlify/functions/registrar-lead → correo + ClickUp.
+      try { sessionStorage.setItem('lgo_lead', JSON.stringify({ ...lead, ts: Date.now() })); } catch {}
+
+      gate.hidden = true;
+      chat.hidden = false;
+
+      const nombreCorto = nombre.split(' ')[0];
+      addMsg(
+        `Hola ${nombreCorto}, gusto en saludarte. Soy el asistente de Grupo LGO y te ayudo a preparar tu documento. ` +
+        `Para empezar: <strong>¿ya sabes qué documento necesitas</strong>, o prefieres contarme tu situación y yo te recomiendo el adecuado?`,
+        'bot'
+      );
+      chatInput.focus();
+    });
+
+    // ── Envío de mensajes (stub — el cerebro IA es el PASO 3) ──
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+      addMsg(msg, 'user');
+      chatInput.value = '';
+      setTimeout(() => {
+        addMsg(
+          'Estoy a punto de conectarme: el asistente con IA se activa en el siguiente paso del proyecto. ' +
+          `Mientras tanto puedes revisar los documentos disponibles más abajo, o si prefieres que te atendamos en persona, ` +
+          `escríbenos por <a href="${business.whatsappUrl}" target="_blank" rel="noopener">WhatsApp</a> y un asesor te busca.`,
+          'bot'
+        );
+      }, 400);
+    });
+  }
+</script>
