@@ -1,0 +1,136 @@
+{
+  "id": "permuta",
+  "nombre": "Contrato de Permuta",
+  "explicacion": "Es el acuerdo por escrito por el que dos o más personas se intercambian alguna cosa y si hay diferencia en el valor o precio se compensa la transacción con el pago de cierta cantidad de dinero.\n\n## **¿Para qué se usa?**\n\nSe utiliza para documentar los términos y condiciones bajo los cuales se llevará a cabo el intercambio de productos entre dos personas.",
+  "fundamento_legal": "",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_parte_a",
+      "etiqueta": "Una de las personas que intercambiará una cosa (Parte A) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_parte_a", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_parte_b",
+      "etiqueta": "La otra persona que intercambiará una cosa (Parte B) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien_a",
+      "etiqueta": "Describe el bien que la Parte A entregará a la Parte B:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien_b",
+      "etiqueta": "Describe el bien que la Parte B entregará a la Parte A:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "valor_mayor",
+      "etiqueta": "Escoge el bien que tenga un valor mayor, o en su caso la opción de que tienen el mismo valor:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Mismo valor", "El de la Parte A", "El de la Parte B"]
+    },
+    {
+      "clave": "pago_compensacion",
+      "etiqueta": "¿La Parte A deberá pagar alguna cantidad de dinero a la Parte B por la diferencia?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "monto_compensacion",
+      "etiqueta": "¿Cuánto deberá pagar la Parte A a la Parte B? (especifica el tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pago_compensacion", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "forma_pago_compensacion",
+      "etiqueta": "Describe de qué forma y cuándo se pagará la cantidad por compensación:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pago_compensacion", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "pena_convencional",
+      "etiqueta": "¿Se pagará alguna pena convencional por incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pena_convencional",
+      "etiqueta": "¿Qué porcentaje del valor del bien que entrega la parte que incumple se deberá considerar para el pago de la pena?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pena_convencional", "valor_que_activa": "Sí" }
+    }
+  ]
+}

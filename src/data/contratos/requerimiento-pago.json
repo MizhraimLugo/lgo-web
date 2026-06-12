@@ -1,0 +1,180 @@
+{
+  "id": "requerimiento-pago",
+  "nombre": "Requerimiento de Pago",
+  "explicacion": "## **¿Qué es?**\n\nEl **requerimiento de pago**, es un documento a través del cual una persona le solicita a otra, el pago de una deuda de cualquier tipo.\n\n## **¿Para qué sirve el requerimiento de pago?**\n\nEste documento se usa para requerir de forma amistosa el pago de una deuda y de forma extrajudicial.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Acreedor:** Es la persona a la que se le debe el dinero y quien exige el pago del mismo.\n\n**Deudor:** Es la persona que debe el dinero y quien debe pagarla.\n\n### **Requisitos del requerimiento del pago:**\n\n* Fecha en que se realiza. Es importante señalar la fecha exacta en la que se está requiriendo el pago.\n* Datos del acreedor. Debe incluir su firma, su nombre, dirección, teléfono y RFC del acreedor.\n* Los datos del deudor que se conozcan. Debe incluirse nombre, dirección, teléfono, RFC del deudor.\n* Toda la información relacionada con la deuda. Concepto, monto, origen de la deuda y plazo en que se debió haber pagado, así como gastos y/o intereses.\n* Especificar claramente qué persona es la que está reclamándole al deudor, el motivo del reclamo y el monto.\n* La recomendación es darle al deudor un plazo para cumplir con ese requerimiento de pago. Así como señalar la forma y lugar de pago, y las consecuencias de caso de incumplimiento (reclamo judicial).\n\n### **Dudas frecuentes:**\n\n**¿Es conveniente realizar un requerimiento de pago ante un adeudo?**\n\nPuede resultar conveniente realizar el requerimiento de pago a un deudor para retrasar o evitar un procedimiento judicial tardado e incluso como evidencia al momento de un juicio. Por lo que llevando a cabo este requerimiento de manera formal, es decir por escrito, tanto el acreedor como el deudor pueden evitarse dolores de cabeza.",
+  "fundamento_legal": "Artículos 2062 al 2096 del Código Civil Federal — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/primera-parte/titulo-cuarto/capitulo-i/",
+  "precio": 50,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_deudor",
+      "etiqueta": "La persona a quien se le exige el pago es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_deudor",
+      "etiqueta": "¿Cuál es el nombre de la persona a quien se le exige el pago? (nombre completo o denominación social)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_deudor",
+      "etiqueta": "¿Cuál es el nombre del representante de la persona moral a quien se le exige el pago?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_deudor",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_deudor",
+      "etiqueta": "¿Cuál es el domicilio de la persona a quien se le exige el pago?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_acreedor",
+      "etiqueta": "La persona que exige el pago es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_acreedor",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que exige el pago?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_acreedor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que exige el pago?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_acreedor",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_acreedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que exige el pago?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_expedicion",
+      "etiqueta": "Lugar en que se expide el Requerimiento de Pago:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firma el Requerimiento de Pago:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "origen_adeudo",
+      "etiqueta": "Describe el origen o causa por la cual se exige el pago:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_adeudo",
+      "etiqueta": "¿A cuánto asciende la cantidad adeudada cuyo pago es requerido? (especificar moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "intereses_exigidos",
+      "etiqueta": "¿La cantidad adeudada generó intereses que también se exigen a través de esta carta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "tasa_interes_anual",
+      "etiqueta": "¿Cuál es la tasa de interés anual que se utilizó para calcular los intereses generados?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "intereses_exigidos",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "monto_intereses",
+      "etiqueta": "¿A qué cantidad asciende el monto de intereses adeudados? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "intereses_exigidos",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "dias_plazo_pago",
+      "etiqueta": "¿Cuántos días naturales, a partir de la recepción del requerimiento, tendrá la persona requerida para pagar el adeudo solicitado?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_pago",
+      "etiqueta": "Describe de qué forma se deberá realizar el pago:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    }
+  ]
+}

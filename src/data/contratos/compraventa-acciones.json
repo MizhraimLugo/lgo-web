@@ -1,0 +1,244 @@
+{
+  "id": "compraventa-acciones",
+  "nombre": "Contrato de Compraventa de Acciones",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato de compraventa de acciones** es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona transmite la propiedad de acciones que pueden ser de tipo \"A\" o tipo \"B\" a otra persona y los derechos que cada una de estos tipos de acciones le concede al titular de las mismas.\n\n### **¿Para qué sirve el contrato de compraventa de acciones?**\n\nSirve para que una persona pueda vender las acciones de las cuales sea dueño. Y dependiendo el tipo de acciones, además del derecho a recibir dividendos, podrá estar incluido en la toma de decisiones o no.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Vendedor:** (Accionista, puede ser una persona física o una persona moral a través de su representante con poder para realizar este tipo de actos)\n\n**Comprador:** (Persona física o moral).\n\n#### **Requisitos del contrato de compraventa de acciones:**\n\n* El vendedor debe contar con los títulos de acciones que va a vender.\n* Si el vendedor es una empresa debe estar plenamente constituida y registrada en el registro público de la propiedad, y su representante contar con poder idóneo para este tipo de actos y estar vigente.\n* El vendedor está obligado a endosar y a entregar los títulos de las acciones después de realizar la inscripción correspondiente en el libro de la empresa.\n* Las acciones deben estar libres de gravámenes, completamente pagadas y libres de todo compromiso que pueda limitar su transferencia.\n* El comprador deberá tener los recursos necesarios para realizar la compra de las acciones y que los fondos utilizados para la compra sean de procedencia lícita y comprobable conforme a ley.\n* El objeto del contrato: La compraventa de acciones, el vendedor enajena a favor del comprador las acciones a las que se refieran, las cuales se endosarán, se registrarán y se entregarán al comprador posterior al pago total del precio convenido.\n* Precio de las acciones: Monto total en el que el vendedor vende sus acciones al comprador. Una vez pagado el monto total el vendedor se compromete a informar a la Secretaría de Gobernación la enajenación de las acciones.\n* El comprador deberá pagar el precio total de las acciones para que estas le puedan ser endosadas.\n* El endoso deberá contener los siguientes requisitos: Nombre del endosatario, la firma del endosante o de la persona que suscriba el endoso en su nombre, la clase de endoso, el lugar y fecha del endoso.\n* El vendedor otorgará al comprador, a sus asesores legales, contadores y otros representantes el pleno acceso en horarios hábiles a toda aquella información que requieran. Pero el comprador, su contador y demás personal que tenga acceso a esta información deberán de mantener la más estricta confidencialidad y en su caso no hacerla pública, hasta que no se lleve a cabo el pago de la totalidad del precio de las acciones.\n\n#### **Dudas frecuentes:**\n\n**¿Qué requisitos debe contener el endoso de las acciones?**\n\nNombre del endosatario, la firma del endosante o de la persona que suscriba el endoso en su nombre, la clase de endoso, el lugar y fecha del endoso.\n\n**¿Es necesario contar con la autorización previa del consejo de administración o del administrador único para la venta de acciones?**\n\nSi, solo si el contrato social así lo prevé y esta autorización deberá constar en el acta de la junta que hubiese llevado a cabo el consejo. O bien en escrito en el que el administrador único apruebe la transmisión.\n\n**¿Con qué documento lo puedo confundir?**\n\nCon el de Fusión de sociedades mercantiles. Es importante entender la direfencia entre una fusión de sociedades mercantiles, en donde se busca la unión de varias personas morales. Y la compraventa de acciones, en donde únicamente se compran acciones, es decir, hay un cambio de propietario de las mismas.",
+  "fundamento_legal": "Ley General de Sociedades Mercantiles Arts. 129 — https://mexico.justia.com/federales/leyes/ley-general-de-sociedades-mercantiles/capitulo-v/seccion-segunda/#articulo-129\n\nGeneral de Títulos y Operaciones de Crédito Arts. 26 y 29. — https://mexico.justia.com/federales/leyes/ley-general-de-titulos-y-operaciones-de-credito/titulo-primero/capitulo-i/seccion-segunda/#articulo-26",
+  "precio": 200,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_vendedor",
+      "etiqueta": "El vendedor es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que venderá las acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que venderá las acciones?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vendedor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que venderá las acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "regimen_propiedad_vendedor",
+      "etiqueta": "La persona que venderá las acciones:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No se encuentra casado y es el único dueño de las acciones",
+        "No se encuentra casado y es dueño de las acciones junto con otras personas",
+        "Se encuentra casado bajo el régimen de bienes separados",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "nombres_otros_propietarios_acciones",
+      "etiqueta": "Indica el nombre completo de las otras personas que son propietarias de las acciones",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "regimen_propiedad_vendedor", "valor_que_activa": "No se encuentra casado y es dueño de las acciones junto con otras personas" }
+    },
+    {
+      "clave": "tipo_comprador",
+      "etiqueta": "El comprador es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comprador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que comprará las acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comprador",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que comprará las acciones?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comprador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_comprador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comprará las acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se resolverán dichas controversias?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_sociedad",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la sociedad anónima de la que se transmiten acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_sociedad",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que representará a la sociedad anónima de la que se venden acciones?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "numero_acciones",
+      "etiqueta": "Determine el número de acciones que se venderán:",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "tiene_clase_serie",
+      "etiqueta": "¿Las acciones que se venderán pertenecen a una clase o serie de acciones específica?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "clase_serie_acciones",
+      "etiqueta": "Determine las clases y series a las que pertenecen las acciones:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_clase_serie", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "aprobacion_asamblea",
+      "etiqueta": "Determine si la transmisión de las acciones fue previamente aprobada mediante una Asamblea de Accionistas:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tipo_asamblea",
+      "etiqueta": "Determine qué tipo de asamblea aprobó la transmisión de acciones:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Asamblea General Ordinaria de accionistas",
+        "Asamblea especial de accionistas"
+      ],
+      "depende_de": { "clave_padre": "aprobacion_asamblea", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fecha_asamblea",
+      "etiqueta": "Especifique la fecha en la que se celebró la Asamblea de Accionistas que aprobó la venta de las acciones.",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "aprobacion_asamblea", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "precio_acciones",
+      "etiqueta": "¿Cuánto se pagará por la compra de las acciones? (especifica el tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "modalidad_pago",
+      "etiqueta": "Determine cuándo se pagará el precio por la venta de las acciones:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "En el acto de celebración del contrato",
+        "En fecha específica",
+        "En dos o más pagos"
+      ]
+    },
+    {
+      "clave": "fecha_pago",
+      "etiqueta": "¿En qué fecha se pagará el precio por la venta de las acciones?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "modalidad_pago", "valor_que_activa": "En fecha específica" }
+    },
+    {
+      "clave": "tiene_garantia",
+      "etiqueta": "¿Las acciones que se venden cuentan con alguna garantía?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "descripcion_garantia",
+      "etiqueta": "Describe la garantía que tienen las acciones que se venderán:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_garantia", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "incluir_pena_convencional",
+      "etiqueta": "¿Deberá pagar el comprador alguna cantidad de dinero al vendedor como castigo o pena convencional en caso de incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pena_convencional",
+      "etiqueta": "¿Qué porcentaje del precio se deberá pagar como castigo o pena convencional en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "incluir_pena_convencional", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "dias_pago_pena",
+      "etiqueta": "¿En cuántos días deberá el comprador pagar la pena convencional, a partir de la fecha en que el vendedor se lo requiera?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "incluir_pena_convencional", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "causar_intereses",
+      "etiqueta": "¿Se causarán intereses por retrasos en el pago del precio por la compra de las acciones?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes",
+      "etiqueta": "¿Qué porcentaje como tasa de interés se aplicaría sobre el adeudo no pagado, por retrasos en el pago de dicho adeudo?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "causar_intereses", "valor_que_activa": "Sí" }
+    }
+  ]
+}

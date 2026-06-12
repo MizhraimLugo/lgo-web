@@ -1,0 +1,107 @@
+{
+  "id": "notificacion-prorroga-arrendamiento",
+  "nombre": "Notificación de Prórroga de Contrato de Arrendamiento",
+  "explicacion": "## **¿Qué es?**\n\nLa **notificación de prórroga de contrato de arrendamiento** es el documento que se utiliza para notificar la extensión de la vigencia en los contratos de arrendamiento.\n\n### **¿Para qué sirve la notificación de prórroga de contrato de arrendamiento?**\n\nSirve para que una persona que se encuentra rentando un inmueble pueda solicitar y hacer exigible la continuidad del contrato de arrendamiento antes de su terminación.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** propietario del inmueble.\n\n**Arrendatario:** inquilino.\n\n#### **Requisitos de la notificación de prórroga de contrato de arrendamiento:**\n\n* Si el inquilino no desocupa el inmueble cuando termine la vigencia del contrato y el arrendador no realiza oposición alguna de forma expresa a dicha ocupación, entonces el arrendamiento se tendrá por prorrogado en automático. Si es que no se pactó una cláusula en el contrato de arrendamiento para pactar su prórroga, el inquilino deberá estar al corriente en los pagos de la renta, si no podría ser una causal de rescisión que el arrendador puede hacer valer. A esta situación se le conoce como tácita reconducción, en este caso no tiene que demostrarla el arrendatario, sino como lo explicamos simplemente se realiza por la tolerancia del arrendador de que el inquilino continúe en el uso y goce del inmueble rentado. Esto con la circunstancia de que el contrato sufrirá una modificación y será por tiempo indefinido, pero quedando vivos los demás pactos del contrato.\n* Independientemente del punto anterior, el arrendatario puede solicitar la prórroga del contrato de arrendamiento, pero esta facultad es potestativa. Es decir, que depende del criterio del inquilino el hacerla efectiva, la cual evidentemente se deberá ejercer antes de que concluya el término del contrato porque posterior a que concluya el término se deja a la voluntad del arrendatario esta prórroga. Por ello es importante que se solicite la multicitada prórroga de forma expresa.\n* Hay que recordar que la prórroga es un derecho que se le da al inquilino que está al corriente en el pago de sus rentas. Y si éste quiere hacer uso de él, tendrá, antes de que termine el contrato, que convenirlo con el arrendador, y notificarle, para que en caso de negativa del arrendador pueda demandarse la prórroga de forma judicial. La prórroga será hasta por un año más.\n* El objeto del contrato: Notificar al arrendador la extensión de la vigencia del contrato de arrendamiento al arrendatario antes de que termine el plazo.\n* La notificación deberá ser realizada por un Notario Público.\n\n#### **Dudas frecuentes:**\n\n**¿Con qué documento lo puedo confundir?**\n\nCon el Contrato de Arrendamiento de Inmueble. Por un lado, tenemos el Contrato de arrendamiento de inmueble, que se usa para establecer términos y condiciones de la renta que se va a llevar a cabo, incluyendo la vigencia. Y por otro, la notificación de prórroga, que como bien se menciona anteriormente, se utiliza para extender la vigencia del contrato, conservando las mismas condiciones del contrato.",
+  "fundamento_legal": "Código Civil Federal arts. 2478 y 2487 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-sexto/capitulo-vii/#articulo-2478",
+  "precio": 40,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que realiza la notificación (arrendatario, quien tomó el bien en renta) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que realizará la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que realizará la notificación?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendatario", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que recibirá la notificación (arrendador, dueño del bien) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_arrendador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibe la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato_arrendamiento",
+      "etiqueta": "¿En qué fecha se celebró el contrato de arrendamiento del cual se prorrogará el plazo?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "¿En qué domicilio se ubica el bien inmueble que se otorgó en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_inmueble",
+      "etiqueta": "Describe brevemente en qué consiste el bien inmueble que se otorgó en arrendamiento:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "clausula_prorroga",
+      "etiqueta": "¿En el contrato de arrendamiento que han celebrado las partes, se ha pactado alguna cláusula relacionada con alguna prórroga al plazo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "meses_prorroga",
+      "etiqueta": "¿Por cuántos meses se desea prorrogar el contrato de arrendamiento?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se realiza la notificación de prórroga de plazo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "¿En qué fecha se realizará la notificación de prórroga?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "abandono-laboral",
+  "nombre": "Abandono Laboral",
+  "explicacion": "## ¿Qué es una notificación de Abandono Laboral?\n\nLa notificación de abandono laboral, es un documento que envía el patrón a un trabajador para hacerle saber que ha dejado de asistir a su trabajo sin justificación alguna.\n\n## ¿Para qué sirve?\n\nSirve para informarle a un trabajador que la relación laboral con su patrón ha terminado como consecuencia del abandono de su trabajo. Asimismo, sirve como protección en calidad de patrón, para dejar evidencia que el trabajador, por decisión propia, ha decidido separarse de su trabajo.\n\n## ¿Quiénes intervienen (partes)?\n\nPatrón: es la persona física o moral que usa los servicios de uno o varios trabajadores.\n\nTrabajador: es la persona que realiza un trabajo a cambio de un salario.\n\n### Requisitos de la notificación de abandono laboral:\n\n* Aunque este aviso no reemplaza como tal al acta administrativa, si funciona como un precedente que sin duda debe ser por escrito y especificando detalladamente las razones por las cuales se está realizando.\n* Con una notificación de abandono de trabajo puedes hacerle saber a un empleado que, al haber abandonado su trabajo, ha decidido dejar de trabajar para ti.\n* Lo ideal es contar con un acuse. Es decir, que tenga la firma de recibido del empleado. Esto para confirmar que efectivamente se dio por enterado.\n* Es importante que se ratifique ante la Junta de Conciliación y Arbitraje la notificación de abandono laboral. Esto con el fin de tener el respaldo legal correspondiente.\n\n### Dudas frecuentes:\n\n¿Cuándo es abandono laboral?\n\nMás de 3 faltas de asistencia en un período de 30 días, sin permiso del patrón o sin causa justificada. Sin embargo, es importante no confundir esta causal con simples faltas de asistencia de un trabajador.\n\n¿Con qué documento lo puedo confundir?\n\nLa notificación de abandono laboral se puede confundir con aviso de despido. Esencialmente, el aviso de despido sí consiste en una notificación por parte del patrón de la decisión que tomó frente al trabajador de separarlo de su trabajo. En el caso del abandono laboral, la separación radica en una decisión del trabajador.",
+  "fundamento_legal": "Artículo 47 Ley Federal del Trabajo — https://mexico.justia.com/federales/leyes/ley-federal-del-trabajo/titulo-segundo/capitulo-iv/",
+  "precio": 40,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_patron",
+      "etiqueta": "La persona empleadora (patrón) que notifica el abandono laboral es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_patron",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona empleadora (patrón) que realiza la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_patron",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona empleadora (patrón) que realiza la notificación?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_patron", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "nombre_trabajador",
+      "etiqueta": "¿Cuál es el nombre completo del trabajador que abandonó su empleo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_trabajador",
+      "etiqueta": "¿Cuál es el domicilio del trabajador a quien se le notifica el abandono de su trabajo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_notificacion",
+      "etiqueta": "¿En qué lugar se realiza la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_notificacion",
+      "etiqueta": "¿En qué fecha se realiza la notificación?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

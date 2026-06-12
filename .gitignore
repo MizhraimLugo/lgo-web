@@ -22,6 +22,9 @@ pnpm-debug.log*
 Thumbs.db
 *.tmp
 
+# Insumos / base de conocimiento (NO se publican ni se despliegan)
+_fuentes/
+
 # Editor
 .vscode/
 .idea/

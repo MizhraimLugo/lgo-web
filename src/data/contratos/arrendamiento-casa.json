@@ -1,0 +1,194 @@
+{
+  "id": "arrendamiento-casa",
+  "nombre": "Contrato de Arrendamiento de Casa",
+  "explicacion": "# **¿Qué es el Contrato de Arrendamiento de Casa?**\n\nEl **contrato de arrendamiento de casa**, es un contrato por medio del cual una persona usa o disfruta temporalmente de un bien inmueble a cambio del pago de un precio a su dueño.\n\n### **¿Para qué sirve?**\n\nEl contrato de arrendamiento se usa para que una persona ponga a disposición de otra un inmueble de su propiedad a cambio del pago por ese uso temporal.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** es la persona con poder legal sobre el inmueble y que pone en arrendamiento dicho inmueble.\n\n**Arrendatario:** es la persona que usará el inmueble a cambio del pago de una renta.\n\n#### **Requisitos del contrato de arrendamiento de casa:**\n\n* Nombre y datos generales del propietario o de la persona con las facultades legales para rentar la propiedad (arrendador).\n* Nombre y datos generales de la(s) persona(s) que va a habitar la propiedad (arrendatario).\n* Ubicación y descripción del inmueble que se va a arrendar.\n* El objeto o propósito del contrato (dar en arrendamiento el inmueble).\n* Domicilios del arrendador, del arrendatario y del fiador o aval, en su caso.\n* El monto que el arrendatario pagará al arrendador como renta, especificando fechas de pago, así como cuota de mantenimiento en caso de existir. Así como el monto de la penalización en caso de que el arrendatario no pague a tiempo.\n* Plazo del contrato (en caso de casa habitación debe ser mínimo de 1 año forzoso para las partes).\n* Forma y lugar de pago.\n* Detalles del depósito, el monto y las condiciones para que se devuelva al arrendatario al finalizar el contrato.\n* Las responsabilidades del arrendador y el arrendatario respecto del mantenimiento de la propiedad.\n* Inventario y condiciones.\n* Uso y limitaciones del inmueble. Es necesario aclarar si será para uso habitacional, comercial o de oficinas, así como limitaciones respecto a la posesión de mascotas, horarios con mayor ruido permitido, subarrendamiento, etcétera.\n* Renuncias. El arrendatario y su fiador están obligados a firmar renuncias a diversos artículos de la ley, a fin de evitar abusos.\n* Renovación y aumento de la renta al término del contrato. Definir si será o no renovable y las condiciones para cada caso.\n* Garantía. Ésta puede ser un depósito y/o un fiador o una fianza.\n* Las causas de rescisión del contrato, es decir, en qué casos una de las partes estaría incumpliendo con el contrato al grado de darlo por terminado. (Por ejemplo, no pagar la renta en dos meses, introducir personas, animales u objetos no permitidos en el inmueble, darle un uso inadecuado, etcétera).\n* Los derechos de uso del arrendador durante la vigencia.\n* La manera en que se resolvería, en caso de ser necesaria, una disputa legal entre el arrendador y el arrendatario.\n* Fecha del contrato y firma de las partes.\n\n#### **Dudas frecuentes:**\n\n**¿Quién paga el agua, la luz o gastos generales de la casa?**\n\nLas dudas más frecuentes a la hora de rentar se refieren al pago de los gastos. Lo normal es que los gastos generales los pague el arrendador y los servicios individualizados los pague el arrendatario.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de arrendamiento de casa** se puede confundir con el contrato de arrendamiento de casa con opción a compra.",
+  "fundamento_legal": "Artículos 2398 al 2447 del Código Civil Federal",
+  "precio": 150,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que dará el bien en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que dará en arrendamiento la casa habitación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_arrendador",
+      "etiqueta": "¿En qué país se constituyó la persona que dará el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que dará el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_arrendador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que dará el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que recibirá el bien en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nacionalidad_arrendatario",
+      "etiqueta": "¿Cuál es la nacionalidad de la persona que recibirá el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_firma_arrendatario",
+      "etiqueta": "La persona que recibirá el bien en arrendamiento firmará el contrato: ¿personalmente o a través de representante?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Personalmente", "A través de representante"]
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_casa",
+      "etiqueta": "¿Cuál es el domicilio donde se ubica la casa habitación que se dará en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_arrendador",
+      "etiqueta": "La persona que dará en arrendamiento la casa habitación:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No se encuentra casado y es el único dueño de la casa habitación",
+        "No se encuentra casado y es dueño de la casa habitación junto con otras personas",
+        "Se encuentra casado bajo el régimen de bienes separados",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "renta_mensual",
+      "etiqueta": "¿A qué cantidad ascenderá la renta mensual que se pagará? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_pago_renta",
+      "etiqueta": "¿Con cuántos días contará la persona que recibe el bien en arrendamiento para pagar la renta, comenzando desde el primer día del mes?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "cobra_interes_mora",
+      "etiqueta": "¿Se cobrará algún interés en caso de que no se pague la renta a tiempo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_mora",
+      "etiqueta": "¿Cuál será la tasa de interés que se cobrará en caso de incumplimiento en el pago de la renta?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "cobra_interes_mora", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "requiere_deposito",
+      "etiqueta": "¿Será necesario que se entregue cierta cantidad de dinero como depósito para el caso de cualquier incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "meses_deposito",
+      "etiqueta": "¿Cuántos meses de renta se deberán entregar como depósito?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "requiere_deposito", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fecha_inicio_vigencia",
+      "etiqueta": "¿En qué fecha comenzará la vigencia del contrato de arrendamiento?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿tiempo específico o tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Tiempo específico", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Tiempo específico" }
+    },
+    {
+      "clave": "termina_por_muerte",
+      "etiqueta": "¿El contrato se terminará por la muerte de alguna de las partes?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "contratara_seguro",
+      "etiqueta": "¿Deberá la persona que recibe el bien en arrendamiento contratar un seguro que cubra cualquier daño ocasionado a la casa habitación?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "id": "finiquito-laboral",
+  "nombre": "Finiquito Laboral",
+  "explicacion": "**Finiquito Laboral**\n\nEs un documento por el cual un trabajador acepta haber recibido cierta cantidad de dinero por la terminación de la relación laboral con su patrón, que cubre ciertos conceptos como aguinaldo y vacaciones.\n\n## **¿Para qué se usa?**\n\nSirve para que un patrón tenga evidencia de haber pagado a un trabajador que ha dejado de laborar para él, las prestaciones y partes proporcionales que por ley tiene derecho.",
+  "fundamento_legal": "",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_patron",
+      "etiqueta": "El patrón a quien se dirige la carta finiquito es: ¿persona física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_patron",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) del patrón a quien se dirige la carta finiquito?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_patron",
+      "etiqueta": "¿Cuál es el nombre del representante legal de la empresa a quien se dirige la carta de finiquito?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_patron",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_patron",
+      "etiqueta": "¿Cuál es el domicilio del patrón a quien se dirige la carta finiquito?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_trabajador",
+      "etiqueta": "¿Cómo se llama el trabajador que firmará la carta de finiquito?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "termino_por_renuncia",
+      "etiqueta": "¿La terminación de la relación laboral fue por una renuncia?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "monto_finiquito",
+      "etiqueta": "¿Cuánto recibirá el trabajador por el finiquito?",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_terminacion",
+      "etiqueta": "¿En qué fecha terminó la relación laboral?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "incluye_prestaciones",
+      "etiqueta": "¿Deseas incluir que se cubren ciertas prestaciones con el pago que recibe el trabajador?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "cubre_salarios_vencidos",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de salarios vencidos a la fecha de terminación de la relación laboral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_vacaciones",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de vacaciones?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_prima_vacacional",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de prima vacacional?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_aguinaldo",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de aguinaldo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_prima_antiguedad",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de prima de antigüedad?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_prima_dominical",
+      "etiqueta": "¿El pago de finiquito cubre el concepto de prima dominical?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_caja_ahorro",
+      "etiqueta": "¿El pago de finiquito cubre alguna caja de ahorro?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_bonos",
+      "etiqueta": "¿El pago de finiquito cubre algún concepto de bonos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "cubre_concepto_adicional",
+      "etiqueta": "¿El pago de finiquito cubre algún concepto adicional?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ],
+      "depende_de": {
+        "clave_padre": "incluye_prestaciones",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "descripcion_concepto_adicional",
+      "etiqueta": "Indica el concepto o prestación adicional que se cubre con el finiquito:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "cubre_concepto_adicional",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "incluye_liberacion",
+      "etiqueta": "¿Deseas incluir que se libera de toda responsabilidad al patrón por la relación laboral que ha terminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Indica el lugar de firma de la carta finiquito:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Indica la fecha de firma de la carta finiquito:",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

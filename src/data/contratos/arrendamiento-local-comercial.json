@@ -1,0 +1,167 @@
+{
+  "id": "arrendamiento-local-comercial",
+  "nombre": "Contrato de Arrendamiento de Local Comercial",
+  "explicacion": "# ¿Qué es?\n\nEl contrato de arrendamiento de local comercial es un documento que se celebra entre el dueño de un inmueble dedicado a la actividad comercial y que desea ceder temporalmente a otra persona el uso y disfrute de su inmueble a cambio de una renta.\n\n### ¿Para qué sirve el contrato de arrendamiento de local comercial?\n\nEl contrato de arrendamiento se usa para que una persona rente espacios comerciales como locales, bodegas u oficinas a cambio del pago por ese uso temporal.\n\n### ¿Quiénes intervienen (partes)?\n\nArrendador: es la persona con poder legal sobre el inmueble y que pone en arrendamiento dicho inmueble.\n\nArrendatario: es la persona que usará el inmueble a cambio del pago de una renta.\n\n#### Requisitos del contrato de arrendamiento de local comercial:\n\n* Nombre y datos generales del propietario o de la persona con las facultades legales para rentar la propiedad (arrendador).\n* Nombre y datos generales de la(s) persona(s) que va a habitar la propiedad (arrendatario).\n* Ubicación y descripción del inmueble que se va a arrendar.\n* El objeto o propósito del contrato (dar en arrendamiento el inmueble).\n* Domicilios del arrendador, del arrendatario y del fiador o aval, en su caso.\n* El monto que el arrendatario pagará al arrendador como renta, especificando fechas de pago. Así como cuota de mantenimiento en caso de existir. Así como el monto de la penalización en caso de que el arrendatario no pague a tiempo.\n* Plazo del contrato (en caso de casa habitación debe ser mínimo de 1 año forzoso para las partes).\n* Forma y lugar de pago.\n* Detalles del depósito, el monto y las condiciones para que se devuelva al arrendatario al finalizar el contrato.\n* Las responsabilidades del arrendador y el arrendatario respecto del mantenimiento de la propiedad.\n* Inventario y condiciones.\n* Uso y limitaciones del inmueble. Es necesario aclarar si será para uso habitacional, comercial o de oficinas. Así como limitaciones respecto a la posesión de mascotas, horarios con mayor ruido permitido, subarrendamiento, etcétera.\n* Renuncias. El arrendatario y su fiador están obligados a firmar renuncias a diversos artículos de la ley, a fin de evitar abusos.\n* Renovación y aumento de la renta al término del contrato. Definir si será o no renovable y las condiciones para cada caso.\n* Garantía. Ésta puede ser un depósito y/o un fiador o una fianza.\n* Las causas de rescisión del contrato. Es decir, en qué casos una de las partes estaría incumpliendo con el contrato al grado de darlo por terminado. (Por ejemplo, no pagar la renta en dos meses, introducir personas, animales u objetos no permitidos en el inmueble, darle un uso inadecuado, etcétera).\n* Los derechos de uso del arrendador durante la vigencia.\n* La manera en que se resolvería, en caso de ser necesaria, una disputa legal entre el arrendador y el arrendatario.\n* Fecha del contrato y firma de las partes.\n\n#### **Dudas frecuentes:**\n\n**¿Qué puedo negociar en un contrato de arrendamiento**?\n\n* El precio de la renta\n* Incremento anual de la renta\n* Gastos generales que no sea predial (ya que éste es a cargo del dueño)\n\n**¿Con qué documento lo puedo confundir?**\n\nEl contrato de arrendamiento de local comercial se puede confundir con el contrato de arrendamiento para casa habitación.",
+  "fundamento_legal": "Código Civil Federal, es aplicable el Libro cuarto, Título sexto. — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-sexto/capitulo-iv/",
+  "precio": 180,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que dará el bien en renta es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que dará el bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que dará el bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_arrendador",
+      "etiqueta": "¿Cuál es el domicilio de la persona propietaria del bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que recibe el bien que se rentará es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibe el bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que recibe el bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendatario", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_arrendatario",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibe el bien que se rentará?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_arrendador",
+      "etiqueta": "La persona que dará en arrendamiento el inmueble comercial:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No se encuentra casado y es el único dueño del inmueble comercial",
+        "No se encuentra casado y es dueño del inmueble junto con otras personas",
+        "Se encuentra casado bajo el régimen de bienes separados",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "domicilio_local",
+      "etiqueta": "Determine el domicilio del local comercial que se rentará:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_local",
+      "etiqueta": "Describe el bien inmueble o local comercial que se rentará:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "renta_mensual",
+      "etiqueta": "¿Cuánto se pagará mensualmente por la renta del bien? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "pena_convencional",
+      "etiqueta": "¿Deberá pagar la parte que recibe el bien que se rentará alguna cantidad como castigo o pena convencional, en caso de incumplimiento en el pago de la renta mensual?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pena",
+      "etiqueta": "¿Qué porcentaje del monto de la renta se deberá pagar como castigo o pena convencional en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pena_convencional", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿periodo determinado o tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Periodo determinado", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "meses_vigencia",
+      "etiqueta": "¿Cuántos meses estará vigente el presente contrato?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Periodo determinado" }
+    },
+    {
+      "clave": "uso_local",
+      "etiqueta": "Describe el uso que se le dará al bien que se rentará:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "requiere_deposito",
+      "etiqueta": "¿Deberá la persona que recibe el bien que se rentará entregar una cantidad en depósito al inicio de la vigencia del contrato, como garantía del cumplimiento de sus obligaciones?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "meses_deposito",
+      "etiqueta": "¿De cuántos meses de renta será el depósito?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "requiere_deposito", "valor_que_activa": "Sí" }
+    }
+  ]
+}

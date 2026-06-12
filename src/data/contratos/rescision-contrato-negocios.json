@@ -1,0 +1,109 @@
+{
+  "id": "rescision-contrato-negocios",
+  "nombre": "Rescisión de Contrato",
+  "explicacion": "**¿Qué es la rescisión de contrato?**\n\nLa notificación de **rescisión de contrato** es un aviso que realiza una persona a otra con el fin de dar por terminado un contrato. Esto debido al incumplimiento de esa otra persona en una o varias de sus obligaciones.\n\n## **¿Para qué sirve?**\n\nLa rescición de contrato se utiliza para terminar un contrato derivado de un incumplimiento. Es importante señalar que para poderse realizar este tipo de notificaciones, es necesaria la existencia previa de un contrato firmado entre dos o más partes en el que se haya establecido el cumplimiento de determinadas obligaciones.\n\n## **¿Quiénes intervienen (partes)?**\n\nDos Partes contratantes: una será quien de el aviso de rescisión y la otra parte será quien hubiera incumplido con alguna de las obligaciones señaladas en el contrato.\n\n### **Requisitos de la notificación de rescisión de contrato:**\n\n* Debe ser por escrito.\n* Deben incluirse los datos de la parte que está enviando la notificación.\n* Deben incluirse los datos de la parte que ha incumplido.\n* Se debe señalar la causa del incumplimiento.\n* Debe señalarse la fecha de la rescisión.\n* Firma de la parte que desea rescindir el contrato.\n\n### **Dudas frecuentes:**\n\n**¿Cuándo se termina un contrato?**\n\n* Cuando llega la fecha de terminación acordada entre las partes.\n* Cuando las partes deciden terminar el contrato de mutuo acuerdo.\n* Cuando las partes han realizado todas las obligaciones a su cargo y se ha logrado la finalidad económica pretendida.\n* Cuando una de las partes renuncia unilateralmente y termina la relación contractual. Puede deberse al incumplimiento de la otra parte o por decisión de quien da por terminado el contrato.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa notificación de **rescisión de contrato** se puede confundir con la rescisión de una relación laboral. Que, si bien también consiste en dar por terminado un contrato derivado del incumplimiento de una obligación, en este caso se refiere a la rescisión del patrón frente a uno o varios de sus trabajadores a causa de ese incumplimiento.",
+  "fundamento_legal": "Artículo 1949 del Código Civil Federal — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/primera-parte/titulo-segundo/capitulo-i/",
+  "precio": 80,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_notificante",
+      "etiqueta": "La persona que envía la notificación es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_notificante",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que envía la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_notificante",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que envía la notificación?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_notificante", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "descripcion_contrato",
+      "etiqueta": "¿Qué contrato se desea dar por rescindido?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato",
+      "etiqueta": "¿En qué fecha se celebró el contrato que se desea dar por rescindido?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_notificado",
+      "etiqueta": "La persona que recibe la notificación es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_notificado",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibe la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_notificado",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibe la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "clausula_rescision",
+      "etiqueta": "¿El contrato que se desea rescindir establece alguna disposición sobre la rescisión?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "nota_adicional",
+      "etiqueta": "¿Deseas incluir alguna nota o información adicional a la notificación?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "texto_nota_adicional",
+      "etiqueta": "Escribe la nota o información adicional que deseas incluir:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "nota_adicional", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "lugar_elaboracion",
+      "etiqueta": "¿En qué ciudad se elabora la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_elaboracion",
+      "etiqueta": "¿En qué fecha se elabora la notificación?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

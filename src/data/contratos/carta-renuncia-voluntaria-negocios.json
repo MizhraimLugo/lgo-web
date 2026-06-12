@@ -1,0 +1,81 @@
+{
+  "id": "carta-renuncia-voluntaria-negocios",
+  "nombre": "Carta de Renuncia Voluntaria",
+  "explicacion": "# **¿Qué es una carta de renuncia voluntaria?**\n\nUna **carta de renuncia** **voluntaria** es un documento por medio del cual un trabajador da por terminada su relación laboral frente a su patrón de manera formal. Tomando en cuenta que cualquiera de las partes, es decir, tanto el trabajador como el patrón tienen el derecho de dar por terminada la relación de trabajo en cualquier momento.\n\n## **¿Para qué sirve?**\n\nLa carta renuncia se usa como una renuncia laboral voluntaria que puede ser usada por cualquier persona que quiera separarse de su trabajo e informarlo de manera formal.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Patrón:** es la persona física o moral que usa los servicios de uno o varios trabajadores.\n\n**Trabajador:** es la persona que realiza un trabajo a cambio de un salario.\n\n### **Requisitos de la carta de renuncia voluntaria:**\n\n* **Lugar y fecha. Debe especificarse el día y el lugar en que se está redactando la carta.**\n* Datos personales. Nombre, apellidos, domicilio y teléfono de contacto.\n* Datos de la empresa. Área hacia la que se está dirigiendo la carta renuncia, que idealmente debe ser el área en la que se labora con copia al área de recursos humanos.\n* Hacer mención a la renuncia, así como el motivo por el cual tomaste la decisión.\n* Es importante señalar la fecha en la que se dejará de trabajar, así como incluir que finalizarás las tareas asignadas hasta el momento.\n* Es conveniente cerrar la carta con un agradecimiento a los jefes directos y/o directivos por haberte permitido trabajar en la empresa.\n* Firma. Finalmente la carta debe incluir la firma de quién está redactando la renuncia.\n\n### **Dudas frecuentes:**\n\n**¿Es requisito legal redactar una carta renuncia?**\n\nNo es un requisito legal redactar una carta de renuncia laboral cuando una persona desea separarse de su actual trabajo. Sin embargo existe una costumbre de dar un aviso previo al patrón de cierto plazo para darle tiempo de buscar a la persona que reemplazara a quien está renunciando. Sirviendo esto para dejar todo claro y en orden.\n\n**En caso de una renuncia voluntaria ¿qué está obligado a pagar el patrón?**\n\n* Parte proporcional de vacaciones.\n* Parte proporcional de prima vacacional.\n* Parte proporcional de aguinaldo.\n* Prima de antigüedad. Se paga a los empleados que se separan voluntariamente de su empleo siempre que hayan cumplido quince años de servicio.",
+  "fundamento_legal": "Artículo 46 Ley Federal del Trabajo — https://mexico.justia.com/federales/leyes/ley-federal-del-trabajo/titulo-segundo/capitulo-iv/",
+  "precio": 40,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_patron",
+      "etiqueta": "El patrón a quien se dirige la carta renuncia es: ¿persona física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_patron",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) del patrón a quien se dirige la carta renuncia?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_patron",
+      "etiqueta": "¿Cuál es el nombre del representante legal de la empresa a quien se dirige la carta renuncia?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_patron", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_patron",
+      "etiqueta": "¿Cuál es el domicilio del patrón a quien se dirige la carta renuncia?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_trabajador",
+      "etiqueta": "¿Cuál es el nombre completo del trabajador que firma la carta renuncia?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_celebracion",
+      "etiqueta": "Lugar en que se celebrará la carta renuncia:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará la carta renuncia:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "puesto_trabajador",
+      "etiqueta": "¿Qué puesto desempeñaba la persona que renuncia?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_inicio_labores",
+      "etiqueta": "¿En qué fecha comenzó a laborar el trabajador que firma la carta renuncia?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

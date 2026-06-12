@@ -1,0 +1,297 @@
+{
+  "id": "distribucion",
+  "nombre": "Contrato de Distribución",
+  "explicacion": "## **¿Qué es un contrato de distribución?**\n\nEl **contrato de distribución** es el contrato por medio del cual una parte se compromete con otra a comprar sus productos y revenderlos durante un plazo, en un territorio específico y bajo ciertas condiciones.\n\n## **¿Para qué sirve?**\n\nSe usa para establecer los términos y condiciones bajo los cuales, el distribuidor comercializará los productos del fabricante. Así como el pago que se le dará al distribuidor por la realización de sus servicios.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Productor:** Es la persona que se dedica a la producción o manufactura de determinados bienes. Mismos que serán vendidos en una zona determinada por el distribuidor.\n\n**Distribuidor:** Es la persona, dueña de una empresa que se encargará de la venta de los bienes o productos del productor en una zona determinada.\n\n## **Características del contrato de distribución:**\n\nEs importante que se incluyan las obligaciones de cada una de las partes y algunas de ellas se enlistan a continuación:\n\n1. **Para el caso del distribuidor:**\n   * Deberá pagar todos los productos que adquiera del fabricante de conformidad con la forma y precio pactados.\n   * Deberá cumplir con las obligaciones de compra mínima pactadas.\n2. **Para el caso del fabricante:**\n   * Deberá proporcionarle al distribuidor muestras y garantías del producto que está adquiriendo.\n   * Deberá entregar los productos en las condiciones y plazos pactados.\n   * Una parte fundamental es la licencia del uso de las marcas comerciales.\n   * Deberá indicar al distribuidor las formas de comercialización y la publicidad de su producto (territorio, precio del producto, etc).\n\nLas dos partes deberán guardar confidencialidad de los acuerdos alcanzados.\n\n### **Dudas frecuentes:**\n\n**¿En dónde puedo encontrar su fundamento legal?**\n\nAl ser un contrato atípico, no se encuentra regulado en nuestra legislación.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de distribución** podría llegar a confundirse con el contrato de agencia. En el cual, el agente realiza los contratos por cuenta del empresario. Mientras que el distribuidor, los realiza por su propia cuenta.",
+  "fundamento_legal": "El **contrato de distribución** es denominado un contrato atípico. Es decir, que no se encuentra regulado en nuestra legislación. Derivado de lo anterior, es muy importante que este contrato se realice por escrito y que en él se establezcan claramente los términos y condiciones bajo los cuales deberán actuar cada una de las partes.",
+  "precio": 180,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_suministradora",
+      "etiqueta": "La persona fabricante de los productos es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_suministradora",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) completa de la empresa fabricante de los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_suministradora",
+      "etiqueta": "¿En qué país se constituyó la empresa fabricante de los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "representante_suministradora",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa fabricante de los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "caracter_representante_suministradora",
+      "etiqueta": "El representante o apoderado legal de la empresa fabricante de los productos es:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Apoderado legal",
+        "Funcionario con facultades suficientes"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_suministradora",
+      "etiqueta": "¿Cuál es el domicilio de la persona fabricante de los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_distribuidora",
+      "etiqueta": "La persona que distribuirá los productos es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_distribuidora",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que distribuirá los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_distribuidora",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa distribuidora de los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_distribuidora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nacionalidad_distribuidora",
+      "etiqueta": "¿Cuál es la nacionalidad de la persona que distribuirá los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "firma_distribuidora",
+      "etiqueta": "La persona que distribuirá los productos firmará el contrato:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Personalmente",
+        "A través del representante"
+      ]
+    },
+    {
+      "clave": "domicilio_distribuidora",
+      "etiqueta": "¿Cuál es el domicilio de la persona que distribuirá los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_productos",
+      "etiqueta": "¿Cuáles son los productos que se distribuirán?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "territorio_limitado",
+      "etiqueta": "¿La distribución de los productos estará limitada a algún territorio específico?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "territorio_distribucion",
+      "etiqueta": "¿En qué territorio se deberán distribuir los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "territorio_limitado",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "exclusividad",
+      "etiqueta": "¿La persona que distribuirá los productos será la única que podrá comercializar los mismos en el territorio autorizado? Es decir, ¿contará con exclusividad para comercializar los productos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "inventario_minimo",
+      "etiqueta": "¿Qué valor en dinero de productos tendrá que mantener en inventario mensualmente la persona que distribuirá los productos?",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_entrega",
+      "etiqueta": "¿Cuántos días hábiles tendrá la persona fabricante de los productos para entregar los mismos una vez que la parte que los distribuirá haya realizado el pedido correspondiente?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_entrega",
+      "etiqueta": "¿En qué domicilio deberá la persona fabricante de los productos entregar los mismos a la persona que los distribuirá?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "genera_intereses",
+      "etiqueta": "¿Se generarán intereses en caso de que la persona que distribuirá los productos incumpla con sus obligaciones de pago?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "tasa_interes",
+      "etiqueta": "¿Qué tasa de interés se aplicará sobre las cantidades adeudadas por la persona que distribuirá los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "genera_intereses",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "fecha_inicio_vigencia",
+      "etiqueta": "¿En qué fecha comenzará a surtir efectos el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Tiempo determinado",
+        "Tiempo indeterminado"
+      ]
+    },
+    {
+      "clave": "unidad_vigencia",
+      "etiqueta": "La vigencia del contrato tendrá una vigencia de un número determinado de:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Semanas",
+        "Meses",
+        "Años"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_vigencia",
+        "valor_que_activa": "Tiempo determinado"
+      }
+    },
+    {
+      "clave": "cantidad_vigencia",
+      "etiqueta": "¿Cuántas semanas de vigencia tendrá el contrato?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_vigencia",
+        "valor_que_activa": "Tiempo determinado"
+      }
+    },
+    {
+      "clave": "terminacion_anticipada",
+      "etiqueta": "¿Podrán las partes terminar anticipadamente el contrato mediante notificación previa enviada a la otra parte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    }
+  ]
+}

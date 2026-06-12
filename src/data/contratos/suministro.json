@@ -1,0 +1,272 @@
+{
+  "id": "suministro",
+  "nombre": "Contrato de Suministro",
+  "explicacion": "El **contrato de suministro**, es un contrato por medio del cual una persona se obliga a entregar a la otra persona, a cambio de un precio unitario que puede pagarse periódicamente o caso por caso, cosas muebles que serán entregadas de forma sucesiva. En el momento y cantidad acordados entre las partes.\n\n## **¿Para qué sirve?**\n\nSe utiliza para establecer los términos y condiciones para el intercambio comercial entre las partes. Tales como el precio del producto o servicio, las fechas y plazos de entrega y periodicidad del suministro.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Suministrador o proveedor:** Es la persona que se obliga a realizar en favor de otra persona prestaciones periódicas o continuadas a cambio de un precio.\n\n**Suministrado:** Es la persona que recibe los bienes o servicios periódicos a cambio del pago de un precio.\n\n### **Características del contrato de suministro:**\n\n* Elementos personales. Serán las personas que participan en el contrato, en este caso son el suministrador y el suministrado.\n* Elementos reales. Son ya sea los servicios o las cosas que el suministrado se obliga a prestar o entregar. Así como el precio que el suministrado deberá pagar como contraprestación.\n* Elementos formales. De acuerdo a lo señalado en el artículo 78 del Código de Comercio y dado que este contrato no se está reglamentado por la ley, los contratantes tienen la libertad de darle la forma que decidan.\n* Oneroso. Debe estar establecido de forma clara y acordada el precio de los bienes y servicios, ya que no es un contrato gratuito.\n* De trato sucesivo. Generalmente los contratos de suministro implican una relación a mediano o largo plazo. Con entregas sucesivas del bien o servicio y no solamente la entrega de un solo producto o servicio.\n\n### **Dudas frecuentes:**\n\n**¿Por qué es un contrato atípico?**\n\nPorque en nuestra legislación carece de una regulación específica.\n\n**¿Con qué documento lo puedo confundir?**\n\nEste contrato podría confundirse con el contrato de compraventa. Sin embargo, en la compraventa el precio es cierto, es decir no cambia. Mientras que en el **contrato de suministro** es determinable, de acuerdo con los precios de los bienes o servicios que se suministran, el precio puede variar y en cada suministro puede ser diferente.",
+  "fundamento_legal": "",
+  "precio": 180,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_suministradora",
+      "etiqueta": "La persona proveedora de los productos es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_suministradora",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la empresa proveedora de los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_suministradora",
+      "etiqueta": "¿En qué país se constituyó la empresa proveedora de los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_representante_suministradora",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa proveedora de los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "caracter_representante_suministradora",
+      "etiqueta": "El representante de la empresa proveedora de los productos es:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Apoderado legal",
+        "Funcionario con facultades suficientes"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_suministradora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_suministradora",
+      "etiqueta": "¿Cuál es el domicilio de la persona proveedora de los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_suministrada",
+      "etiqueta": "La persona que comprará los productos es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_suministrada",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que comprará los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nacionalidad_suministrada",
+      "etiqueta": "¿Cuál es la nacionalidad de la persona que comprará los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministrada",
+        "valor_que_activa": "Física"
+      }
+    },
+    {
+      "clave": "nombre_representante_suministrada",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que comprará los productos?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_suministrada",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_suministrada",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comprará los productos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_productos",
+      "etiqueta": "¿Cuáles son los productos que se suministrarán?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "exclusividad_suministrada_si",
+      "etiqueta": "¿Contará la parte que comprará los productos con exclusividad para adquirir los mismos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "exclusividad_suministradora_si",
+      "etiqueta": "¿Contará la parte que proveerá los productos con exclusividad para vender sus productos a la persona que los comprará?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "intereses_si",
+      "etiqueta": "¿Se generarán intereses en caso de que la persona que comprará los productos se retrase, o incumpla total o parcialmente, en los pagos que deba realizar a la persona proveedora de los productos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "tasa_interes",
+      "etiqueta": "¿Qué tasa de interés se aplicará al adeudo que tenga la persona que recibe los productos?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "intereses_si",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "fecha_inicio_vigencia",
+      "etiqueta": "¿En qué fecha comenzará a surtir efectos el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿un periodo determinado o un periodo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Por un periodo determinado",
+        "Por un periodo indeterminado"
+      ]
+    },
+    {
+      "clave": "unidad_vigencia",
+      "etiqueta": "El Contrato tendrá una vigencia de: ¿meses o años?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Meses",
+        "Años"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_vigencia",
+        "valor_que_activa": "Por un periodo determinado"
+      }
+    },
+    {
+      "clave": "cantidad_vigencia",
+      "etiqueta": "¿De cuántos meses será la vigencia del contrato?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_vigencia",
+        "valor_que_activa": "Por un periodo determinado"
+      }
+    },
+    {
+      "clave": "terminacion_anticipada_si",
+      "etiqueta": "¿Podrán las partes terminar anticipadamente el contrato mediante notificación previa enviada a la otra parte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "confidencialidad_si",
+      "etiqueta": "¿Se compartirán información confidencial las personas que firman el contrato?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "id": "promesa-compraventa-inmueble-negocios",
+  "nombre": "Contrato de Promesa de Compraventa de Bien Inmueble",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato de promesa de compraventa de bien inmueble** es el documento por el cual se crea la obligación para celebrar un contrato de compraventa de un bien inmueble en una fecha futura determinada.\n\n## **¿Para qué sirve el contrato de promesa de compraventa de bien inmueble?**\n\nSirve para asegurar que las partes que intervienen como lo es promitente vendedor y el promitente comprador formalicen el acto. Es decir, la compraventa del bien inmueble y evitar que se desistan de la promesa.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Promitente vendedor:** Persona que se compromete a vender y transmitir el inmueble en una fecha futura al promitente comprador.\n\n**Promitente comprador:** Persona que se compromete a comprar el inmueble al promitente vendedor.\n\n### **Requisitos del contrato de promesa de compraventa de bien inmueble:**\n\n* Puede realizarse entre particulares, personas físicas o morales. Y para la venta futura su objeto debe de ser un bien inmueble ya sea nuevo o que ya tenga un uso.\n* Se deben de adjuntar los documentos para identificar a las personas que intervienen en su firma y los documentos con los que se acredita la propiedad del inmueble.\n* Su objeto es celebrar un contrato futuro determinado definitivo de compraventa de un bien inmueble.\n* Puede ser unilateral cuando solo una parte se obliga. Como puede ser que el promitente vendedor se obliga a vender un inmueble al promitente comprador, pero este último no se oliva a comprarlo.\n* Puede ser bilateral, cuando ambas partes se obligan. Una a vender el inmueble y la otra a comprarlo.\n* Debe constar por escrito, y suscribirse ante Notario Público.\n* Debe contener los elementos del contrato de compraventa definitivo. Como lo es el objeto, es decir el bien inmueble, el precio del mismo y el plazo.\n* Debe limitarse a un tiempo determinado, en el que se deberá realizar el contrato definitivo.\n* Debe inscribirse en el Registro Público de la Propiedad, si afecta a bienes raíces o derechos reales constituidos sobre los mismos.\n\n### **Dudas frecuentes:**\n\n**¿Hay sanción para la parte que incumpla el contrato?**\n\nSi, dentro del contrato se puede anexar una sección donde se establezca una pena convencional que deberá de cubrir la parte que no venda o no compre en el tiempo estipulado.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de promesa de compraventa de bien inmueble** se puede confundir con el contrato de promesa de compraventa de bien mueble. La principal diferencia entre estos documentos es el bien sobre el cual se realiza la promesa de compraventa. En uno es un bien inmueble (casa, habitación, bodega, entre otras), y el de bien mueble es sobre bienes transportables, tales como, mesas, sillas, equipo de oficina, entre otras.",
+  "fundamento_legal": "Código Civil Federal del Artículo 2243 al 2247 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-primero/",
+  "precio": 180,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_promitente_vendedor",
+      "etiqueta": "La persona que tiene la intención de vender el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_promitente_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que tiene intención de vender el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_promitente_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que tiene intención de vender el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_promitente_vendedor",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_promitente_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que tiene intención de vender el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_promitente_comprador",
+      "etiqueta": "La persona que tiene intención de comprar el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_promitente_comprador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que tiene intención de comprar el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_promitente_comprador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que tiene intención de comprar el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "regimen_propiedad_promitente_vendedor",
+      "etiqueta": "La persona que tiene intención de vender el bien inmueble:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Es único dueño del inmueble",
+        "Es dueño del inmueble junto con otras personas",
+        "Se encuentra casado bajo el régimen de bienes separados y es el único dueño del inmueble",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "nombres_otros_propietarios",
+      "etiqueta": "Indica el nombre completo de las otras personas que son propietarias del bien inmueble",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "regimen_propiedad_promitente_vendedor",
+        "valor_que_activa": "Es dueño del inmueble junto con otras personas"
+      }
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "Determine el domicilio del bien inmueble que se venderá cuando se celebre el contrato definitivo de compraventa:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "modalidad_firma_contrato_definitivo",
+      "etiqueta": "El contrato definitivo de compraventa se firmará:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "En una fecha específica",
+        "En un plazo que comenzará a partir de la firma de la promesa"
+      ]
+    },
+    {
+      "clave": "fecha_firma_contrato_definitivo",
+      "etiqueta": "¿En qué fecha se firmará el contrato definitivo de compraventa?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "modalidad_firma_contrato_definitivo",
+        "valor_que_activa": "En una fecha específica"
+      }
+    },
+    {
+      "clave": "pago_seriedad_garantia",
+      "etiqueta": "¿Se pagará alguna cantidad de dinero como seriedad de la garantía?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "monto_seriedad_garantia",
+      "etiqueta": "¿Qué cantidad se pagará como seriedad de la garantía? (especifica el tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "pago_seriedad_garantia",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "tiene_gravamen",
+      "etiqueta": "¿El bien inmueble que se venderá cuando se celebre el contrato definitivo de compraventa tiene alguna garantía, carga o gravamen?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "descripcion_gravamen",
+      "etiqueta": "Indica qué garantía tiene el bien inmueble que se venderá:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tiene_gravamen",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "pena_convencional",
+      "etiqueta": "En caso de que alguna de las partes incumpla cualquiera de sus obligaciones, ¿deberá pagar alguna pena convencional a la parte afectada?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "porcentaje_pena_convencional",
+      "etiqueta": "¿Qué porcentaje del valor del bien inmueble que se desea vender se deberá pagar como pena convencional en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "pena_convencional",
+        "valor_que_activa": "Sí"
+      }
+    }
+  ]
+}
