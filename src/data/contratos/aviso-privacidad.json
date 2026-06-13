@@ -1,0 +1,133 @@
+{
+  "id": "aviso-privacidad",
+  "nombre": "Aviso de Privacidad",
+  "explicacion": "Es la notificación que por ley debe incluirse en cualquier medio o documento en el que se obtengan datos personales como pueden ser nombres, domicilios, números telefónicos y/o direcciones de correo electrónicos, de algún tercero, como clientes, socios, proveedores, etc.\n\n## **¿Para qué se usa?**\n\nSe utiliza para dar a conocer a la persona que proporciona sus datos, el uso o tratamiento que se le dará a dichos datos.",
+  "fundamento_legal": "",
+  "precio": 80,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la república.",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "nombre_responsable",
+      "etiqueta": "¿Cómo se llama la persona, empresa o entidad que emite el aviso de privacidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_responsable",
+      "etiqueta": "¿Cuál es el domicilio de la persona que emite el aviso de privacidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "datos_personales_recabados",
+      "etiqueta": "Determina los datos personales que se recabarán:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "fines_primarios",
+      "etiqueta": "Determina los fines para los que se recaban los datos personales:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "contacto_responsable",
+      "etiqueta": "Proporcione información de contacto de la persona que recabará Datos Personales (número de teléfono, horario de atención y dirección de correo electrónico):",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "usa_fines_secundarios",
+      "etiqueta": "¿Se utilizarán los datos personales para finalidades secundarias o accesorias, es decir, para fines que no sean estrictamente necesarios para el servicio que se solicita?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "fines_secundarios",
+      "etiqueta": "Determina los fines secundarios o accesorios para los que se recabarán datos personales:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "usa_fines_secundarios", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fines_mercadotecnicos",
+      "etiqueta": "Dentro de los fines secundarios o accesorios, para los que se utilizarán datos personales, ¿se incluyen fines mercadotécnicos, publicitarios y/o de prospección comercial?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"],
+      "depende_de": { "clave_padre": "usa_fines_secundarios", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "datos_financieros",
+      "etiqueta": "¿La persona que recabará datos personales, obtendrá aquellos de carácter financiero y/o patrimonial?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "transfiere_terceros",
+      "etiqueta": "¿La persona que recabará datos personales transferirá los mismos a terceros?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "ambito_transferencia",
+      "etiqueta": "La transferencia de datos personales se realizará a personas:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["dentro del país", "dentro y fuera del país", "fuera del país"],
+      "depende_de": { "clave_padre": "transfiere_terceros", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "destinatarios_transferencia",
+      "etiqueta": "Escribe el nombre de la persona(s), empresa(s) y/o entidad(es) a las que se les transferirán datos personales:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "transfiere_terceros", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fines_transferencia",
+      "etiqueta": "Determina los fines para los que se transfieren los datos personales a terceros:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "transfiere_terceros", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "usa_cookies",
+      "etiqueta": "¿La persona que recaba datos personales utiliza cookies, o cualquier tecnología similar, en su página de Internet, a través de las cuales se monitoree el comportamiento de los usuarios y se recabe información de los mismos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "medio_aviso_cambios",
+      "etiqueta": "¿De qué manera la persona que recaba datos personales dará aviso de cualquier cambio, modificación o actualización al aviso de privacidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_aviso",
+      "etiqueta": "¿Qué tipo de aviso de privacidad desea redactar?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Aviso de privacidad impreso", "Aviso de privacidad web"]
+    }
+  ]
+}

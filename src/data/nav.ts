@@ -30,6 +30,8 @@ export const nav: NavItem[] = [
   // aparecen aquí automáticamente.
   { label: 'Servicios', childSource: 'publishedSubBrands' },
 
+  // Nota: /contratos NO va en el nav a propósito. Se accede desde la ficha
+  // destacada en Inicio y en LGO Abogados (ContratosFeature.astro).
   { label: 'Cursos', href: '/cursos/' },
   { label: 'Perspectivas', href: '/perspectivas/' },
   { label: 'Contacto', href: '/contacto/' }

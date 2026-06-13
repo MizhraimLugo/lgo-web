@@ -1,0 +1,188 @@
+{
+  "id": "convenio-divorcio",
+  "nombre": "Convenio de Divorcio",
+  "explicacion": "Es el acuerdo escrito por el cual dos personas que han contraído matrimonio y que han decidido divorciarse, establecen los términos y condiciones bajo los cuales se administrarán sus bienes, y en su caso, la forma del cuidado de los hijos, así como del pago de pensión alimenticia a que tuviere derecho alguno de ellos.\n\n**¿Para qué se usa?**\n\nSe utiliza para que una autoridad que esté tratando un divorcio conozca los acuerdos a que han llegado los esposos y poder resolver el divorcio conforme a dichos acuerdos respetando en su caso los intereses de los menores.",
+  "fundamento_legal": "",
+  "precio": 180,
+  "moneda": "MXN",
+  "disclaimer_reforzado": true,
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato como Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se firmará el contrato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_matrimonio",
+      "etiqueta": "¿En qué fecha contrajeron matrimonio los esposos que desean divorciarse?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "regimen_patrimonial",
+      "etiqueta": "Los esposos se casaron bajo el régimen patrimonial de:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Separación de bienes", "Sociedad conyugal"]
+    },
+    {
+      "clave": "compensacion_bienes",
+      "etiqueta": "¿Habrá alguna compensación de bienes por virtud del régimen patrimonial de separación de bienes?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"],
+      "depende_de": { "clave_padre": "regimen_patrimonial", "valor_que_activa": "Separación de bienes" }
+    },
+    {
+      "clave": "quien_paga_compensacion",
+      "etiqueta": "¿Quién deberá pagar la compensación?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "compensacion_bienes", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "tienen_hijos",
+      "etiqueta": "Los esposos que desean divorciarse, ¿han procreado o adoptado hijos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "nombres_hijos",
+      "etiqueta": "Indica el nombre de los hijos de los esposos que desean divorciarse:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tienen_hijos", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "conyuge_embarazada",
+      "etiqueta": "¿Se encuentra embarazada alguno de los cónyuges?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "procedimiento_iniciado",
+      "etiqueta": "¿Los esposos han iniciado el procedimiento de divorcio correspondiente?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "fecha_inicio_procedimiento",
+      "etiqueta": "¿En qué fecha se inició el procedimiento de divorcio?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "procedimiento_iniciado", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "quien_guardia_custodia",
+      "etiqueta": "¿Quién tendrá la guardia y custodia de los hijos menores o incapaces?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tienen_hijos", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "frecuencia_visitas",
+      "etiqueta": "El cónyuge que no ejerza la guardia y custodia de los hijos podrá realizar visitas a los mismos:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Semanalmente", "Mensualmente"],
+      "depende_de": { "clave_padre": "tienen_hijos", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "horas_visitas",
+      "etiqueta": "¿Por cuántas horas podrán ser las visitas a los menores de edad?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tienen_hijos", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "pagara_pension",
+      "etiqueta": "¿Se deberá pagar pensión alimenticia?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pension",
+      "etiqueta": "¿Qué porcentaje de los ingresos se deberá pagar como pensión alimenticia?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pagara_pension", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "quien_paga_pension",
+      "etiqueta": "¿Quién deberá pagar pensión alimenticia a los menores y a su cónyuge?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Parte A", "Parte B"],
+      "depende_de": { "clave_padre": "pagara_pension", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "domicilio_conyugal",
+      "etiqueta": "¿En dónde se ubica el domicilio conyugal?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "quien_habita_domicilio_conyugal",
+      "etiqueta": "¿Quién habitará en el domicilio conyugal?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Parte A", "Parte B"]
+    }
+  ]
+}

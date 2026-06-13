@@ -1,0 +1,1551 @@
+{
+  "abandono-laboral": {
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    }
+  },
+  "arrendamiento-bodega": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    }
+  },
+  "arrendamiento-casa": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "seguro_si": {
+      "clave": "contratara_seguro",
+      "igual": "Sí"
+    },
+    "termina_muerte_si": {
+      "clave": "termina_por_muerte",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo específico"
+    }
+  },
+  "arrendamiento-casa-opcion-compra": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "seguro_si": {
+      "clave": "contratara_seguro",
+      "igual": "Sí"
+    },
+    "termina_muerte_si": {
+      "clave": "termina_por_muerte",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo específico"
+    }
+  },
+  "arrendamiento-departamento": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "seguro_si": {
+      "clave": "contratara_seguro",
+      "igual": "Sí"
+    },
+    "termina_muerte_si": {
+      "clave": "termina_por_muerte",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Un periodo de tiempo"
+    }
+  },
+  "arrendamiento-local-comercial": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "pena_si": {
+      "clave": "pena_convencional",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Periodo determinado"
+    }
+  },
+  "arrendamiento-nave-industrial": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    }
+  },
+  "arrendamiento-vacacional": {
+    "incluye_alimentos_si": {
+      "clave": "incluye_alimentos",
+      "igual": "Sí"
+    }
+  },
+  "autorizacion-subarrendar": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    }
+  },
+  "autorizacion-subarrendar-negocios": {
+    "incluir_info_adicional_si": {
+      "clave": "incluir_info_adicional",
+      "igual": "Sí"
+    }
+  },
+  "aviso-privacidad": {
+    "cookies_si": {
+      "clave": "usa_cookies",
+      "igual": "Sí"
+    },
+    "datos_financieros_si": {
+      "clave": "datos_financieros",
+      "igual": "Sí"
+    },
+    "fines_mercadotecnicos_si": {
+      "clave": "fines_mercadotecnicos",
+      "igual": "Sí"
+    },
+    "fines_secundarios_si": {
+      "clave": "usa_fines_secundarios",
+      "igual": "Sí"
+    },
+    "transferencia_si": {
+      "clave": "transfiere_terceros",
+      "igual": "Sí"
+    }
+  },
+  "carta-confidencialidad-empleados": {},
+  "carta-confidencialidad-empleados-negocios": {
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    }
+  },
+  "carta-instruccion-fe-hechos": {
+    "solicitante_fisica": {
+      "clave": "tipo_solicitante",
+      "igual": "Física"
+    },
+    "solicitante_moral": {
+      "clave": "tipo_solicitante",
+      "igual": "Moral"
+    }
+  },
+  "carta-instruccion-fe-hechos-negocios": {
+    "objeto_cobranza": {
+      "clave": "objeto_fe_hechos",
+      "igual": "Cobranza/requerimiento de pago"
+    },
+    "objeto_pago": {
+      "clave": "objeto_fe_hechos",
+      "igual": "Pago de algún adeudo"
+    },
+    "solicitante_fisica": {
+      "clave": "tipo_solicitante",
+      "igual": "Física"
+    },
+    "solicitante_moral": {
+      "clave": "tipo_solicitante",
+      "igual": "Moral"
+    }
+  },
+  "carta-intencion-compra-inmueble": {
+    "hace_oferta": {
+      "clave": "hace_oferta",
+      "igual": "Sí"
+    },
+    "remitente_fisica": {
+      "clave": "tipo_remitente",
+      "igual": "Física"
+    },
+    "remitente_moral": {
+      "clave": "tipo_remitente",
+      "igual": "Moral"
+    }
+  },
+  "carta-pension-alimenticia": {
+    "con_otros_beneficiarios": {
+      "clave": "otras_personas_pension",
+      "igual": "Sí"
+    },
+    "con_resolucion_judicial": {
+      "clave": "tiene_resolucion_judicial",
+      "igual": "Sí"
+    }
+  },
+  "carta-poder": {
+    "otorgante_fisica": {
+      "clave": "tipo_otorgante",
+      "igual": "Física"
+    },
+    "otorgante_moral": {
+      "clave": "tipo_otorgante",
+      "igual": "Moral"
+    },
+    "vigencia_si": {
+      "clave": "vigencia_fecha_especifica",
+      "igual": "Sí"
+    }
+  },
+  "carta-poder-negocios": {
+    "otorgante_fisica": {
+      "clave": "tipo_otorgante",
+      "igual": "Física"
+    },
+    "otorgante_moral": {
+      "clave": "tipo_otorgante",
+      "igual": "Moral"
+    },
+    "vigencia_fecha_especifica": {
+      "clave": "vigencia_fecha_especifica",
+      "igual": "Sí"
+    }
+  },
+  "carta-renuncia-voluntaria": {
+    "patron_fisica": {
+      "clave": "tipo_patron",
+      "igual": "Física"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    }
+  },
+  "carta-renuncia-voluntaria-negocios": {
+    "patron_fisica": {
+      "clave": "tipo_patron",
+      "igual": "Física"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    }
+  },
+  "comision-mercantil": {
+    "comisionista_fisica": {
+      "clave": "tipo_comisionista",
+      "igual": "Física"
+    },
+    "comisionista_moral": {
+      "clave": "tipo_comisionista",
+      "igual": "Moral"
+    },
+    "comitente_fisica": {
+      "clave": "tipo_comitente",
+      "igual": "Física"
+    },
+    "comitente_moral": {
+      "clave": "tipo_comitente",
+      "igual": "Moral"
+    },
+    "terminacion_anticipada_si": {
+      "clave": "terminacion_anticipada_si",
+      "igual": "Sí"
+    },
+    "vigencia_fecha_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Fecha específica"
+    }
+  },
+  "comodato-bien-inmueble": {
+    "comodante_fisica": {
+      "clave": "tipo_comodante",
+      "igual": "Física"
+    },
+    "comodante_moral": {
+      "clave": "tipo_comodante",
+      "igual": "Moral"
+    },
+    "comodatario_fisica": {
+      "clave": "tipo_comodatario",
+      "igual": "Física"
+    },
+    "comodatario_moral": {
+      "clave": "tipo_comodatario",
+      "igual": "Moral"
+    },
+    "con_deposito": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "con_seguro": {
+      "clave": "requiere_seguro",
+      "igual": "Sí"
+    },
+    "vigencia_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo específico"
+    }
+  },
+  "comodato-bien-mueble": {
+    "comodante_fisica": {
+      "clave": "tipo_comodante",
+      "igual": "Física"
+    },
+    "comodante_moral": {
+      "clave": "tipo_comodante",
+      "igual": "Moral"
+    },
+    "comodatario_fisica": {
+      "clave": "tipo_comodatario",
+      "igual": "Física"
+    },
+    "comodatario_moral": {
+      "clave": "tipo_comodatario",
+      "igual": "Moral"
+    },
+    "deposito_si": {
+      "clave": "deposito_si",
+      "igual": "Sí"
+    },
+    "seguro_si": {
+      "clave": "seguro_si",
+      "igual": "Sí"
+    },
+    "vigencia_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo específico"
+    }
+  },
+  "comodato-bien-mueble-negocios": {
+    "comodante_fisica": {
+      "clave": "tipo_comodante",
+      "igual": "Física"
+    },
+    "comodante_moral": {
+      "clave": "tipo_comodante",
+      "igual": "Moral"
+    },
+    "comodatario_fisica": {
+      "clave": "tipo_comodatario",
+      "igual": "Física"
+    },
+    "comodatario_moral": {
+      "clave": "tipo_comodatario",
+      "igual": "Moral"
+    },
+    "deposito_si": {
+      "clave": "requiere_deposito",
+      "igual": "Sí"
+    },
+    "seguro_si": {
+      "clave": "contratara_seguro",
+      "igual": "Sí"
+    },
+    "vigencia_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo específico"
+    }
+  },
+  "compraventa-acciones": {
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    },
+    "con_comparecencia_sociedad": {
+      "clave": "aprobacion_asamblea",
+      "igual": "Sí"
+    },
+    "con_intereses": {
+      "clave": "causar_intereses",
+      "igual": "Sí"
+    },
+    "con_otros_propietarios": {
+      "clave": "regimen_propiedad_vendedor",
+      "igual": "No se encuentra casado y es dueño de las acciones junto con otras personas"
+    },
+    "con_pena": {
+      "clave": "incluir_pena_convencional",
+      "igual": "Sí"
+    },
+    "pago_fecha_especifica": {
+      "clave": "modalidad_pago",
+      "igual": "En fecha específica"
+    },
+    "vendedor_moral": {
+      "clave": "tipo_vendedor",
+      "igual": "Moral"
+    }
+  },
+  "compraventa-bien-inmueble": {
+    "cobra_interes_si": {
+      "clave": "cobra_interes_mora",
+      "igual": "Sí"
+    },
+    "comprador_fisica": {
+      "clave": "tipo_comprador",
+      "igual": "Física"
+    },
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    },
+    "pena_convencional_aplica": {
+      "clave": "pena_convencional_si",
+      "igual": "Sí"
+    },
+    "vendedor_fisica": {
+      "clave": "tipo_vendedor",
+      "igual": "Física"
+    },
+    "vendedor_moral": {
+      "clave": "tipo_vendedor",
+      "igual": "Moral"
+    },
+    "vigencia_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Por un tiempo específico"
+    }
+  },
+  "compraventa-contado": {
+    "comprador_fisica": {
+      "clave": "tipo_comprador",
+      "igual": "Física"
+    },
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    },
+    "entrega_al_pago": {
+      "clave": "momento_entrega",
+      "igual": "Cuando se pague en su totalidad"
+    },
+    "entrega_fecha_especifica": {
+      "clave": "momento_entrega",
+      "igual": "En fecha específica"
+    },
+    "intereses_si": {
+      "clave": "intereses_retraso",
+      "igual": "Sí"
+    },
+    "iva_mas": {
+      "clave": "iva_precio",
+      "igual": "Es ese precio más IVA"
+    },
+    "vendedor_fisica": {
+      "clave": "tipo_vendedor",
+      "igual": "Física"
+    },
+    "vendedor_moral": {
+      "clave": "tipo_vendedor",
+      "igual": "Moral"
+    }
+  },
+  "compraventa-plazos": {
+    "comprador_fisica": {
+      "clave": "tipo_comprador",
+      "igual": "Física"
+    },
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    },
+    "genera_intereses_si": {
+      "clave": "genera_intereses",
+      "igual": "Sí"
+    },
+    "iva_adicional": {
+      "clave": "incluye_iva",
+      "igual": "Ese precio más I.V.A."
+    },
+    "iva_incluido": {
+      "clave": "incluye_iva",
+      "igual": "Sí, incluye I.V.A."
+    },
+    "vendedor_fisica": {
+      "clave": "tipo_vendedor",
+      "igual": "Física"
+    },
+    "vendedor_moral": {
+      "clave": "tipo_vendedor",
+      "igual": "Moral"
+    }
+  },
+  "compraventa-vehiculo": {
+    "pena_convencional_si": {
+      "clave": "pena_convencional",
+      "igual": "Sí"
+    }
+  },
+  "consignacion-mercantil": {
+    "bien_asegurado_si": {
+      "clave": "bien_asegurado",
+      "igual": "Sí"
+    },
+    "cliente_fisica": {
+      "clave": "tipo_cliente",
+      "igual": "Física"
+    },
+    "cliente_moral": {
+      "clave": "tipo_cliente",
+      "igual": "Moral"
+    },
+    "comercializadora_moral": {
+      "clave": "tipo_comercializadora",
+      "igual": "Moral"
+    }
+  },
+  "contrato-chofer-uber": {
+    "celular_si": {
+      "clave": "da_celular",
+      "igual": "Sí"
+    },
+    "prestataria_fisica": {
+      "clave": "tipo_prestataria",
+      "igual": "Física"
+    },
+    "prestataria_moral": {
+      "clave": "tipo_prestataria",
+      "igual": "Moral"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Determinada"
+    }
+  },
+  "contrato-chofer-uber-negocios": {
+    "celular_si": {
+      "clave": "celular_para_chofer",
+      "igual": "Sí"
+    },
+    "pago_mensual_fijo": {
+      "clave": "modalidad_pago",
+      "igual": "Se le pagará cada mes una cantidad específica de dinero"
+    },
+    "pago_porcentaje": {
+      "clave": "modalidad_pago",
+      "igual": "Se le pagará cada mes un porcentaje de las ganancias acumuladas"
+    },
+    "pago_remanente": {
+      "clave": "modalidad_pago",
+      "igual": "Se le pagará cada mes el remanente que resulte de restar una cantidad específica a las ganancias adquiridas en el mes"
+    },
+    "pago_semanal": {
+      "clave": "modalidad_pago",
+      "igual": "Se le pagará cada semana una cantidad específica de dinero"
+    },
+    "prestataria_fisica": {
+      "clave": "tipo_prestataria",
+      "igual": "Física"
+    },
+    "prestataria_moral": {
+      "clave": "tipo_prestataria",
+      "igual": "Moral"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Determinada"
+    }
+  },
+  "contrato-confidencialidad": {
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "contrato-confidencialidad-negocios": {
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "contrato-empleada-domestica": {
+    "vigencia_si": {
+      "clave": "vigencia_especifica",
+      "igual": "Sí"
+    }
+  },
+  "contrato-individual-trabajo": {
+    "confidencialidad_si": {
+      "clave": "recibira_informacion_confidencial",
+      "igual": "Sí"
+    },
+    "patron_fisica": {
+      "clave": "tipo_patron",
+      "igual": "Física"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    },
+    "vigencia_fecha_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "En fecha específica"
+    }
+  },
+  "contrato-individual-trabajo-negocios": {
+    "confidencialidad_si": {
+      "clave": "recibira_informacion_confidencial",
+      "igual": "Sí"
+    },
+    "patron_fisica": {
+      "clave": "tipo_patron",
+      "igual": "Física"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    },
+    "vigencia_fecha_especifica": {
+      "clave": "tipo_vigencia",
+      "igual": "Fecha específica"
+    }
+  },
+  "contrato-mutuo": {
+    "garantia_si": {
+      "clave": "otorga_garantia",
+      "igual": "Sí"
+    },
+    "intereses_si": {
+      "clave": "genera_intereses",
+      "igual": "Sí"
+    },
+    "mutuante_fisica": {
+      "clave": "tipo_mutuante",
+      "igual": "Física"
+    },
+    "mutuante_moral": {
+      "clave": "tipo_mutuante",
+      "igual": "Moral"
+    },
+    "mutuario_fisica": {
+      "clave": "tipo_mutuario",
+      "igual": "Física"
+    },
+    "mutuario_moral": {
+      "clave": "tipo_mutuario",
+      "igual": "Moral"
+    }
+  },
+  "contrato-mutuo-negocios": {
+    "garantia_si": {
+      "clave": "otorga_garantia",
+      "igual": "Sí"
+    },
+    "intereses_si": {
+      "clave": "genera_intereses",
+      "igual": "Sí"
+    },
+    "mutuante_fisica": {
+      "clave": "tipo_mutuante",
+      "igual": "Física"
+    },
+    "mutuante_moral": {
+      "clave": "tipo_mutuante",
+      "igual": "Moral"
+    },
+    "mutuario_fisica": {
+      "clave": "tipo_mutuario",
+      "igual": "Física"
+    },
+    "mutuario_moral": {
+      "clave": "tipo_mutuario",
+      "igual": "Moral"
+    }
+  },
+  "convenio-divorcio": {
+    "compensacion_si": {
+      "clave": "compensacion_bienes",
+      "igual": "Sí"
+    },
+    "embarazo_si": {
+      "clave": "conyuge_embarazada",
+      "igual": "Sí"
+    },
+    "pension_si": {
+      "clave": "pagara_pension",
+      "igual": "Sí"
+    },
+    "procedimiento_si": {
+      "clave": "procedimiento_iniciado",
+      "igual": "Sí"
+    },
+    "tienen_hijos_si": {
+      "clave": "tienen_hijos",
+      "igual": "Sí"
+    }
+  },
+  "convenio-modificatorio": {
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "convenio-modificatorio-negocios": {
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "convenio-terminacion-finiquito": {
+    "con_razon": {
+      "clave": "agregar_razon_terminacion",
+      "igual": "Sí"
+    },
+    "con_renuncia": {
+      "clave": "agregar_renuncia_acciones",
+      "igual": "Sí"
+    },
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "convenio-terminacion-finiquito-negocios": {
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    },
+    "razon_terminacion_si": {
+      "clave": "agregar_razon_terminacion",
+      "igual": "Sí"
+    },
+    "renuncia_acciones_si": {
+      "clave": "agregar_renuncia_acciones",
+      "igual": "Sí"
+    }
+  },
+  "distribucion": {
+    "distribuidora_moral": {
+      "clave": "tipo_distribuidora",
+      "igual": "Moral"
+    },
+    "exclusividad_si": {
+      "clave": "exclusividad",
+      "igual": "Sí"
+    },
+    "genera_intereses_si": {
+      "clave": "genera_intereses",
+      "igual": "Sí"
+    },
+    "suministradora_fisica": {
+      "clave": "tipo_suministradora",
+      "igual": "Física"
+    },
+    "suministradora_moral": {
+      "clave": "tipo_suministradora",
+      "igual": "Moral"
+    },
+    "terminacion_anticipada_si": {
+      "clave": "terminacion_anticipada",
+      "igual": "Sí"
+    },
+    "territorio_limitado_si": {
+      "clave": "territorio_limitado",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Tiempo determinado"
+    }
+  },
+  "donacion-bien-inmueble": {
+    "con_comparecencia": {
+      "clave": "regimen_propiedad_donante",
+      "igual": "Es dueño del inmueble junto con otras personas"
+    },
+    "con_gravamen": {
+      "clave": "tiene_gravamen",
+      "igual": "Sí"
+    },
+    "donante_moral": {
+      "clave": "tipo_donante",
+      "igual": "Moral"
+    },
+    "donante_paga": {
+      "clave": "donante_paga_adeudos",
+      "igual": "Sí"
+    },
+    "donatario_fisica": {
+      "clave": "tipo_donatario",
+      "igual": "Física"
+    },
+    "donatario_moral": {
+      "clave": "tipo_donatario",
+      "igual": "Moral"
+    }
+  },
+  "donacion-bien-inmueble-2": {
+    "donante_fisica": {
+      "clave": "tipo_donante",
+      "igual": "Física"
+    },
+    "donante_moral": {
+      "clave": "tipo_donante",
+      "igual": "Moral"
+    },
+    "donatario_fisica": {
+      "clave": "tipo_donatario",
+      "igual": "Física"
+    },
+    "donatario_moral": {
+      "clave": "tipo_donatario",
+      "igual": "Moral"
+    },
+    "sin_gravamen": {
+      "clave": "tiene_gravamen",
+      "igual": "No"
+    }
+  },
+  "finiquito-laboral": {
+    "cubre_aguinaldo": {
+      "clave": "cubre_aguinaldo",
+      "igual": "Sí"
+    },
+    "cubre_bonos": {
+      "clave": "cubre_bonos",
+      "igual": "Sí"
+    },
+    "cubre_caja_ahorro": {
+      "clave": "cubre_caja_ahorro",
+      "igual": "Sí"
+    },
+    "cubre_concepto_adicional": {
+      "clave": "cubre_concepto_adicional",
+      "igual": "Sí"
+    },
+    "cubre_prima_antiguedad": {
+      "clave": "cubre_prima_antiguedad",
+      "igual": "Sí"
+    },
+    "cubre_prima_dominical": {
+      "clave": "cubre_prima_dominical",
+      "igual": "Sí"
+    },
+    "cubre_prima_vacacional": {
+      "clave": "cubre_prima_vacacional",
+      "igual": "Sí"
+    },
+    "cubre_salarios_vencidos": {
+      "clave": "cubre_salarios_vencidos",
+      "igual": "Sí"
+    },
+    "cubre_vacaciones": {
+      "clave": "cubre_vacaciones",
+      "igual": "Sí"
+    },
+    "incluye_liberacion": {
+      "clave": "incluye_liberacion",
+      "igual": "Sí"
+    },
+    "incluye_prestaciones": {
+      "clave": "incluye_prestaciones",
+      "igual": "Sí"
+    },
+    "patron_fisica": {
+      "clave": "tipo_patron",
+      "igual": "Física"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    }
+  },
+  "finiquito-laboral-negocios": {
+    "cubre_aguinaldo": {
+      "clave": "cubre_aguinaldo",
+      "igual": "Sí"
+    },
+    "cubre_bonos": {
+      "clave": "cubre_bonos",
+      "igual": "Sí"
+    },
+    "cubre_caja_ahorro": {
+      "clave": "cubre_caja_ahorro",
+      "igual": "Sí"
+    },
+    "cubre_concepto_adicional": {
+      "clave": "cubre_concepto_adicional",
+      "igual": "Sí"
+    },
+    "cubre_prima_antiguedad": {
+      "clave": "cubre_prima_antiguedad",
+      "igual": "Sí"
+    },
+    "cubre_prima_dominical": {
+      "clave": "cubre_prima_dominical",
+      "igual": "Sí"
+    },
+    "cubre_prima_vacacional": {
+      "clave": "cubre_prima_vacacional",
+      "igual": "Sí"
+    },
+    "cubre_salarios_vencidos": {
+      "clave": "cubre_salarios_vencidos",
+      "igual": "Sí"
+    },
+    "cubre_vacaciones": {
+      "clave": "cubre_vacaciones",
+      "igual": "Sí"
+    },
+    "incluye_liberacion": {
+      "clave": "incluye_liberacion",
+      "igual": "Sí"
+    },
+    "incluye_prestaciones": {
+      "clave": "incluye_prestaciones",
+      "igual": "Sí"
+    },
+    "patron_moral": {
+      "clave": "tipo_patron",
+      "igual": "Moral"
+    },
+    "termino_renuncia": {
+      "clave": "termino_por_renuncia",
+      "igual": "Sí"
+    }
+  },
+  "licencia-uso-marca": {
+    "genera_pago_si": {
+      "clave": "genera_pago",
+      "igual": "Sí"
+    },
+    "licencia_exclusiva": {
+      "clave": "tipo_licencia",
+      "igual": "Exclusiva"
+    },
+    "licenciante_fisica": {
+      "clave": "tipo_licenciante",
+      "igual": "Física"
+    },
+    "licenciante_moral": {
+      "clave": "tipo_licenciante",
+      "igual": "Moral"
+    },
+    "licenciatario_fisica": {
+      "clave": "tipo_licenciatario",
+      "igual": "Física"
+    },
+    "licenciatario_moral": {
+      "clave": "tipo_licenciatario",
+      "igual": "Moral"
+    },
+    "permite_sublicencia_si": {
+      "clave": "permite_sublicencia",
+      "igual": "Sí"
+    },
+    "terminacion_anticipada_si": {
+      "clave": "terminacion_anticipada",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Periodo específico"
+    }
+  },
+  "no-competencia": {
+    "con_actividades_prohibidas": {
+      "clave": "incluir_actividades_prohibidas",
+      "igual": "Sí"
+    },
+    "con_pena": {
+      "clave": "incluir_pena_convencional",
+      "igual": "Sí"
+    },
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    }
+  },
+  "notificacion-deterioros-arrendador": {
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    }
+  },
+  "notificacion-deterioros-arrendador-negocios": {
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    },
+    "incluir_info_adicional_si": {
+      "clave": "incluir_info_adicional",
+      "igual": "Sí"
+    }
+  },
+  "notificacion-deterioros-vendedor": {
+    "comprador_fisica": {
+      "clave": "tipo_comprador",
+      "igual": "Física"
+    },
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    }
+  },
+  "notificacion-deterioros-vendedor-negocios": {
+    "comprador_fisica": {
+      "clave": "tipo_comprador",
+      "igual": "Física"
+    },
+    "comprador_moral": {
+      "clave": "tipo_comprador",
+      "igual": "Moral"
+    }
+  },
+  "notificacion-incremento-renta": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    },
+    "incrementar_deposito": {
+      "clave": "incrementar_deposito",
+      "igual": "Sí"
+    },
+    "no_incrementar_deposito": {
+      "clave": "incrementar_deposito",
+      "igual": "No"
+    }
+  },
+  "notificacion-prorroga-arrendamiento": {
+    "arrendatario_fisica": {
+      "clave": "tipo_arrendatario",
+      "igual": "Física"
+    },
+    "arrendatario_moral": {
+      "clave": "tipo_arrendatario",
+      "igual": "Moral"
+    }
+  },
+  "pagare": {
+    "con_aval": {
+      "clave": "tiene_aval",
+      "igual": "Sí"
+    },
+    "intereses_moratorios_si": {
+      "clave": "intereses_moratorios",
+      "igual": "Sí"
+    },
+    "intereses_ordinarios_si": {
+      "clave": "intereses_ordinarios",
+      "igual": "Sí"
+    },
+    "suscriptor_fisica": {
+      "clave": "tipo_suscriptor",
+      "igual": "Física"
+    },
+    "suscriptor_moral": {
+      "clave": "tipo_suscriptor",
+      "igual": "Moral"
+    }
+  },
+  "pagare-negocios": {
+    "aval_moral": {
+      "clave": "tipo_aval",
+      "igual": "Moral"
+    },
+    "genera_intereses_moratorios_si": {
+      "clave": "genera_intereses_moratorios",
+      "igual": "Sí"
+    },
+    "genera_intereses_ordinarios_si": {
+      "clave": "genera_intereses_ordinarios",
+      "igual": "Sí"
+    },
+    "suscriptor_moral": {
+      "clave": "tipo_suscriptor",
+      "igual": "Moral"
+    },
+    "tiene_aval_si": {
+      "clave": "tiene_aval",
+      "igual": "Sí"
+    }
+  },
+  "permuta": {
+    "compensacion_si": {
+      "clave": "pago_compensacion",
+      "igual": "Sí"
+    },
+    "parte_a_fisica": {
+      "clave": "tipo_parte_a",
+      "igual": "Física"
+    },
+    "parte_a_moral": {
+      "clave": "tipo_parte_a",
+      "igual": "Moral"
+    },
+    "parte_b_fisica": {
+      "clave": "tipo_parte_b",
+      "igual": "Física"
+    },
+    "parte_b_moral": {
+      "clave": "tipo_parte_b",
+      "igual": "Moral"
+    },
+    "pena_si": {
+      "clave": "pena_convencional",
+      "igual": "Sí"
+    }
+  },
+  "prestacion-servicios": {
+    "intereses_si": {
+      "clave": "intereses_incumplimiento",
+      "igual": "Sí"
+    },
+    "prestadora_fisica": {
+      "clave": "tipo_prestadora",
+      "igual": "Física"
+    },
+    "prestadora_moral": {
+      "clave": "tipo_prestadora",
+      "igual": "Moral"
+    },
+    "prestataria_fisica": {
+      "clave": "tipo_prestataria",
+      "igual": "Física"
+    },
+    "prestataria_moral": {
+      "clave": "tipo_prestataria",
+      "igual": "Moral"
+    }
+  },
+  "prestacion-servicios-negocios": {
+    "intereses_si": {
+      "clave": "intereses_si",
+      "igual": "Sí"
+    },
+    "prestadora_fisica": {
+      "clave": "tipo_prestadora",
+      "igual": "Física"
+    },
+    "prestadora_moral": {
+      "clave": "tipo_prestadora",
+      "igual": "Moral"
+    },
+    "prestataria_fisica": {
+      "clave": "tipo_prestataria",
+      "igual": "Física"
+    },
+    "prestataria_moral": {
+      "clave": "tipo_prestataria",
+      "igual": "Moral"
+    }
+  },
+  "promesa-compraventa-inmueble": {
+    "con_comparecencia": {
+      "clave": "regimen_propiedad_promitente_vendedor",
+      "igual": "Es dueño del bien del inmueble junto con otras personas"
+    },
+    "gravamen_si": {
+      "clave": "tiene_gravamen",
+      "igual": "Sí"
+    },
+    "pena_si": {
+      "clave": "pena_convencional",
+      "igual": "Sí"
+    },
+    "promitente_comprador_fisica": {
+      "clave": "tipo_promitente_comprador",
+      "igual": "Física"
+    },
+    "promitente_comprador_moral": {
+      "clave": "tipo_promitente_comprador",
+      "igual": "Moral"
+    },
+    "promitente_vendedor_fisica": {
+      "clave": "tipo_promitente_vendedor",
+      "igual": "Física"
+    },
+    "promitente_vendedor_moral": {
+      "clave": "tipo_promitente_vendedor",
+      "igual": "Moral"
+    },
+    "seriedad_si": {
+      "clave": "pago_seriedad_garantia",
+      "igual": "Sí"
+    }
+  },
+  "promesa-compraventa-inmueble-negocios": {
+    "con_comparecencia": {
+      "clave": "regimen_propiedad_promitente_vendedor",
+      "igual": "Es dueño del inmueble junto con otras personas"
+    },
+    "gravamen_si": {
+      "clave": "tiene_gravamen",
+      "igual": "Sí"
+    },
+    "pena_si": {
+      "clave": "pena_convencional",
+      "igual": "Sí"
+    },
+    "promitente_comprador_fisica": {
+      "clave": "tipo_promitente_comprador",
+      "igual": "Física"
+    },
+    "promitente_comprador_moral": {
+      "clave": "tipo_promitente_comprador",
+      "igual": "Moral"
+    },
+    "promitente_vendedor_fisica": {
+      "clave": "tipo_promitente_vendedor",
+      "igual": "Física"
+    },
+    "promitente_vendedor_moral": {
+      "clave": "tipo_promitente_vendedor",
+      "igual": "Moral"
+    },
+    "seriedad_si": {
+      "clave": "pago_seriedad_garantia",
+      "igual": "Sí"
+    }
+  },
+  "recibo-pago": {
+    "acreedor_fisica": {
+      "clave": "tipo_acreedor",
+      "igual": "Física"
+    },
+    "acreedor_moral": {
+      "clave": "tipo_acreedor",
+      "igual": "Moral"
+    },
+    "deudor_fisica": {
+      "clave": "tipo_deudor",
+      "igual": "Física"
+    },
+    "deudor_moral": {
+      "clave": "tipo_deudor",
+      "igual": "Moral"
+    }
+  },
+  "recibo-pago-negocios": {
+    "acreedor_moral": {
+      "clave": "tipo_acreedor",
+      "igual": "Moral"
+    },
+    "deudor_moral": {
+      "clave": "tipo_deudor",
+      "igual": "Moral"
+    }
+  },
+  "recibo-pago-renta": {
+    "arrendador_fisica": {
+      "clave": "tipo_arrendador",
+      "igual": "Física"
+    },
+    "arrendador_moral": {
+      "clave": "tipo_arrendador",
+      "igual": "Moral"
+    }
+  },
+  "requerimiento-pago": {
+    "acreedor_fisica": {
+      "clave": "tipo_acreedor",
+      "igual": "Física"
+    },
+    "acreedor_moral": {
+      "clave": "tipo_acreedor",
+      "igual": "Moral"
+    },
+    "deudor_fisica": {
+      "clave": "tipo_deudor",
+      "igual": "Física"
+    },
+    "deudor_moral": {
+      "clave": "tipo_deudor",
+      "igual": "Moral"
+    },
+    "intereses_si": {
+      "clave": "intereses_exigidos",
+      "igual": "Sí"
+    }
+  },
+  "requerimiento-pago-negocios": {
+    "acreedor_fisica": {
+      "clave": "tipo_acreedor",
+      "igual": "Física"
+    },
+    "acreedor_moral": {
+      "clave": "tipo_acreedor",
+      "igual": "Moral"
+    },
+    "deudor_fisica": {
+      "clave": "tipo_deudor",
+      "igual": "Física"
+    },
+    "deudor_moral": {
+      "clave": "tipo_deudor",
+      "igual": "Moral"
+    },
+    "intereses_si": {
+      "clave": "intereses_exigidos",
+      "igual": "Sí"
+    }
+  },
+  "rescision-contrato": {
+    "notificante_fisica": {
+      "clave": "tipo_notificante",
+      "igual": "Física"
+    },
+    "notificante_moral": {
+      "clave": "tipo_notificante",
+      "igual": "Moral"
+    }
+  },
+  "rescision-contrato-negocios": {
+    "notificante_fisica": {
+      "clave": "tipo_notificante",
+      "igual": "Física"
+    },
+    "notificante_moral": {
+      "clave": "tipo_notificante",
+      "igual": "Moral"
+    }
+  },
+  "suministro": {
+    "confidencialidad_si": {
+      "clave": "confidencialidad_si",
+      "igual": "Sí"
+    },
+    "exclusividad_suministrada_si": {
+      "clave": "exclusividad_suministrada_si",
+      "igual": "Sí"
+    },
+    "exclusividad_suministradora_si": {
+      "clave": "exclusividad_suministradora_si",
+      "igual": "Sí"
+    },
+    "intereses_si": {
+      "clave": "intereses_si",
+      "igual": "Sí"
+    },
+    "suministrada_fisica": {
+      "clave": "tipo_suministrada",
+      "igual": "Física"
+    },
+    "suministrada_moral": {
+      "clave": "tipo_suministrada",
+      "igual": "Moral"
+    },
+    "suministradora_fisica": {
+      "clave": "tipo_suministradora",
+      "igual": "Física"
+    },
+    "suministradora_moral": {
+      "clave": "tipo_suministradora",
+      "igual": "Moral"
+    },
+    "terminacion_anticipada_si": {
+      "clave": "terminacion_anticipada_si",
+      "igual": "Sí"
+    },
+    "vigencia_determinada": {
+      "clave": "tipo_vigencia",
+      "igual": "Por un periodo determinado"
+    }
+  }
+}

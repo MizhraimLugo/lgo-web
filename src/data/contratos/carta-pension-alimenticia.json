@@ -1,0 +1,101 @@
+{
+  "id": "carta-pension-alimenticia",
+  "nombre": "Carta Exigiendo el Pago de Pensión Alimenticia",
+  "explicacion": "**¿Qué es?**\nLa **carta exigiendo el pago de pensión alimenticia**, es el documento por el cual se requiere a una persona cumplir con la obligación de pagar una pensión alimenticia. Siendo reconocida ya sea por una decisión judicial o por ministerio de ley.\n\n## **¿Para qué sirve la carta exigiendo el pago de pensión alimenticia?**\n\nSirve para documentar el requerimiento del pago de la pensión alimenticia a que tiene derecho una persona. Y en su caso, contar con medios de prueba judiciales que apoyen la resolución de un conflicto.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Deudor alimenticio:** Persona a cumplir con la obligación de otorgar una pensión alimenticia.\n\n**Acreedor alimenticio:** Persona que tiene el derecho a recibir una pensión alimenticia.\n\n### **Requisitos de la carta exigiendo el pago de pensión alimenticia:**\n\n* Demostrar el parentesco. Se puede utilizar un acta de nacimiento de los hijos o del acreedor alimentario.\n* Incluir la cuenta bancaria y clabe interbancaria para que le puedan depositar los adeudos de la pensión alimenticia.\n* Hay que identificar también el lugar de trabajo o la fuente de ingresos del deudor alimentario.\n* Es el derecho que tiene el acreedor alimenticio a recibir recursos económicos necesarios para alimentos, ropa, calzado, medicinas, esparcimiento, educación y útiles escolares.\n* Pueden pedir pensión: El que ejerce la patria potestad, el que tenga bajo su guarda al que necesita alimentos, el tutor, los hermanos y parientes colaterales hasta el cuarto grado, el que tenga bajo su cuidado al que necesita alimentos, el Ministerio Público.\n* Si el Deudor alimentario no paga la pensión alimenticia por más de 90 días, se inscribirá en el Registro de Deudores Alimentarios Morosos. Esta lista se pasará al Buró de Crédito y al Registro Público de la Propiedad. Pudiendo tener una sanción para aquellos deudores de 6 meses hasta 5 años de prisión.\n\n### **Dudas frecuentes:**\n\n**¿Cuándo se suspende o termina la pensión alimenticia?**\n\nCuando el que está obligado a dar alimentos no tenga medios para cumplir. Cuando el que tiene derecho a recibirlos deja de necesitarlos. Cuando el que recibe la pensión decide dejar de estudiar o caiga en algún vicio. Y cuando el que recibe la pensión abandona sin causa justificada el domicilio del acreedor alimenticio.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa **carta exigiendo el pago de pensión alimenticia** se puede confundir con la demanda de pensión alimenticia por saldos vencidos. En este caso ya estamos hablando de una demanda por la vía judicial en materia de derecho familiar.",
+  "fundamento_legal": "Código Civil Federal artículos 301-323 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-primero/titulo-sexto/capitulo-ii/",
+  "precio": 50,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "nombre_acreedor_alimenticio",
+      "etiqueta": "¿Cuál es el nombre de la persona que envía la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_deudor_alimenticio",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibe la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_deudor_alimenticio",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibirá la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_emision",
+      "etiqueta": "¿En qué lugar se emite la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_emision",
+      "etiqueta": "¿En qué fecha se emite la carta?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tiene_resolucion_judicial",
+      "etiqueta": "¿Existe alguna resolución judicial que haya determinado el pago de una pensión alimenticia por parte de la persona que recibe la carta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "datos_juicio",
+      "etiqueta": "Describe los datos de identificación del juicio correspondiente, incluyendo número de expediente, juzgado, ciudad y estado:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_resolucion_judicial", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "porcentaje_pension",
+      "etiqueta": "¿Qué porcentaje de los ingresos mensuales de la persona que recibe la carta se exige como pago de pensión?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "relacion_partes",
+      "etiqueta": "¿Qué relación tiene la persona que emite la carta con la que la recibe?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "otras_personas_pension",
+      "etiqueta": "¿Existen otras personas a quien se les deba pagar pensión alimenticia, adicionales a la persona que envía la carta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "nombres_otros_beneficiarios",
+      "etiqueta": "Indica el nombre de las personas a quienes se les debe pagar una pensión alimenticia:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "otras_personas_pension", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "forma_pago_pension",
+      "etiqueta": "Describe de qué forma se deberá pagar la pensión alimenticia:",
+      "tipo": "texto",
+      "obligatorio": true
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "id": "consignacion-mercantil",
+  "nombre": "Contrato de Consignación Mercantil",
+  "explicacion": "**¿Qué es un contrato de consignación mercantil?**\nEl **contrato de consignación mercantil** es el contrato por virtud del cual, una persona denominada consignante transmite la disponibilidad y no la propiedad de uno o varios bienes muebles, a otra persona denominada consignatario. Para que le pague un precio por ello en caso de venderlos en el término establecido, o se los restituya en caso de no hacerlo.\n\n## **¿Para qué sirve?**\n\nEste contrato se usa para establecer la obligación que contrae una persona de vender mercancías de otra persona.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Consignante:** Hace entrega de bienes muebles con el fin de que otra persona llamada consignatario los venda en un plazo y por un precio acordado.\n\n**Consignatario:** Es quien recibe los bienes muebles para, a su vez, disponer de ellos en favor de un tercero. Sobre la base de la autorización e instrucciones dadas por el consignante.\n\n### **Características del contrato de consignación mercantil:**\n\n* Deben entregarse los bienes para que haga efecto el contrato.\n* Es un contrato bilateral. Es decir, genera entre las partes involucradas obligaciones de carácter recíproco.\n* Es un contrato oneroso. Es decir, es un tipo de contrato en que ambas partes tienen obligaciones y ventajas económicas recíprocas.\n* Tiene como objeto uno a varios bienes muebles.\n* La obligación principal del consignatario es pagar el precio o devolver el bien.\n* Debe tener un plazo.\n\n### **Dudas frecuentes:**\n\n**¿Cuáles son las cusas de terminación del contrato de consignación?**\n\nSon causas de terminación del contrato:\n\n* La ejecución total de las obligaciones derivadas del contrato.\n* El vencimiento del plazo pactado.\n* La muerte de alguno de los contratantes.\n* El mutuo consentimiento; y,\n* El incumplimiento de las obligaciones de alguna de las partes.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de consignación mercantil** podría confundirse con el contrato de compraventa. Sin embargo, en el contrato de consignación, el consignante solamente transmite la disponibilidad de los bienes al consignatario más no la propiedad. Jurídica y fiscalmente no existe una enajenación de bienes, solamente se da su consignación con la finalidad que el consignatario venda dichos bienes.",
+  "fundamento_legal": "Artículo 392 al 394 del Código de Comercio. — https://mexico.justia.com/federales/codigos/codigo-de-comercio/libro-segundo/titulo-sexto/capitulo-iv/",
+  "precio": 120,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_cliente",
+      "etiqueta": "La parte que proveerá el bien (consignante) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_cliente",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la parte que proveerá el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_cliente",
+      "etiqueta": "¿En qué país se constituyó la parte que proveerá el bien?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_cliente",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "representante_cliente",
+      "etiqueta": "¿Cuál es el nombre completo del representante legal de la parte que proveerá el bien?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_cliente",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "caracter_representante_cliente",
+      "etiqueta": "El representante de la parte que proveerá el bien es:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Apoderado legal",
+        "Funcionario con facultades suficientes"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_cliente",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_cliente",
+      "etiqueta": "¿Cuál es el domicilio de la parte que proveerá el bien para su venta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comercializadora",
+      "etiqueta": "La persona que comercializará el bien es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_comercializadora",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que comercializará el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_comercializadora",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la parte que comercializará el bien?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_comercializadora",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nacionalidad_comercializadora",
+      "etiqueta": "¿Cuál es la nacionalidad de la persona que comercializará el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_comercializadora",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comercializará el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien",
+      "etiqueta": "Describe brevemente el bien mueble que se entregará a la persona que lo comercializará:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "bien_asegurado",
+      "etiqueta": "¿Tendrá la parte cliente la obligación de mantener el bien asegurado durante la vigencia del contrato?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "porcentaje_comision",
+      "etiqueta": "¿Qué porcentaje del valor de la venta cobrará la persona que venderá el bien, como pago por sus servicios?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "precio_venta",
+      "etiqueta": "¿Por cuánto se deberá vender el bien? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_vigencia",
+      "etiqueta": "¿Cuántos días estará vigente el contrato?",
+      "tipo": "numero",
+      "obligatorio": true
+    }
+  ]
+}

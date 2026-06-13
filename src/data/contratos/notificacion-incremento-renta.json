@@ -1,0 +1,128 @@
+{
+  "id": "notificacion-incremento-renta",
+  "nombre": "Notificación de Incremento de Renta",
+  "explicacion": "## **¿Qué es la Notificación de Incremento de Renta?**\n\nLa **notificación de incremento de renta** es el documento por el cual el arrendador informa a través de una notificación la intención de aumentar el precio de la renta al arrendatario o inquilino.\n\n### **¿Para qué sirve?**\n\nSirve para que para que el arrendador pueda aumentar el precio de la renta que fue pactado con el arrendatario.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** es la persona con poder legal sobre el inmueble y que pone en arrendamiento dicho inmueble.\n\n**Arrendatario:** es la persona que usará el inmueble a cambio del pago de una renta.\n\n#### **Requisitos de la Notificación de Incremento de Renta:**\n\n* El incremento procederá si ha pasado un año desde el día en que se firmó el contrato de arrendamiento. O después de cada actualización si pasa un año, podrá realizarse nuevamente ese incremento.\n* El arrendatario está obligado a dar aviso de su respuesta al arrendador, que puede ser a favor o rechazando el aumento. Pero es importante que dé respuesta ya que, si vence el plazo señalado en la notificación de aumento de renta, se entenderá que está de acuerdo con dicho aumento.\n* Si el arrendatario no está de acuerdo con el aumento en su respuesta lo tiene que hacer saber para poder negociar tal aumento. Si al final no se llega a un acuerdo, se daría por terminado el contrato.\n* El aviso de actualización de renta deberá realizarse por escrito e incluir un plazo para que el arrendatario pueda dar su respuesta al incremento en el precio de la renta.\n* El aumento debe estar fijado en pesos (moneda nacional). Es conveniente que se manejen rentas en pesos, hay en algunas zonas donde se manejan en dólares y esto puede afectar o beneficiar al arrendatario según la disminución o aumento del tipo de cambio. Por lo que, en este último caso, es mejor fijar un máximo en el incremento que el dólar tenga frente al peso.\n* El aumento no puede superar el 10% del precio que se esté pagando de renta cuando son inmuebles para casa habitación.\n\n#### **Dudas frecuentes:**\n\n**¿Los recibos de arrendamiento sirven como comprobante de existencia del contrato?**\n\nSi, estos recibos además de probar que el arrendatario ha realizado el pago de su renta, le sirven al arrendador para comprobar que el contrato de arrendamiento existe.\n\n**¿Con qué documento lo puedo confundir?**\n\nPuedes confundir la **notificación de incremento de renta** con la carta de aviso de desalojo, o aviso de terminación del arrendamiento.",
+  "fundamento_legal": "Código Civil para el Distrito Federal ahora Ciudad de México en el artículo 2448-D — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-sexto/capitulo-iv/#articulo-2448-d",
+  "precio": 40,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que realiza la notificación (arrendador) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que realizará la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que realizará la notificación?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que recibirá la notificación (arrendatario) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_arrendatario",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibe la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato_arrendamiento",
+      "etiqueta": "¿En qué fecha se celebró el contrato de arrendamiento del cual se incrementará la renta pactada?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "¿En qué domicilio se ubica el bien inmueble que se otorgó en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_inmueble",
+      "etiqueta": "Describe brevemente en qué consiste el bien inmueble que se otorgó en arrendamiento:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "clausula_aumento",
+      "etiqueta": "¿En el contrato de arrendamiento que han celebrado las partes, se ha pactado alguna cláusula relacionada con el aumento de la renta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "nueva_renta",
+      "etiqueta": "¿A qué cantidad se incrementará la nueva renta? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_nueva_renta",
+      "etiqueta": "¿A partir de qué fecha se deberá realizar el pago del nuevo monto de la renta?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "deposito_otorgado",
+      "etiqueta": "¿La persona que renta el bien inmueble otorgó alguna cantidad en depósito a favor del propietario del bien inmueble?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "incrementar_deposito",
+      "etiqueta": "¿Será necesario que el depósito que se ha otorgado se incremente en la misma proporción en que se incrementó la renta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"],
+      "depende_de": { "clave_padre": "deposito_otorgado", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se realiza la notificación de incremento de renta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "¿En qué fecha se firma la notificación de incremento de renta?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

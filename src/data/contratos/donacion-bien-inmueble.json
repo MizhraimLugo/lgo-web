@@ -1,0 +1,128 @@
+{
+  "id": "donacion-bien-inmueble",
+  "nombre": "Contrato de Donación de Bien Inmueble",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato de donación de bien inmueble** es el documento por el cual una persona transmite a otra la propiedad de uno o varios bienes inmuebles de forma gratuita.\n\n## **¿Para qué sirve el contrato de donación de bien inmueble?**\n\nSirve para que una persona pueda transmitir un bien inmueble a otra, sin que exista de por medio un precio a pagar por parte de la persona que recibe el bien inmueble.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Donante:** La persona que transmitirá un bien inmueble a otra de forma gratuita.\n\n**Arrendatario:** La persona que recibe del donante un bien inmueble sin pagar un precio a cambio.\n\n### **Requisitos del contrato de donación de bien inmueble:**\n\n* Solo pueden donarse los bienes presentes del donante.\n* La transmisión es de forma gratuita.\n* Los bienes inmuebles deben donarse mediante escritura pública ante notario.\n* Hay que resaltar que las donaciones entre cónyuges, entre ascendientes a descendientes y las de descendientes a ascendientes se encuentran exentas del Impuesto Sobre la Renta.\n* En caso de una donación no exenta, el Impuesto Sobre la Renta que se causa es del 20% sobre el total para residentes en México y 25% para residentes en el extranjero.\n* La exención solo es del Impuesto Sobre la Renta. Pero en los diferentes estados de la República pueden causar un impuesto sobre adquisición de inmuebles. Además de que se tiene que pagar los derechos de inscripción en el Registro Público de la Propiedad correspondiente.\n\n### **Dudas frecuentes:**\n\n**¿Las donaciones se pueden revocar?**\n\nSí, pueden ser por superveniencia de los hijos. Cuando se hacen en el momento que no tenías hijos, y después de la donación tienes uno puedes revocarla. O también se puede revocar por ingratitud, cuando el donatario comete un delito en contra del donante, o cuando el donante cae en necesidad y el donatario no lo ayuda. Esto por supuesto, dentro del monto de lo que le fue donado.\n\n**¿Con qué documento lo puedo confundir?**\n\nSe puede confundir con la sucesión testamentaria. Es muy común que exista confusión entre estas dos figuras jurídicas. Ya que en un **contrato de donación de bien inmueble** se hace una transmisión de la propiedad de manera gratuita, igual que en una sucesión testamentaria.\n\nLa diferencia entre la donación y la sucesión recae en que en la primera se puede hacer mientras la persona dueña del inmueble está con vida. Mientras que en la sucesión testamentaria la persona propietaria del bien ha fallecido.",
+  "fundamento_legal": "Código Civil Federal: Arts. 2332 al 2342, 2345 al 2356 y del 2359 al 2383. — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-cuarto/capitulo-i/#articulo-2332",
+  "precio": 150,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_donante",
+      "etiqueta": "La persona que donará el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_donante",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que donará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_donante",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que donará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_donante", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_donante",
+      "etiqueta": "¿Cuál es el domicilio de la persona que donará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_donatario",
+      "etiqueta": "La persona que recibirá el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_donatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_donatario",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibirá el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "regimen_propiedad_donante",
+      "etiqueta": "La persona que donará el bien inmueble:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Es el único dueño del inmueble",
+        "Es dueño del inmueble junto con otras personas",
+        "Se encuentra bajo el régimen de bienes separados y es el dueño del bien inmueble",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "nombres_otros_propietarios",
+      "etiqueta": "Indica el nombre completo de las otras personas que son propietarias del bien inmueble",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "regimen_propiedad_donante", "valor_que_activa": "Es dueño del inmueble junto con otras personas" }
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "Determine el domicilio del bien inmueble que se donará:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tiene_gravamen",
+      "etiqueta": "¿El bien inmueble que se donará tiene alguna garantía, carga o gravamen?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "descripcion_gravamen",
+      "etiqueta": "Indica qué garantía tiene el bien inmueble que se donará:",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_gravamen", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "donante_paga_adeudos",
+      "etiqueta": "¿Deseas incluir que a fin de que el inmueble esté libre de cualquier adeudo o carga el donante se hará cargo de cualquier pago que se deba realizar?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "id": "arrendamiento-casa-opcion-compra",
+  "nombre": "Contrato de Arrendamiento de Casa (opción a compra)",
+  "explicacion": "## **¿Qué es?**\n\nEl contrato de arrendamiento de casa (opción a compra) está conformado por dos tipos de contratos, uno de arrendamiento de casa habitación y otro de compraventa.\n\nPor un lado el contrato de arrendamiento de casa, es aquél contrato por el cual una de las partes llamada \"**arrendador**\" se obliga a dar a la otra, llamada \"**arrendatario**\" el goce o uso de una cosa habitación por tiempo determinado y con un precio cierto.\n\nPor otro lado, un contrato de compraventa en donde, una vez finalizado el plazo del contrato de arrendamiento de casa, el \"**arrendatario\"** tendrá la opción de comprar, con un precio fijo y determinado, al \"**arrendador\"**, dicha casa.\n\n### **¿Para qué sirve el contrato de arrendamiento de casa (opción a compra)?**\n\nEs un contrato mixto que se usa cuando se busca tanto la cesión temporal del uso de una vivienda para habitar en ella, como la opción a comprarla, por un precio fijo y determinado.\n\n### **¿Quienes intervienen en el contrato?**\n\n**Arrendador:** Quien es el dueño de la casa habitación y quien la dará en renta.\n\n**Arrendatario:** Es la persona interesada en habitar la casa por un tiempo determinado, y que también tiene intensiones de comprarla en un futuro.\n\n**¿Qué debe incluir el contrato de arrendamiento de casa (opción a compra)?**\n\n* El plazo que se está otorgando para el arrendamiento\n* El monto que se debe pagar de renta\n* Derechos y obligaciones de ambas partes\n* El plazo en el que el arrendatario podrá ejercer su opción a compra de la casa habitación.\n* El precio de la casa habitación para realizar la compra de la misma.\n\n#### **Dudas frecuentes:**\n\n**¿Qué duración debe tener el contrato?**\n\nRealmente las partes definen la vigencia del contrato, aunque es importante saber que en un arrendamiento, en caso de que no se especifique por contrato, la legislación federal applicable tomará el plazo de un año como válido, el cuál se renovará automáticamente si las partes no tienen intenciones de sustituir el contrato o cambiar términos o condiciones.\n\n**¿En qué momento puedo ejercer mi opción de compra?**\n\nEsta condición debe ser acordada por las partes, lo más común es que se especifique que se podrá ejercer la opción a compra en cualquier momento durante la vigencia del contrato.\n\n**¿Cómo calcular el valor del inmueble?**\n\nEs recomendable que al momento de firmar el contrato de arrendamiento de casa (opción a compra) se realice un avalúo del bien inmueble y se especifique por contrato.\n\n#### **¿Con qué documento lo puedo confundir?**\n\nNo confundas el **Contrato de arrendamiento de casa habitación con opción a compra**, con un **Contrato de arrendamiento financiero**, ya que el primero se usa sobre bienes inmuebles (vivienda), y el segundo se utiliza principalmente para equipo de trabajo (instalaciones).\n\n#### **Otras formas como puede llamarse este documento:**\n\nContrato de arrendamiento de casa habitación y opción de compraventa.",
+  "fundamento_legal": "Código Civil Federal, Título VI, Capítulo I — https://www.juridicas.unam.mx/legislacion/ordenamiento/codigo-civil-federal#2641",
+  "precio": 200,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que dará el bien en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que dará en arrendamiento la casa habitación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que dará el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_arrendador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que dará el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que recibirá el bien en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que recibirá el bien en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendatario", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_casa",
+      "etiqueta": "¿Cuál es el domicilio donde se ubica la casa habitación que se dará en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_arrendador",
+      "etiqueta": "La persona que dará en arrendamiento la casa habitación:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No se encuentra casado y es el único dueño del inmueble",
+        "No se encuentra casado y es dueño del inmueble junto con otras personas",
+        "Se encuentra casado bajo el régimen de bienes separados",
+        "Se encuentra casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "renta_mensual",
+      "etiqueta": "¿A qué cantidad ascenderá la renta mensual que se pagará? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_pago_renta",
+      "etiqueta": "¿Con cuántos días contará la persona que recibe el bien en arrendamiento para pagar la renta, comenzando desde el primer día del mes?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "cobra_interes_mora",
+      "etiqueta": "¿Se cobrará algún interés en caso de que no se pague la renta a tiempo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_mora",
+      "etiqueta": "¿Cuál será la tasa de interés que se cobrará en caso de incumplimiento en el pago de la renta?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "cobra_interes_mora", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "requiere_deposito",
+      "etiqueta": "¿Será necesario que se entregue cierta cantidad de dinero como depósito para el caso de cualquier incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "meses_deposito",
+      "etiqueta": "¿Cuántos meses de renta se deberán entregar como depósito?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "requiere_deposito", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fecha_inicio_vigencia",
+      "etiqueta": "¿En qué fecha comenzará la vigencia del contrato de arrendamiento?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿tiempo específico o tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Tiempo específico", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Tiempo específico" }
+    },
+    {
+      "clave": "termina_por_muerte",
+      "etiqueta": "¿El contrato se terminará por la muerte de alguna de las partes?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "contratara_seguro",
+      "etiqueta": "¿Deberá la persona que recibe el bien en arrendamiento contratar un seguro que cubra cualquier daño ocasionado a la casa habitación?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "dias_aviso_opcion_compra",
+      "etiqueta": "¿Con cuántos días naturales contará la persona que recibe el bien en arrendamiento para avisar que es su deseo adquirir la casa habitación por el ejercicio de la opción de compra?",
+      "tipo": "numero",
+      "obligatorio": true
+    }
+  ]
+}

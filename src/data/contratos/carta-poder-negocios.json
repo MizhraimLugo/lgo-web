@@ -1,0 +1,176 @@
+{
+  "id": "carta-poder-negocios",
+  "nombre": "Carta Poder",
+  "explicacion": "**¿Qué es una carta poder?**\n\nUna **carta poder** es el documento por el que una persona otorga facultades para que otra persona realice determinados actos jurídicos en su nombre y representación. Como pueden ser trámites ante una dependencia.\n\n## **¿Para qué sirve?**\n\nSirve para que una persona pueda realizar algún tipo de trámite, movimiento o negocio a favor de otra persona.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Otorgante o Representado:** Persona que otorga ciertas facultades a otra persona para actuar en su nombre y representación para realizar ciertos actos jurídicos. Básicamente para asuntos específicos, muy sencillos y limitados.\n\n**Representante:** Persona a la que se le otorga ciertas facultades para actuar en nombre y en representación de la persona que le otorgó dichas facultades.\n\n### **Requisitos de la carta poder:**\n\n* Debe contar con los siguientes elementos: Nombre de la persona que recibirá la carta, nombre y firma del cedente.\n* Debe incluir dentro del cuerpo del escrito la palabra \"otorgo\".\n* Establecer de forma detallada el propósito y las funciones que desempeñará el gestor.\n* También debe establecerse la vigencia durante la cual se podrán hacer uso de las facultades. Es decir, la fecha de inicio y de finalización del poder otorgado.\n* Es un documento privado firmado por el otorgante en presencia de 2 testigos. Por lo cual deberá contener el nombre y firma de cada uno de ellos.\n* El interés del negocio para el que se confiere la carta poder no deberá de exceder de mil veces el salario mínimo general vigente para la Ciudad de México al momento en que se realice el documento.\n* Es necesario que se establezcan los límites del poder para que el representante no se exceda en su actuar.\n\n### **Dudas frecuentes:**\n\n**¿Necesito realizar la carta poder ante un Notario Público?**\n\nNo. Es un documento privado que  solo necesitará estar suscrito por el otorgante y por dos testigos. A diferencia del poder notarial, que sí se realiza ante un Notario Público y solo es necesario que firme el documento el otorgante del poder.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa **carta poder** se puede confundir con el Poder Notarial, documento que si debe ser celebrado ante notario público.",
+  "fundamento_legal": "Código Civil Federal del Artículos 2551 fracción III, 2555 y 2556 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-noveno/capitulo-i/",
+  "precio": 80,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_otorgante",
+      "etiqueta": "La persona que otorga el poder es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_otorgante",
+      "etiqueta": "¿Cuál es el nombre o denominación de quien otorga el poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_otorgante",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa que otorga el poder?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_otorgante",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "caracter_representante",
+      "etiqueta": "El representante de la persona moral (empresa o asociación) que otorgará el poder es:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Apoderado legal",
+        "Funcionario con facultades suficientes"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_otorgante",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_otorgante",
+      "etiqueta": "¿Cuál es el domicilio de quien otorga el poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_apoderado",
+      "etiqueta": "¿Cuál es el nombre completo de la persona a quien se le otorga el poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_apoderado",
+      "etiqueta": "¿Cuál es el domicilio de la persona a quien se le otorga el poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará la carta poder:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará la carta poder:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tramite_gestion",
+      "etiqueta": "¿Para qué trámite o gestión se otorga el poder?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "institucion_tramite",
+      "etiqueta": "Proporciona el nombre completo de la institución, autoridad o persona ante la cual se realizará el trámite o gestión para el que se requiere la carta poder:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "vigencia_fecha_especifica",
+      "etiqueta": "¿Desea que la carta poder esté vigente hasta alguna fecha específica?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del poder?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "vigencia_fecha_especifica",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "nombre_testigo1",
+      "etiqueta": "¿Cuál es el nombre de uno de los testigos que firmará la carta poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_testigo1",
+      "etiqueta": "¿Cuál es el domicilio del primer testigo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_testigo2",
+      "etiqueta": "¿Cuál es el nombre del segundo testigo que firmará la carta poder?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_testigo2",
+      "etiqueta": "¿Cuál es el domicilio del segundo testigo?",
+      "tipo": "texto",
+      "obligatorio": true
+    }
+  ]
+}

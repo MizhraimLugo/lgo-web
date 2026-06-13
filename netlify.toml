@@ -1,0 +1,20 @@
+# Configuración Netlify — Grupo LGO
+# El sitio se queda ESTÁTICO (Astro SSG): NO hay adapter SSR.
+# Solo las funciones de /contratos corren como endpoints serverless.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # Las plantillas .docx (que rellena netlify/functions/generar.js) NO son código:
+  # esbuild no las detecta como import, así que se declaran aquí para que el
+  # bundler las incluya en el paquete de la función. Carpeta committeada, NO pública.
+  included_files = ["netlify/plantillas/**"]
+
+# Para `netlify dev`: Astro corre en :4321 y Netlify lo proxea + sirve las
+# funciones en /.netlify/functions/<nombre>.
+[dev]
+  targetPort = 4321

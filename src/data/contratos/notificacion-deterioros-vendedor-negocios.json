@@ -1,0 +1,113 @@
+{
+  "id": "notificacion-deterioros-vendedor-negocios",
+  "nombre": "Notificación de Deterioros al Vendedor por el Sismo",
+  "explicacion": "# **¿Qué es?**\n\nLa **notificación de deterioros al vendedor por el sismo** es el documento por el cual se le informa al vendedor y propietario del inmueble que sufrió daños derivados de un sismo. Este aviso se realiza por el adquirente del inmueble.\n\n## **¿Para qué sirve la notificación de deterioros al vendedor por el sismo?**\n\nSirve para que el adquirente del inmueble reporte al dueño del inmueble (casa o departamento) los daños que sufrió el inmueble derivado del sismo. Esto para que contacte a Protección Civil y determine si se puede reparar o demoler porque los daños son irreparables.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Vendedor:** Persona que vende el inmueble.\n\n**Comprador:** Persona que compró el inmueble.\n\n## **Requisitos de la notificación de deterioros al vendedor por el sismo:**\n\n* Se tiene que determinar el daño del inmueble para ver si es seguro o no habitarlo. Para ello tienes que ir con Protección Civil de tu localidad para que emita un dictamen oficial.\n* También se deben documentar los daños a través de una fe de hechos levantada por un Notario Público.\n* El acta que levante el técnico de Protección Civil en el que se dictamine que el inmueble es irreparable.\n* Si compras un inmueble en preventa, y en el sismo sufrió daños o fue pérdida total en principio no puedes terminar el contrato. Claro que si en el contrato opera la terminación si podrías hacerlo, pero por lo general se establece un plazo de entrega del inmueble adquirido y además que en un caso fortuito se puede prorrogar dicho plazo, si después de este plazo el vendedor no entrega el inmueble entonces el comprador puede terminar el contrato invocando una causal de incumplimiento.\n* Otro escenario que se puede presentar es que en alguno de los supuestos antes señalados el vendedor, porque así lo señale el contrato, puede quedar libre de su obligación. En este caso el vendedor debe devolver al comprador el monto del precio recibido en preventa.\n\n### **Dudas frecuentes:**\n\n**¿Si compre el inmueble en preventa y en el sismo sufrió daños o fue pérdida total puedo terminar el contrato?**\n\nEn principio no. Debes revisar el contrato para ver si opera la terminación. Pero por lo general, se establece un plazo de entrega del inmueble adquirido y además que en un caso fortuito se puede prorrogar dicho plazo. Si después de este plazo el vendedor no entrega el inmueble entonces el comprador puede terminar el contrato invocando una causal de incumplimiento.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa **notificación de deterioros al vendedor por el sismo** se puede confundir con la notificación de prórroga y notificación de daños al arrendador. Realmente lo que puede cambiar es el objeto de la notificación. Ya que uno es para extender el contrato, y en daños por el sismo se busca obtener un dictamen y definir el destino el inmueble y las medidas precautorias.",
+  "fundamento_legal": "Código Civil Federal, Arts. 2412 fracción II, 2415, 2417 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-sexto/capitulo-ii/",
+  "precio": 40,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la república.",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_comprador",
+      "etiqueta": "La persona que envía la notificación (comprador) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comprador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que envía la notificación? (comprador)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comprador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que envía la notificación? (comprador)",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comprador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "fecha_contrato",
+      "etiqueta": "¿En qué fecha se celebró el contrato entre el vendedor y comprador?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien",
+      "etiqueta": "Describe el bien que se vendió:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_bien",
+      "etiqueta": "Indica el domicilio del bien que se vendió:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vendedor",
+      "etiqueta": "La persona que recibe la notificación (vendedor) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibe la notificación? (vendedor)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibe la notificación? (vendedor)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_afectada_sismo",
+      "etiqueta": "Indica la ciudad o región afectada por el sismo, donde se ubica el inmueble:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "danos_deterioros",
+      "etiqueta": "Indica los daños y deterioros que sufrió el inmueble:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "incluir_info_adicional",
+      "etiqueta": "¿Deseas incluir alguna nota o información adicional a la notificación?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "ciudad_elaboracion",
+      "etiqueta": "¿En qué ciudad se elabora la notificación?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_elaboracion",
+      "etiqueta": "¿En qué fecha se elabora la notificación?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

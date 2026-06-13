@@ -1,0 +1,127 @@
+{
+  "id": "prestacion-servicios-negocios",
+  "nombre": "Contrato de Prestación de Servicios",
+  "explicacion": "En el contrato de prestación de servicios una persona (profesionista) se obliga con respecto a otra a realizar una serie de servicios a cambio de un precio.\n\n### **¿Para qué sirve?**\n\nSe usa para formalizar la prestación del servicio que realizará una persona en favor de otra y determinar los términos y condiciones bajo los cuales deberá prestar esos servicios.\n\n### **¿Quiénes intervienen en el contrato?**\n\n**Profesionista:** es la persona especializada en cierto campo que prestará el servicio.\n\n**Cliente:** es la persona que recibe el servicio.\n\n### **Requisitos del contrato de prestación de servicios:**\n\n* **Partes**: Es necesario identificar correctamente a las partes desde el principio y especificar todos los datos correctamente. Asimismo, deben ir acompañadas de una identificación oficial. Para las empresas, se debe incluir la razón social y representante legal que firma el contrato.\n* **Servicios:** Se debe señalar a detalle los servicios que se van a realizar a cambio de una cantidad de dinero.\n* **La contraprestación:** Debemos incluir el pago, y debe quedar reflejado tanto las fechas acordadas como la forma de pago.\n* **Limitaciones:** Es necesario dejar constancia de hasta donde es el alcance de la responsabilidad y trabajo a realizar.\n\n#### **Dudas frecuentes:**\n\n**¿Puedo tener más de un contrato de prestación de servicios firmado con varias personas?**\n\nSi, puedes tener varios contratos, ya que no es una relación laboral y estás en libertad de prestar tus servicios a las personas que tu decidas.\n\n**¿Con qué documento lo puedo confundir?**\n\nSe puede confundir con el contrato de laboral o de trabajo.\n\n**Diferencia entre contrato laboral y prestación de servicios profesionales:**\n\n- En materia laboral, el trabajo es subordinado y en el caso de una prestación de servicios no lo es.\n\n- El contrato de trabajo debe ser prestado en forma personal mientras que el servicio profesional no necesariamente, ya que incluso puede ser prestado por varios profesionales y/o ayudantes.\n\n- En el caso del contrato laboral, el pago es un salario y en una prestación de servicios es un pago de honorarios.\n\n- La prestación del trabajo se realiza en el domicilio del patrón y la prestación del servicio profesional normalmente se realiza en el domicilio del profesionista y con sus propios medios.\n\n- La responsabilidad por actos del trabajador frente a terceros es de la empresa y la responsabilidad del profesionista es personal.\n\n- Los contratos de trabajo se generalmente son por tiempo indefinido mientas que el contrato de prestación de servicios profesionales normalmente tiene una fecha de vencimiento.",
+  "fundamento_legal": "Artículos 2606 al 2615 del Código Civil Federal — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-decimo/capitulo-ii/",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_prestataria",
+      "etiqueta": "La parte a quien se le prestan los servicios es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_prestataria",
+      "etiqueta": "¿Cuál es el nombre de la persona moral (denominación social) a quien se le prestarán los servicios?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_prestataria",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona moral a quien se le prestarán los servicios?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_prestataria", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_prestataria",
+      "etiqueta": "¿Cuál es el domicilio de la parte a quien se le prestarán los servicios?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_prestadora",
+      "etiqueta": "La parte que prestará los servicios es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_prestadora",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que prestará los servicios?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_prestadora",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que prestará los servicios?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_prestadora", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_prestadora",
+      "etiqueta": "¿Cuál es el domicilio de la persona que prestará los servicios?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar donde se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_servicios",
+      "etiqueta": "Describa los servicios que se prestarán:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "meses_vigencia",
+      "etiqueta": "¿Por cuántos meses estará vigente el contrato?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_contraprestacion",
+      "etiqueta": "¿Cuánto se pagará por la prestación de los servicios? (tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_pago",
+      "etiqueta": "Describe la forma de pago de los servicios:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "intereses_si",
+      "etiqueta": "En caso de incumplimiento del pago, ¿se generarán intereses mensualmente por el retraso en dicho pago?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes",
+      "etiqueta": "¿Qué tasa de interés se aplicará en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "intereses_si", "valor_que_activa": "Sí" }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "id": "contrato-mutuo-negocios",
+  "nombre": "Contrato de Mutuo",
+  "explicacion": "# **¿Qué es el contrato de mutuo?**\n\nEl **contrato de mutuo** es un documento por medio del cual una persona llamada mutuante se obliga a transferir la propiedad de una cantidad de dinero u otras cosas fungibles a otra persona llamada mutuario quien se obliga a devolver otro tanto de la misma especie y calidad.\n\n### **¿Para qué sirve?**\n\nPrincipalmente este tipo de contrato se usa para préstamo de dinero.\n\n### **¿Quiénes intervienen en el contrato? (explicar cada una)**\n\n**Mutuante:** es la persona que presta o da a otra una cosa fungible. Con la condición de que se le restituya otro tanto de la misma especie y calidad.\n\n**Mutuatario:** es la persona que recibe dinero u otro bien fungible en calidad de préstamo.\n\n#### **Requisitos del contrato de mutuo:**\n\n* Consentimiento: Esto sucede cuando el mutuante está conforme en transmitir la propiedad de una suma de dinero o de otra cosa fungible al mutuario.\n* Objeto: Será la cantidad de dinero o los bienes fungibles que el mutuante se obliga a transmitir al mutuario.\n* Capacidad: Actualmente la ley no regula en especial la capacidad para ser mutuante. Solamente por lo que se refiere a ser mutuatario, no pueden aceptar en préstamo dinero además de los incapaces para contratar, los menores emancipados y los que hayan obtenido judicialmente el beneficio de la mayor edad. Estos últimos necesitarán para ello el consentimiento de sus padres o de su tutor.\n* Forma: El consentimiento no necesita exteriorizarse de determinada manera para su validez. Ya que puede ser tácito (realización de actos que suponen a presumir el consentimiento) o expreso (por escrito).\n\n#### **Dudas frecuentes:**\n\n**¿Todos los contratos de préstamo o mutuo incluyen interés?**\n\nNo, algunos contratos de mutuo son simples sin intereses.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de mutuo** se puede confundir con el pagaré.",
+  "fundamento_legal": "Artículos 2384 al 2392 del Código Civil Federal — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-quinto/capitulo-i/",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_mutuante",
+      "etiqueta": "La persona que presta es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_mutuante",
+      "etiqueta": "¿Cuál es el nombre de la persona que hará el préstamo? (nombre completo o denominación social)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_mutuante",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa que hará el préstamo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_mutuante",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_mutuante",
+      "etiqueta": "¿Cuál es el domicilio de la persona que hará el préstamo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_mutuario",
+      "etiqueta": "La persona que recibe el préstamo es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_mutuario",
+      "etiqueta": "¿Cuál es el nombre de la persona que recibirá el préstamo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_mutuario",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa que recibirá el préstamo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_mutuario",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_mutuario",
+      "etiqueta": "¿Cuál es el domicilio de la persona que recibirá el préstamo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_prestamo",
+      "etiqueta": "¿Cuánto dinero se prestará? (especifica el tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_devolucion",
+      "etiqueta": "¿En qué fecha se deberá devolver o pagar el préstamo?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "genera_intereses",
+      "etiqueta": "¿El préstamo generará intereses ordinarios?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "tasa_interes",
+      "etiqueta": "¿Qué tasa de interés ordinaria anual se pactará?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "genera_intereses",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "otorga_garantia",
+      "etiqueta": "¿Se deberá otorgar una garantía sobre un bien mueble a favor de la persona que hace el préstamo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "descripcion_bien_garantia",
+      "etiqueta": "Describe el bien que se otorgará como garantía de pago:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "otorga_garantia",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "valor_bien_garantia",
+      "etiqueta": "Determina el valor del bien que se dará en garantía: (especifica el tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "otorga_garantia",
+        "valor_que_activa": "Sí"
+      }
+    }
+  ]
+}
