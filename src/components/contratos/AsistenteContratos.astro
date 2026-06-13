@@ -2,10 +2,11 @@
 // Asistente de contratos — pieza central del flujo /contratos.
 // 1) Puerta de registro: nombre, teléfono y correo (lead para Grupo LGO,
 //    NO datos del contrato). Hasta no completarlo, el chat está bloqueado.
-// 2) Chat: la IA (PASO 3) lleva la conversación — pregunta si ya sabe qué
-//    documento necesita, recomienda el adecuado según el contexto, o deriva a
-//    WhatsApp si no lo tenemos, y llena el formulario conversando.
-// Por ahora el "cerebro" está en stub; la UI y la captura de lead ya quedan.
+// 2) Chat (PASO 3): la IA identifica/recomienda el documento y LLENA sus
+//    campos conversando (form-filling vía tool use en netlify/functions/chat).
+// 3) Panel de progreso: muestra en vivo los datos que se van capturando.
+// 4) Al completar: resumen + botón para enviar el documento al despacho
+//    (netlify/functions/registrar-documento → ClickUp + correo).
 import { business } from '@data/business';
 ---
 <section class="asistente" id="asistente" data-asistente>
@@ -52,35 +53,53 @@ import { business } from '@data/business';
         </form>
       </div>
 
-      <!-- 2) CHAT (oculto hasta registrar) -->
-      <div class="chat" data-chat hidden>
-        <header class="chat-head">
-          <div class="chat-id">
-            <span class="chat-dot" aria-hidden="true"></span>
-            <div>
-              <strong>Asistente de contratos</strong>
-              <span>Grupo LGO · normalmente responde al instante</span>
+      <!-- 2) CHAT + PANEL (ocultos hasta registrar) -->
+      <div class="chat-wrap" data-chat hidden>
+        <div class="chat">
+          <header class="chat-head">
+            <div class="chat-id">
+              <span class="chat-dot" aria-hidden="true"></span>
+              <div>
+                <strong>Asistente de contratos</strong>
+                <span>Grupo LGO · normalmente responde al instante</span>
+              </div>
             </div>
+            <a href={business.whatsappUrl} target="_blank" rel="noopener" class="chat-wa" data-wa>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-1-.3-1.6-.6-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.8.9.8 1.7 1.1 2 1.2.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.6-.1 1.1Z"/>
+              </svg>
+              WhatsApp
+            </a>
+          </header>
+
+          <div class="chat-log" data-chat-log aria-live="polite"></div>
+
+          <form class="chat-form" data-chat-form>
+            <input type="text" class="chat-input" name="mensaje" placeholder="Escribe tu mensaje…"
+              autocomplete="off" aria-label="Tu mensaje" required />
+            <button type="submit" class="chat-send" aria-label="Enviar">
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 11l18-8-8 18-2-7-8-3Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- 3) Panel de progreso del documento -->
+        <aside class="docpanel" data-docpanel hidden>
+          <div class="docpanel-head">
+            <strong data-doc-nombre>Tu documento</strong>
+            <span class="docpanel-sub">Datos que vamos preparando</span>
           </div>
-          <a href={business.whatsappUrl} target="_blank" rel="noopener" class="chat-wa" data-wa>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1-.4-.1-1-.3-1.6-.6-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.5.1.3.7 1.1 1.4 1.8.9.8 1.7 1.1 2 1.2.2.1.4.1.5-.1l.6-.7c.2-.2.3-.2.6-.1l1.8.9c.3.1.4.2.5.3.1.2.1.6-.1 1.1Z"/>
-            </svg>
-            WhatsApp
-          </a>
-        </header>
-
-        <div class="chat-log" data-chat-log aria-live="polite"></div>
-
-        <form class="chat-form" data-chat-form>
-          <input type="text" class="chat-input" name="mensaje" placeholder="Escribe tu mensaje…"
-            autocomplete="off" aria-label="Tu mensaje" required />
-          <button type="submit" class="chat-send" aria-label="Enviar">
-            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 11l18-8-8 18-2-7-8-3Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </form>
+          <ul class="docpanel-list" data-doc-list></ul>
+          <div class="docpanel-done" data-doc-done hidden>
+            <p class="docpanel-done-msg">Tu documento quedó completo. Revísalo y, si todo está bien, lo enviamos a un abogado de Grupo LGO para prepararlo.</p>
+            <button type="button" class="btn btn-primary docpanel-btn" data-doc-confirm>
+              Confirmar y enviar al despacho
+            </button>
+            <p class="docpanel-status" data-doc-status hidden></p>
+          </div>
+        </aside>
       </div>
 
     </div>
@@ -131,9 +150,11 @@ import { business } from '@data/business';
   .gate-btn { grid-column: 1 / -1; justify-self: start; margin-top: 0.25rem; }
   .gate-legal { grid-column: 1 / -1; font-size: var(--text-xs); color: var(--color-muted-soft); margin: 0; }
 
-  /* ---------- Chat ---------- */
-  .chat { display: flex; flex-direction: column; min-height: 30rem; }
-  .chat[hidden] { display: none; }
+  /* ---------- Chat + panel ---------- */
+  .chat-wrap { display: flex; flex-direction: column; }
+  .chat-wrap[hidden] { display: none; }
+
+  .chat { display: flex; flex-direction: column; min-height: 28rem; }
 
   .chat-head {
     display: flex; align-items: center; justify-content: space-between; gap: 1rem;
@@ -178,10 +199,46 @@ import { business } from '@data/business';
     border-radius: var(--radius-sm); cursor: pointer; transition: background 200ms ease;
   }
   .chat-send:hover { background: var(--color-accent-hover); }
+
+  /* ---------- Panel de progreso ---------- */
+  .docpanel { border-top: 1px solid var(--color-divider); background: var(--color-surface-alt); padding: 1.25rem; }
+  .docpanel[hidden] { display: none; }
+  .docpanel-head { display: flex; flex-direction: column; gap: 0.1rem; margin-bottom: 0.9rem; }
+  .docpanel-head strong { font-size: var(--text-base); color: var(--color-foreground-strong); }
+  .docpanel-sub { font-size: var(--text-xs); color: var(--color-muted); }
+
+  /* Los .dp-* los inyecta el script con innerHTML, así que el scope de Astro no
+     los alcanza: se anclan con :global() bajo .docpanel-list (que sí es estático). */
+  .docpanel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; }
+  .docpanel-list :global(.dp-item) { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; align-items: start; font-size: var(--text-sm); }
+  .docpanel-list :global(.dp-mark) {
+    width: 1.05rem; height: 1.05rem; margin-top: 0.1rem; border-radius: 50%;
+    border: 1.5px solid var(--color-border-strong); flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; line-height: 1; color: transparent;
+  }
+  .docpanel-list :global(.dp-item.is-done .dp-mark) { background: var(--color-success); border-color: var(--color-success); color: #fff; }
+  .docpanel-list :global(.dp-text) { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+  .docpanel-list :global(.dp-label) { color: var(--color-muted); line-height: 1.35; }
+  .docpanel-list :global(.dp-item.is-done .dp-label) { color: var(--color-foreground); }
+  .docpanel-list :global(.dp-value) { color: var(--color-foreground-strong); font-weight: 600; word-break: break-word; }
+
+  .docpanel-done { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--color-divider); }
+  .docpanel-done[hidden] { display: none; }
+  .docpanel-done-msg { font-size: var(--text-sm); color: var(--color-foreground); margin: 0 0 0.8rem; }
+  .docpanel-btn { width: 100%; justify-content: center; }
+  .docpanel-btn:disabled { opacity: 0.6; cursor: default; }
+  .docpanel-status { font-size: var(--text-sm); font-weight: 600; margin: 0.7rem 0 0; }
+  .docpanel-status[hidden] { display: none; }
+  .docpanel-status.is-ok { color: var(--color-success); }
+  .docpanel-status.is-err { color: var(--color-alert); }
 </style>
 
 <script>
   import { business } from '../../data/business';
+
+  type Campo = { clave: string; etiqueta: string; tipo: string; obligatorio: boolean; activo: boolean; lleno: boolean; valor: string; opciones?: string[] };
+  type Estado = { documento_id: string | null; documento_nombre: string | null; valores: Record<string, string>; campos: Campo[]; completo: boolean };
 
   const root = document.querySelector<HTMLElement>('[data-asistente]');
   if (root) {
@@ -193,12 +250,21 @@ import { business } from '@data/business';
     const chatForm = root.querySelector<HTMLFormElement>('[data-chat-form]')!;
     const chatInput = root.querySelector<HTMLInputElement>('.chat-input')!;
 
+    const docpanel = root.querySelector<HTMLElement>('[data-docpanel]')!;
+    const docNombre = root.querySelector<HTMLElement>('[data-doc-nombre]')!;
+    const docList = root.querySelector<HTMLElement>('[data-doc-list]')!;
+    const docDone = root.querySelector<HTMLElement>('[data-doc-done]')!;
+    const docConfirm = root.querySelector<HTMLButtonElement>('[data-doc-confirm]')!;
+    const docStatus = root.querySelector<HTMLElement>('[data-doc-status]')!;
+
     let lead: { nombre: string; telefono: string; correo: string } | null = null;
     const historial: { role: 'user' | 'assistant'; content: string }[] = [];
+    let estado: Estado = { documento_id: null, documento_nombre: null, valores: {}, campos: [], completo: false };
 
     const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const linkify = (t: string) =>
       escapeHtml(t).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    const truncar = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 
     const addMsg = (text: string, who: 'bot' | 'user') => {
       const el = document.createElement('div');
@@ -206,6 +272,24 @@ import { business } from '@data/business';
       if (who === 'user') el.textContent = text; else el.innerHTML = linkify(text);
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
+    };
+
+    // ── Panel de progreso ──
+    const renderPanel = () => {
+      if (!estado.documento_id) { docpanel.hidden = true; return; }
+      docpanel.hidden = false;
+      docNombre.textContent = estado.documento_nombre || 'Tu documento';
+
+      const activos = (estado.campos || []).filter((c) => c.activo);
+      docList.innerHTML = activos.map((c) => {
+        const etiqueta = c.etiqueta.replace(/[¿?:]+$/g, '').trim();
+        const valor = c.lleno ? `<span class="dp-value">${escapeHtml(truncar(c.valor, 90))}</span>` : '';
+        return `<li class="dp-item${c.lleno ? ' is-done' : ''}">` +
+          `<span class="dp-mark" aria-hidden="true">✓</span>` +
+          `<span class="dp-text"><span class="dp-label">${escapeHtml(etiqueta)}</span>${valor}</span></li>`;
+      }).join('');
+
+      docDone.hidden = !estado.completo;
     };
 
     // ── Registro de lead ──
@@ -262,7 +346,11 @@ import { business } from '@data/business';
         const r = await fetch('/.netlify/functions/chat', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ mensaje: msg, historial })
+          body: JSON.stringify({
+            mensaje: msg,
+            historial,
+            estado: { documento_id: estado.documento_id, valores: estado.valores }
+          })
         });
         const data = await r.json().catch(() => ({}));
         typing.remove();
@@ -271,12 +359,42 @@ import { business } from '@data/business';
           : (data.error || `Tuvimos un problema. Si prefiere, escríbanos por WhatsApp: ${business.whatsappUrl}`);
         addMsg(reply, 'bot');
         historial.push({ role: 'user', content: msg }, { role: 'assistant', content: reply });
+        if (r.ok && data.estado) { estado = data.estado as Estado; renderPanel(); }
       } catch {
         typing.remove();
         addMsg(`Tuvimos un problema de conexión. Si prefiere, escríbanos por WhatsApp: ${business.whatsappUrl}`, 'bot');
       } finally {
         chatInput.disabled = false;
         chatInput.focus();
+      }
+    });
+
+    // ── Confirmar y enviar el documento al despacho ──
+    docConfirm.addEventListener('click', async () => {
+      if (!lead || !estado.documento_id) return;
+      docConfirm.disabled = true;
+      docStatus.hidden = false;
+      docStatus.className = 'docpanel-status';
+      docStatus.textContent = 'Enviando…';
+
+      try {
+        const r = await fetch('/.netlify/functions/registrar-documento', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ lead, documento_id: estado.documento_id, valores: estado.valores })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.ok) {
+          docStatus.className = 'docpanel-status is-ok';
+          docStatus.textContent = '✓ Enviado. Un abogado de Grupo LGO se pondrá en contacto contigo.';
+          addMsg('Listo, ya envié tus datos a un abogado de Grupo LGO. En breve se pondrán en contacto contigo para entregarte tu documento. ¿Hay algo más en lo que pueda ayudarte?', 'bot');
+        } else {
+          throw new Error(data.error || 'fallo');
+        }
+      } catch {
+        docConfirm.disabled = false;
+        docStatus.className = 'docpanel-status is-err';
+        docStatus.textContent = `No se pudo enviar. Intenta de nuevo o escríbenos por WhatsApp: ${business.whatsappUrl}`;
       }
     });
   }
