@@ -30,9 +30,8 @@ export const nav: NavItem[] = [
   // aparecen aquí automáticamente.
   { label: 'Servicios', childSource: 'publishedSubBrands' },
 
-  // Autoservicio de contratos: sección propia (no dentro de Servicios),
-  // para que se encuentre fácil. Páginas noindex (ver Base/Seo + sitemap).
-  { label: 'Contratos', href: '/contratos/' },
+  // Nota: /contratos NO va en el nav a propósito. Se accede desde la ficha
+  // destacada en Inicio y en LGO Abogados (ContratosFeature.astro).
   { label: 'Cursos', href: '/cursos/' },
   { label: 'Perspectivas', href: '/perspectivas/' },
   { label: 'Contacto', href: '/contacto/' }
