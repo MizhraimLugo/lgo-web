@@ -108,7 +108,8 @@ import { business } from '@data/business';
         <div class="payret-spin" data-payret-spin aria-hidden="true"></div>
         <h2 class="payret-title" data-payret-title>Confirmando tu pago…</h2>
         <p class="payret-msg" data-payret-msg>Un momento, estamos verificando tu pago con Mercado Pago.</p>
-        <a href="/contratos/" class="btn btn-primary payret-back" data-payret-back hidden>Volver al asistente</a>
+        <button type="button" class="btn btn-primary payret-download" data-payret-download hidden>Descargar mi documento</button>
+        <a href="/contratos/" class="btn payret-back" data-payret-back hidden>Volver al asistente</a>
       </div>
 
     </div>
@@ -288,6 +289,7 @@ import { business } from '@data/business';
     const payTitle = root.querySelector<HTMLElement>('[data-payret-title]')!;
     const payMsg = root.querySelector<HTMLElement>('[data-payret-msg]')!;
     const payBack = root.querySelector<HTMLElement>('[data-payret-back]')!;
+    const payDownload = root.querySelector<HTMLButtonElement>('[data-payret-download]')!;
 
     let lead: { nombre: string; telefono: string; correo: string } | null = null;
     const historial: { role: 'user' | 'assistant'; content: string }[] = [];
@@ -442,6 +444,21 @@ import { business } from '@data/business';
       try { sessionStorage.removeItem('lgo_orden'); } catch {}
     }
 
+    function descargarDocx(b64: string, filename: string, mime?: string) {
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const blob = new Blob([bytes], { type: mime || 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename || 'documento.docx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+
     async function manejarRetornoPago(ordenId: string, paymentId: string | null) {
       gate.hidden = true;
       chat.hidden = true;
@@ -461,7 +478,7 @@ import { business } from '@data/business';
           const data = await r.json().catch(() => ({}));
           if (data.pagado && data.token) { token = data.token; break; }
           if (data.status === 'consumed') {
-            finPago('ok', 'Este pago ya se procesó', 'Tu documento ya está en proceso con un abogado de Grupo LGO. Te contactaremos en breve.');
+            finPago('ok', 'Este pago ya se procesó', `Tu documento ya fue generado en esta orden. Si necesitas el archivo de nuevo, escríbenos por WhatsApp y te lo reenviamos: ${business.whatsappUrl}`);
             return;
           }
         } catch {}
@@ -473,20 +490,26 @@ import { business } from '@data/business';
         return;
       }
 
-      // Pago confirmado → entrega (interino: envío al despacho, blindado por token).
+      // Pago confirmado → genera y entrega el .docx (blindado por token).
+      payTitle.textContent = 'Generando tu documento…';
+      payMsg.textContent = 'Tu pago se confirmó. Estamos preparando tu documento.';
       try {
-        const r = await fetch('/.netlify/functions/registrar-documento', {
+        const r = await fetch('/.netlify/functions/generar', {
           method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ orden_id: ordenId, token })
         });
         const data = await r.json().catch(() => ({}));
-        if (r.ok && data.ok) {
-          finPago('ok', '¡Pago confirmado!', 'Tu documento quedó pagado y registrado. Un abogado de Grupo LGO te lo entregará en breve. Gracias por tu confianza.');
+        if (r.ok && data.ok && data.docx_base64) {
+          const descargar = () => descargarDocx(data.docx_base64, data.filename, data.mime);
+          descargar();
+          payDownload.hidden = false;
+          payDownload.onclick = descargar;
+          finPago('ok', '¡Tu documento está listo!', 'La descarga comenzó automáticamente. Si no la ves, usa el botón de abajo. Gracias por tu confianza en Grupo LGO.');
         } else {
           throw new Error(data.error || 'fallo');
         }
       } catch {
-        finPago('err', 'Pago confirmado, con un detalle al entregar', `Tu pago se realizó correctamente. Si no recibes tu documento pronto, escríbenos por WhatsApp: ${business.whatsappUrl}`);
+        finPago('err', 'Pago confirmado, con un detalle al generar', `Tu pago se realizó correctamente. Si no pudiste descargar tu documento, escríbenos por WhatsApp y te lo hacemos llegar: ${business.whatsappUrl}`);
       }
     }
   }
