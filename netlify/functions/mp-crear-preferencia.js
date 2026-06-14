@@ -73,13 +73,16 @@ export const handler = async (event) => {
 };
 
 function baseUrl(event) {
-  // DEPLOY_PRIME_URL apunta al contexto correcto: el deploy preview en previews y
-  // el dominio principal en producción. URL es SIEMPRE producción → rompe en previews.
-  const envUrl = process.env.DEPLOY_PRIME_URL || process.env.URL;
-  if (envUrl) return envUrl.replace(/\/$/, '');
-  const host = (event.headers && (event.headers.host || event.headers.Host)) || 'localhost:8888';
-  const proto = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
-  return `${proto}://${host}`;
+  // El HOST del request es el origen real desde donde se llamó (deploy preview o
+  // producción), así el back_url SIEMPRE vuelve al mismo sitio. Las env vars no sirven
+  // aquí: URL es siempre producción y DEPLOY_PRIME_URL no llega al runtime de functions.
+  const h = event.headers || {};
+  const host = h['x-forwarded-host'] || h.host || h.Host;
+  if (host) {
+    const proto = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
+    return `${proto}://${host}`;
+  }
+  return (process.env.DEPLOY_PRIME_URL || process.env.URL || '').replace(/\/$/, '');
 }
 
 function json(statusCode, obj) {
