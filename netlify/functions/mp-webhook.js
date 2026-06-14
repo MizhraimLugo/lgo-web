@@ -9,9 +9,10 @@
 import crypto from 'node:crypto';
 import { paymentApi } from '../lib/mp.js';
 import { getCatalogo } from '../lib/catalogo.js';
-import { getOrden, marcarPagada } from '../lib/ordenes.js';
+import { getOrden, marcarPagada, conectarBlobs } from '../lib/ordenes.js';
 
 export const handler = async (event) => {
+  conectarBlobs(event);
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Método no permitido' };
 
   const q = event.queryStringParameters || {};

@@ -6,9 +6,10 @@
 // Body: { contrato_id, valores, lead }.
 import { preferenceApi } from '../lib/mp.js';
 import { getCatalogo } from '../lib/catalogo.js';
-import { crearOrden } from '../lib/ordenes.js';
+import { crearOrden, conectarBlobs } from '../lib/ordenes.js';
 
 export const handler = async (event) => {
+  conectarBlobs(event);
   if (event.httpMethod !== 'POST') return json(405, { error: 'Método no permitido' });
   if (!process.env.MP_ACCESS_TOKEN) return json(500, { error: 'Falta configurar MP_ACCESS_TOKEN en el servidor.' });
 
@@ -72,7 +73,10 @@ export const handler = async (event) => {
 };
 
 function baseUrl(event) {
-  if (process.env.URL) return process.env.URL.replace(/\/$/, '');
+  // DEPLOY_PRIME_URL apunta al contexto correcto: el deploy preview en previews y
+  // el dominio principal en producción. URL es SIEMPRE producción → rompe en previews.
+  const envUrl = process.env.DEPLOY_PRIME_URL || process.env.URL;
+  if (envUrl) return envUrl.replace(/\/$/, '');
   const host = (event.headers && (event.headers.host || event.headers.Host)) || 'localhost:8888';
   const proto = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
   return `${proto}://${host}`;

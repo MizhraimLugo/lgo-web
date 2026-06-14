@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { getDocumento, resumenMarkdown } from '../lib/contratos-fields.js';
-import { verificarToken, marcarConsumida, documentoConToken } from '../lib/ordenes.js';
+import { verificarToken, marcarConsumida, documentoConToken, conectarBlobs } from '../lib/ordenes.js';
 import { construirContexto } from '../lib/contratos-render.js';
 
 const EMAIL_FROM = process.env.LEAD_EMAIL_FROM || 'Asistente de Contratos LGO <no-reply@send.lgo.mx>';
@@ -22,6 +22,7 @@ const EMAIL_TO = process.env.LEAD_EMAIL_TO || 'contacto@lgo.mx';
 const MIME_DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
 export const handler = async (event) => {
+  conectarBlobs(event);
   if (event.httpMethod !== 'POST') return json(405, { error: 'Método no permitido' });
 
   let body;

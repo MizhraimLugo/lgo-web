@@ -4,7 +4,7 @@
 // (solo para desarrollo local). La lógica de negocio es idéntica en ambos.
 //
 // Ciclo de vida de una orden: pending → paid (token de un solo uso) → consumed.
-import { getStore } from '@netlify/blobs';
+import { getStore, connectLambda } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -13,6 +13,17 @@ import { tmpdir } from 'node:os';
 const STORE = 'contratos-ordenes';
 const FILE_DIR = join(tmpdir(), 'lgo-contratos-ordenes');
 let _mode = null; // 'blobs' | 'file' — se decide en la primera operación
+
+/**
+ * En funciones Lambda clásicas, @netlify/blobs NO se auto-configura: el contexto
+ * (siteID/token) viaja en el `event` y hay que conectarlo con connectLambda(event)
+ * ANTES de usar el store. Cada handler que toque órdenes debe llamar a esto al
+ * inicio. En local (netlify dev) el event no trae contexto → no pasa nada y se usa
+ * el fallback de archivos.
+ */
+export function conectarBlobs(event) {
+  try { if (event) connectLambda(event); } catch { /* sin contexto Lambda (local) → fallback de archivos */ }
+}
 
 function esErrorConfigBlobs(e) {
   return /configured to use Netlify Blobs/i.test(String((e && e.message) || e));

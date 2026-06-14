@@ -6,9 +6,10 @@
 // Body/Query: { orden_id, payment_id? }.
 import { paymentApi } from '../lib/mp.js';
 import { getCatalogo } from '../lib/catalogo.js';
-import { getOrden, marcarPagada } from '../lib/ordenes.js';
+import { getOrden, marcarPagada, conectarBlobs } from '../lib/ordenes.js';
 
 export const handler = async (event) => {
+  conectarBlobs(event);
   const q = event.queryStringParameters || {};
   let body = {};
   if (event.httpMethod === 'POST') { try { body = JSON.parse(event.body || '{}'); } catch {} }
