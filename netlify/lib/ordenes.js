@@ -103,14 +103,31 @@ export async function verificarToken(id, token) {
   return { ok: true, orden };
 }
 
-/** Marca la orden como consumida (un pago = un documento). */
-export async function marcarConsumida(id) {
+/**
+ * Marca la orden como consumida (un pago = un documento). Si se pasa `documento`
+ * ({ base64, filename, mime }), lo guarda en la orden para permitir RE-DESCARGA
+ * posterior con el mismo token (sin re-generar ni re-cobrar). El token se conserva.
+ */
+export async function marcarConsumida(id, documento = null) {
   const orden = await getOrden(id);
   if (!orden) return null;
   orden.status = 'consumed';
   orden.consumido = new Date().toISOString();
+  if (documento) orden.documento = { ...documento, generado: new Date().toISOString() };
   await kvSet(id, orden);
   return orden;
+}
+
+/**
+ * Para la re-descarga: si la orden ya está consumida, el token coincide y hay un
+ * documento guardado, lo devuelve. No regenera nada. { ok, documento } | { ok:false, error }.
+ */
+export async function documentoConToken(id, token) {
+  const orden = await getOrden(id);
+  if (!orden) return { ok: false, error: 'orden no encontrada' };
+  if (!token || orden.token !== token) return { ok: false, error: 'token inválido' };
+  if (orden.status !== 'consumed' || !orden.documento) return { ok: false, error: 'sin documento disponible' };
+  return { ok: true, documento: orden.documento };
 }
 
 /**

@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { getDocumento, resumenMarkdown } from '../lib/contratos-fields.js';
-import { verificarToken, marcarConsumida } from '../lib/ordenes.js';
+import { verificarToken, marcarConsumida, documentoConToken } from '../lib/ordenes.js';
 import { construirContexto } from '../lib/contratos-render.js';
 
 const EMAIL_FROM = process.env.LEAD_EMAIL_FROM || 'Asistente de Contratos LGO <no-reply@send.lgo.mx>';
@@ -28,6 +28,14 @@ export const handler = async (event) => {
   try { body = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'JSON inválido' }); }
   const ordenId = typeof body.orden_id === 'string' ? body.orden_id : '';
   const token = typeof body.token === 'string' ? body.token : '';
+
+  // RE-DESCARGA: si la orden ya se generó (consumida + token válido + documento
+  // guardado), reentrega el MISMO archivo. No regenera, no consume otra vez, no
+  // vuelve a avisar al despacho.
+  const re = await documentoConToken(ordenId, token);
+  if (re.ok) {
+    return json(200, { ok: true, filename: re.documento.filename, mime: re.documento.mime || MIME_DOCX, docx_base64: re.documento.base64, reentrega: true });
+  }
 
   // BLINDAJE: sin pago verificado, no se genera nada (no consume todavía).
   const v = await verificarToken(ordenId, token);
@@ -62,11 +70,12 @@ export const handler = async (event) => {
     return json(500, { error: 'No se pudo generar el documento. Intenta de nuevo.' });
   }
 
-  // Render OK → consumir (un pago = un documento).
-  await marcarConsumida(ordenId);
-
   const filename = `${sanitizar(doc.nombre)}.docx`;
   const base64 = buffer.toString('base64');
+
+  // Render OK → consumir (un pago = un documento), guardando el .docx en la orden
+  // para permitir re-descarga posterior con el mismo token.
+  await marcarConsumida(ordenId, { base64, filename, mime: MIME_DOCX });
 
   // Copia al despacho (best-effort; no bloquea la entrega al usuario).
   const despacho = await enviarAlDespacho({ doc, documentoId, orden, valores, filename, base64 });

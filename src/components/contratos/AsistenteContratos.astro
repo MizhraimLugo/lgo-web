@@ -476,11 +476,8 @@ import { business } from '@data/business';
             body: JSON.stringify({ orden_id: ordenId, payment_id: paymentId })
           });
           const data = await r.json().catch(() => ({}));
+          // pagado (primera vez) o consumido (re-descarga): en ambos hay token.
           if (data.pagado && data.token) { token = data.token; break; }
-          if (data.status === 'consumed') {
-            finPago('ok', 'Este pago ya se procesó', `Tu documento ya fue generado en esta orden. Si necesitas el archivo de nuevo, escríbenos por WhatsApp y te lo reenviamos: ${business.whatsappUrl}`);
-            return;
-          }
         } catch {}
         await new Promise((res) => setTimeout(res, 1800));
       }

@@ -20,7 +20,9 @@ export const handler = async (event) => {
 
   // Ya resuelta (webhook o consulta previa).
   if (orden.status === 'paid') return json(200, { status: 'paid', pagado: true, token: orden.token });
-  if (orden.status === 'consumed') return json(200, { status: 'consumed', pagado: true, token: null });
+  // Devolvemos el token aun consumida: ya no puede generar otro documento, pero
+  // permite RE-DESCARGAR el .docx guardado en la orden.
+  if (orden.status === 'consumed') return json(200, { status: 'consumed', pagado: true, token: orden.token });
 
   // Pendiente → verificar directo contra MP.
   try {
