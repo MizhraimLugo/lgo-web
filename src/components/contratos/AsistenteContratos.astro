@@ -355,19 +355,25 @@ import { business } from '@data/business';
       chat.hidden = false;
 
       const nombreCorto = nombre.split(' ')[0];
-      const saludo = `Hola ${nombreCorto}, gusto en saludarle. Soy el asistente de Grupo LGO y le ayudo a preparar su documento. Para empezar: ¿ya sabe qué documento necesita, o prefiere contarme su situación y le recomiendo el adecuado?`;
-      addMsg(saludo, 'bot');
-      historial.push({ role: 'assistant', content: saludo });
-      chatInput.focus();
+      if (estado.documento_id) {
+        // Documento preseleccionado desde una ficha: saludo + arranca la captura
+        // de inmediato (el backend ya conoce el documento por estado.documento_id).
+        const saludo = `Hola ${nombreCorto}, con gusto le ayudo a preparar su documento. Permítame un momento…`;
+        addMsg(saludo, 'bot');
+        historial.push({ role: 'assistant', content: saludo });
+        enviarAlChat('Hola, ya quiero preparar este documento.', { mostrarUsuario: false });
+      } else {
+        const saludo = `Hola ${nombreCorto}, gusto en saludarle. Soy el asistente de Grupo LGO y le ayudo a preparar su documento. Para empezar: ¿ya sabe qué documento necesita, o prefiere contarme su situación y le recomiendo el adecuado?`;
+        addMsg(saludo, 'bot');
+        historial.push({ role: 'assistant', content: saludo });
+        chatInput.focus();
+      }
     });
 
-    // ── Envío de mensajes → función de chat (Claude) ──
-    chatForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const msg = chatInput.value.trim();
-      if (!msg) return;
-      addMsg(msg, 'user');
-      chatInput.value = '';
+    // ── Envío al chat (Claude). mostrarUsuario=false para el primer turno
+    //    automático cuando el documento viene preseleccionado desde una ficha. ──
+    async function enviarAlChat(msg: string, { mostrarUsuario = true }: { mostrarUsuario?: boolean } = {}) {
+      if (mostrarUsuario) addMsg(msg, 'user');
       chatInput.disabled = true;
 
       const typing = document.createElement('div');
@@ -401,6 +407,15 @@ import { business } from '@data/business';
         chatInput.disabled = false;
         chatInput.focus();
       }
+    }
+
+    // ── Envío de mensajes (el usuario escribe) → función de chat (Claude) ──
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+      chatInput.value = '';
+      await enviarAlChat(msg);
     });
 
     // ── Pagar y generar: crea la preferencia y redirige a Checkout Pro ──
@@ -432,6 +447,10 @@ import { business } from '@data/business';
 
     // ── Retorno del pago (al volver por back_url ?orden=...) ──
     const params = new URLSearchParams(window.location.search);
+    // Documento preseleccionado desde una ficha (/contratos/?doc=<id>): el backend
+    // lo valida; si no existe, cae al saludo genérico.
+    const docPre = params.get('doc');
+    if (docPre && /^[a-z0-9-]+$/.test(docPre)) estado.documento_id = docPre;
     let ordenUrl = params.get('orden');
     if (!ordenUrl) { try { ordenUrl = sessionStorage.getItem('lgo_orden'); } catch {} }
     if (ordenUrl) manejarRetornoPago(ordenUrl, params.get('payment_id'));

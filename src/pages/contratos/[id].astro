@@ -83,7 +83,7 @@ const explicacionHtml = mdLite(data.explicacion);
           <p class="prep-note">
             Prepáralo con el asistente: te hace unas preguntas, lo llena contigo y lo dejas listo para firmar.
           </p>
-          <a href="/contratos/#asistente" class="btn btn-primary prep-btn">Prepararlo con el asistente →</a>
+          <a href={`/contratos/?doc=${contrato.id}#asistente`} class="btn btn-primary prep-btn">Prepararlo con el asistente →</a>
           {data.disclaimer_reforzado && (
             <p class="prep-warn">
               Este documento toca temas sensibles (menores, pensiones, bienes). Te recomendamos
