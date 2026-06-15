@@ -19,11 +19,3 @@ A partir del 1 de enero de 2027, las empresas deberán implementar un sistema el
 La pregunta práctica para el empresario no es si se aplicará la reforma, sino si su empresa está estructurada legalmente para absorberla. Eso implica revisar contratos individuales, reglamentos internos, políticas de horas extra y sistemas de control de tiempo. El margen para hacerlo sin presión es ahora, no en enero.
 
 ¿Tu empresa ya tiene una hoja de ruta legal para la transición? La diferencia entre una contingencia y una estrategia bien trazada está en la oportunidad con que se actúa.
-
----
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #LeyFederalDelTrabajo #Guadalajara

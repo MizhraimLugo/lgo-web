@@ -19,10 +19,3 @@ Desde la perspectiva de LGO Abogados, recomendamos avanzar en tres frentes de ma
 En Jalisco, el impacto es especialmente relevante para las medianas y pequeñas empresas, que representan la columna vertebral del tejido productivo de Guadalajara. Para estas organizaciones, el ajuste no es solo contractual: implica rediseñar turnos, revisar estructuras de personal y, en algunos casos, anticipar nuevas contrataciones.
 
 La ley ya está vigente. La pregunta no es si tu empresa va a cumplir, sino cuándo va a prepararse.
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #JornadaLaboral #Guadalajara

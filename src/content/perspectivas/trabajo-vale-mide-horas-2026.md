@@ -25,10 +25,3 @@ Esas preguntas no tienen respuesta en un post. Pero sí pueden tener respuesta c
 ¿Qué estás construyendo con el tiempo y el esfuerzo de las personas que trabajan contigo?
 
 —
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LiderazgoEmpresarial #DíaDelTrabajo #México #Guadalajara

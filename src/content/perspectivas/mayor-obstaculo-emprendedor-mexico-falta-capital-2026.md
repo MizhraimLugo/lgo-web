@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "La pregunta que vale hacerse hoy: si llegara el capital que buscas, ¿tu empresa está lista para recibirlo?"
 ---
 
 En este momento, Jalisco tiene activo uno de los planes de impulso económico más relevantes de su historia reciente: 4,662 millones de pesos destinados a financiamiento, infraestructura y desarrollo de talento para negocios locales. El municipio de Guadalajara, por su parte, ofrece apoyos directos de hasta 200,000 pesos a través de programas como Hecho por Tapatías y Corazones en Acción, con requisitos de acceso que muchas empresas ya pueden cumplir, pero que no conocen o no han organizado su documentación para tramitar.
@@ -19,12 +20,3 @@ A nivel nacional, el panorama tampoco podría ser más alentador. En el segundo 
 Que el dinero existe, los programas existen y las oportunidades existen. Lo que muchos negocios no tienen es la formalización fiscal, la estructura corporativa y la documentación contable que los fondos, los bancos y los programas gubernamentales exigen como primer filtro. El capital fluye hacia donde hay orden, claridad y certeza jurídica.
 
 En Grupo LGO acompañamos a empresas y emprendedores en ese proceso: ordenar la estructura legal y fiscal para que puedan competir por recursos, crecer con base sólida y tomar decisiones con información clara. No se trata de requisitos burocráticos por cumplir; se trata de construir la plataforma desde la que se crece.
-
-La pregunta que vale hacerse hoy: si llegara el capital que buscas, ¿tu empresa está lista para recibirlo?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Emprendimiento #NegociosMéxico #Guadalajara #Jalisco

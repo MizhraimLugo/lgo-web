@@ -23,10 +23,3 @@ El derecho laboral mexicano atraviesa una de sus transformaciones más profundas
 ¿Ya tiene su empresa un diagnóstico del impacto de esta reforma en su estructura de personal y en sus contratos de trabajo?
 
 —
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #JornadaLaboral #DerechoLaboral

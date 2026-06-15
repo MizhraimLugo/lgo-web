@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Cuándo fue la última vez que tomaste una decisión importante desde la reflexión, no desde la urgencia?"
 ---
 
 El año nos llegó con una certeza incómoda: la incertidumbre ya no es un episodio. Es la condición permanente. Las empresas en México reportan como principales preocupaciones la incertidumbre económica, la inseguridad y la incertidumbre jurídica. En ese escenario, la presión para actuar rápido es enorme. Y es exactamente ahí donde el liderazgo se pone a prueba.
@@ -21,12 +22,3 @@ Los estudios de alta dirección en México este año son contundentes: la compet
 El líder que no reflexiona termina siendo rehén de sus primeras reacciones. Y las primeras reacciones, casi siempre, son respuestas al miedo, no al análisis.
 
 El verdadero reto del empresario no es encontrar más tiempo. Es defender el espacio para pensar dentro de una agenda que conspira permanentemente contra ese espacio. Ese espacio no se toma solo. Hay que construirlo.
-
-¿Cuándo fue la última vez que tomaste una decisión importante desde la reflexión, no desde la urgencia?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Liderazgo #EstrategiaEmpresarial #MéxicoEmpresarial #ReflexiónEjecutiva

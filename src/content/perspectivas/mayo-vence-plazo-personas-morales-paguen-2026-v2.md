@@ -21,10 +21,3 @@ Las sanciones por incumplimiento van de 50 a 5,000 veces la Unidad de Medida y A
 Si en tu empresa aún hay dudas sobre la base gravable, los conceptos que se incluyen o la forma correcta de distribuir el pago, el momento de revisarlo con tu contador es ahora, no el 31 de mayo.
 
 La PTU se paga. La pregunta es si se paga con orden o bajo presión.
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Contadores & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOContadores #PTU2026 #FiscalMéxico #ObligacionesLaborales

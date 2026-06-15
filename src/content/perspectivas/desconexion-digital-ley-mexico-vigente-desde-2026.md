@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · LGO Abogados & Consultores, S.C."
   email: "contacto@lgo.mx"
+highlight: "¿Tu organización ya tomó medidas al respecto, o sigue postergando el cumplimiento?"
 ---
 
 Lo que muchas empresas todavía no dimensionan es que esta reforma no solo protege al trabajador: también crea una obligación patronal concreta. El artículo 132, fracción XXXIV de la Ley Federal del Trabajo establece que los patrones deben emitir una política interna de desconexión digital, dirigida a toda la plantilla, que regule el uso de plataformas de comunicación como correo electrónico, WhatsApp y llamadas telefónicas fuera del horario de trabajo.
@@ -19,13 +20,3 @@ En la práctica, cumplir con esta reforma implica más que redactar un documento
 Desde LGO Abogados asesoramos a empresas en la estructuración e implementación de estas políticas, asegurando que los documentos tengan solidez jurídica y sean auditables ante una eventual inspección laboral.
 
 Si tu empresa aún no tiene lista su política de desconexión digital, el momento de atenderlo es ahora.
-
-¿Tu organización ya tomó medidas al respecto, o sigue postergando el cumplimiento?
-
----
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #DesconexiónDigital #Jalisco

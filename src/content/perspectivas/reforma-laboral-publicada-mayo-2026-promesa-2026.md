@@ -23,10 +23,3 @@ Este panorama no exige pánico. Exige lectura puntual del decreto, diagnóstico 
 En LGO Abogados & Consultores acompañamos a empresas de distintos tamaños en este proceso: desde el diagnóstico inicial hasta la adecuación documental y la asesoría preventiva frente a posibles visitas de la H. Autoridad Fiscalizadora.
 
 ¿Tu empresa ya tiene un plan estructurado para adaptarse a la reforma? Aún hay tiempo para construirlo bien.
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #JornadaLaboral #DerechoEmpresarial

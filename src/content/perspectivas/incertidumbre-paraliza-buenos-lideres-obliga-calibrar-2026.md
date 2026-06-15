@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿En tu empresa, las decisiones difíciles se toman con criterio o con urgencia?"
 ---
 
 En los últimos meses, he tenido conversaciones con empresarios en Guadalajara que comparten una misma preocupación: cómo tomar decisiones en un entorno que cambia más rápido de lo que los equipos pueden procesar. No es un problema de información. Es un problema de criterio.
@@ -21,12 +22,3 @@ Ahí está la brecha. Y cerrarla es trabajo de liderazgo, no de capacitación.
 Lo que he aprendido en la práctica —acompañando a empresas desde la perspectiva legal, fiscal y contable— es que las organizaciones que navegan bien la incertidumbre tienen algo en común: sus líderes no huyen de la complejidad. La estructuran. Toman decisiones con criterio documentado, no con la presión del momento.
 
 Liderar en 2026 no requiere ser el más rápido. Requiere ser el más claro.
-
-¿En tu empresa, las decisiones difíciles se toman con criterio o con urgencia?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Liderazgo #EstrategiaEmpresarial #Guadalajara #México

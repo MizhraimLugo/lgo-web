@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Cuál es el proceso en tu empresa que más tiempo te consume y que hoy podrías estar automatizando?"
 ---
 
 Ese dato, publicado recientemente en análisis del mercado tecnológico nacional, cobra aún más peso cuando se revisan los resultados: el 94% de las empresas que implementaron soluciones de inteligencia artificial reportan mejora en eficiencia operativa, el 91% vio crecer sus ingresos y el 89% logró mejorar sus márgenes de ganancia. No son proyecciones. Son resultados medidos.
@@ -21,13 +22,3 @@ Desde Jalisco, esto tiene un contexto adicional. El estado es hoy el segundo a n
 El riesgo de no moverse no es permanecer igual. Es ceder terreno frente a quienes sí decidieron avanzar.
 
 Para los empresarios de Guadalajara y la zona metropolitana, la adopción tecnológica ya no es una decisión discrecional. Es una condición de competitividad.
-
-¿Cuál es el proceso en tu empresa que más tiempo te consume y que hoy podrías estar automatizando?
-
----
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #TransformaciónDigital #InteligenciaArtificial #PyMEsMéxico #Guadalajara

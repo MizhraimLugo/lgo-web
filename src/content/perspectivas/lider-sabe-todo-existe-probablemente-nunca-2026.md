@@ -19,11 +19,3 @@ En Grupo LGO acompañamos a empresarios en momentos donde la información es inc
 Los mejores líderes que hemos conocido no son quienes lo saben todo. Son quienes saben cuándo preguntar, cuándo delegar y cuándo detenerse a revisar antes de actuar. Esa claridad se cultiva con experiencia, con buen consejo y con la disposición de reconocer lo que uno no sabe.
 
 ¿Cuándo fue la última vez que tomaste una decisión importante sin tener todo claro? La respuesta a esa pregunta dice mucho sobre tu estilo de liderazgo.
-
-—
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Liderazgo #EmpresariosMexicanos #Guadalajara #ReflexiónEmpresarial

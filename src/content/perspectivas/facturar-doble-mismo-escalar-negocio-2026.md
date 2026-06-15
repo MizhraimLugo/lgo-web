@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿En qué etapa de esa construcción está tu negocio hoy?"
 ---
 
 Para muchos emprendedores en México, el crecimiento se mide en ventas. Si el mes cerró con más ingresos que el anterior, la percepción es que el negocio va bien. Esa lógica funciona al principio. Pero en algún punto —y casi siempre llega sin avisar— el volumen de operaciones supera la estructura que lo soporta.
@@ -21,12 +22,3 @@ El dato es revelador: solo el 8% de las micro, pequeñas y medianas empresas en 
 Escalar con estructura significa construir la capacidad de operar a mayor volumen sin que el negocio se rompa desde adentro. En términos prácticos: un régimen fiscal congruente con el modelo de ingresos, contratos que protejan a la empresa en operaciones recurrentes, contabilidad actualizada y separada del gasto personal, y una estructura societaria que permita tomar decisiones con claridad.
 
 No es necesario hacerlo todo de golpe. Sí es necesario hacerlo con método, y antes de que el crecimiento exponga las fisuras.
-
-¿En qué etapa de esa construcción está tu negocio hoy?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Emprendimiento #NegociosMéxico #Guadalajara #EscalarConEstructura

@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Cuál es el proceso que tu empresa todavía resuelve de forma manual y que podría automatizarse hoy?"
 ---
 
 El mercado de inteligencia artificial en México alcanzó los 450 millones de dólares este año, y el número de empresas que ofrecen soluciones de este tipo en el país creció casi diez veces entre 2018 y 2024. Ese dato no es una estadística del sector tecnológico: es una señal directa sobre cómo operan hoy los negocios que compiten con el tuyo.
@@ -19,12 +20,3 @@ En Jalisco, el gobierno del estado tiene abierta la convocatoria Transformación
 Lo que vale la pena señalar desde la práctica profesional es que la tecnología ha dejado de ser un diferenciador de lujo para convertirse en parte del entorno operativo básico. El Servicio de Administración Tributaria opera hoy con revisión digitalizada de comprobantes fiscales. Las plataformas de pago son parte del flujo comercial cotidiano. La gestión de clientes se apoya en sistemas que procesan información en tiempo real. Quien no ha incorporado estas herramientas no opera en igualdad de condiciones frente a quien sí lo ha hecho.
 
 La transformación digital no exige reemplazar todo de golpe. Exige identificar el proceso que más tiempo consume, el que genera más errores, y buscar una solución específica para él. Desde ahí se empieza.
-
-¿Cuál es el proceso que tu empresa todavía resuelve de forma manual y que podría automatizarse hoy?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #TransformaciónDigital #Jalisco #InteligenciaArtificial #EmpresasMexicanas
