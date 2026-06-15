@@ -155,8 +155,12 @@ const relacionados = documentosRelacionados(contrato.id);
       )}
 
       <p class="doc-disclaimer">
-        Esta información es orientativa y no constituye asesoría jurídica. Cada situación tiene
-        particularidades; para tu caso concreto, consulta con un abogado de LGO Abogados.
+        <strong>Aviso importante.</strong> Los documentos que se generan mediante este asistente son
+        formatos base de carácter general y orientativo; no constituyen asesoría jurídica ni un documento
+        revisado para tu caso particular. Cada situación tiene particularidades que pueden requerir ajustes
+        legales; para asegurar su validez y conveniencia, consulta con un abogado de LGO Abogados. El uso del
+        documento, así como las consecuencias de su llenado, firma o aplicación, son responsabilidad exclusiva
+        del usuario. Al utilizar este servicio aceptas los Términos y Condiciones.
       </p>
     </div>
   </section>
@@ -204,6 +208,7 @@ const relacionados = documentosRelacionados(contrato.id);
     margin: 2.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--color-border);
     font-size: var(--text-xs); color: var(--color-muted-soft); line-height: 1.6; max-width: 52rem;
   }
+  .doc-disclaimer strong { color: var(--color-foreground-strong); }
 
   /* Enlaces contextuales dentro de la explicación */
   .doc-explica :global(.exp-link) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
