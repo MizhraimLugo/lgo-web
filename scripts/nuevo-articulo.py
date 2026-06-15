@@ -324,6 +324,40 @@ def resolver_brand_y_categoria(
     return detectar_categoria_por_keywords(texto)
 
 
+# ── Limpieza del cierre estilo LinkedIn ───────────────────────────────────────
+#
+# El linkedin_post.txt de Cowork termina con un bloque pensado para LinkedIn:
+# la firma del autor (nombre, puesto, empresa, correo, teléfono) y una línea de
+# hashtags. En el sitio eso NO va: la plantilla ya pinta la firma desde el
+# frontmatter `author` (con el teléfono oficial del negocio) y los hashtags no
+# tienen sentido en un artículo web. Si se dejan, la firma sale DUPLICADA.
+#
+# recortar_cierre_linkedin() elimina esos párrafos del final y para en el primer
+# párrafo de contenido real. Como efecto secundario, la pregunta de cierre vuelve
+# a quedar como último párrafo y se detecta correctamente como highlight.
+
+_HASHTAGS_RE = re.compile(r"^\s*#\w+(?:\s+#\w+)*\s*$")
+
+
+def _es_bloque_hashtags(parrafo: str) -> bool:
+    return bool(_HASHTAGS_RE.match(parrafo.strip()))
+
+
+def _es_bloque_firma(parrafo: str) -> bool:
+    """Es firma si el párrafo trae el correo o el nombre del autor."""
+    p = parrafo.lower()
+    return AUTOR_EMAIL.lower() in p or AUTOR_NOMBRE.lower() in p
+
+
+def recortar_cierre_linkedin(parrafos: list[str]) -> list[str]:
+    """Quita del final los párrafos de firma y hashtags. Para en el primer
+    párrafo que sea contenido real."""
+    limpios = parrafos[:]
+    while limpios and (_es_bloque_hashtags(limpios[-1]) or _es_bloque_firma(limpios[-1])):
+        limpios.pop()
+    return limpios
+
+
 def parsear_contenido(texto: str) -> dict:
     """
     Extrae título, cuerpo, pregunta final y overrides del linkedin_post.txt.
@@ -375,6 +409,10 @@ def parsear_contenido(texto: str) -> dict:
 
     resto = "\n".join(lineas[1:]).strip()
     parrafos_raw = [p.strip() for p in re.split(r"\n{2,}", resto) if p.strip()]
+
+    # Recortar el cierre estilo LinkedIn (firma + hashtags) que Cowork agrega.
+    # No va en el sitio: la plantilla ya pinta la firma desde el frontmatter.
+    parrafos_raw = recortar_cierre_linkedin(parrafos_raw)
 
     # Pregunta de cierre: override > último párrafo con ?
     pregunta = overrides.get("highlight", "")
