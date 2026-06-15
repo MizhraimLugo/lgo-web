@@ -47,11 +47,27 @@ function mdLite(src: string): string {
   const flushList = () => {
     if (list.length) { out.push(`<ul class="exp-list">${list.map((li) => `<li>${inline(li)}</li>`).join('')}</ul>`); list = []; }
   };
+  // El corpus usa niveles de # inconsistentes (#, ##, ###, #### mezclados para el
+  // mismo rango). Se normaliza por SEMÁNTICA, no por número de #: las preguntas de
+  // la cabecera (¿Qué es?, ¿Para qué sirve/se usa?, ¿Quiénes…?) son secciones
+  // principales (H2); en cuanto aparece una subsección-etiqueta (Requisitos, Dudas
+  // frecuentes, Características…) el resto pasa a H3, incluidas las preguntas de FAQ.
+  let enSubsecciones = false;
   for (const raw of src.split('\n')) {
     const line = raw.trim();
     if (!line) { flushList(); continue; }
-    if (/^###\s+/.test(line)) { flushList(); out.push(`<h3>${inline(line.replace(/^###\s+/, '').replace(/\*\*/g, ''))}</h3>`); }
-    else if (/^##\s+/.test(line)) { flushList(); out.push(`<h2>${inline(line.replace(/^##\s+/, '').replace(/\*\*/g, ''))}</h2>`); }
+    const h = line.match(/^#{1,6}\s+(.*)$/);
+    if (h) {
+      flushList();
+      const txt = h[1].replace(/\*\*/g, '');
+      const esPregunta = /^\s*¿/.test(txt);
+      if (esPregunta && !enSubsecciones) {
+        out.push(`<h2>${inline(txt)}</h2>`);
+      } else {
+        if (!esPregunta) enSubsecciones = true;
+        out.push(`<h3>${inline(txt)}</h3>`);
+      }
+    }
     else if (/^[*-]\s+/.test(line)) { list.push(line.replace(/^[*-]\s+/, '')); }
     else { flushList(); out.push(`<p>${inline(line)}</p>`); }
   }
