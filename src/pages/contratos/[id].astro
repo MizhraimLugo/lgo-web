@@ -1,6 +1,6 @@
 ---
 import Base from '@layouts/Base.astro';
-import { contratosCatalogo } from '@data/contratos-catalogo';
+import { contratosCatalogo, contratoById } from '@data/contratos-catalogo';
 import { contratoJsonLd, FECHA_REVISION_ISO, FECHA_REVISION_TEXTO } from '@data/contratos-jsonld';
 import { documentosRelacionados, linkificarMenciones } from '@data/contratos-clusters';
 
@@ -31,6 +31,15 @@ const data = mod.default;
 const title = `${contrato.nombre} | Contratos Grupo LGO`;
 const description = contrato.descripcion_corta;
 const path = `/contratos/${contrato.id}/`;
+
+// Canonical (Fase E — consolidación de duplicados): las versiones "-negocios"
+// comparten explicación legal con su versión General (la diferencia vive en la
+// plantilla física/moral, no en el texto indexable) → canonicalizan a la General
+// para evitar canibalización. El resto de fichas es self-referential.
+// (donacion-bien-inmueble-2 se consolida vía 301 en netlify.toml, no por canonical.)
+const baseId = contrato.id.replace(/-negocios$/, '');
+const canonicalPath =
+  baseId !== contrato.id && contratoById(baseId) ? `/contratos/${baseId}/` : path;
 
 // Structured data por ficha (Breadcrumb + Article + FAQPage). Datos legales verbatim.
 const jsonLd = contratoJsonLd(contrato, data);
@@ -80,7 +89,7 @@ function mdLite(src: string): string {
 const explicacionHtml = linkificarMenciones(mdLite(data.explicacion), contrato.id);
 const relacionados = documentosRelacionados(contrato.id);
 ---
-<Base title={title} description={description} path={path} noindex={true} extraJsonLd={jsonLd}>
+<Base title={title} description={description} path={path} canonical={canonicalPath} noindex={true} extraJsonLd={jsonLd}>
 
   <section class="section-tight">
     <div class="container-narrow">

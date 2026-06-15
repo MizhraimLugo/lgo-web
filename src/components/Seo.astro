@@ -5,14 +5,16 @@ export interface Props {
   title: string;
   description: string;
   path: string;
+  /** Override del canonical (path relativo). Si se omite, es self-referential desde `path`. */
+  canonical?: string;
   ogImage?: string;
   noindex?: boolean;
   type?: 'website' | 'article' | 'business.business';
 }
 
-const { title, description, path, ogImage, noindex, type = 'website' } = Astro.props;
+const { title, description, path, canonical, ogImage, noindex, type = 'website' } = Astro.props;
 
-const canonicalUrl = new URL(path, business.url).toString();
+const canonicalUrl = new URL(canonical ?? path, business.url).toString();
 const ogImageUrl = new URL(ogImage ?? '/og-default.jpg', business.url).toString();
 ---
 <title>{title}</title>

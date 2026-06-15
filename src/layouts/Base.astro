@@ -11,13 +11,15 @@ export interface Props {
   title: string;
   description: string;
   path: string;
+  /** Override del canonical (path relativo). Si se omite, es self-referential desde `path`. */
+  canonical?: string;
   ogImage?: string;
   noindex?: boolean;
   type?: 'website' | 'article' | 'business.business';
   extraJsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, path, ogImage, noindex, type, extraJsonLd } = Astro.props;
+const { title, description, path, canonical, ogImage, noindex, type, extraJsonLd } = Astro.props;
 
 // Cada sub-marca publicada como Organization independiente.
 // Esto permite que Google y modelos de IA entiendan el ecosistema:
@@ -129,7 +131,7 @@ const allLd = [...baseLd, ...extraLd];
 <html lang="es-MX">
 <head>
   <meta charset="utf-8" />
-  <Seo title={title} description={description} path={path} ogImage={ogImage} noindex={noindex} type={type} />
+  <Seo title={title} description={description} path={path} canonical={canonical} ogImage={ogImage} noindex={noindex} type={type} />
   <JsonLd data={allLd} />
 </head>
 <body>
