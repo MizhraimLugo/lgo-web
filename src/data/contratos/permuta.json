@@ -3,6 +3,7 @@
   "nombre": "Contrato de Permuta",
   "explicacion": "Es el acuerdo por escrito por el que dos o más personas se intercambian alguna cosa y si hay diferencia en el valor o precio se compensa la transacción con el pago de cierta cantidad de dinero.\n\n## **¿Para qué se usa?**\n\nSe utiliza para documentar los términos y condiciones bajo los cuales se llevará a cabo el intercambio de productos entre dos personas.",
   "fundamento_legal": "",
+  "resumen": "El contrato de permuta es el acuerdo por escrito mediante el cual dos o más personas se intercambian alguna cosa y, cuando hay diferencia en el valor o precio, se compensa la transacción con el pago de cierta cantidad de dinero. Se utiliza para documentar los términos y condiciones bajo los cuales se llevará a cabo el intercambio de productos entre dos personas. De esta forma, el documento deja por escrito qué se intercambia cada parte y, en su caso, cómo se cubre la diferencia de valor mediante una compensación en dinero.",
   "precio": 100,
   "moneda": "MXN",
   "campos": [

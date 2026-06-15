@@ -1,7 +1,7 @@
 ---
 import Base from '@layouts/Base.astro';
 import { contratosCatalogo } from '@data/contratos-catalogo';
-import { contratoJsonLd } from '@data/contratos-jsonld';
+import { contratoJsonLd, FECHA_REVISION_ISO, FECHA_REVISION_TEXTO } from '@data/contratos-jsonld';
 
 // Carga de los JSON de campos (explicación, fundamento, flags) en build.
 const camposModules = import.meta.glob('../../data/contratos/*.json', { eager: true });
@@ -18,6 +18,8 @@ interface ContratoData {
   nombre: string;
   explicacion: string;
   fundamento_legal: string;
+  /** Resumen editorial de apoyo (120-150w) para citabilidad por IA. NO es texto legal verbatim. */
+  resumen?: string;
   disclaimer_reforzado?: boolean;
 }
 
@@ -71,12 +73,28 @@ const explicacionHtml = mdLite(data.explicacion);
       <span class={`doc-badge doc-badge--${contrato.categoria.toLowerCase()}`}>{contrato.categoria}</span>
       <h1 class="doc-title">{contrato.nombre}</h1>
       <p class="lead doc-lead">{contrato.descripcion_corta}</p>
+      <p class="doc-revision">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Revisado por el equipo jurídico de <strong>LGO Abogados</strong>
+        <span aria-hidden="true">·</span>
+        <time datetime={FECHA_REVISION_ISO}>{FECHA_REVISION_TEXTO}</time>
+      </p>
     </div>
   </section>
 
   <section class="section-tight doc-body">
-    <div class="container-narrow doc-grid">
+    <div class="container-narrow">
 
+      {data.resumen && (
+        <div class="doc-enbreve">
+          <span class="doc-enbreve-label">En breve</span>
+          <p>{data.resumen}</p>
+        </div>
+      )}
+
+      <div class="doc-grid">
       <!-- Explicación -->
       <article class="doc-explica prose-lgo" set:html={explicacionHtml} />
 
@@ -103,6 +121,12 @@ const explicacionHtml = mdLite(data.explicacion);
           </div>
         )}
       </aside>
+      </div>
+
+      <p class="doc-disclaimer">
+        Esta información es orientativa y no constituye asesoría jurídica. Cada situación tiene
+        particularidades; para tu caso concreto, consulta con un abogado de LGO Abogados.
+      </p>
     </div>
   </section>
 
@@ -122,6 +146,33 @@ const explicacionHtml = mdLite(data.explicacion);
 
   .doc-title { margin: 0 0 1rem; }
   .doc-lead { max-width: 46rem; }
+
+  /* Byline de revisión jurídica (E-E-A-T / confianza) */
+  .doc-revision {
+    display: inline-flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
+    font-size: var(--text-sm); color: var(--color-muted); margin: 1rem 0 0;
+  }
+  .doc-revision svg { color: var(--color-accent); flex-shrink: 0; }
+  .doc-revision strong { color: var(--color-foreground-strong); font-weight: 600; }
+  .doc-revision time { color: var(--color-muted); }
+
+  /* Bloque "En breve" — resumen de apoyo, citabilidad por IA */
+  .doc-enbreve {
+    background: var(--color-accent-soft); border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm); padding: 1.1rem 1.35rem; margin-bottom: 2.5rem;
+    max-width: 52rem;
+  }
+  .doc-enbreve-label {
+    font-size: var(--text-eyebrow); letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700; color: var(--color-accent-deep); display: block; margin-bottom: 0.4rem;
+  }
+  .doc-enbreve p { margin: 0; font-size: var(--text-base); line-height: 1.65; color: var(--color-foreground-strong); }
+
+  /* Disclaimer de no-asesoría (YMYL) */
+  .doc-disclaimer {
+    margin: 2.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--color-border);
+    font-size: var(--text-xs); color: var(--color-muted-soft); line-height: 1.6; max-width: 52rem;
+  }
 
   .doc-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
   @media (min-width: 960px) { .doc-grid { grid-template-columns: 1fr 20rem; gap: 3.5rem; align-items: start; } }

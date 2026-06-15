@@ -3,6 +3,7 @@
   "nombre": "Aviso de Privacidad",
   "explicacion": "Es la notificación que por ley debe incluirse en cualquier medio o documento en el que se obtengan datos personales como pueden ser nombres, domicilios, números telefónicos y/o direcciones de correo electrónicos, de algún tercero, como clientes, socios, proveedores, etc.\n\n## **¿Para qué se usa?**\n\nSe utiliza para dar a conocer a la persona que proporciona sus datos, el uso o tratamiento que se le dará a dichos datos.",
   "fundamento_legal": "",
+  "resumen": "El aviso de privacidad es la notificación que por ley debe incluirse en cualquier medio o documento en el que se obtengan datos personales de un tercero, como clientes, socios o proveedores, por ejemplo nombres, domicilios, números telefónicos o direcciones de correo electrónico. Se usa para dar a conocer a la persona que proporciona sus datos el uso o tratamiento que se les dará.",
   "precio": 80,
   "moneda": "MXN",
   "campos": [

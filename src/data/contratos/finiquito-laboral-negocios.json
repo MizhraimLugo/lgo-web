@@ -3,6 +3,7 @@
   "nombre": "Finiquito Laboral",
   "explicacion": "Es un documento por el cual un trabajador acepta haber recibido cierta cantidad de dinero por la terminación de la relación laboral con su patrón, que cubre ciertos conceptos como aguinaldo y vacaciones.\n\n## **¿Para qué se usa?**\n\nSirve para que un patrón tenga evidencia de haber pagado a un trabajador que ha dejado de laborar para él, las prestaciones y partes proporcionales que por ley tiene derecho.",
   "fundamento_legal": "",
+  "resumen": "El finiquito laboral es un documento mediante el cual un trabajador reconoce haber recibido una cantidad de dinero por la terminación de su relación laboral con el patrón, pago que cubre conceptos como el aguinaldo y las vacaciones. Sirve para que el patrón cuente con evidencia de haber cubierto, a un trabajador que ya dejó de laborar para él, las prestaciones y partes proporcionales a las que tiene derecho por ley. De este modo, el documento deja constancia del pago y de los conceptos que con él quedan saldados al concluir el vínculo de trabajo.",
   "precio": 100,
   "moneda": "MXN",
   "campos": [

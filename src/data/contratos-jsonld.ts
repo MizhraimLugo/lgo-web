@@ -20,6 +20,11 @@ import type { ContratoCatalogo } from './contratos-catalogo';
 import { contratosCatalogo } from './contratos-catalogo';
 import { business } from './business';
 
+// Fecha de la revisión jurídica formal de las 73 fichas (confirmada por el despacho).
+// Fuente única: se usa en el schema (datePublished/dateModified) y en el byline visible.
+export const FECHA_REVISION_ISO = '2026-01-01';
+export const FECHA_REVISION_TEXTO = 'enero de 2026';
+
 const clean = (l: string): string => l.replace(/[#*]/g, '').replace(/\s+/g, ' ').trim();
 
 export interface Faq {
@@ -98,6 +103,8 @@ export function contratoJsonLd(
     url,
     mainEntityOfPage: url,
     inLanguage: 'es-MX',
+    datePublished: FECHA_REVISION_ISO,
+    dateModified: FECHA_REVISION_ISO,
     image: `${business.url}/og-default.jpg`,
     about: { '@type': 'Thing', name: contrato.nombre },
     author: { '@id': `${business.url}/#abogados` },
