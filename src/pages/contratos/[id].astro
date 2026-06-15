@@ -2,6 +2,7 @@
 import Base from '@layouts/Base.astro';
 import { contratosCatalogo } from '@data/contratos-catalogo';
 import { contratoJsonLd, FECHA_REVISION_ISO, FECHA_REVISION_TEXTO } from '@data/contratos-jsonld';
+import { documentosRelacionados, linkificarMenciones } from '@data/contratos-clusters';
 
 // Carga de los JSON de campos (explicación, fundamento, flags) en build.
 const camposModules = import.meta.glob('../../data/contratos/*.json', { eager: true });
@@ -74,7 +75,10 @@ function mdLite(src: string): string {
   flushList();
   return out.join('\n');
 }
-const explicacionHtml = mdLite(data.explicacion);
+// Enlaces contextuales: convierte en enlaces las menciones de otras fichas
+// dentro del texto (sin alterarlo). + lista de documentos relacionados por cluster.
+const explicacionHtml = linkificarMenciones(mdLite(data.explicacion), contrato.id);
+const relacionados = documentosRelacionados(contrato.id);
 ---
 <Base title={title} description={description} path={path} noindex={true} extraJsonLd={jsonLd}>
 
@@ -139,6 +143,17 @@ const explicacionHtml = mdLite(data.explicacion);
       </aside>
       </div>
 
+      {relacionados.length > 0 && (
+        <nav class="doc-relacionados" aria-label="Documentos relacionados">
+          <h2 class="doc-relacionados-titulo">Documentos relacionados</h2>
+          <ul class="doc-relacionados-lista">
+            {relacionados.map((r) => (
+              <li><a href={`/contratos/${r.id}/`}>{r.nombre}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
+
       <p class="doc-disclaimer">
         Esta información es orientativa y no constituye asesoría jurídica. Cada situación tiene
         particularidades; para tu caso concreto, consulta con un abogado de LGO Abogados.
@@ -189,6 +204,26 @@ const explicacionHtml = mdLite(data.explicacion);
     margin: 2.5rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--color-border);
     font-size: var(--text-xs); color: var(--color-muted-soft); line-height: 1.6; max-width: 52rem;
   }
+
+  /* Enlaces contextuales dentro de la explicación */
+  .doc-explica :global(.exp-link) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .doc-explica :global(.exp-link):hover { color: var(--color-accent-deep); }
+
+  /* Documentos relacionados (malla interna por cluster temático) */
+  .doc-relacionados { margin: 2.75rem 0 0; }
+  .doc-relacionados-titulo { font-size: var(--text-lg); margin: 0 0 1rem; }
+  .doc-relacionados-lista {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 0.65rem; grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) { .doc-relacionados-lista { grid-template-columns: 1fr 1fr; } }
+  .doc-relacionados-lista a {
+    display: block; padding: 0.7rem 0.9rem; border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm); color: var(--color-foreground-strong); text-decoration: none;
+    font-size: var(--text-sm); font-weight: 600; transition: border-color 180ms ease, color 180ms ease;
+  }
+  .doc-relacionados-lista a:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .doc-relacionados-lista a::after { content: ' →'; color: var(--color-accent); font-weight: 700; }
 
   .doc-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
   @media (min-width: 960px) { .doc-grid { grid-template-columns: 1fr 20rem; gap: 3.5rem; align-items: start; } }
