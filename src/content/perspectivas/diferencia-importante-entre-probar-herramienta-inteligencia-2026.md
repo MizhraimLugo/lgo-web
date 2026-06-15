@@ -25,11 +25,3 @@ Desde la perspectiva de la consultoría integral que ejercemos en Grupo LGO, vem
 Si estás en ese momento donde la tecnología parece una obligación pero no sabes por dónde empezar, la pregunta correcta no es "¿qué herramienta uso?", sino "¿qué proceso quiero mejorar primero?"
 
 De ahí parte una estrategia de digitalización que dura.
-
-—
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #TransformaciónDigital #InteligenciaArtificial #PyMEsMéxico #Guadalajara

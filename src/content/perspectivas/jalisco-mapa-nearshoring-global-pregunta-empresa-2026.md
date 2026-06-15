@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Tienes un diagnóstico actualizado de qué tan preparada está tu empresa para operar con clientes de inversión extranjera directa?"
 ---
 
 En los últimos años, Guadalajara dejó de ser solo la "Silicon Valley de México" en el discurso para convertirse en una referencia real de atracción de inversión extranjera. Meta, Google, Apple y Netflix tienen operaciones en la ciudad. Aptiv inauguró una nueva planta en El Salto. Flex, Jabil y Sanmina ampliaron su presencia en la región. La demanda de nearshoring en el sector electrónico creció un 34% en términos interanuales.
@@ -19,12 +20,3 @@ El error más común que veo en este contexto es creer que el nearshoring solo b
 Lo que frena a la mayoría no es la falta de talento ni de capacidad operativa. Es la falta de estructura: contratos en inglés que no están jurídicamente respaldados en México, obligaciones fiscales que no contemplan la operación con empresa extranjera, esquemas corporativos que no resisten una auditoría internacional. Son problemas resolubles, pero hay que anticiparlos antes de que un cliente multinacional los descubra en el proceso de onboarding.
 
 La ventana está abierta. Pero cerrarse de forma organizada requiere una revisión seria de la arquitectura legal y fiscal de tu negocio hoy, no cuando el contrato ya esté sobre la mesa.
-
-¿Tienes un diagnóstico actualizado de qué tan preparada está tu empresa para operar con clientes de inversión extranjera directa?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Nearshoring #Jalisco #EmprendimientoMéxico #Guadalajara

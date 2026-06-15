@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · LGO Abogados & Consultores, S.C."
   email: "contacto@lgo.mx"
+highlight: "¿Tu empresa ya tiene claridad sobre cómo le impacta esta reforma?"
 ---
 
 La reducción es gradual. Hoy, en 2026, se mantienen las 48 horas semanales. A partir del 1 de enero de 2027, se reducirá a 46; luego a 44 en 2028, a 42 en 2029 y finalmente a 40 horas en 2030. El calendario parece cómodo. Las obligaciones operativas no lo son.
@@ -21,13 +22,3 @@ Dos puntos que la ley deja muy claros: la reducción de jornada no implica en ni
 Para muchas empresas, el impacto real de esta reforma no estará en el número de horas, sino en la ausencia de una estructura documental y tecnológica que soporte el cumplimiento. El momento de revisar contratos, reglamentos internos y sistemas de control de asistencia no es cuando llegue la visita de inspección.
 
 En Grupo LGO acompañamos a las empresas en la revisión de su estructura laboral frente a este nuevo marco normativo. No prometemos resultados: garantizamos método y criterio profesional.
-
-¿Tu empresa ya tiene claridad sobre cómo le impacta esta reforma?
-
-—
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Abogados & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOAbogados #ReformaLaboral #DerechoLaboral #Jalisco

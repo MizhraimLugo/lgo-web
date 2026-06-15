@@ -21,10 +21,3 @@ Cada 22 de mayo, muchas empresas y profesionistas caen en el mismo error: asumir
 Si aún no se ha enviado, el camino es claro: confirmar con tu contador o despacho contable que el envío ya fue realizado, revisar el estatus en el portal del Servicio de Administración Tributaria y, de ser necesario, actuar hoy.
 
 ¿Sabes con certeza si tu balanza ya fue enviada? En muchos casos, la omisión no es intencional. Es simplemente que nadie preguntó a tiempo.
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Contadores & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOContadores #ContabilidadElectrónica #ObligacionesFiscales #SAT

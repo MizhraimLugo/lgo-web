@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Cuál es la decisión que has estado postergando porque esperas más certeza?"
 ---
 
 En el entorno empresarial de 2026, la incertidumbre no es la excepción: es la condición permanente. La 21.ª edición de Perspectivas de la Alta Dirección en México —que recoge la visión de 554 líderes— confirma que seis de cada diez directivos operan en un entorno de incertidumbre económica, jurídica y política simultánea. No es un fenómeno pasajero. Es el nuevo escenario base.
@@ -21,12 +22,3 @@ El líder que espera la condición perfecta para moverse rara vez se mueve. Y mi
 Tres preguntas que me han servido para ordenar decisiones en contextos complejos: ¿Cuál es el costo real de no decidir hoy? ¿Qué información cambia verdaderamente la decisión, y cuál es solo ruido? ¿Estoy tomando esta decisión con criterio propio o bajo presión del entorno?
 
 El liderazgo no se demuestra cuando todo está claro. Se demuestra en el momento exacto en que nada lo está.
-
-¿Cuál es la decisión que has estado postergando porque esperas más certeza?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Liderazgo #TomadeDecisiones #EmpresariosMéxico #Estrategia

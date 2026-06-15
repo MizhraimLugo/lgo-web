@@ -23,10 +23,3 @@ El propósito no es un párrafo en el manual de la empresa. Es la brújula que o
 ¿Cuándo fue la última vez que tu propósito como líder guió una decisión difícil?
 
 —
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#Liderazgo #PropósitoEmpresarial #GrupoLGO #México2026 #Reflexión

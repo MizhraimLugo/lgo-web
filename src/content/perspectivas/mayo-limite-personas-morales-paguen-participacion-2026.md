@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · LGO Contadores & Consultores"
   email: "contacto@lgo.mx"
+highlight: "¿Tienes claridad sobre cómo se calculó la Participación de los Trabajadores en las Utilidades en tu empresa este año?"
 ---
 
 Este no es un recordatorio de calendario. Es una advertencia práctica: el incumplimiento tiene consecuencias laborales y económicas que van mucho más allá de una multa.
@@ -21,12 +22,3 @@ Las sanciones por incumplimiento o pago incorrecto van de 50 a 5,000 Unidades de
 El reparto de Participación de los Trabajadores en las Utilidades no es solo una obligación fiscal. Es una señal de la salud organizacional de la empresa y de la claridad con que se gestiona la relación con los colaboradores. Un proceso bien ejecutado —con soporte documental, cálculo correcto y comunicación transparente— reduce riesgos laborales y fortalece la confianza interna.
 
 Si en tu empresa aún no se ha completado este proceso, hay tiempo, pero es hoy y mañana.
-
-¿Tienes claridad sobre cómo se calculó la Participación de los Trabajadores en las Utilidades en tu empresa este año?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Contadores & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOContadores #PTU2026 #Fiscal #Empresas

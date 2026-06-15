@@ -23,10 +23,3 @@ Parar no es perder tiempo. Es invertirlo. Y en un año marcado por la incertidum
 ¿Cuándo fue la última vez que te detuviste, sin agenda y sin pantalla, a revisar hacia dónde va tu empresa?
 
 —
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #Liderazgo #EstrategiaEmpresarial #ReflexiónEstratégica #MéxicoEmpresarial

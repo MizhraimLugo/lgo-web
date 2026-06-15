@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · LGO Contadores & Consultores"
   email: "contacto@lgo.mx"
+highlight: "¿Tu empresa ya tiene claro el monto a repartir este año?"
 ---
 
 Aunque la fecha parece lejana, el proceso requiere revisión, cálculo documentado y comunicación interna. Dejarlo para la última semana de mayo eleva el riesgo de errores y, en algunos casos, de incumplimiento.
@@ -21,12 +22,3 @@ El incumplimiento no es una opción sin consecuencias. La Ley Federal del Trabaj
 Algo que pocas empresas revisan: la obligación no solo es pagar, sino documentar el pago individual. Un recibo firmado o su equivalente digital es la evidencia que protege al patrón ante cualquier reclamación futura.
 
 Si tu empresa aún no ha iniciado el proceso de cálculo, el momento es ahora. No porque haya urgencia innecesaria, sino porque hacerlo con tiempo permite detectar diferencias entre la utilidad fiscal y los registros contables, resolver dudas sobre trabajadores con múltiples categorías o periodos parciales, y tener la documentación lista antes de la fecha límite.
-
-¿Tu empresa ya tiene claro el monto a repartir este año?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Contadores & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOContadores #PTU2025 #FiscalMéxico #Contabilidad

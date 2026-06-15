@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Está tu negocio listo para aprovechar este momento?"
 ---
 
 El problema casi nunca es la falta de dinero. El 54% de los emprendedores mexicanos necesita mejorar su estrategia de ventas, y el 34% todavía no usa herramientas digitales en su operación. Los fondos existen; la preparación interna es el cuello de botella real.
@@ -19,10 +20,3 @@ En Jalisco, el relanzamiento de "Hecho en Zapopan" es un ejemplo concreto de lo 
 A nivel internacional, el nearshoring sigue consolidándose en México. Empresas como Tesla y BMW ampliaron operaciones en Nuevo León, Guanajuato y Coahuila. Esto no es solo una noticia macroeconómica: representa una cadena de proveeduría que necesita PYMEs mexicanas capaces de certificarse y escalar.
 
 El entorno en 2026 es favorable para emprender en México. Pero las oportunidades no esperan a quienes tienen el negocio desorganizado. Antes de postularse a un programa de apoyo o buscar financiamiento, la prioridad es clara: estructura legal, contabilidad y operación en orden.
-
-¿Está tu negocio listo para aprovechar este momento?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361

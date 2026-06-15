@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Tu empresa ya tiene claro cuál es el primer proceso que debería automatizarse?"
 ---
 
 Según el reporte global de KPMG publicado este año, el 89% de las empresas privadas espera que la inteligencia artificial se convierta en motor de nuevos ingresos en los próximos dos años. Sin embargo, en México, la mayoría aún no cuenta con una estrategia formal de adopción. Hay voluntad, pero falta método.
@@ -21,12 +22,3 @@ La realidad práctica es que una empresa de entre 20 y 50 empleados puede comenz
 Lo que más me llama la atención no son las herramientas en sí, sino el denominador común que frena la adopción: el 41% del personal en México no ha recibido formación clara sobre cómo integrar la inteligencia artificial en su trabajo diario. La tecnología avanza, pero la capacitación interna no.
 
 La integración de tecnología a los negocios no es un proyecto del área de sistemas. Es una decisión estratégica que empieza en la dirección.
-
-¿Tu empresa ya tiene claro cuál es el primer proceso que debería automatizarse?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #TransformaciónDigital #InteligenciaArtificial #PymesJalisco #Tecnología

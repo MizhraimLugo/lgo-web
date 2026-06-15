@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · LGO Contadores & Consultores"
   email: "contacto@lgo.mx"
+highlight: "¿Ya tienes clara tu posición fiscal para cerrar este mes?"
 ---
 
 Si aún no la has presentado, estás a tiempo de hacerlo hoy. Cuando no existe un requerimiento previo de la autoridad, la presentación espontánea no genera multa, aunque sí puede haber impuesto a cargo con recargos por mora. En 2026, esa tasa se ubica en 2.07% mensual, lo que significa que cada mes de retraso incrementa la deuda.
@@ -21,13 +22,3 @@ El Servicio de Administración Tributaria ya opera con cruce automatizado de inf
 Cumplir hoy no es solo una obligación fiscal: es proteger la continuidad operativa de tu negocio.
 
 Si tienes dudas sobre tu situación o necesitas apoyo para presentar o revisar tu declaración, podemos orientarte desde LGO Contadores.
-
-¿Ya tienes clara tu posición fiscal para cerrar este mes?
-
----
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO - LGO Contadores & Consultores
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #LGOContadores #DeclaraciónAnual #FiscalMéxico #Guadalajara

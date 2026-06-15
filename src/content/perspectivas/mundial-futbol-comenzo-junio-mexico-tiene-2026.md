@@ -8,6 +8,7 @@ author:
   name: "Edgar Mizhraim Lugo García"
   role: "Socio · Grupo LGO"
   email: "contacto@lgo.mx"
+highlight: "¿Tu negocio está listo para escalar, o hay pendientes que resolver antes de que llegue la siguiente oportunidad?"
 ---
 
 Cuando se habla de la derrama económica del Mundial 2026, los analistas calculan hasta 0.5 puntos del Producto Interno Bruto del país. Para ciudades sede como Guadalajara, esa cifra no es abstracta: se convierte en ocupación hotelera, consumo en restaurantes, transporte contratado, servicios de logística y, sobre todo, en nuevos clientes con capacidad de pago real.
@@ -21,12 +22,3 @@ En Guadalajara, el ecosistema responde. Programas municipales han activado apoyo
 La convergencia es real: Mundial, nearshoring y digitalización apuntan en la misma dirección. Lo que no sobra es tiempo para ponerse al corriente.
 
 El impulso durará unas semanas. La estructura que construyas para aprovecharlo puede quedarse para siempre.
-
-¿Tu negocio está listo para escalar, o hay pendientes que resolver antes de que llegue la siguiente oportunidad?
-
-Edgar Mizhraim Lugo García |
-Socio
-Grupo LGO
-contacto@lgo.mx | 33 1876 1361
-
-#GrupoLGO #EmprendimientoMéxico #Mundial2026 #PYMEs #Guadalajara
