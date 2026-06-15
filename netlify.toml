@@ -18,3 +18,15 @@
 # funciones en /.netlify/functions/<nombre>.
 [dev]
   targetPort = 4321
+
+# ── Headers de seguridad (todo el sitio) ──
+# No afectan el render ni el flujo del asistente: solo endurecen la respuesta.
+# Señal de confianza relevante para contenido legal (YMYL). El HSTS lo emite
+# Netlify automáticamente (max-age 1 año); no lo sobrescribimos aquí.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
