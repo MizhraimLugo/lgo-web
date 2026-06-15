@@ -17,7 +17,7 @@ const categorias = ['Todos', 'General', 'Negocios'] as const;
 // Structured data del catálogo (Breadcrumb + CollectionPage con ItemList).
 const jsonLd = catalogoJsonLd();
 ---
-<Base title={title} description={description} path={path} noindex={true} extraJsonLd={jsonLd}>
+<Base title={title} description={description} path={path} extraJsonLd={jsonLd}>
 
   <!-- ASISTENTE (puerta de entrada del flujo) -->
   <AsistenteContratos />

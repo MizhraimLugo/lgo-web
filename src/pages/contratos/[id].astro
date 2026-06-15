@@ -89,7 +89,7 @@ function mdLite(src: string): string {
 const explicacionHtml = linkificarMenciones(mdLite(data.explicacion), contrato.id);
 const relacionados = documentosRelacionados(contrato.id);
 ---
-<Base title={title} description={description} path={path} canonical={canonicalPath} noindex={true} extraJsonLd={jsonLd}>
+<Base title={title} description={description} path={path} canonical={canonicalPath} extraJsonLd={jsonLd}>
 
   <section class="section-tight">
     <div class="container-narrow">
