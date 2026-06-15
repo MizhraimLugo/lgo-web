@@ -459,6 +459,60 @@ def generar_markdown(titulo: str, parrafos: list, pregunta: str,
     return f"{frontmatter}\n\n{body}\n"
 
 
+# ── Guardia de rama: publicar SIEMPRE desde main ──────────────────────────────
+#
+# El publicador hace 'git push origin main'. Si el repo quedó parado en otra
+# rama, el commit cae en esa rama y 'git push origin main' es un no-op que git
+# reporta como éxito ("Everything up-to-date"): parece que publicó, pero el
+# artículo nunca llega a producción. Pasó el 12-15 jun 2026 (rescate manual).
+#
+# asegurar_main() corrige esto ANTES de escribir/commitear:
+#   - Si ya estamos en main: sigue.
+#   - Si estamos en otra rama y el working tree está LIMPIO: cambia a main
+#     (seguro, no se pierde nada) y sigue.
+#   - Si hay cambios sin commitear: ABORTA con log claro, sin tocar nada.
+#     El contenido se reintenta en la próxima corrida cuando el repo esté en main.
+
+def rama_actual() -> str:
+    try:
+        r = subprocess.run(
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=PROYECTO_DIR, capture_output=True, text=True, check=True,
+        )
+        return r.stdout.strip()
+    except Exception:
+        return ""
+
+
+def asegurar_main() -> bool:
+    rama = rama_actual()
+    if rama == "main":
+        return True
+
+    estado = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=PROYECTO_DIR, capture_output=True, text=True,
+    )
+    if estado.stdout.strip():
+        log(f"ABORTADO: el repo está en la rama '{rama or '???'}' con cambios "
+            f"sin commitear. NO se publicó para no tocar tu trabajo. Cambia a "
+            f"main (git checkout main) y reejecuta — el contenido sigue pendiente.")
+        return False
+
+    cambio = subprocess.run(
+        ["git", "checkout", "main"],
+        cwd=PROYECTO_DIR, capture_output=True, text=True,
+    )
+    if cambio.returncode != 0:
+        log(f"ABORTADO: el repo está en '{rama}' y no se pudo cambiar a main: "
+            f"{cambio.stderr.strip()}. NO se publicó.")
+        return False
+
+    log(f"AVISO: el repo estaba en la rama '{rama}', se cambió a 'main' para "
+        f"publicar (working tree limpio, sin riesgo).")
+    return True
+
+
 # ── Publicación en GitHub ─────────────────────────────────────────────────────
 
 def publicar_en_github(nombre_archivo: str) -> bool:
@@ -573,6 +627,13 @@ def procesar_carpeta(nombre_carpeta: str, dry_run: bool = False,
         print("─" * 60 + "\n")
         log(f"DRY RUN: {nombre_carpeta} → {nombre_archivo}")
         return nombre_archivo
+
+    # Si vamos a publicar (no es --no-push), asegurar que el repo está en
+    # 'main' ANTES de escribir nada. Si no se puede, abortamos sin tocar el
+    # working tree para que el contenido se reintente limpio la próxima corrida.
+    # Esto evita el fallo silencioso de publicar a la rama equivocada.
+    if not no_push and not asegurar_main():
+        return None
 
     CONTENT_DIR.mkdir(parents=True, exist_ok=True)
     ruta = CONTENT_DIR / nombre_archivo
