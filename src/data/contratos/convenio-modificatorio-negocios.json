@@ -1,0 +1,132 @@
+{
+  "id": "convenio-modificatorio-negocios",
+  "nombre": "Convenio Modificatorio",
+  "explicacion": "## **¿Qué es un convenio modificatorio?**\n\nUn **convenio modificatorio** es el documento por el que se realizan modificaciones a un contrato, que pueda ser susceptible de ser modificado, y pueden recaer en algunas características del contrato siempre y cuando las partes que intervinieron estén de acuerdo.\n\n## **¿Para qué sirve?**\n\nSirve para que las partes de un contrato, si es su deseo y hay una cláusula que así lo permite, puedan modificar el contenido y características del contrato.\n\n## **¿Quiénes intervienen (partes)?**\n\nLas partes que intervinieron en el contrato principal que se quiere modificar. Dependiendo del tipo de contrato que sea será la nomenclatura de las partes dentro del convenio modificatorio.\n\n### **Requisitos del convenio modificatorio:**\n\n* Contar con el contrato original que se piensa modificar y sus anexos.\n* Las nuevas condiciones del contrato, obligaciones que van a modificarse.\n* Las generales de las partes.\n* La personalidad del representante, en caso de que sea una persona moral la que comparezca.\n* En el rubro se hace referencia al contrato que se pretende modificar.\n* Se debe incluir un apartado de antecedentes como la fecha en que se firmó el contrato principal, las partes que intervinieron, si hubo anexos, las cláusulas que se pretenden modificar.\n* Se debe incluir un apartado de declaraciones en donde cada una de las partes expone que requiere que se modifique del contrato.\n* En la parte del clausulado se especifica el objeto del convenio y se incluyen las cláusulas con las modificaciones que se pretenden realizar.\n\n### **Dudas frecuentes:**\n\n**¿Es necesario el consentimiento de la otra parte para realizar un convenio modificatorio o puedo hacer los cambios de forma unilateral?**\n\nSí, es necesario. En primer lugar que el contrato permita modificaciones posteriores a su firma. Y generalmente estas modificaciones están sujetas a la aprobación de las partes, por escrito mediante **convenio modificatorio**, por eso los cambios no pueden realizarse de manera unilateral.",
+  "fundamento_legal": "Código Civil Federal 1792 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/primera-parte/titulo-primero/capitulo-i/",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_parte_a",
+      "etiqueta": "Una de las partes que firmará el contrato es (la llamaremos Parte A): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es el nombre (denominación social) de una de las personas que firmará como Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato en representación de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_parte_a", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_parte_b",
+      "etiqueta": "La otra parte que firmará el contrato es (la llamaremos Parte B): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la persona que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se firmará el contrato? (incluye la ciudad o región y estado)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_documento_original",
+      "etiqueta": "Selecciona si el tipo de acuerdo o documento que celebraron las partes:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Contrato", "Convenio"]
+    },
+    {
+      "clave": "nombre_documento_original",
+      "etiqueta": "¿Cómo se llama el contrato que se modificará? Ejemplo: Contrato de Prestación de Servicios",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_documento_original",
+      "etiqueta": "¿En qué fecha se firmó el contrato que se modificará?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "obligaciones_parte_a_original",
+      "etiqueta": "¿A qué se obligó la Parte A en el contrato original?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "obligaciones_parte_b_original",
+      "etiqueta": "¿A qué se obligó la Parte B en el contrato original?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "contrato_permite_modificacion",
+      "etiqueta": "¿En el contrato original se hace referencia a la posibilidad de modificar el documento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "contenido_a_modificar",
+      "etiqueta": "Transcribe el contenido que deseas modificar:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "nueva_redaccion",
+      "etiqueta": "Redacta cómo debe quedar la nueva cláusula, información o contenido del contrato:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    }
+  ]
+}

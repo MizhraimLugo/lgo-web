@@ -1,0 +1,122 @@
+{
+  "id": "comision-mercantil",
+  "nombre": "Contrato de Comisión Mercantil",
+  "explicacion": "El **contrato de comisión mercantil** es una forma de mandato mercantil. Es muy parecido al mandato civil ya que, aunque un mandato puede referirse a varias actividades, en el caso de la comisión mercantil, las actividades principales son comprar o vender por cuenta ajena. Derivado de lo anterior, el comisionista mantiene en su poder fondos y valores del comitente, de los cuales solo puede disponer apegándose a las instrucciones de éste.\n\n## **¿Para qué sirve?**\n\nSirve para que una persona realice actos o negocios por cuenta de otra persona.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Comitente:** es la persona que otorga la comisión mercantil.\n\n**Comisionista:** es la persona que desempeña la comisión mercantil. Es importante señalar que el comisionista, para desempeñar su encargo, no necesitará de un poder constituido en escritura pública. Siéndole suficiente recibirlo por escrito o de palabra; pero cuando haya sido verbal se debe ratificar por escrito antes que el negocio concluya.\n\n### **Elementos del contrato de comisión mercantil:**\n\n* Retribuido. A diferencia del contrato civil de mandato, existe el pago de una retribución por la realización de la comisión mercantil.\n* Consensual. Las partes quedan obligadas al momento de manifestar su consentimiento.\n* De tracto instantáneo. Es un contrato que no se agota con un solo acto, sino que pueden encargarse más de un acto.\n\n### **Algunas obligaciones del comisionista son:**\n\n* El comisionista debe desempeñar por sí los encargos que recibe. No puede delegarlos sin estar autorizado para ello. Pero si puede emplear bajo su responsabilidad, en el desempeño de su comisión, dependientes en operaciones subalternas. Que, según costumbre, se confíen a estos.\n* Cabe señalar que el comisionista puede o no aceptar el encargo que le haga el comitente. Pero en caso de no aceptarlo, debe avisárselo de inmediato. Sin embargo, si el comisionista sin causa legal no le avisara al comitente que no acepta la comisión, será responsable frente al comitente de todos los daños que por ello le cause.\n* El comisionista, en el desempeño de su encargo, se sujetará a las instrucciones recibidas del comitente. En ningún caso podrá proceder contra disposiciones expresas del mismo.\n* El comisionista deberá consultarle al comitente en lo no previsto y señalado expresamente por el comitente, siempre que lo permita la naturaleza del negocio. Si no fuere posible realizar la consulta o si el comisionista está facultado para actuar a su arbitrio, deberá hacerlo cuidando del negocio como propio.\n\n### **Dudas frecuentes:**\n\n**¿Cómo se termina el contrato de comisión?**\n\nComo en el caso de todos los contratos se termina una vez finalizada la vigencia o realizado el objeto del contrato. Pero también se puede revocar o terminar por la muerte del comisionista.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de comisión mercantil** se puede llegar a confundir con el contrato civil de mandato.",
+  "fundamento_legal": "Artículos 273 al 308 del Código de Comercio — https://mexico.justia.com/federales/codigos/codigo-de-comercio/libro-segundo/titulo-tercero/capitulo-i/",
+  "precio": 120,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_comitente",
+      "etiqueta": "La persona que encargará las actividades comerciales es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comitente",
+      "etiqueta": "¿Cuál es el nombre completo de la empresa (denominación social) que encargará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comitente",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que representará a la persona que encargará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comitente", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_comitente",
+      "etiqueta": "¿Cuál es el domicilio de la persona que encargará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comisionista",
+      "etiqueta": "La persona que realizará las actividades comerciales es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comisionista",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que realizará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comisionista",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que representará a la persona que realizará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comisionista", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_comisionista",
+      "etiqueta": "¿Cuál es el domicilio de la persona que realizará las actividades comerciales?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En dónde se firmará el contrato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "¿En qué fecha se firmará el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "actividades_comision",
+      "etiqueta": "¿Qué actividades comerciales se realizarán?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "porcentaje_comision",
+      "etiqueta": "¿Qué porcentaje de los ingresos se entregará como pago a la persona que realizará la comisión?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "La vigencia del presente Contrato será: ¿hasta una fecha específica o por tiempo indefinido?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Fecha específica", "Tiempo indefinido"]
+    },
+    {
+      "clave": "fecha_fin_contrato",
+      "etiqueta": "¿En qué fecha terminará el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Fecha específica" }
+    },
+    {
+      "clave": "terminacion_anticipada_si",
+      "etiqueta": "¿Podrán las partes terminar anticipadamente el contrato mediante notificación previa enviada a la otra parte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

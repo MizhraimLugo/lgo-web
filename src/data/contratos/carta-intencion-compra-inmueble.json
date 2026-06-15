@@ -1,0 +1,96 @@
+{
+  "id": "carta-intencion-compra-inmueble",
+  "nombre": "Carta de Intención de Compra de Inmueble",
+  "explicacion": "## **¿Qué es?**\n\nLa carta de intención de compra de inmueble es un documento que describe un acuerdo entre dos o más partes, que contiene compromisos que posteriormente podrán formalizarse mediante la elaboración del contrato correspondiente.\n\n### **¿Para qué sirve una carta de intención de compra de inmueble?**\n\nSe usa para informar el deseo de adquirir determinado inmueble.\n\n#### **¿Quiénes intervienen?**\n\nPueden ser una o más personas o sociedades que desean llevar a cabo la compraventa del inmueble.\n\n#### **Requisitos de la carta de intención de compra de inmueble:**\n\nEn realidad no existen requisitos mínimos para que el texto pueda considerarse una carta de intención, sin embargo se debe tener mucho cuidado en la elaboración de las Cartas de Intención y prestar especial atención en las formalidades que se deben seguir, las cuales son:\n\n* Constar por escrito.\n* Contener los elementos característicos del contrato definitivo.\n* Limitarse a cierto tiempo.\n\n#### **Dudas frecuentes:**\n\n#### **¿Son vinculatorias las cartas de intenciones para las partes que las firman?**\n\nPor lo general no vinculan a las partes que las firman, es decir, no se obliga a las partes a formalizar el contrato señalado en ellas. Aun así, pueden existir ciertas cláusulas que si sean de cumplimiento forzoso para las partes, por ejemplo la cláusula de exclusividad y confidencialidad.\n\n#### **¿Qué función tiene una carta de intención?**\n\nEste documento funciona principalmente para que las partes acuerden los términos y condiciones bajo los cuales se firmará el contrato de compraventa futuro.\n\n**¿Con qué documento lo puedo confundir?**\n\nSe puede confundir con un memorándum de entendimiento, el cual es un documento que describe un acuerdo bilateral o multilateral entre partes. En el mismo se señala la intención de las partes de emprender una línea de acción común. A menudo se usa cuando las partes no desean emprender un compromiso legal o en situaciones en las cuales las partes no pueden crear un acuerdo legalmente obligatorio.",
+  "fundamento_legal": "Artículos 2243 al 2247 del Código Civil Federal — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-primero/",
+  "precio": 50,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_remitente",
+      "etiqueta": "La persona que envía la carta es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_remitente",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que envía la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_remitente",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que envía la carta?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_remitente", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "tipo_destinatario",
+      "etiqueta": "La persona que recibe la carta es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_destinatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona a quien se envía la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_destinatario",
+      "etiqueta": "¿Cuál es el domicilio de la persona a quien se dirige la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se firma la carta?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "¿En qué fecha se firma la carta?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_inmueble",
+      "etiqueta": "Describe el bien inmueble que se desea adquirir:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "hace_oferta",
+      "etiqueta": "¿La persona que envía la carta desea realizar alguna oferta respecto de la compra del bien inmueble?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "monto_oferta",
+      "etiqueta": "¿Qué cantidad ofrece la persona que envía la carta por el bien que desea adquirir? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "hace_oferta", "valor_que_activa": "Sí" }
+    }
+  ]
+}

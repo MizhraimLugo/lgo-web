@@ -1,0 +1,158 @@
+{
+  "id": "contrato-empleada-domestica",
+  "nombre": "Contrato de Empleada Doméstica",
+  "explicacion": "## **¿Qué es el contrato de empleada doméstica?**\n\nEl **contrato de empleada doméstica** es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona emplea a otra para que lleve a cabo diversas labores en una casa habitación a cambio de una remuneración.\n\n### **¿Para qué sirve?**\n\nSirve para una persona pueda prestar diversos servicios en la casa habitación de otra persona. Tales servicios pueden ser el aseo general, lavar, planchar, cocinar, entre otros.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Empleador:** persona que contrata a otra para realizar ciertas actividades.\n\n**Trabajador o empleado:** es la persona que ejecutará ciertas actividades a cambio de la remuneración.\n\n#### **Requisitos del contrato de empleada doméstica:**\n\n* Objeto: La prestación de servicios por parte del trabajador en favor del empleador en el domicilio que este último señale. Ya sea que trabaje de planta o por día. Deberá definirse el empleo por el que se contrata al trabajador, que deberá relacionarse con el aseo, asistencia o actividades propias de una persona en una casa habitación.\n* Deberá determinarse una jornada laboral que no deberá exceder de 8 horas diarias las cuales deben incluir una hora para que el trabajador pueda tomar sus alimentos. En caso de que se laboren más horas que las antes descritas, se deberá estipular el salario a pagar por las horas extras laboradas.\n* Se deberá estipular el salario que el trabajador percibirá, y si se paga por día, por semana, por quincena o por mes.\n* El trabajador tendrá derecho a vacaciones anuales, prima vacacional, aguinaldo, y a los días de descanso obligatorio de acuerdo con la Ley Federal del Trabajo vigente.\n* El empleador está obligado a garantizar un ambiente laboral libre de violencia, además de garantizar la salud y seguridad en el trabajo.\n* Si el trabajador es de planta, el empleador deberá proporcionar una habitación con los servicios necesarios para su estadía.\n* El empleador se obliga a proporcionar al trabajador alimentos de buena calidad.\n* El empleador se obliga a dar aviso al trabajador con 15 días de anticipación cuando decida terminar la relación laboral. Además, debe pagar la indemnización correspondiente establecida en la Ley Federal del Trabajo vigente. De igual forma si el trabajador es quien decide renunciar, deberá avisar al empleador con 15 días de anticipación.\n* El empleador deberá facilitar al trabajador los materiales necesarios para el desarrollo de sus actividades.\n* El trabajador se obliga a desempeñar su trabajo con responsabilidad, honestidad y seriedad.\n* Todo lo que no esté previsto en el contrato, estará regulado por la Ley Federal del Trabajo vigente sometiéndose las partes a la jurisdicción de la Junta Local de Conciliación y Arbitraje correspondiente.\n\n#### **Dudas frecuentes:**\n\n**¿El empleador debe afiliar a su trabajador al Instituto Mexicano del Seguro Social (IMSS)?**\n\nSe recomienda que los empleadores afilien a sus trabajadores domésticos al IMSS para que puedan recibir atención médica gratuita y contribuir al fondo de ahorro para el retiro del trabajador.\n\n**¿Con qué documento lo puedo confundir?**\n\nEs posible que el **contrato de empleada doméstica** lo confundan con un contrato individual de trabajo.",
+  "fundamento_legal": "Constitución Política de los Estados Unidos Mexicanos, Artículos 5 y 123 — https://www.juridicas.unam.mx/legislacion/ordenamiento/constitucion-politica-de-los-estados-unidos-mexicanos#10540\n\nLey Federal de Trabajo (Títulos Primero, Segundo y Sexto Capítulo XIII).",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República.",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "nombre_empleador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá los servicios domésticos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_empleador",
+      "etiqueta": "¿Cuál es el domicilio de la parte a quien se le prestarán los servicios domésticos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_trabajador",
+      "etiqueta": "¿Cómo se llama la persona que prestará los servicios domésticos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_trabajador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que prestará los servicios domésticos?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_servicios",
+      "etiqueta": "¿Cuál es el domicilio donde se prestarán los servicios?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar donde se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_servicios",
+      "etiqueta": "Describe los servicios domésticos que se prestarán:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_prestacion",
+      "etiqueta": "Indica de qué forma se prestarán los servicios de limpieza domésticos:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "De planta",
+        "De entrada por salida"
+      ]
+    },
+    {
+      "clave": "horas_diarias",
+      "etiqueta": "Describe el número de horas diario de servicios domésticos de limpieza:",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_semana",
+      "etiqueta": "Indica cuántos días a la semana se prestarán los servicios domésticos de limpieza:",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "periodicidad_pago",
+      "etiqueta": "¿Cómo se calculará el pago de los servicios domésticos?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Diario",
+        "Semanal",
+        "Quincenal",
+        "Mensual"
+      ]
+    },
+    {
+      "clave": "monto_pago",
+      "etiqueta": "¿Cuánto se le pagará por cada periodo de prestación de servicios domésticos?",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "vigencia_especifica",
+      "etiqueta": "¿Se pactará alguna vigencia específica del contrato?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "meses_vigencia",
+      "etiqueta": "¿Por cuántos meses estará vigente el contrato?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "vigencia_especifica",
+        "valor_que_activa": "Sí"
+      }
+    }
+  ]
+}

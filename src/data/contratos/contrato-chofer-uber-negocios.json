@@ -1,0 +1,164 @@
+{
+  "id": "contrato-chofer-uber-negocios",
+  "nombre": "Contrato para Chofer Uber",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato para chofer Uber** en realidad es un contrato de prestación de servicios. Ya que, mediante el mismo, una persona llamada cliente contrata los servicios de un profesionista. En este caso un chofer para que preste los servicios relacionados con el manejo de un automóvil, propiedad del cliente a través de la plataforma de Uber o Cabify.\n\n### **¿Para qué sirve el contrato para chofer Uber?**\n\nSe usa para que una persona contrate los servicios de otra para que preste los servicios de transporte privado a través de la plataforma digital Uber o Cabify.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Cliente:** es la persona que es propietaria de un coche y solicita los servicios de otra. Es decir, el chofer a cambio del pago de cierta cantidad.\n\n**Prestador de servicios:** en este caso en particular es el chofer que prestará los servicios de transporte privado en favor del cliente en las plataformas digitales de Uber o Cabify.\n\n#### **Requisitos del contrato para chofer Uber:**\n\n* **Partes**: Es necesario identificar correctamente a las partes desde el principio y especificar todos los datos correctamente. Asimismo, deben ir acompañadas de una identificación oficial. Para las empresas, se debe incluir la razón social y representante legal que firma el contrato.\n* **Servicios:** Se debe señalar a detalle los servicios que se van a realizar a cambio de una cantidad de dinero.\n* **La contraprestación:** Debemos incluir el pago, y debe quedar reflejado tanto las fechas acordadas como la forma de pago.\n* **Limitaciones:** Es necesario dejar constancia de hasta donde es el alcance de la responsabilidad y trabajo a realizar.\n\n#### **Dudas frecuentes:**\n\n**¿Es lo mismo un contrato para chofer Uber y Cabify que un arrendamiento de coche?**\n\nNo, el contrato para Uber y Cabify es uno de prestación de servicios para conducir como tal un automóvil.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato para chofer Uber** se puede confundir con un contrato de prestación de servicios profesionales puro y sencillo.",
+  "fundamento_legal": "Artículos 2606 al 2615 del Código Civil Federal — https://mexico.justia.com/federales/leyes/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-decimo/",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_prestataria",
+      "etiqueta": "La persona que es dueña del vehículo es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_prestataria_fisica",
+      "etiqueta": "¿Cuál es el nombre completo de la persona física propietaria del vehículo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_prestataria", "valor_que_activa": "Física" }
+    },
+    {
+      "clave": "nombre_prestataria",
+      "etiqueta": "¿Cuál es la denominación social de la persona moral propietaria del vehículo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_prestataria", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "nombre_representante_prestataria",
+      "etiqueta": "¿Cuál es el nombre del representante del dueño del vehículo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_prestataria", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_prestataria",
+      "etiqueta": "¿Cuál es el domicilio de la persona propietaria del vehículo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_prestadora",
+      "etiqueta": "¿Cuál es el nombre de la persona que prestará los servicios de transporte (chofer)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_prestadora",
+      "etiqueta": "¿Cuál es el domicilio de la persona que prestará los servicios de transporte? (chofer)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "compania_transporte",
+      "etiqueta": "¿Con qué compañía se prestarán los servicios de transporte privado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Uber", "Cabify"]
+    },
+    {
+      "clave": "modalidad_pago",
+      "etiqueta": "¿Cómo se realizará el pago al chofer por los servicios de transporte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Se le pagará cada mes un porcentaje de las ganancias acumuladas",
+        "Se le pagará cada semana una cantidad específica de dinero",
+        "Se le pagará cada mes una cantidad específica de dinero",
+        "Se le pagará cada mes el remanente que resulte de restar una cantidad específica a las ganancias adquiridas en el mes"
+      ]
+    },
+    {
+      "clave": "porcentaje_ganancias",
+      "etiqueta": "¿Qué porcentaje de las ganancias mensuales se pagará por los servicios de transporte?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "modalidad_pago", "valor_que_activa": "Se le pagará cada mes un porcentaje de las ganancias acumuladas" }
+    },
+    {
+      "clave": "monto_pago_semanal",
+      "etiqueta": "¿Cuánto le pagará semanalmente el dueño del vehículo al chofer por los servicios de transporte privado?",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "modalidad_pago", "valor_que_activa": "Se le pagará cada semana una cantidad específica de dinero" }
+    },
+    {
+      "clave": "monto_pago_mensual",
+      "etiqueta": "¿Cuánto le pagará mensualmente el dueño del vehículo al chofer por los servicios de transporte privado?",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "modalidad_pago", "valor_que_activa": "Se le pagará cada mes una cantidad específica de dinero" }
+    },
+    {
+      "clave": "monto_resta_mensual",
+      "etiqueta": "¿Qué cantidad se restará mensualmente a las ganancias? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "modalidad_pago", "valor_que_activa": "Se le pagará cada mes el remanente que resulte de restar una cantidad específica a las ganancias adquiridas en el mes" }
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El presente contrato tendrá una vigencia: ¿indeterminada o determinada?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Indeterminada", "Determinada"]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Determinada" }
+    },
+    {
+      "clave": "descripcion_vehiculo",
+      "etiqueta": "Describe el vehículo con el que se prestarán los servicios de transporte privado:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "celular_para_chofer",
+      "etiqueta": "¿El dueño del vehículo le dará un celular al chofer para poder prestar los servicios de transporte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "descripcion_celular",
+      "etiqueta": "Describe el celular que el dueño del vehículo le dará al chofer para prestar sus servicios:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "celular_para_chofer", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se celebrará el contrato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Indica la fecha de firma del contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "id": "contrato-confidencialidad-negocios",
+  "nombre": "Contrato de Confidencialidad",
+  "explicacion": "# **¿Qué es un contrato de confidencialidad o NDA?**\n\nEl **contrato de confidencialidad** o NDA es un documento entre dos sociedades mediante el cual se compartirá información confidencial y sensible. Esto para su uso posterior en determinado proyecto y restringiendo su uso público.\n\n## **¿Para qué sirve?**\n\nEl acuerdo de confidencialidad es usado frecuentemente para proteger información que una o más partes están compartiéndose con motivo de un posible negocio o proyecto en el que esas partes participarán. Evitando así que pueda llegar a la competencia.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Proveedor:** es una persona o empresa que le proporciona bienes o servicios a otra persona o empresa.\n\n**Cliente:** es la persona que recibe los bienes o servicios por parte del proveedor a cambio del pago de cierto precio.\n\n### **Requisitos del contrato de confidencialidad o NDA:**\n\n* Partes. Como en todos los contratos, es fundamental señalar quiénes participarán en el convenio de confidencialidad y especificar quién será la parte divulgante y quién la receptora.\n* Objeto del contrato. Aquí debe señalarse el motivo por el cual se firma el acuerdo. En este caso derivado de la información que se va a divulgar.\n* Definición de información confidencial. Debe quedar muy claro qué se considerará información confidencial.\n* Excepciones de lo que no es información confidencial. Es importante dejar claro cuáles son las excepciones. Ya que podría tratarse de información pública y que la parte receptora se hubiera enterado de esa información a través de otra fuente o bien que ya tuviera conocimiento de esa información.\n* Plazo durante el cual se deberá mantener confidencial la información intercambiada.\n\n### **Dudas frecuentes:**\n\n**¿Son útiles los convenios de confidencialidad?**\n\nSin duda los convenios de confidencialidad resultan sumamente útiles. Ya que al momento de una negociación comercial es muy delicado compartir información de un negocio que podría resultar exitoso. Es por eso que las empresas antes de iniciar cualquier plática con un posible proveedor o incluso socio de negocios, les solicitan la firma de acuerdos de confidencialidad, que pueden abarcar la protección de información relacionada con uno o más proyectos.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de confidencialidad o NDA** se puede confundir con la carta de confidencialidad para empleados. Aunque la base es la misma, es decir podría utilizarse un formato similar, el convenio de confidencialidad para empleados se utiliza para un fin diferente. Ya que se refiere a la protección de la información confidencial de una empresa, pero frente a un empleado que tiene acceso a ella por haber sido contratado para trabajar en ella.",
+  "fundamento_legal": "Artículo 82 de la Ley de Propiedad Industrial — https://mexico.justia.com/federales/leyes/ley-de-la-propiedad-industrial/titulo-tercero/capitulo-unico/",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_parte_a",
+      "etiqueta": "LA PARTE A es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es la denominación social completa de la persona moral que contratará como PARTE A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nacionalidad_parte_a",
+      "etiqueta": "¿Cuál es la nacionalidad de la Parte A? (persona física)",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Física"
+      }
+    },
+    {
+      "clave": "pais_constitucion_parte_a",
+      "etiqueta": "¿Conforme a las leyes de qué país está constituida la sociedad o asociación que actuará como PARTE A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_representante_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo del representante legal que firmará el contrato en representación de la sociedad o asociación que actuará como PARTE A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "caracter_representante_parte_a",
+      "etiqueta": "El representante de la sociedad o asociación que contratará como PARTE A es:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Apoderado legal",
+        "Funcionario con facultades suficientes"
+      ],
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la PARTE A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_parte_b",
+      "etiqueta": "La PARTE B es: ¿persona moral o física?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que contratará como PARTE B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nacionalidad_parte_b",
+      "etiqueta": "¿Cuál es la nacionalidad de la PARTE B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_parte_b",
+      "etiqueta": "¿Conforme a las leyes de qué país está constituida la Parte B? (persona moral)",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_b",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_representante_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo del representante legal que firmará el contrato en representación de la PARTE B?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_b",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la PARTE B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_celebracion",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_fin_contrato",
+      "etiqueta": "¿En qué fecha terminará el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

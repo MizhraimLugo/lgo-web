@@ -1,0 +1,88 @@
+{
+  "id": "recibo-pago-renta",
+  "nombre": "Recibo de Pago de Renta",
+  "explicacion": "## **¿Qué es el Recibo de Pago de Renta?**\n\nEl **recibo de pago de renta** es el documento por el cual se comprueba que el arrendatario ha efectuado el pago al arrendador del precio de la renta o alquiler. A cambio, el arrendatario ocupa el bien inmueble y hace uso de él.\n\n### **¿Para qué sirve?**\n\nSirve para que una persona llamada arrendatario pueda comprobar el pago del precio de la renta al arrendador, derivado de un contrato de arrendamiento.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** es la persona con poder legal sobre el inmueble y que pone en arrendamiento dicho inmueble.\n\n**Arrendatario:** es la persona que usará el inmueble a cambio del pago de una renta.\n\n#### **Requisitos del Recibo de Pago de Renta:**\n\n* Los recibos deberán ser emitidos en formato CFDI, a través de un proveedor autorizado de certificación. También se pueden encontrar en la página web del Servicio de Administración Tributaria (SAT).\n* Generalmente debe incorporar datos como:\n  * Nombre del arrendador\n  * Domicilio\n  * Lugar de expedición\n  * Registro Federal de Contribuyentes (RFC) del arrendador\n  * Régimen fiscal en que tributen el cual sería el de arrendamiento para este caso. Incluir el número de folio asignado por el SAT y sello digital del SAT\n  * Sello digital del contribuyente que lo expide\n  * Fecha de expedición, nombre y RFC del arrendatario\n  * Bien arrendado (incluir periodo de renta, dirección del inmueble, número de boleta predial)\n  * Importe total ya sea en número o en letra\n  * El señalamiento si se realiza un solo pago por el periodo o en mensualidades\n  * La forma de pago\n  * La fecha y hora de la certificación\n  * Número de serie del certificado digital del SAT\n* Los recibos de arrendamiento en el formato antes descrito (CFDI) deberán tener un archivo en PDF y otro en XML (hay que resguardarlos en tu laptop o un disco duro).\n\n#### **Dudas frecuentes:**\n\n**¿Los recibos de arrendamiento sirven como comprobante de existencia del contrato?**\n\nSi, estos recibos además de probar que el arrendatario ha realizado el pago de su renta, le sirven al arrendador para comprobar que el contrato de arrendamiento existe.\n\n**¿Con qué documento lo puedo confundir?**\n\nPodrías confundir el **recibo de pago de renta** con el recibo de pago de mantenimiento.",
+  "fundamento_legal": "Código Civil Federal artículos 2399 y 2425 fracción I",
+  "precio": 30,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "El arrendador, es decir la persona que recibe el dinero es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona moral que recibe el dinero?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que recibe el dinero?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "El arrendatario, es decir la persona que entrega el dinero es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que entrega el dinero?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "periodo_renta",
+      "etiqueta": "Indica el periodo que comprende el pago de la renta que se realiza:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato_arrendamiento",
+      "etiqueta": "¿Cuándo se celebró el contrato de arrendamiento correspondiente?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_renta",
+      "etiqueta": "¿Cuánto dinero se entregará? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_pago",
+      "etiqueta": "¿En qué fecha se recibe la cantidad como pago de una renta?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se recibe la cantidad como pago de la renta?",
+      "tipo": "texto",
+      "obligatorio": true
+    }
+  ]
+}

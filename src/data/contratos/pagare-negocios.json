@@ -1,0 +1,152 @@
+{
+  "id": "pagare-negocios",
+  "nombre": "Pagaré",
+  "explicacion": "## **¿Qué es?**\n\nUn pagaré es un documento que contiene la promesa incondicional de una persona (suscriptor o deudor), de que pagará a otra persona (beneficiario o acreedor), una suma determinada de dinero en un determinado plazo.\n\n### **¿Para qué sirve un pagaré?**\n\nEl pagaré se utiliza constantemente para cerrar tratos teniendo la función de garantía e imitar la función del aval o fiador, principalmente en algunos contratos de arrendamiento.\n\n### **¿Quiénes intervienen?**\n\n**El suscriptor:** Es la persona que se compromete a pagar la suma de dinero, a la vista o en una fecha futura fija o determinable.\n\n**El beneficiario o tenedor:** Es la persona a cuya orden debe hacerse el pago señalado en el pagaré.\n\n### **Requisitos del pagaré:**\n\n* La mención de ser pagaré, inserta en el texto del documento;\n* La promesa incondicional de pagar una suma determinada de dinero;\n* El nombre de la persona a quien ha de hacerse el pago;\n* La época y el lugar del pago;\n* La fecha y el lugar en que se subscriba el documento;\n* La firma del suscriptor o de la persona que firme en su nombre.\n\n### **Dudas frecuentes:**\n\n**¿Puede transmitirse a un tercero?**\n\nLa respuesta es que en principio sí, a menos que en el pagaré se señale \"no a la orden\" y la forma más común de transmisión a un tercero, es el endoso.\n\n**¿Cuál es la diferencia con la letra de cambio y el cheque?**\n\nPor lo que se refiere a la letra de cambio, la diferencia más importante radica en la persona que emite el documento, ya que la letra de cambio la emite el acreedor a quien se le debe pagar y en el caso del pagaré, la persona que lo emite es normalmente el mismo deudor.",
+  "fundamento_legal": "Artículos 170-174 de la Ley General de Títulos y Operaciones de Crédito. — https://mexico.justia.com/federales/leyes/ley-general-de-titulos-y-operaciones-de-credito/titulo-primero/capitulo-iii/",
+  "precio": 50,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_suscriptor",
+      "etiqueta": "La persona que firma el pagaré (suscriptor) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_suscriptor",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la empresa que firmará el pagaré (suscriptor)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_suscriptor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la empresa que firmará el pagaré (suscriptor)?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_suscriptor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_suscriptor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que firmará el pagaré (suscriptor)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_beneficiario",
+      "etiqueta": "¿Cuál es el nombre o denominación social de la persona a quien se le pagará el dinero (beneficiario)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_pagare",
+      "etiqueta": "¿Cuál es la cantidad que promete pagar la persona que firma el pagaré (suscriptor) al beneficiario? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_pago",
+      "etiqueta": "La persona que firmará el pagaré (suscriptor) deberá pagar el adeudo:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Fecha específica", "Cuando el beneficiario presente al suscriptor para su cobro en un solo pago", "En diversas parcialidades y fechas"]
+    },
+    {
+      "clave": "fecha_vencimiento",
+      "etiqueta": "¿En qué fecha promete el deudor (suscriptor) pagar al beneficiario el adeudo?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "forma_pago", "valor_que_activa": "Fecha específica" }
+    },
+    {
+      "clave": "descripcion_forma_pago",
+      "etiqueta": "Describe la forma de pago del adeudo:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "genera_intereses_ordinarios",
+      "etiqueta": "¿Se generarán intereses ordinarios?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_ordinario",
+      "etiqueta": "¿Qué tasa de interés se aplicará para calcular los intereses ordinarios?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "genera_intereses_ordinarios", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "genera_intereses_moratorios",
+      "etiqueta": "¿Se generarán intereses moratorios por retraso en el pago del adeudo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_moratorio",
+      "etiqueta": "¿Qué tasa de interés se aplicará para calcular los intereses por el retraso en el pago del adeudo?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "genera_intereses_moratorios", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "fecha_suscripcion",
+      "etiqueta": "¿En qué fecha se firma o suscribe el pagaré?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_suscripcion",
+      "etiqueta": "¿En qué lugar se firma o suscribe el pagaré?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tiene_aval",
+      "etiqueta": "¿Firmará el pagaré algún aval, es decir alguna persona que se obligue a realizar el pago del adeudo si la persona que firma el pagaré (suscriptor) no lo hiciere?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tipo_aval",
+      "etiqueta": "La persona que firmará como aval, obligándose a pagar el adeudo en caso de que el deudor (suscriptor) no lo hiciere, es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"],
+      "depende_de": { "clave_padre": "tiene_aval", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "nombre_aval",
+      "etiqueta": "¿Cuál es el nombre completo del aval?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_aval", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "domicilio_aval",
+      "etiqueta": "¿Cuál es el domicilio del aval quien se obliga a realizar el pago del adeudo si la persona que firma el pagaré (suscriptor) no lo realiza?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_aval", "valor_que_activa": "Sí" }
+    }
+  ]
+}

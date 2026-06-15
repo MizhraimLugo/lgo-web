@@ -1,0 +1,188 @@
+{
+  "id": "compraventa-bien-inmueble",
+  "nombre": "Contrato de Compraventa de Bien Inmueble",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato de compraventa de bien inmueble** es un contrato a través de cual una persona llamada \"comprador\" adquiere un bien inmueble del propietario del mismo, siendo este el \"vendedor\", a un precio determinado, por lo cual se transmite la propiedad del mismo.\n\n### **¿Para qué sirve el contrato de compraventa de bien inmueble?**\n\nSe utiliza en caso de que se requiera adquirir la propiedad de cualquier tipo de bien inmueble, una casa, un departamento, un terreno, a grandes rasgos para adquirir un bien raíz.\n\nEs importante mencionar que este contrato puede ser utilizado entre personas físicas o morales, indistintamente.\n\n### **¿Quienes intervienen en el contrato?**\n\n**Vendedor:** actual propietario de inmueble, con título de propiedad ante el Registro Público de la Propiedad.\n\n**Comprador:** persona interesada en adquirir el bien inmueble.\n\n**Requisitos del contrato de compraventa de bien inmueble:**\n\n* Nombre completo de las partes que celebran el contrato (comprador y vendedor).\n* Detalle del bien inmueble que se está comprando (ubicación, número de registro, descripción del bien inmueble).\n* El precio del inmueble, es decir, el valor de la cosa vendida.\n* Fecha en que se realizará el pago.\n* Fecha de entrega del bien inmueble.\n* Vigencia del contrato.\n\n**Dudas frecuentes:**\n\n**¿Cómo puedo asegurarme de que el vendedor efectivamente es dueño del bien inmueble?**\n\nEs importante que revises que el vendedor aparezca como propietario del inmueble en el Registro Público de la Propiedad.\n\n**¿Cómo calcular el valor del inmueble?**\n\nEs recomendable que al momento de firmar el contrato de compraventa de inmueble se realice un avalúo del bien inmueble y se especifique dentro del contrato.\n\nUna vez adquirido el bien inmueble, ¿qué procede?\n\nDebes formalizar el contrato ante un Notario Público y posteriormente realizar el cambio de propietario ante el Registro Público de la Propiedad.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl contrato de compraventa de bien inmueble se puede confundir con el contrato de compraventa de bien mueble. Es importante de tengas clara la diferencia entre un bien mueble y un bien inmueble. El primero se refiere a aquellos que son fáciles de trasladarse, como un automóvil, y el segundo se refiere a aquellos que están anclados al suelo, como una casa.",
+  "fundamento_legal": "Código Civil Federal, Título II, Capítulo I — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-segundo/titulo-segundo/capitulo-i/",
+  "precio": 200,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_vendedor",
+      "etiqueta": "La persona que venderá el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que venderá el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que venderá el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vendedor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que venderá el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comprador",
+      "etiqueta": "La persona que comprará el bien inmueble es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comprador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que comprará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comprador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que comprará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comprador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_comprador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comprará el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_vendedor",
+      "etiqueta": "La persona que venderá el bien inmueble:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No está casado y es único dueño del inmueble",
+        "No está casado y es dueño del inmueble junto con otras personas",
+        "Está casado bajo el régimen de bienes separados",
+        "Está casado bajo el régimen de sociedad conyugal"
+      ]
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "Determine el domicilio del bien inmueble que se venderá:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "precio_compraventa",
+      "etiqueta": "Determine la contraprestación que se pagará por la compraventa del bien inmueble: (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_pago",
+      "etiqueta": "¿Cuándo se pagará el precio por la compra del bien inmueble?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "En un solo pago en fecha específica",
+        "En dos pagos en fechas determinadas"
+      ]
+    },
+    {
+      "clave": "fecha_pago",
+      "etiqueta": "¿En qué fecha se pagará el precio?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "tiene_gravamen",
+      "etiqueta": "¿El bien inmueble que se venderá tiene alguna garantía, carga o gravamen?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "descripcion_gravamen",
+      "etiqueta": "Indica qué garantía tiene el bien inmueble que se venderá:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tiene_gravamen", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "pena_convencional_si",
+      "etiqueta": "En caso de que el comprador incumpla cualquiera de sus obligaciones, ¿deberá pagar alguna pena convencional?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pena_convencional",
+      "etiqueta": "¿Qué porcentaje del adeudo se deberá pagar como pena convencional en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pena_convencional_si", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El presente contrato de compraventa estará vigente:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Por un tiempo específico",
+        "Hasta que el comprador cumpla todas sus obligaciones de pago"
+      ]
+    },
+    {
+      "clave": "meses_vigencia",
+      "etiqueta": "¿Por cuántos meses estará vigente el presente Contrato?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Por un tiempo específico" }
+    },
+    {
+      "clave": "cobra_interes_mora",
+      "etiqueta": "¿Se generarán intereses en caso de retraso por parte del comprador en realizar algún pago?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_mora",
+      "etiqueta": "¿Qué porcentaje del adeudo se aplicará para calcular los intereses por retrasos en el pago del precio?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "cobra_interes_mora", "valor_que_activa": "Sí" }
+    }
+  ]
+}

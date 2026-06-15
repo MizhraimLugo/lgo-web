@@ -1,0 +1,142 @@
+{
+  "id": "comodato-bien-inmueble",
+  "nombre": "Contrato de Comodato Bien Inmueble",
+  "explicacion": "## **¿Qué es un contrato de comodato bien inmueble?**\n\nEl **contrato de comodato bien inmueble** es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona concede el uso de un bien inmueble a otra persona que se obliga a restituirla individualmente.\n\n### **¿Para qué sirve?**\n\nSirve para que una persona pueda prestar a otra persona un bien inmueble para su uso el cual deberá ser devuelto después de cierto tiempo, de forma gratuita.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Comodante:** propietario del bien inmueble.\n\n**Comodatario:** persona que usará el bien dado en comodato.\n\n#### **Requisitos del contrato de comodato bien inmueble:**\n\n* Objeto: Concesión de forma gratuita del uso libre y temporal de un bien inmueble que permanecerá siendo en todo tiempo propiedad exclusiva del comodante.\n* El comodatario no tiene ningún derecho adicional más que lo que se incluye en el objeto del contrato.\n* El comodatario acepta el bien inmueble en las condiciones en las que se encuentra y se obliga a devolverlo en el mismo estado en el que lo recibió al comodante.\n* El comodante se obliga a dar gratuitamente el uso del bien inmueble.\n* El uso que el comodatario da al bien, solo será para el fin establecido en el contrato.\n* El comodatario deberá al entregar el bien inmueble incluir un acta de entrega recepción por escrito.\n* El comodatario se obliga a mantener el bien inmueble en perfecto estado durante la vigencia del contrato. Además, absorbe los gastos referentes al mantenimiento, limpieza, funcionamiento y reparación de los bienes, gastos extraordinarios y mantenimientos correctivos.\n* El comodante podrá realizar periódicamente visitas de inspección al inmueble para ver si se está usando de forma adecuada y el estado en que se encuentra el inmueble.\n* El comodatario se obliga a poner toda la diligencia posible en la conservación del bien inmueble, y a usarlos solamente para el fin pactado.\n* Si hay pérdida total del bien inmueble el comodatario deberá pagar al comodante el valor total del mismo al costo de reposición o el valor de la reparación en caso de descomposturas causadas por la culpa o negligencia del comodatario.\n* Si el comodatario después de cumplirse el plazo del contrato se encuentra ocupando aun el inmueble deberá pagar una cierta cantidad al comodante por concepto de renta. Esto con independencia de las acciones legales que el comodante se reserve ejercer para lograr la desocupación del bien inmueble.\n* El comodante podrá dar por terminado el contrato en cualquier tiempo previa notificación por escrito al comodatario.\n\n#### **Dudas frecuentes:**\n\n**¿El comodatario debe pagar algún precio por el uso del bien inmueble?**\n\nNo, el comodante otorga el uso gratuito del bien inmueble, por lo que el comodatario no debe pagar nada por ese uso. Salvo que al final del plazo, no desocupe el inmueble en cuestión, el comodante podrá exigirle el pago de una renta hasta que no desocupe el inmueble, además de que podrá realizar las acciones pertinentes para desalojarlo del mismo.\n\n**¿Con qué documento lo puedo confundir?**\n\nEs posible que el contrato de comodato bien inmueble se confunda con el contrato de arrendamiento, usufructo, mutuo o con la donación.\n\n**Diferencia entre contrato de arrendamiento y comodato:**\n\nNo hay que confundir el contrato de arrendamiento del **contrato de comodato de bien inmueble**. Aunque en ambos se entrega la posesión de un bien inmueble, en el primero existe el pago de una renta, mientras que en el segundo no existe un pago.",
+  "fundamento_legal": "Código Civil Federal, Título Séptimo, (2497, 2498-2515) — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-septimo/",
+  "precio": 150,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_comodante",
+      "etiqueta": "La persona que dará el bien en comodato es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comodante",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que dará en comodato el bien inmueble?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comodante",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que dará el bien inmueble en comodato?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comodante", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_comodante",
+      "etiqueta": "¿Cuál es el domicilio de la persona que dará el bien inmueble en comodato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comodatario",
+      "etiqueta": "La persona que recibirá el bien inmueble en comodato es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comodatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá el bien inmueble en comodato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comodatario",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que recibirá el bien inmueble en comodato?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comodatario", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_inmueble",
+      "etiqueta": "¿Cuál es el domicilio donde se ubica el inmueble que se dará en comodato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_comodante",
+      "etiqueta": "La persona que dará en comodato el bien inmueble:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No está casado y es único dueño del inmueble.",
+        "No está casado y es dueño de las bodegas junto con otras personas.",
+        "Se encuentra casado bajo el régimen de sociedad conyugal.",
+        "Se encuentra casado bajo el régimen de bienes separados."
+      ]
+    },
+    {
+      "clave": "uso_inmueble",
+      "etiqueta": "¿A qué se deberá destinar el uso del bien inmueble que se dará en comodato?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "requiere_deposito",
+      "etiqueta": "¿Se entregará cierta cantidad de dinero como depósito para reparaciones por daños en el Inmueble, ocasionados por la persona que recibe el bien?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "monto_deposito",
+      "etiqueta": "¿Qué cantidad se deberá entregar como depósito?",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "requiere_deposito", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿tiempo específico o tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Tiempo específico", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Tiempo específico" }
+    },
+    {
+      "clave": "requiere_seguro",
+      "etiqueta": "¿Deberá la persona que recibe el bien en comodato contratar un seguro que cubra cualquier daño ocasionado al inmueble?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "id": "contrato-individual-trabajo-negocios",
+  "nombre": "Contrato Individual de Trabajo",
+  "explicacion": "**¿Qué es un contrato individual de trabajo?**\n\nContrato individual de trabajo, cualquiera que sea su forma o denominación, es aquel por virtud del cual una persona se obliga a prestar a otra un trabajo personal subordinado, mediante el pago de un salario.\n\n### **¿Para qué sirve?**\n\nEl contrato individual de trabajo sirve para establecer la naturaleza del trabajo contratado, ya que de lo contrario podría volverse por tiempo indeterminado y en consecuencia, el trabajador gozará de los beneficios de una relación laboral por tiempo indeterminado.\n\n#### **¿Quiénes intervienen en el contrato?**\n\n**Patrón:** aquella persona física o moral que utiliza los servicios de uno o varios trabajadores.\n\n**Trabajador:** es la persona que realiza un trabajo a cambio de un salario.\n\n#### **Requisitos del contrato individual de trabajo:**\n\nDe acuerdo al artículo 25 de la Ley Federal del Trabajo, las condiciones que se deben cumplir son:\n\n* Nombre, nacionalidad, edad, sexo, estado civil, clave única de registro de población, registro federal de contribuyentes y domicilio del trabajador y del patrón.\n* Si la relación de trabajo es para obra o tiempo determinado, por temporada, de capacitación inicial por tiempo indeterminado y en su caso si está sujeta a periodo de prueba.\n* El lugar o lugares donde se prestará el servicio.\n* El servicio que se prestará, mismo que se determinará de la forma más precisa posible.\n* La duración de la jornada.\n* La forma monto del salario.\n* El día y lugar del pago.\n* La indicación de que el trabajador será capacitado o adiestrado en los términos de los planes y programas establecidos en la empresa, y\n* Demás condiciones de trabajo, tales como días de descanso, vacaciones y otras que convengan a las partes.\n\n**Dudas frecuentes:**\n\n**¿Tengo derecho a recibir una copia de mi contrato?**\n\nSi, la empresa tiene la obligación de darte una copia del contrato que firmaste.\n\n**¿En caso de algún cambio a nivel corporativo, conservo mis condiciones laborales?**\n\nSi, en caso de un cambio a nivel corporativo, la nueva empresa deberá mantener las mismas condiciones laborales de los trabajadores, salvo que se pacte lo contrario.\n\n**¿Con qué documento lo puedo confundir?**\n\nSe puede confundir con el contrato de prestación de servicios.\n\n**Diferencia entre contrato laboral y prestación de servicios profesionales:**\n\n- En materia laboral, el trabajo es subordinado y en el caso de una prestación de servicios no lo es.\n\n- El contrato de trabajo debe ser prestado en forma personal mientras que el servicio profesional no necesariamente, ya que incluso puede ser prestado por varios profesionales y/o ayudantes.\n\n- En el caso del contrato laboral, el pago es un salario y en una prestación de servicios es un pago de honorarios.\n\n- La prestación del trabajo se realiza en el domicilio del patrón y la prestación del servicio profesional normalmente se realiza en el domicilio del profesionista y con sus propios medios.\n\n- La responsabilidad por actos del trabajador frente a terceros es de la empresa y la responsabilidad del profesionista es personal.\n\n- Los contratos de trabajo se generalmente son por tiempo indefinido mientras que el contrato de prestación de servicios profesionales normalmente tiene una fecha de vencimiento.",
+  "fundamento_legal": "Artículos 20 al 34 de la Ley Federal del Trabajo — https://mexico.justia.com/federales/leyes/ley-federal-del-trabajo/titulo-segundo/capitulo-i/",
+  "precio": 120,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_patron",
+      "etiqueta": "La Parte Empleadora (patrón) es: ¿persona física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "denominacion_patron",
+      "etiqueta": "¿Cuál es la denominación social completa de la Parte Empleadora (patrón)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "pais_constitucion_patron",
+      "etiqueta": "¿En qué país se constituyó la empresa que contrata (patrón)?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_patron", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "nombre_representante_patron",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la Parte Empleadora (patrón)?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_patron", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_patron",
+      "etiqueta": "¿Cuál es el domicilio de la Parte Empleadora (patrón)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_trabajador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que contratará como Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nacionalidad_trabajador",
+      "etiqueta": "¿Cuál es la nacionalidad de la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_trabajador",
+      "etiqueta": "¿Cuál es el domicilio de la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_celebracion",
+      "etiqueta": "Lugar en que se celebrará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_pais_trabajo",
+      "etiqueta": "¿En qué ciudad y país trabajará la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "puesto_trabajador",
+      "etiqueta": "¿Cuál es el puesto o cargo que desempeñará la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "servicios_trabajador",
+      "etiqueta": "Describa los servicios o actividades que llevará a cabo la Parte Empleada (trabajador):",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "horas_jornada",
+      "etiqueta": "¿De cuántas horas será la jornada laboral de la Parte Empleada (trabajador)?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_trabajo",
+      "etiqueta": "¿De qué día a qué día de la semana trabajará la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_descanso_semana",
+      "etiqueta": "¿Cuántos días a la semana descansará la Parte Empleada (trabajador)?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_descanso",
+      "etiqueta": "¿Qué día(s) de la semana descansará la Parte Empleada (trabajador)?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "salario_mensual",
+      "etiqueta": "¿Cuál será el salario mensual neto que recibirá la Parte Empleada (trabajador) por sus servicios? Tipo de moneda.",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "periodicidad_pago",
+      "etiqueta": "¿Cada cuánto será pagado el sueldo a la Parte Empleada (trabajador)?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Mensual", "Semanal", "Quincenal"]
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "¿La vigencia del contrato terminará en alguna fecha específica o se celebrará por tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Fecha específica", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "fecha_fin_contrato",
+      "etiqueta": "¿En qué fecha terminará el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Fecha específica" }
+    },
+    {
+      "clave": "recibira_informacion_confidencial",
+      "etiqueta": "¿Recibirá la Parte Empleada (trabajador) información confidencial de la Parte Empleadora (patrón) como consecuencia del desempeño de sus labores?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

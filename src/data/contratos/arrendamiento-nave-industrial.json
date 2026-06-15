@@ -1,0 +1,181 @@
+{
+  "id": "arrendamiento-nave-industrial",
+  "nombre": "Contrato de Arrendamiento de Nave Industrial",
+  "explicacion": "## **¿Qué es?**\n\nEl contrato de arrendamiento de nave industrial es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona rentará un establecimiento comercial para instalar o establecer naves o complejos industriales.\n\n### **¿Para qué sirve el contrato de arrendamiento de nave industrial?**\n\nSirve para que una persona pueda usar y depositar mercancías, así como constituir centros de trabajo en naves o complejos industriales, de forma temporal mediante el pago de una renta periódica.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** propietario del establecimiento.\n\n**Arrendatario:** el interesado en rentarlo.\n\n#### **Requisitos del contrato de arrendamiento de nave industrial:**\n\n* El arrendador debe contar con la legitimación para dar en arrendamiento el inmueble y exhibir el documento que lo acredite como propietario.\n* El objeto del contrato: El arrendador concede el uso y goce temporal del bien arrendado.\n* Renta: Monto que el arrendatario tiene que pagar al arrendador durante un tiempo determinado.\n* El bien arrendado deberá ser entregado en forma satisfactoria al arrendador.\n* Vigencia: La temporalidad del contrato, puede ser también un contrato de tiempo indefinido.\n* Uso y destino: El arrendatario se obliga a destinar el bien arrendado únicamente para el uso que se convenga entre las partes, debe manifestar que dicho inmueble es idóneo para tal fin, y que está en perfecto estado para servir al uso convenido y que reúne las condiciones de higiene, salubridad y seguridad.\n* El arrendatario se obliga a mantener el bien en buen estado de conservación y a reparar cualquier daño, obligándose al pago de daños y perjuicios al arrendador en caso de no conservar y reparar cualquier daño causado.\n* El arrendatario no podrá modificar el bien arrendado a menos que cuente con acuerdo expreso y por escrito del arrendador, además las adaptaciones o mejoras podrán ser retiradas por el arrendatario.\n* El arrendatario no puede sin autorización expresa y por escrito del arrendador subarrendar o traspasar todo o en parte el bien arrendado, ni ceder total o parcialmente los derechos.\n* Una vez que termine el contrato el arrendatario debe dar inmediata posesión al arrendador, en el estado en el que lo recibió de este último.\n* Puede prorrogarse y puede darse la terminación anticipada del contrato, en caso de que sea de tiempo indefinido cualquiera de las partes puede darlo por terminado previo aviso con la anticipación pactada.\n\n#### **Dudas frecuentes:**\n\n**¿Hay que señalar el uso y destino de la nave?**\n\nSi hay que hacerlo, porque el propietario debe asegurarse de que la nave se destine siempre al mismo fin, para que no se cambie el uso de la misma sin incurrir en incumplimiento.\n\n**¿Si se quiere usar el inmueble para un uso distinto al objeto del contrato se puede hacer?**\n\nSi siempre y cuando se cuente con el consentimiento expreso por escrito del arrendatario.\n\n**¿Con qué documento lo puedo confundir?**\n\nCon el contrato de arrendamiento de casa Habitación. Si bien es cierto que ambos contratos hablan de una renta de un inmueble, es importante que puedas identificar que la diferencia principal entre estos, es el tipo de bien inmueble que estás arrendando. Es decir, o una casa o una nave o local industrial.",
+  "fundamento_legal": "Código Civil Federal 2398, 2399, 2400, 2406, 2412, 2425",
+  "precio": 200,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que dará un bien para fines industriales en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que dará un bien para fines industriales en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que dará un bien para fines industriales en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_arrendador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que dará un bien para fines industriales en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que recibirá un bien para fines industriales en arrendamiento es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibirá un bien para fines industriales en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo del representante de la persona que recibirá un bien para fines industriales en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_arrendatario", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "ciudad_tribunales",
+      "etiqueta": "En caso de existir controversias derivadas del contrato, ¿ante los tribunales de qué ciudad se llevarán dichas controversias para su resolución?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_nave",
+      "etiqueta": "¿Cuál es el domicilio donde se ubica el bien para fines industriales que se dará en arrendamiento?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "estado_civil_arrendador",
+      "etiqueta": "La persona que dará un bien para fines industriales en arrendamiento:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "No está casado y es único dueño del inmueble",
+        "No está casado y es dueño de las bodegas junto con otras personas",
+        "Se encuentra casado bajo el régimen de sociedad conyugal",
+        "Se encuentra casado bajo el régimen de bienes separados"
+      ]
+    },
+    {
+      "clave": "descripcion_nave",
+      "etiqueta": "Describe en qué consiste el bien para fines industriales que se dará en arrendamiento:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "incluir_medidas",
+      "etiqueta": "¿Deseas incluir las medidas y dimensiones del bien para fines industriales que se darán en arrendamiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "periodicidad_renta",
+      "etiqueta": "¿Con qué periodicidad se realizará el pago de la renta?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Mensual", "Por semana"]
+    },
+    {
+      "clave": "renta_mensual",
+      "etiqueta": "¿A qué cantidad ascenderá la renta mensual que se pagará? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "dias_pago_renta",
+      "etiqueta": "¿Con cuántos días contará la persona que recibe los bienes para fines industriales en arrendamiento para pagar la renta, comenzando desde el primer día de cada mes?",
+      "tipo": "numero",
+      "obligatorio": true
+    },
+    {
+      "clave": "cobra_interes_mora",
+      "etiqueta": "¿Se cobrará algún interés en caso de que no se pague la renta a tiempo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_mora",
+      "etiqueta": "¿Cuál será la tasa de interés que se cobrará en caso de incumplimiento en el pago de la renta?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "cobra_interes_mora", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "requiere_deposito",
+      "etiqueta": "¿Será necesario que se entregue cierta cantidad de dinero como depósito para el caso de cualquier incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "monto_deposito",
+      "etiqueta": "¿Qué cantidad se deberá entregar como depósito?",
+      "tipo": "moneda",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "requiere_deposito", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "tipo_vigencia",
+      "etiqueta": "El contrato se celebrará por: ¿tiempo específico o tiempo indeterminado?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Tiempo específico", "Tiempo indeterminado"]
+    },
+    {
+      "clave": "fecha_fin_vigencia",
+      "etiqueta": "¿En qué fecha terminará la vigencia del contrato?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vigencia", "valor_que_activa": "Tiempo específico" }
+    }
+  ]
+}

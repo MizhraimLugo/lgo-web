@@ -1,0 +1,172 @@
+{
+  "id": "no-competencia",
+  "nombre": "Contrato de No Competencia",
+  "explicacion": "Es el acuerdo escrito por el cual dos personas se obligan a no competir entre ellas mismas es decir, a no comercializar los productos o servicios que cada una ofrezca al público en cierto territorio y/o temporalidad específicos.\n\n## **¿Para qué se usa?**\n\nA través de este acuerdo las personas que mantengan relaciones comerciales con otras, pueden controlar la comercialización de los productos o servicios que sus competidores ofrecen.",
+  "fundamento_legal": "",
+  "precio": 120,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "tipo_parte_a",
+      "etiqueta": "Una de las partes que firmará el contrato es (la llamaremos Parte A): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es el nombre (denominación social) de la persona moral que contratará como Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_parte_a_fisica",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato como Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Física"
+      }
+    },
+    {
+      "clave": "nombre_representante_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato en representación de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_a",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_parte_b",
+      "etiqueta": "La otra parte que firmará el contrato es (la llamaremos Parte B): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_representante_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato en representación de la Parte B?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_b",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona moral que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_b",
+        "valor_que_activa": "Moral"
+      }
+    },
+    {
+      "clave": "nombre_parte_b_fisica",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "tipo_parte_b",
+        "valor_que_activa": "Física"
+      }
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la persona que firmará el contrato como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se firmará el contrato? (incluye la ciudad o región y estado)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "actividades_comerciales",
+      "etiqueta": "Describe las actividades comerciales sobre las cuales no podrán competir las mismas:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "territorio_parte_a",
+      "etiqueta": "Determine en qué territorio podrá comercializar los productos o servicios la Parte A:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "territorio_parte_b",
+      "etiqueta": "Determine en qué territorio podrá comercializar los productos o servicios la Parte B:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "incluir_actividades_prohibidas",
+      "etiqueta": "¿Deseas incluir actividades específicas que estén expresamente prohibidas?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "actividades_incumplimiento",
+      "etiqueta": "Describa las actividades específicas que se entenderán como incumplimiento a las obligaciones de no competencia:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "incluir_actividades_prohibidas",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "incluir_pena_convencional",
+      "etiqueta": "¿Deseas que se pacte una sanción o una pena convencional en caso de incumplimiento por alguna de las partes?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "porcentaje_pena_convencional",
+      "etiqueta": "¿Qué porcentaje de los ingresos que haya recibido la persona que haya incumplido a sus obligaciones, deberá de pagar a la parte afectada por dicho incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": {
+        "clave_padre": "incluir_pena_convencional",
+        "valor_que_activa": "Sí"
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "id": "autorizacion-subarrendar-negocios",
+  "nombre": "Autorización para Subarrendar",
+  "explicacion": "## **¿Qué es?**\n\nLa **autorización para subarrendar** es el documento por el que el arrendador (casi siempre el propietario) de una vivienda o local otorga su consentimiento o su oposición al subarrendamiento solicitado por el arrendatario.\n\n## **¿Para qué sirve la autorización para subarrendar?**\n\nSirve para que el arrendatario responda a la solicitud realizada por el arrendatario de subarrendar el inmueble que renta. En la contestación puede otorgar o negar su consentimiento.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Arrendador:** Persona que renta el inmueble y es quien debe otorgar su consentimiento por escrito para que el arrendatario pueda subarrendar.\n\n**Arrendatario:** Persona a la que se le renta el inmueble, y la cual puede solicitar al arrendador permiso para subarrendar.\n\n### **Requisitos de la autorización para subarrendar:**\n\n* Hay que revisar que el contrato principal de arrendamiento no incluya una prohibición para subarrendar.\n* La contestación debe ser por escrito y debe estar firmada por el arrendador con acuse de recibo por parte del inquilino. En caso de que el inquilino se niegue a firmar se puede llevar testigos para demostrar su entrega.\n* En caso de otorgar el consentimiento el arrendador, la duración del contrato de subarrendamiento no podrá exceder la establecida en el contrato principal de arrendamiento.\n* Este nuevo contrato es accesorio al principal.\n* En caso de que el arrendatario subarriende sin consentimiento previo y por escrito del arrendador este último puede dar por terminado el contrato principal. Pudiendo el arrendatario quedar obligado a indemnizar los daños y perjuicios causados.\n* En caso de que el inquilino permita el uso de la vivienda a familiares y amigos no se considerará esta situación un subarrendamiento.\n* El precio del subarriendo no puede superar el precio que se estipuló en el contrato principal de arrendamiento.\n\n### **Dudas frecuentes:**\n\n**¿El subarrendamiento extingue el contrato entre el arrendador original y el arrendatario original?**\n\nNo la extingue ni la modifica. Realmente es un derecho adicional que tiene el arrendatario dentro del mismo contrato. Incluso la duración del subarrendamiento no podrá exceder la duración del contrato original entre el arrendador original y el arrendatario original.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa **autorización para subarrendar** se puede llegar a confundir con el contrato de arrendamiento.\n\nEl contrato de arrendamiento se considera el contrato principal. Mientras que el subarrendamiento es un derecho (incluso cláusula) adicional dentro del mismo contrato. Éste puede ser otorgado mediante un convenio modificatorio al contrato principal.",
+  "fundamento_legal": "Código Civil Federal: Del artículo 2480 al 2482 — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-sexto/capitulo-viii/",
+  "precio": 50,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes",
+        "Baja California",
+        "Baja California Sur",
+        "Campeche",
+        "Chiapas",
+        "Chihuahua",
+        "Ciudad de México",
+        "Coahuila",
+        "Colima",
+        "Durango",
+        "Estado de México",
+        "Guanajuato",
+        "Guerrero",
+        "Hidalgo",
+        "Jalisco",
+        "Michoacán",
+        "Morelos",
+        "Nayarit",
+        "Nuevo León",
+        "Oaxaca",
+        "Puebla",
+        "Querétaro",
+        "Quintana Roo",
+        "San Luis Potosí",
+        "Sinaloa",
+        "Sonora",
+        "Tabasco",
+        "Tamaulipas",
+        "Tlaxcala",
+        "Veracruz",
+        "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_arrendador",
+      "etiqueta": "La persona que realiza la autorización (arrendador) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_arrendador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que realiza la autorización? (el arrendador)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato",
+      "etiqueta": "¿En qué fecha se celebró el contrato de arrendamiento?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien",
+      "etiqueta": "Describe el bien que se dio en arrendamiento:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_bien",
+      "etiqueta": "Indica el domicilio donde se ubica el bien que se dio en arrendamiento:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_arrendatario",
+      "etiqueta": "La persona que es autorizada para subarrendar (arrendatario) es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Física",
+        "Moral"
+      ]
+    },
+    {
+      "clave": "nombre_arrendatario",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que es autorizada para subarrendar? (arrendatario)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_arrendatario",
+      "etiqueta": "¿Cuál es el domicilio de la persona que es autorizada? (arrendatario)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "incluir_info_adicional",
+      "etiqueta": "¿Deseas incluir alguna nota o información adicional a la notificación?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Sí",
+        "No"
+      ]
+    },
+    {
+      "clave": "info_adicional",
+      "etiqueta": "Información adicional que desea incluir (texto libre):",
+      "tipo": "parrafo",
+      "obligatorio": false,
+      "depende_de": {
+        "clave_padre": "incluir_info_adicional",
+        "valor_que_activa": "Sí"
+      }
+    },
+    {
+      "clave": "ciudad_elaboracion",
+      "etiqueta": "¿En qué ciudad se elabora la autorización?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_elaboracion",
+      "etiqueta": "¿En qué fecha se elabora la autorización?",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

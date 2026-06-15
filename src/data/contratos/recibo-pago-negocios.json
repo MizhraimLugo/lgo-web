@@ -1,0 +1,95 @@
+{
+  "id": "recibo-pago-negocios",
+  "nombre": "Recibo de Pago",
+  "explicacion": "## **¿Qué es?**\n\nUn **recibo de pago** es un documento firmado en el que se declara haber recibido una cantidad de dinero, una mercancía o un servicio.\n\n## **¿Para qué sirve un recibo de pago?**\n\nSirve para comprobar que se ha cumplido con el pago o solución de una obligación o prestación de un servicio o producto.\n\n## **¿Quiénes intervienen?**\n\n**Acreedor: Es la persona que recibe el dinero.**\n\n**Deudor: Es la persona** que paga el dinero.\n\n## **Requisitos del recibo de pago:**\n\n* Número de serie de recibos expedidos (no es obligatorio).\n* Membrete con datos del emisor (no es obligatorio).\n* La fórmula \"Recibí de\", o algo similar.\n* El nombre de la persona o entidad que hizo la entrega o el pago.\n* El importe recibido.\n* El concepto por el que se realizó el pago.\n\n**Dudas frecuentes:**\n\n### **¿Cómo hacer un recibo de pago?**\n\nRecibí del Sr. [nombre, apellido], la cantidad de [incluir $ ($,la cantidad en letras)] en concepto de [______] respecto a [___] de [descripción del producto o servicio].\n\n### **¿Con qué documento lo puedo confundir?**\n\nSe puede confundir con una factura, la cual es un documento que el vendedor le da al comprador. En ese documento se detallan los productos o servicios que se venden, el precio de los mismos, los impuestos que aplican en cada caso y la forma de pago.",
+  "fundamento_legal": "",
+  "precio": 30,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_deudor",
+      "etiqueta": "La persona que entrega el dinero es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_deudor",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) de la persona que entrega el dinero?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_deudor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que entrega el dinero?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_deudor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_deudor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que entrega el dinero?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_acreedor",
+      "etiqueta": "La persona que recibe el dinero es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_acreedor",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que recibe el dinero?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "representante_acreedor",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que recibe el dinero?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_acreedor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el recibo:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el recibo:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "monto_pago",
+      "etiqueta": "¿Cuánto dinero se entrega? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "concepto_pago",
+      "etiqueta": "¿Por qué concepto se hace entrega y recepción de dicha cantidad?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    }
+  ]
+}

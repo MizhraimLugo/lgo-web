@@ -1,0 +1,143 @@
+{
+  "id": "compraventa-contado",
+  "nombre": "Contrato de Compraventa de Contado",
+  "explicacion": "**¿Qué es?**\n\nEl **contrato de compraventa de contado** es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona vende a otra un bien o producto a un precio cierto. Se obliga a la entrega del mismo a otra persona que al momento en que se le entrega el bien o producto se obliga al pago del precio cierto del mismo.\n\n### **¿Para qué sirve el contrato de compraventa de contado?**\n\nSirve para una persona pueda vender bienes o productos y otra pueda adquirir los mismos en donde el pago se realiza al momento de la entrega y no se abona después con intereses como se hace en una compra venta a crédito.\n\n### **¿Quiénes intervienen (partes)?**\n\n**Vendedor:** actual propietario del bien.\n\n**Comprador:** persona interesada por el bien.\n\n#### **Requisitos del contrato de compraventa de contado:**\n\n* Objeto: Bien y producto, cosa a vender, determinada.\n* Precio**:** Cantidad a pagar por el bien o producto, el precio debe ser cierto.\n* El vendedor está obligado a entregar la cosa vendida, a garantizar las calidades de las cosas y a prestar la evicción. No está obligado a entregar la cosa vendida si el comprador no ha pagado el precio.\n* El comprador está obligado a pagar la cosa comprada en el tiempo, lugar y forma convenidos, no es necesario que sea en efectivo, puede hacerse mediante cheque, tarjeta de débito o transferencia bancaria, entre otras alternativas.\n* Los gastos de la entrega de la cosa vendida son a cuenta del vendedor, y los de transporte a cargo de comprador salvo convenio en contrario.\n* La entrega de la cosa vendida debe hacerse en el lugar convenido, y si no se convino lugar deberá hacerse la entrega en el lugar donde se vendió.\n* El vendedor deber dar un recibo de la compraventa al comprador como justificante de que se ha recibido esa cantidad determinada.\n\n#### **Dudas frecuentes:**\n\n**¿Solo debe pagarse en efectivo o se permiten otras formas de pago al contado?**\n\nPuede pagarse en efectivo o puede hacerse mediante cheque, tarjeta de débito o transferencia bancaria, entre otras alternativas.\n\n**¿Con qué documento lo puedo confundir?**\n\nCon el contrato de Compraventa a plazos. Realmente la única diferencia que existe entre estos dos contratos es que, en la compraventa a plazos, los pagos se realizan en varias exhibiciones, mientras que en el de contado es un sólo pago.",
+  "fundamento_legal": "Código Civil Federal, Título II, Capítulo I (2248, 2249, 2255 y 2269) — https://mexico.justia.com/federales/codigos/codigo-civil-federal/libro-cuarto/parte-segunda/titulo-segundo/capitulo-i/#articulo-2248",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_vendedor",
+      "etiqueta": "La parte que venderá el bien es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_vendedor",
+      "etiqueta": "¿Cuál es el nombre de la persona moral (la denominación social) que venderá el bien? (la llamaremos Parte A)",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vendedor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "nombre_representante_vendedor",
+      "etiqueta": "¿Cómo se llama el representante? (de la Parte A)",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_vendedor", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que venderá el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comprador",
+      "etiqueta": "La parte que comprará el bien es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comprador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que comprará el bien? (la llamaremos Parte B)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_comprador",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal de la persona que comprará el bien?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_comprador", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_comprador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comprará el bien?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En dónde firmarán el contrato?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "¿En qué fecha se firmará el contrato?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "descripcion_bien",
+      "etiqueta": "¿Qué es lo que se va a vender? Describe brevemente el objeto o cosa que se venderá:",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "precio_bien",
+      "etiqueta": "¿Cuál es el precio final del bien que se venderá? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "iva_precio",
+      "etiqueta": "¿Ese precio incluye I.V.A.?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Incluye el IVA", "Es ese precio más IVA", "No tomar en cuenta"]
+    },
+    {
+      "clave": "fecha_pago",
+      "etiqueta": "¿En qué fecha se deberá pagar lo que se pretende vender?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "intereses_retraso",
+      "etiqueta": "¿Se generarán intereses por retrasos en el pago?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "tasa_interes_mensual",
+      "etiqueta": "¿Cuál es la tasa de interés mensual que se aplicará para calcular los intereses?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "intereses_retraso", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "momento_entrega",
+      "etiqueta": "¿Cuándo le entregará la parte Vendedora a la parte Compradora lo que se vende?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["En fecha específica", "Cuando se pague en su totalidad"]
+    },
+    {
+      "clave": "fecha_entrega",
+      "etiqueta": "¿En qué fecha se entregará el bien?",
+      "tipo": "fecha",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "momento_entrega", "valor_que_activa": "En fecha específica" }
+    }
+  ]
+}

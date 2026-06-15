@@ -1,0 +1,216 @@
+{
+  "arrendamiento-bodega": {
+    "renta_mensual_letra": {
+      "base": "renta_mensual",
+      "pesos": true
+    }
+  },
+  "arrendamiento-casa-opcion-compra": {
+    "renta_mensual_letra": {
+      "base": "renta_mensual",
+      "pesos": true
+    }
+  },
+  "arrendamiento-nave-industrial": {
+    "renta_mensual_letra": {
+      "base": "renta_mensual",
+      "pesos": true
+    },
+    "monto_deposito_letra": {
+      "base": "monto_deposito",
+      "pesos": true
+    }
+  },
+  "arrendamiento-vacacional": {
+    "renta_diaria_letra": {
+      "base": "renta_diaria",
+      "pesos": true
+    }
+  },
+  "carta-intencion-compra-inmueble": {
+    "monto_oferta_letra": {
+      "base": "monto_oferta",
+      "pesos": true
+    }
+  },
+  "comodato-bien-inmueble": {
+    "monto_deposito_letra": {
+      "base": "monto_deposito",
+      "pesos": true
+    }
+  },
+  "comodato-bien-mueble": {
+    "monto_deposito_letra": {
+      "base": "monto_deposito",
+      "pesos": true
+    }
+  },
+  "comodato-bien-mueble-negocios": {
+    "monto_deposito_letra": {
+      "base": "monto_deposito",
+      "pesos": true
+    }
+  },
+  "compraventa-acciones": {
+    "precio_acciones_letra": {
+      "base": "precio_acciones",
+      "pesos": true
+    }
+  },
+  "compraventa-bien-inmueble": {
+    "precio_compraventa_letra": {
+      "base": "precio_compraventa",
+      "pesos": true
+    }
+  },
+  "compraventa-contado": {
+    "precio_bien_letra": {
+      "base": "precio_bien",
+      "pesos": true
+    }
+  },
+  "compraventa-plazos": {
+    "precio_total_letra": {
+      "base": "precio_total",
+      "pesos": true
+    }
+  },
+  "consignacion-mercantil": {
+    "precio_venta_letra": {
+      "base": "precio_venta",
+      "pesos": true
+    }
+  },
+  "contrato-chofer-uber-negocios": {
+    "monto_pago_semanal_letra": {
+      "base": "monto_pago_semanal",
+      "pesos": true
+    },
+    "monto_pago_mensual_letra": {
+      "base": "monto_pago_mensual",
+      "pesos": true
+    },
+    "monto_resta_mensual_letra": {
+      "base": "monto_resta_mensual",
+      "pesos": true
+    }
+  },
+  "contrato-empleada-domestica": {
+    "monto_pago_letra": {
+      "base": "monto_pago",
+      "pesos": false
+    }
+  },
+  "contrato-mutuo": {
+    "monto_prestamo_letra": {
+      "base": "monto_prestamo",
+      "pesos": false
+    },
+    "valor_bien_garantia_letra": {
+      "base": "valor_bien_garantia",
+      "pesos": false
+    }
+  },
+  "contrato-mutuo-negocios": {
+    "monto_prestamo_letra": {
+      "base": "monto_prestamo",
+      "pesos": false
+    },
+    "valor_bien_garantia_letra": {
+      "base": "valor_bien_garantia",
+      "pesos": false
+    }
+  },
+  "distribucion": {
+    "inventario_minimo_letra": {
+      "base": "inventario_minimo",
+      "pesos": true
+    }
+  },
+  "finiquito-laboral": {
+    "monto_finiquito_letra": {
+      "base": "monto_finiquito",
+      "pesos": false
+    }
+  },
+  "finiquito-laboral-negocios": {
+    "monto_finiquito_letra": {
+      "base": "monto_finiquito",
+      "pesos": false
+    }
+  },
+  "licencia-uso-marca": {
+    "monto_licencia_letra": {
+      "base": "monto_licencia",
+      "pesos": true
+    }
+  },
+  "notificacion-incremento-renta": {
+    "nueva_renta_letra": {
+      "base": "nueva_renta",
+      "pesos": true
+    }
+  },
+  "pagare-negocios": {
+    "monto_pagare_letra": {
+      "base": "monto_pagare",
+      "pesos": true
+    }
+  },
+  "permuta": {
+    "monto_compensacion_letra": {
+      "base": "monto_compensacion",
+      "pesos": true
+    }
+  },
+  "prestacion-servicios-negocios": {
+    "monto_contraprestacion_letra": {
+      "base": "monto_contraprestacion",
+      "pesos": true
+    }
+  },
+  "promesa-compraventa-inmueble": {
+    "monto_seriedad_garantia_letra": {
+      "base": "monto_seriedad_garantia",
+      "pesos": false
+    }
+  },
+  "promesa-compraventa-inmueble-negocios": {
+    "monto_seriedad_garantia_letra": {
+      "base": "monto_seriedad_garantia",
+      "pesos": false
+    }
+  },
+  "recibo-pago-negocios": {
+    "monto_pago_letra": {
+      "base": "monto_pago",
+      "pesos": true
+    }
+  },
+  "recibo-pago-renta": {
+    "monto_renta_letra": {
+      "base": "monto_renta",
+      "pesos": true
+    }
+  },
+  "requerimiento-pago": {
+    "monto_adeudo_letra": {
+      "base": "monto_adeudo",
+      "pesos": true
+    },
+    "monto_intereses_letra": {
+      "base": "monto_intereses",
+      "pesos": true
+    }
+  },
+  "requerimiento-pago-negocios": {
+    "monto_adeudo_letra": {
+      "base": "monto_adeudo",
+      "pesos": true
+    },
+    "monto_intereses_letra": {
+      "base": "monto_intereses",
+      "pesos": true
+    }
+  }
+}

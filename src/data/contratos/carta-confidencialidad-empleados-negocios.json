@@ -1,0 +1,69 @@
+{
+  "id": "carta-confidencialidad-empleados-negocios",
+  "nombre": "Carta de Confidencialidad para Empleados",
+  "explicacion": "# **¿Qué es?**\n\nLa **carta de confidencialidad para empleados** es el documento por el cual un trabajador se obliga a mantener confidencial los datos de la empresa y de los clientes de la empresa para la cual labora.\n\n## **¿Para qué sirve la carta de confidencialidad para empleados?**\n\nSirve para que el empleado de la empresa con la que firma esta carta de confidencialidad se comprometa a no revelar ningún dato, información, contraseñas de la empresa y de los clientes de la empresa a terceras personas ajenas a la empresa en cuestión.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Patrón o divulgante:** Persona que revela u otorga información confidencial a su empleado o receptor.\n\n**Empleado o receptor:** Persona a la que se le revela o se otorga información confidencial por parte de su patrón.\n\n### **Requisitos de la carta de confidencialidad para empleados:**\n\n* La carta de confidencialidad para empleados debe incluir una duración. La regla general es que la duración de la obligación de confidencialidad del empleado sea equivalente al periodo en el que esté vigente su contrato de trabajo.\n* Debe incluir las sanciones o multas a las que se hace acreedor el empleado por incumplir los términos de confidencialidad de la carta. Al revelar, divulgar o utilizar la información confidencial de forma distinta al objeto que se determine en la carta de confidencialidad, de forma dolosa o por negligencia. La sanción puede ser la indemnización por los daños y perjuicios ocasionados, además de las acciones civiles o penales que puedan derivarse de dicho incumplimiento.\n* Los términos de confidencialidad que debe cumplir el empleado que tenga acceso a la información confidencial y que le sea divulgada por el trabajo que desempeña dentro de la empresa.\n* La información puede ser proporcionada de forma oral, gráfica, escrita en cualquier tipo de documento. Y esta información solo deberá ser utilizada para el fin que previamente se determine en el objeto de la carta de confidencialidad.\n* La obligación de confidencialidad no se limita solo al empleador que firma la carta sino se hace extensiva a sus colaboradores en el área de trabajo, a sus asociados, y a cualquier persona que derivado de la relación de trabajo que guarde con el empleado, debiera tener acceso a la información clasificada como confidencial.\n* Dentro de la obligación de confidencialidad, el empleado y las personas mencionadas en el punto anterior, no podrán reproducir, modificar, hacer pública o divulgar a terceros la información confidencial sin la previa autorización que se realice por escrito por parte del patrón o divulgante.\n* El empleado deberá adoptar las mismas medidas de seguridad respecto de la información confidencial a la que tiene acceso. Como si fuera información de su propia empresa, para evitar la pérdida, robo o substracción.\n* La carta también deberá contener en que supuestos no aplica la obligación de confidencialidad.\n* Las partes deberán devolverse cualquier documentación, antecedentes, copias, tanto física como en electrónico que hayan recibido y se considere información confidencial.\n\n### **Dudas frecuentes:**\n\n**¿Puedo incurrir en un delito al incumplir mi obligación de confidencialidad?**\n\nSí, estarías cometiendo el delito de revelación de secretos contemplado en el artículo 210 del Código Penal Federal en México.\n\n**¿Con qué documento lo puedo confundir?**\n\nLa **carta de confidencialidad para empleados** se puede confundir con el Memorándum de Entendimiento. El cual generalmente no tiene efectos legales y sirve para que dos o más personas establezcan la intención de emprender algún negocio en común, o bien establecer el deseo de iniciar una relación de trabajo.",
+  "fundamento_legal": "Ley de la Propiedad Industrial Artículo 82 — http://www.sice.oas.org/int_prop/nat_leg/Mexico/lipmexsc.asp\n\nCódigo Penal Federal Artículos 201 y 211 — https://mexico.justia.com/federales/codigos/codigo-penal-federal/libro-segundo/titulo-noveno/capitulo-ii/\n\nLey Federal del Trabajo Artículo 134 — https://mexico.justia.com/federales/leyes/ley-federal-del-trabajo/titulo-cuarto/capitulo-ii/",
+  "precio": 80,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_patron",
+      "etiqueta": "El patrón a quien se dirige la carta de confidencialidad es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_patron",
+      "etiqueta": "¿Cuál es el nombre completo (denominación social) del patrón a quien se dirige la carta de confidencialidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_patron",
+      "etiqueta": "¿Cuál es el nombre completo del representante o apoderado legal del patrón a quien se dirige la carta de confidencialidad?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_patron", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_patron",
+      "etiqueta": "¿Cuál es el domicilio del patrón a quien se dirige la carta de confidencialidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_empleado",
+      "etiqueta": "¿Cuál es el nombre completo del trabajador que firmará la carta de confidencialidad?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará la carta de confidencialidad:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará la carta de confidencialidad:",
+      "tipo": "fecha",
+      "obligatorio": true
+    }
+  ]
+}

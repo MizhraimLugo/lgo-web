@@ -1,0 +1,141 @@
+{
+  "id": "convenio-terminacion-finiquito-negocios",
+  "nombre": "Convenio de Terminación y Finiquito",
+  "explicacion": "**Es el acuerdo por el cual las personas que han celebrado un contrato con anterioridad deciden darlo por terminado, acordando que no adeudan cantidades de dinero entre las mismas.**\n\n## **¿Para qué se usa?**\n\n**Con este documento se podrá dar por terminado un contrato.**",
+  "fundamento_legal": "",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_parte_a",
+      "etiqueta": "Una de las partes que firmará el contrato es (la llamaremos Parte A): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_a",
+      "etiqueta": "¿Cuál es el nombre (denominación social) de una de las personas que firmará como Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_parte_a",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el convenio en representación de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_parte_a", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_parte_a",
+      "etiqueta": "¿Cuál es el domicilio de la Parte A?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_parte_b",
+      "etiqueta": "La otra parte que firmará el convenio es (la llamaremos Parte B): ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el convenio como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_representante_parte_b",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que firmará el convenio en representación de la Parte B?",
+      "tipo": "texto",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "tipo_parte_b", "valor_que_activa": "Moral" }
+    },
+    {
+      "clave": "domicilio_parte_b",
+      "etiqueta": "¿Cuál es el domicilio de la persona que firmará el convenio como Parte B?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "¿En qué lugar se firmará el convenio? (incluye la ciudad o región y estado)",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el convenio:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "nombre_contrato_original",
+      "etiqueta": "¿Cómo se llama el contrato que se dará por terminado? Ejemplo: Contrato de Prestación de Servicios",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_contrato_original",
+      "etiqueta": "¿En qué fecha se firmó el contrato que se dará por terminado?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "obligacion_parte_a",
+      "etiqueta": "¿A qué se obligó la Parte A en el contrato original?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "obligacion_parte_b",
+      "etiqueta": "¿A qué se obligó la Parte B en el contrato original?",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "agregar_razon_terminacion",
+      "etiqueta": "¿Deseas agregar la razón por la que se da por terminado el Contrato Original?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "razon_terminacion",
+      "etiqueta": "Describe las razones por las cuales se dará por terminado el contrato original:",
+      "tipo": "parrafo",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "agregar_razon_terminacion", "valor_que_activa": "Sí" }
+    },
+    {
+      "clave": "agregar_renuncia_acciones",
+      "etiqueta": "¿Deseas agregar que las partes renuncian a cualquier acción en contra de su contraparte?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "agregar_acuerdo_adicional",
+      "etiqueta": "¿Deseas agregar algún acuerdo adicional?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    }
+  ]
+}

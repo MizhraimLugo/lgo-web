@@ -1,0 +1,148 @@
+{
+  "id": "compraventa-vehiculo",
+  "nombre": "Contrato de Compraventa de Vehículo",
+  "explicacion": "## **¿Qué es?**\n\nEl **contrato** **de compraventa de vehículo** es el documento en el que una persona, llamada vendedora se obliga a entregar un vehículo. Mientras que otra persona, llamada compradora se obliga a pagar una cantidad de dinero por ese vehículo.\n\n## **¿Para qué sirve el contrato de compraventa de vehículo?**\n\nSe usa para acreditar que una persona ha vendido o adquirido un vehículo y que se podrá hacer valer frente a las autoridades correspondientes.\n\n## **¿Quiénes intervienen (partes)?**\n\n**Vendedor:** es la persona que ofrece a la venta un automóvil a cambio de cierto precio.\n\n**Comprador:** es la persona que adquiere un automóvil a cambio del pago de cierta cantidad de dinero.\n\n### **Requisitos del contrato de compraventa de vehículo:**\n\n* Datos tanto del vendedor como del comprador. Es importante que se incluya toda la información personal tanto de la persona que está vendiendo el coche como de quien lo está comprando.\n* Información del automóvil, así como su estado al momento de la compraventa. En este apartado deben incluirse los datos del automóvil que se venderá. Tales como: modelo, año, color, kilometraje, etc.\n* Precio y forma de pago. Un elemento clave en la compraventa de un automóvil es desde luego el precio al que se vende. Por lo que resulta de suma importancia incluirlo en el contrato, así como la manera en la que se realizará el pago.\n* Impuestos y en su caso si tiene algún gravamen. Es muy importante definir en el contrato si se genera el pago de cualquier impuesto, así como si el automóvil tiene algún gravamen o carga. En cuyo caso sería recomendable evitar esa compra y no comprarse problemas.\n* Fecha de entrega del automóvil. Se debe señalar en qué fecha entregará el vendedor al comprador el vehículo.\n* Fecha límite de cambio de titular. Es importante que se incluya una fecha límite en la que el comprador deberá hacer el cambio de propietario del vehículo para evitar problemas.\n* Firma de vendedor y comprador. Por último, las dos partes deben firmar el contrato para que tenga validez.\n\n### **Dudas frecuentes:**\n\n**¿Qué debo revisar cuando compro un coche?**\n\nVerifica que la persona que está vendiendo el coche sea efectivamente el propietario del coche.\n\n**¿Con qué documento lo puedo confundir?**\n\nEl **contrato de compraventa de vehículo** se puede confundir con el contrato de compraventa de bien mueble.",
+  "fundamento_legal": "Artículo 2316 del Código Civil Federal",
+  "precio": 100,
+  "moneda": "MXN",
+  "campos": [
+    {
+      "clave": "estado_republica",
+      "etiqueta": "Estado de la República:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": [
+        "Aguascalientes", "Baja California", "Baja California Sur", "Campeche",
+        "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila", "Colima",
+        "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo",
+        "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
+        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz", "Yucatán",
+        "Zacatecas"
+      ]
+    },
+    {
+      "clave": "tipo_vendedor",
+      "etiqueta": "La persona que vende el vehículo es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_vendedor",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que venderá el vehículo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_vendedor",
+      "etiqueta": "¿Cuál es el domicilio de la persona que venderá el vehículo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "tipo_comprador",
+      "etiqueta": "La persona que compra el vehículo es: ¿física o moral?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Física", "Moral"]
+    },
+    {
+      "clave": "nombre_comprador",
+      "etiqueta": "¿Cuál es el nombre completo de la persona que comprará el vehículo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "domicilio_comprador",
+      "etiqueta": "¿Cuál es el domicilio de la persona que comprará el vehículo?",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "lugar_firma",
+      "etiqueta": "Lugar en que se firmará el contrato:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_firma",
+      "etiqueta": "Fecha en que se firmará el contrato:",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "vendedor_casado",
+      "etiqueta": "¿La persona que venderá el vehículo se encuentra casada?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "descripcion_vehiculo",
+      "etiqueta": "Describa el(los) vehículo(s) que se venderá(n):",
+      "tipo": "parrafo",
+      "obligatorio": true
+    },
+    {
+      "clave": "precio_vehiculo",
+      "etiqueta": "¿Cuál es el precio por la compra del vehículo? (especificar tipo de moneda)",
+      "tipo": "moneda",
+      "obligatorio": true
+    },
+    {
+      "clave": "forma_pago",
+      "etiqueta": "¿En qué fechas y en qué plazos se pagará el precio por la compra del vehículo?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Un solo pago", "Parcialidades"]
+    },
+    {
+      "clave": "domicilio_entrega",
+      "etiqueta": "Indique el domicilio de entrega del vehículo:",
+      "tipo": "texto",
+      "obligatorio": true
+    },
+    {
+      "clave": "fecha_entrega",
+      "etiqueta": "¿Cuándo se entregará el vehículo?",
+      "tipo": "fecha",
+      "obligatorio": true
+    },
+    {
+      "clave": "genera_intereses",
+      "etiqueta": "¿Se generarán intereses por retrasos en el pago del precio?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "vigencia_contrato",
+      "etiqueta": "El presente contrato estará vigente:",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Tiempo determinado", "Hasta el pago del total de cantidades"]
+    },
+    {
+      "clave": "garantia_desperfectos",
+      "etiqueta": "¿Se otorgará alguna garantía por desperfectos del vehículo a favor de la persona que lo adquiere?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "pena_convencional",
+      "etiqueta": "¿Deberá pagar el comprador alguna cantidad de dinero al vendedor como castigo o pena convencional en caso de incumplimiento?",
+      "tipo": "select",
+      "obligatorio": true,
+      "opciones": ["Sí", "No"]
+    },
+    {
+      "clave": "porcentaje_pena",
+      "etiqueta": "¿Qué porcentaje del adeudo se deberá pagar como pena convencional en caso de incumplimiento?",
+      "tipo": "numero",
+      "obligatorio": true,
+      "depende_de": { "clave_padre": "pena_convencional", "valor_que_activa": "Sí" }
+    }
+  ]
+}
