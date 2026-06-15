@@ -1,6 +1,7 @@
 ---
 import Base from '@layouts/Base.astro';
 import { contratosCatalogo } from '@data/contratos-catalogo';
+import { contratoJsonLd } from '@data/contratos-jsonld';
 
 // Carga de los JSON de campos (explicación, fundamento, flags) en build.
 const camposModules = import.meta.glob('../../data/contratos/*.json', { eager: true });
@@ -28,6 +29,9 @@ const title = `${contrato.nombre} | Contratos Grupo LGO`;
 const description = contrato.descripcion_corta;
 const path = `/contratos/${contrato.id}/`;
 
+// Structured data por ficha (Breadcrumb + Article + FAQPage). Datos legales verbatim.
+const jsonLd = contratoJsonLd(contrato, data);
+
 // ── Render markdown-ligero de la explicación (## , ### , **negrita**, * lista, [a](url)) ──
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const inline = (s: string) =>
@@ -54,7 +58,7 @@ function mdLite(src: string): string {
 }
 const explicacionHtml = mdLite(data.explicacion);
 ---
-<Base title={title} description={description} path={path} noindex={true}>
+<Base title={title} description={description} path={path} noindex={true} extraJsonLd={jsonLd}>
 
   <section class="section-tight">
     <div class="container-narrow">

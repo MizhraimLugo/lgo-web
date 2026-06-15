@@ -3,6 +3,7 @@ import Base from '@layouts/Base.astro';
 import AsistenteContratos from '@components/contratos/AsistenteContratos.astro';
 import ContratoCard from '@components/contratos/ContratoCard.astro';
 import { contratosCatalogo } from '@data/contratos-catalogo';
+import { catalogoJsonLd } from '@data/contratos-jsonld';
 
 const title = 'Contratos a la medida | Grupo LGO';
 const description =
@@ -12,8 +13,11 @@ const path = '/contratos/';
 const contratos = [...contratosCatalogo].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
 const total = contratos.length;
 const categorias = ['Todos', 'General', 'Negocios'] as const;
+
+// Structured data del catálogo (Breadcrumb + CollectionPage con ItemList).
+const jsonLd = catalogoJsonLd();
 ---
-<Base title={title} description={description} path={path} noindex={true}>
+<Base title={title} description={description} path={path} noindex={true} extraJsonLd={jsonLd}>
 
   <!-- ASISTENTE (puerta de entrada del flujo) -->
   <AsistenteContratos />
