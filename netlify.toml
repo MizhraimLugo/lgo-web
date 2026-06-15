@@ -18,3 +18,27 @@
 # funciones en /.netlify/functions/<nombre>.
 [dev]
   targetPort = 4321
+
+# ── Headers de seguridad (todo el sitio) ──
+# No afectan el render ni el flujo del asistente: solo endurecen la respuesta.
+# Señal de confianza relevante para contenido legal (YMYL). El HSTS lo emite
+# Netlify automáticamente (max-age 1 año); no lo sobrescribimos aquí.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# ── Consolidación de duplicado (SEO, Fase E) ──
+# donacion-bien-inmueble-2 es un duplicado accidental de donacion-bien-inmueble
+# (mismo nombre, misma explicación, mismo precio). 301 permanente para consolidar
+# las señales en la canónica. force=true es necesario: la página estática existe
+# (getStaticPaths la genera) y, sin force, el archivo le ganaría al redirect.
+# El backend (chat/generación) sigue usando el id; el 301 solo afecta la URL pública.
+[[redirects]]
+  from = "/contratos/donacion-bien-inmueble-2/"
+  to = "/contratos/donacion-bien-inmueble/"
+  status = 301
+  force = true

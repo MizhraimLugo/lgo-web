@@ -73,7 +73,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Convenio de Divorcio",
     categoria: "General",
     descripcion_corta:
-      "Es el acuerdo escrito por el cual dos personas que han contraído matrimonio y que han decidido divorciarse, establecen los términos y condiciones bajo los cuales se administrarán sus bienes, y en su caso, la forma del cuidado de los hijos,…",
+      "Es el acuerdo escrito por el cual dos personas que han contraído matrimonio y que han decidido divorciarse, establecen los términos y condiciones bajo los cuales se administrarán sus bienes, y en su caso, la forma del cuidado de los hijos, así como del pago de pensión alimenticia a que tuviere derecho alguno de ellos.",
     keywords: ["convenio","divorcio","acuerdo","escrito","personas","contraído"],
     precio: 180,
     moneda: 'MXN',
@@ -161,7 +161,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Mutuo",
     categoria: "General",
     descripcion_corta:
-      "El contrato de mutuo es un documento por medio del cual una persona llamada mutuante se obliga a transferir la propiedad de una cantidad de dinero u otras cosas fungibles a otra persona llamada mutuario quien se obliga a devolver otro tanto…",
+      "El contrato de mutuo es un documento por medio del cual una persona llamada mutuante se obliga a transferir la propiedad de una cantidad de dinero u otras cosas fungibles a otra persona llamada mutuario quien se obliga a devolver otro tanto de la misma especie y calidad.",
     keywords: ["contrato","mutuo","persona","llamada","obliga"],
     precio: 100,
     moneda: 'MXN',
@@ -216,8 +216,8 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Pagaré",
     categoria: "General",
     descripcion_corta:
-      "La mención de ser pagaré, inserta en el texto del documento;",
-    keywords: ["pagaré","mención","inserta","documento"],
+      "Un pagaré es un documento que contiene la promesa incondicional de una persona (suscriptor o deudor), de que pagará a otra persona (beneficiario o acreedor), una suma determinada de dinero en un determinado plazo.",
+    keywords: ["pagaré","persona","documento","promesa","deudor","acreedor"],
     precio: 50,
     moneda: 'MXN',
     tier: 1
@@ -271,7 +271,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Convenio Modificatorio",
     categoria: "General",
     descripcion_corta:
-      "Un convenio modificatorio es el documento por el que se realizan modificaciones a un contrato, que pueda ser susceptible de ser modificado, y pueden recaer en algunas características del contrato siempre y cuando las partes que interviniero…",
+      "Un convenio modificatorio es el documento por el que se realizan modificaciones a un contrato, que pueda ser susceptible de ser modificado, y pueden recaer en algunas características del contrato siempre y cuando las partes que intervinieron estén de acuerdo.",
     keywords: ["convenio","modificatorio","contrato","documento"],
     precio: 100,
     moneda: 'MXN',
@@ -359,7 +359,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Comisión Mercantil",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de comisión mercantil es una forma de mandato mercantil. Es muy parecido al mandato civil ya que, aunque un mandato puede referirse a varias actividades, en el caso de la comisión mercantil, las actividades principales son compr…",
+      "El contrato de comisión mercantil es una forma de mandato mercantil. Es muy parecido al mandato civil ya que, aunque un mandato puede referirse a varias actividades, en el caso de la comisión mercantil, las actividades principales son comprar o vender por cuenta ajena.",
     keywords: ["contrato","comisión","mercantil","mandato","actividades"],
     precio: 120,
     moneda: 'MXN',
@@ -370,7 +370,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Suministro",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de suministro, es un contrato por medio del cual una persona se obliga a entregar a la otra persona, a cambio de un precio unitario que puede pagarse periódicamente o caso por caso, cosas muebles que serán entregadas de forma su…",
+      "El contrato de suministro, es un contrato por medio del cual una persona se obliga a entregar a la otra persona, a cambio de un precio unitario que puede pagarse periódicamente o caso por caso, cosas muebles que serán entregadas de forma sucesiva.",
     keywords: ["contrato","suministro","persona","obliga"],
     precio: 180,
     moneda: 'MXN',
@@ -447,7 +447,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Mutuo",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de mutuo es un documento por medio del cual una persona llamada mutuante se obliga a transferir la propiedad de una cantidad de dinero u otras cosas fungibles a otra persona llamada mutuario quien se obliga a devolver otro tanto…",
+      "El contrato de mutuo es un documento por medio del cual una persona llamada mutuante se obliga a transferir la propiedad de una cantidad de dinero u otras cosas fungibles a otra persona llamada mutuario quien se obliga a devolver otro tanto de la misma especie y calidad.",
     keywords: ["contrato","mutuo","persona","llamada","obliga"],
     precio: 100,
     moneda: 'MXN',
@@ -458,7 +458,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Aviso de Privacidad",
     categoria: "Negocios",
     descripcion_corta:
-      "Es la notificación que por ley debe incluirse en cualquier medio o documento en el que se obtengan datos personales como pueden ser nombres, domicilios, números telefónicos y/o direcciones de correo electrónicos, de algún tercero, como clie…",
+      "Es la notificación que por ley debe incluirse en cualquier medio o documento en el que se obtengan datos personales como pueden ser nombres, domicilios, números telefónicos y/o direcciones de correo electrónicos, de algún tercero, como clientes, socios, proveedores, etc.",
     keywords: ["aviso","privacidad","notificación","incluirse","cualquier","documento"],
     precio: 80,
     moneda: 'MXN',
@@ -524,7 +524,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Compraventa a Plazos",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de compraventa a plazos es un contrato a través del cual una persona llamada \"vendedor\" se obliga a transmitir la propiedad del objeto (bien mueble) al \"comprador\" quien lo adquiere, a un precio determinado, y el cuál se pagará…",
+      "El contrato de compraventa a plazos es un contrato a través del cual una persona llamada \"vendedor\" se obliga a transmitir la propiedad del objeto (bien mueble) al \"comprador\" quien lo adquiere, a un precio determinado, y el cuál se pagará en plazos determinados y acordados por las partes.",
     keywords: ["contrato","compraventa","plazos","través"],
     precio: 120,
     moneda: 'MXN',
@@ -590,7 +590,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Compraventa de Acciones",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de compraventa de acciones es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona transmite la propiedad de acciones que pueden ser de tipo \"A\" o tipo \"B\" a otra persona y los derechos q…",
+      "El contrato de compraventa de acciones es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona transmite la propiedad de acciones que pueden ser de tipo \"A\" o tipo \"B\" a otra persona y los derechos que cada una de estos tipos de acciones le concede al titular de las mismas.",
     keywords: ["contrato","compraventa","acciones","persona"],
     precio: 200,
     moneda: 'MXN',
@@ -634,7 +634,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Convenio Modificatorio",
     categoria: "Negocios",
     descripcion_corta:
-      "Un convenio modificatorio es el documento por el que se realizan modificaciones a un contrato, que pueda ser susceptible de ser modificado, y pueden recaer en algunas características del contrato siempre y cuando las partes que interviniero…",
+      "Un convenio modificatorio es el documento por el que se realizan modificaciones a un contrato, que pueda ser susceptible de ser modificado, y pueden recaer en algunas características del contrato siempre y cuando las partes que intervinieron estén de acuerdo.",
     keywords: ["convenio","modificatorio","contrato","documento"],
     precio: 100,
     moneda: 'MXN',
@@ -667,8 +667,8 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Convenio de Terminación y Finiquito",
     categoria: "Negocios",
     descripcion_corta:
-      "Convenio de Terminación y Finiquito",
-    keywords: ["convenio","terminación","finiquito"],
+      "Es el acuerdo por el cual las personas que han celebrado un contrato con anterioridad deciden darlo por terminado, acordando que no adeudan cantidades de dinero entre las mismas.",
+    keywords: ["convenio","terminación","finiquito","acuerdo","personas","celebrado","contrato"],
     precio: 100,
     moneda: 'MXN',
     tier: 2
@@ -700,7 +700,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Arrendamiento de Local Comercial",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de arrendamiento de local comercial es un documento que se celebra entre el dueño de un inmueble dedicado a la actividad comercial y que desea ceder temporalmente a otra persona el uso y disfrute de su inmueble a cambio de una r…",
+      "El contrato de arrendamiento de local comercial es un documento que se celebra entre el dueño de un inmueble dedicado a la actividad comercial y que desea ceder temporalmente a otra persona el uso y disfrute de su inmueble a cambio de una renta.",
     keywords: ["contrato","arrendamiento","local","comercial","inmueble"],
     precio: 180,
     moneda: 'MXN',
@@ -733,7 +733,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Compraventa de Bien Inmueble",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de compraventa de bien inmueble es un contrato a través de cual una persona llamada \"comprador\" adquiere un bien inmueble del propietario del mismo, siendo este el \"vendedor\", a un precio determinado, por lo cual se transmite la…",
+      "El contrato de compraventa de bien inmueble es un contrato a través de cual una persona llamada \"comprador\" adquiere un bien inmueble del propietario del mismo, siendo este el \"vendedor\", a un precio determinado, por lo cual se transmite la propiedad del mismo.",
     keywords: ["contrato","compraventa","bien","inmueble","través"],
     precio: 200,
     moneda: 'MXN',
@@ -744,7 +744,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Arrendamiento para Bodega",
     categoria: "Negocios",
     descripcion_corta:
-      "En el contrato de arrendamiento para bodega una persona llamada arrendador pone a disposición de otra llamada arrendataria el uso y goce temporal de un inmueble para ser destinado a su uso como bodega en el cual podrán almacenarse o deposit…",
+      "En el contrato de arrendamiento para bodega una persona llamada arrendador pone a disposición de otra llamada arrendataria el uso y goce temporal de un inmueble para ser destinado a su uso como bodega en el cual podrán almacenarse o depositarse bienes y/o mercancías.",
     keywords: ["contrato","arrendamiento","bodega","llamada"],
     precio: 180,
     moneda: 'MXN',
@@ -766,7 +766,7 @@ export const contratosCatalogo: ContratoCatalogo[] = [
     nombre: "Contrato de Arrendamiento Vacacional",
     categoria: "Negocios",
     descripcion_corta:
-      "El contrato de arrendamiento vacacional es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona renta (pone a disposición o cede) una vivienda a otra durante un determinado periodo o tiempo reducido…",
+      "El contrato de arrendamiento vacacional es el documento por el cual se establecen los términos y condiciones bajo los cuales una persona renta (pone a disposición o cede) una vivienda a otra durante un determinado periodo o tiempo reducido como lo puede ser un periodo vacacional o un fin de semana.",
     keywords: ["contrato","arrendamiento","vacacional","documento"],
     precio: 150,
     moneda: 'MXN',

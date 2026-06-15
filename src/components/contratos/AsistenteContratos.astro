@@ -11,13 +11,17 @@ import { business } from '@data/business';
 ---
 <section class="asistente" id="asistente" data-asistente>
   <div class="container-narrow">
-    <span class="eyebrow reveal-up reveal-up--immediate">Asistente de contratos</span>
+    <span class="eyebrow reveal-up reveal-up--immediate">Contratos y documentos legales</span>
     <h1 class="asistente-title reveal-up reveal-up--immediate">
       Cuéntanos qué necesitas. Te decimos el documento exacto.
     </h1>
     <p class="lead asistente-lead reveal-up reveal-up--immediate">
       No tienes que saber cómo se llama el contrato. Describe tu situación y el asistente
       de Grupo LGO te guía, lo prepara contigo y lo dejas listo para firmar.
+    </p>
+    <p class="asistente-cobertura reveal-up reveal-up--immediate">
+      73 contratos y documentos legales —de arrendamiento, compraventa, laborales, mercantiles,
+      poderes y más— explicados y verificados por abogados conforme a la legislación mexicana vigente.
     </p>
 
     <div class="asistente-panel reveal-up reveal-up--immediate">
@@ -113,6 +117,13 @@ import { business } from '@data/business';
       </div>
 
     </div>
+
+    <p class="asistente-aviso">
+      <strong>Aviso.</strong> Estos documentos son formatos base de carácter general y orientativo;
+      no constituyen asesoría jurídica para tu caso concreto. Su uso y las consecuencias de su aplicación
+      son responsabilidad del usuario. Para tu situación particular, consulta con un abogado de LGO Abogados.
+      Al usar este servicio aceptas los Términos y Condiciones.
+    </p>
   </div>
 </section>
 
@@ -121,7 +132,16 @@ import { business } from '@data/business';
   @media (min-width: 1024px) { .asistente { padding-block: 4.5rem 2.5rem; } }
 
   .asistente-title { max-width: 20ch; margin: 1.1rem 0 1rem; }
-  .asistente-lead { max-width: 42rem; margin-bottom: 2rem; }
+  .asistente-lead { max-width: 42rem; margin-bottom: 1rem; }
+  .asistente-cobertura {
+    max-width: 44rem; margin: 0 0 2rem; font-size: var(--text-sm);
+    color: var(--color-muted); line-height: 1.6;
+  }
+  .asistente-aviso {
+    max-width: 46rem; margin: 1.75rem auto 0; font-size: var(--text-xs);
+    color: var(--color-muted-soft); line-height: 1.6;
+  }
+  .asistente-aviso strong { color: var(--color-muted); }
 
   .asistente-panel {
     background: var(--color-surface);
