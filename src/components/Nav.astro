@@ -68,11 +68,11 @@ const isItemActive = (item: NavItem) => {
                           class:list={['nav-dropdown-link', { 'is-active': isPathActive(child.url) }]}
                           aria-current={isPathActive(child.url) ? 'page' : undefined}
                         >
-                          <span class="nav-dropdown-name">
-                            {child.shortName}
+                          <span class="nav-dropdown-name">{child.shortName}</span>
+                          <span class="nav-dropdown-specialty">
+                            {child.specialty}
                             {!child.internal && <span aria-hidden="true"> ↗</span>}
                           </span>
-                          <span class="nav-dropdown-specialty">{child.specialty}</span>
                         </a>
                       </li>
                     ))}
@@ -263,6 +263,9 @@ const isItemActive = (item: NavItem) => {
 
   .nav-dropdown ul {
     flex-direction: column;
+    /* anula el align-items:center heredado de `.primary-nav ul`: en columna
+       eso centraría cada item y descuadraría el de texto más largo */
+    align-items: stretch;
     gap: 0.125rem;
     display: flex;
   }
