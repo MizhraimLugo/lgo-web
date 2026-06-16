@@ -28,14 +28,23 @@ refactor**. Es flip de un flag + creación de una página + (opcional) FAQs y se
 
 ```ts
 LgoPracticeId = 'abogados' | 'contadores' | 'tecnologia' | 'marketing'
-BrandId       = 'grupo' | LgoPracticeId | 'lorenzana'
+BrandId       = 'grupo' | LgoPracticeId | 'facturacion' | 'lorenzana'
 ```
 
 - **`grupo`** — entidad paraguas. Representa el ecosistema completo.
 - **`LgoPracticeId`** — las cuatro firmas internas. Tipo cerrado deliberadamente:
   añadir una quinta es decisión estratégica, no solo data entry.
+- **`facturacion`** — servicio LGO con sitio externo propio (lgo-facturacion.com).
+  No es una práctica con página interna, pero SÍ es oferta de LGO: aparece en el
+  menú "Servicios". Enlace externo (target=_blank, ↗), sin logo en el sitio.
 - **`lorenzana`** — marca externa relacionada (otra paleta, otro sitio). No es
-  una sub-marca de LGO; es una marca aliada del ecosistema.
+  una sub-marca de LGO; es una marca aliada del ecosistema. Lleva el flag `ally: true`.
+
+### El flag `ally`
+
+Distingue las marcas externas que **no son oferta de LGO** (marcas aliadas, ej.
+Lorenzana) de las que sí lo son (ej. Facturación). Solo las que NO son aliadas
+aparecen en el menú "Servicios".
 
 ## El flag `published`
 
@@ -55,7 +64,8 @@ Cada brand tiene `published: boolean`.
 | `contadores` | ✅ |
 | `tecnologia` | ❌ (reservada) |
 | `marketing` | ❌ (reservada) |
-| `lorenzana` | ✅ |
+| `facturacion` | ✅ (externa) |
+| `lorenzana` | ✅ (aliada externa) |
 
 ## Cómo lanzar una nueva sub-marca
 
@@ -79,8 +89,10 @@ helpers que filtran por `published`.
 
 | Helper | Cuándo |
 |---|---|
-| `publishedSubBrands` | JSON-LD `subOrganization`, nav, footer "Ecosistema" |
-| `ecosystemBrands` | Grid del ecosistema en la landing (sub-marcas publicadas + Lorenzana) |
+| `publishedSubBrands` | JSON-LD `subOrganization`, footer "Ecosistema" (logos internos) |
+| `publishedServiceBrands` | Menú "Servicios" del nav (marcas LGO publicadas, sin aliadas) |
+| `publishedExternalBrands` | Footer "Ecosistema" (marcas externas con ↗: Facturación, Lorenzana) |
+| `ecosystemBrands` | Grid del ecosistema en la landing (todas las publicadas no-grupo) |
 | `isPublishedPractice(id)` | Filtros runtime (artículos del blog, servicios agregados) |
 | `getBrand(id)` | Acceso puntual a una marca específica |
 

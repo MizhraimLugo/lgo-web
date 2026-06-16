@@ -4,14 +4,15 @@
 //  - link directo: tiene `href`
 //  - grupo: tiene `childSource` y un dropdown se construye en render
 //
-// El grupo "Servicios" usa `childSource: 'publishedSubBrands'` — sus hijas
-// se resuelven al renderizar desde brands.ts filtrando por `published: true`.
+// El grupo "Servicios" usa `childSource: 'publishedServiceBrands'` — sus hijas
+// se resuelven al renderizar desde brands.ts: las marcas LGO publicadas (incluye
+// servicios externos como LGO Facturación; excluye marcas aliadas como Lorenzana).
 // Esto significa que cuando se publique LGO Tecnología o LGO Marketing,
 // aparecerán automáticamente en el dropdown sin tocar este archivo.
 
 /** Fuente dinámica de items hijos para grupos del nav.
  *  El componente Nav.astro resuelve esto al render. */
-export type NavChildSource = 'publishedSubBrands';
+export type NavChildSource = 'publishedServiceBrands';
 
 export type NavItem = {
   label: string;
@@ -25,10 +26,10 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
-  // Grupo "Servicios": dropdown con todas las sub-marcas publicadas.
-  // Hoy son Abogados y Contadores; cuando se publiquen Tecnología y Marketing,
-  // aparecen aquí automáticamente.
-  { label: 'Servicios', childSource: 'publishedSubBrands' },
+  // Grupo "Servicios": dropdown con las marcas de servicio LGO publicadas.
+  // Hoy son Abogados, Contadores y LGO Facturación (externa); cuando se
+  // publiquen Tecnología y Marketing, aparecen aquí automáticamente.
+  { label: 'Servicios', childSource: 'publishedServiceBrands' },
 
   // Nota: /contratos NO va en el nav a propósito. Se accede desde la ficha
   // destacada en Inicio y en LGO Abogados (ContratosFeature.astro).

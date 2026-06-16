@@ -5,6 +5,7 @@ import Faq from '@components/Faq.astro';
 import Logo from '@components/Logo.astro';
 import PostCard from '@components/PostCard.astro';
 import ServiceCard from '@components/ServiceCard.astro';
+import FacturacionBand from '@components/contadores/FacturacionBand.astro';
 import { business } from '@data/business';
 import { getBrand } from '@data/brands';
 import { servicesByBrand } from '@data/services';
@@ -126,6 +127,9 @@ const breadcrumbLd = {
       </div>
     </div>
   </section>
+
+  <!-- PUENTE → LGO FACTURACIÓN (venta cruzada) -->
+  <FacturacionBand />
 
   <!-- SECTORES -->
   <section class="section band-cream">

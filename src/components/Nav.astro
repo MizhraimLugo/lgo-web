@@ -2,7 +2,7 @@
 import Logo from '@components/Logo.astro';
 import { nav, type NavItem } from '@data/nav';
 import { business } from '@data/business';
-import { publishedSubBrands, type Brand } from '@data/brands';
+import { publishedServiceBrands, type Brand } from '@data/brands';
 
 const currentPath = Astro.url.pathname;
 
@@ -13,7 +13,7 @@ const isPathActive = (href: string) => {
 
 // Resuelve los hijos dinámicos de un grupo desde el data layer.
 const resolveChildren = (item: NavItem): Brand[] => {
-  if (item.childSource === 'publishedSubBrands') return publishedSubBrands;
+  if (item.childSource === 'publishedServiceBrands') return publishedServiceBrands;
   return [];
 };
 
@@ -63,10 +63,15 @@ const isItemActive = (item: NavItem) => {
                         <a
                           role="menuitem"
                           href={child.url}
+                          target={child.internal ? undefined : '_blank'}
+                          rel={child.internal ? undefined : 'noopener'}
                           class:list={['nav-dropdown-link', { 'is-active': isPathActive(child.url) }]}
                           aria-current={isPathActive(child.url) ? 'page' : undefined}
                         >
-                          <span class="nav-dropdown-name">{child.shortName}</span>
+                          <span class="nav-dropdown-name">
+                            {child.shortName}
+                            {!child.internal && <span aria-hidden="true"> ↗</span>}
+                          </span>
                           <span class="nav-dropdown-specialty">{child.specialty}</span>
                         </a>
                       </li>
@@ -135,9 +140,12 @@ const isItemActive = (item: NavItem) => {
                   <li>
                     <a
                       href={child.url}
+                      target={child.internal ? undefined : '_blank'}
+                      rel={child.internal ? undefined : 'noopener'}
                       class:list={['mobile-sublink', { 'is-active': isPathActive(child.url) }]}
                     >
                       {child.shortName}
+                      {!child.internal && <span aria-hidden="true"> ↗</span>}
                     </a>
                   </li>
                 ))}
