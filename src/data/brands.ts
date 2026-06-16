@@ -41,9 +41,6 @@ export type Brand = {
   /** Si false, la marca existe en el data layer pero NO aparece en nav,
    *  footer, ecosistema ni sitemap. Útil para reservar slugs antes de lanzar. */
   published: boolean;
-  /** true = marca aliada externa (no es oferta de LGO). Aparece en el
-   *  ecosistema y el footer, pero NO en el menú "Servicios". Ej.: Lorenzana 781. */
-  ally?: boolean;
 };
 
 export const brands: Brand[] = [
@@ -108,8 +105,7 @@ export const brands: Brand[] = [
   },
   {
     // Servicio LGO con sitio externo propio (no es una práctica con página
-    // interna). Enlace externo igual que Lorenzana, pero SÍ es oferta de LGO:
-    // por eso aparece en el menú "Servicios" (no lleva `ally`).
+    // interna). Se comporta como enlace externo igual que Lorenzana (↗).
     id: 'facturacion',
     name: 'LGO Facturación',
     shortName: 'LGO Facturación',
@@ -129,8 +125,7 @@ export const brands: Brand[] = [
       'Casa empresarial boutique en Guadalajara con domicilio fiscal, oficinas privadas, coworking y salón para eventos. Operada por Grupo LGO y Grupo MUMAR.',
     url: 'https://lorenzana781.com',
     internal: false,
-    published: true,
-    ally: true
+    published: true
   }
 ];
 
@@ -163,16 +158,10 @@ export const allLgoSubBrands: Brand[] = brands.filter((b): b is Brand =>
 export const publishedSubBrands: Brand[] = allLgoSubBrands.filter((b) => b.published);
 
 /** Todas las marcas que el visitante debe poder ver en el ecosistema.
- *  Incluye sub-marcas LGO publicadas + marcas externas (Facturación, Lorenzana). */
+ *  Incluye sub-marcas LGO publicadas + marcas externas (Facturación, Lorenzana).
+ *  Alimenta el grid del ecosistema en la landing y el menú "Servicios" del nav. */
 export const ecosystemBrands: Brand[] = brands.filter(
   (b) => b.id !== 'grupo' && b.published
-);
-
-/** Marcas que son OFERTA de servicio de LGO, publicadas. Excluye el grupo
- *  paraguas y las marcas aliadas (`ally`). Incluye las prácticas internas +
- *  servicios LGO con sitio externo (ej. Facturación). Usar en el menú "Servicios". */
-export const publishedServiceBrands: Brand[] = brands.filter(
-  (b) => b.published && b.id !== 'grupo' && !b.ally
 );
 
 /** Marcas del ecosistema con sitio externo propio, publicadas (Facturación,

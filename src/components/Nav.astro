@@ -2,7 +2,7 @@
 import Logo from '@components/Logo.astro';
 import { nav, type NavItem } from '@data/nav';
 import { business } from '@data/business';
-import { publishedServiceBrands, type Brand } from '@data/brands';
+import { ecosystemBrands, type Brand } from '@data/brands';
 
 const currentPath = Astro.url.pathname;
 
@@ -13,7 +13,7 @@ const isPathActive = (href: string) => {
 
 // Resuelve los hijos dinámicos de un grupo desde el data layer.
 const resolveChildren = (item: NavItem): Brand[] => {
-  if (item.childSource === 'publishedServiceBrands') return publishedServiceBrands;
+  if (item.childSource === 'ecosystemBrands') return ecosystemBrands;
   return [];
 };
 
