@@ -2,10 +2,9 @@
 import Logo from '@components/Logo.astro';
 import { business } from '@data/business';
 import { nav } from '@data/nav';
-import { brands, publishedSubBrands } from '@data/brands';
+import { publishedSubBrands, publishedExternalBrands } from '@data/brands';
 
 const year = 2026;  // estampado en build; actualizar manualmente (no Date.now por workflow)
-const lorenzana = brands.find((b) => b.id === 'lorenzana');
 ---
 <footer class="site-footer">
   <div class="container-base footer-grid">
@@ -29,13 +28,13 @@ const lorenzana = brands.find((b) => b.id === 'lorenzana');
             </a>
           </li>
         ))}
-        {lorenzana && (
+        {publishedExternalBrands.map((b) => (
           <li>
-            <a href={lorenzana.url} target="_blank" rel="noopener" class="footer-ecosistema-text">
-              Lorenzana 781 <span aria-hidden="true">↗</span>
+            <a href={b.url} target="_blank" rel="noopener" class="footer-ecosistema-text">
+              {b.shortName} <span aria-hidden="true">↗</span>
             </a>
           </li>
-        )}
+        ))}
       </ul>
     </div>
 

@@ -19,15 +19,16 @@
 // ──────────────────────────────────────────────────────────────────
 //  TAXONOMÍA
 // ──────────────────────────────────────────────────────────────────
-//  - 'grupo'       — entidad paraguas (Grupo LGO)
-//  - LgoPracticeId — sub-marcas internas de LGO (las cuatro firmas)
-//  - 'lorenzana'   — marca externa relacionada (otra paleta, otro sitio)
+//  - 'grupo'        — entidad paraguas (Grupo LGO)
+//  - LgoPracticeId  — sub-marcas internas de LGO (las cuatro firmas, página propia)
+//  - 'facturacion'  — servicio LGO con sitio externo propio (lgo-facturacion.com)
+//  - 'lorenzana'    — marca aliada externa (otra paleta, otro sitio)
 
 /** Las cuatro firmas internas de LGO. Tipo cerrado deliberadamente:
  *  añadir una quinta requiere decisión estratégica, no solo data entry. */
 export type LgoPracticeId = 'abogados' | 'contadores' | 'tecnologia' | 'marketing';
 
-export type BrandId = 'grupo' | LgoPracticeId | 'lorenzana';
+export type BrandId = 'grupo' | LgoPracticeId | 'facturacion' | 'lorenzana';
 
 export type Brand = {
   id: BrandId;
@@ -103,6 +104,19 @@ export const brands: Brand[] = [
     published: false
   },
   {
+    // Servicio LGO con sitio externo propio (no es una práctica con página
+    // interna). Se comporta como enlace externo igual que Lorenzana (↗).
+    id: 'facturacion',
+    name: 'LGO Facturación',
+    shortName: 'LGO Facturación',
+    specialty: 'Facturación electrónica',
+    description:
+      'Plataforma en línea para emitir CFDI 4.0 —facturas, nómina, carta porte y complementos— en minutos, con folios sin vigencia y precios por volumen, para negocios y profesionales que facturan todos los días.',
+    url: 'https://lgo-facturacion.com',
+    internal: false,
+    published: true
+  },
+  {
     id: 'lorenzana',
     name: 'Lorenzana 781',
     shortName: 'Lorenzana 781',
@@ -144,9 +158,17 @@ export const allLgoSubBrands: Brand[] = brands.filter((b): b is Brand =>
 export const publishedSubBrands: Brand[] = allLgoSubBrands.filter((b) => b.published);
 
 /** Todas las marcas que el visitante debe poder ver en el ecosistema.
- *  Incluye sub-marcas LGO publicadas + Lorenzana (externa). */
+ *  Incluye sub-marcas LGO publicadas + marcas externas (Facturación, Lorenzana).
+ *  Alimenta el grid del ecosistema en la landing y el menú "Servicios" del nav. */
 export const ecosystemBrands: Brand[] = brands.filter(
   (b) => b.id !== 'grupo' && b.published
+);
+
+/** Marcas del ecosistema con sitio externo propio, publicadas (Facturación,
+ *  Lorenzana). No tienen logo en el sitio: se muestran como texto con ↗.
+ *  Usar en el footer "Ecosistema" junto a publishedSubBrands. */
+export const publishedExternalBrands: Brand[] = ecosystemBrands.filter(
+  (b) => !b.internal
 );
 
 /** Solo prácticas LGO publicadas. Para nav, footer, filtros de blog. */
