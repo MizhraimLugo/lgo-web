@@ -1,0 +1,145 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  TOOL LANDING — cascarón reutilizable de "landing de herramienta"
+// ════════════════════════════════════════════════════════════════
+//
+// Envuelve Base y monta el patrón común de una herramienta interactiva
+// de nivel superior (viven en su propia URL, p. ej. /diagnostico/):
+//
+//   1. HERO         → eyebrow + título + descripción + CTA (+ stats opcionales)
+//   2. HERRAMIENTA  → <slot /> por defecto: el widget interactivo en sí
+//   3. CONVERSIÓN   → <slot name="conversion" />: banda de cierre al final
+//
+// La zona de conversión es opcional: una herramienta puede traer su propia
+// conversión dinámica dentro del slot principal (como el diagnóstico, que la
+// arma con el resultado) o dejar que la landing ponga una banda estática al
+// final (como hará /marcas). Ver docs: src/layouts/README-herramientas.md
+//
+// Pensado para que un futuro índice /herramientas liste todas las que hereden
+// este cascarón — mantén el hero/stats consistente entre herramientas.
+
+import Base from '@layouts/Base.astro';
+
+export interface HeroStat {
+  /** Número o cifra destacada (acepta texto, p. ej. "~10"). */
+  num: string | number;
+  /** Etiqueta corta bajo la cifra. */
+  label: string;
+}
+
+export interface Props {
+  // ── SEO / meta (se pasan tal cual a Base) ──
+  title: string;
+  description: string;
+  path: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  extraJsonLd?: Record<string, unknown> | Record<string, unknown>[];
+
+  // ── Hero ──
+  eyebrow: string;
+  heading: string;
+  lead: string;
+  /** CTA principal del hero. Suele apuntar a un ancla de la herramienta (p. ej. "#empezar"). */
+  ctaLabel?: string;
+  ctaHref?: string;
+  /** Tarjetas de estadística a la derecha del hero (opcional). */
+  stats?: HeroStat[];
+}
+
+const {
+  title, description, path, canonical, ogImage, noindex, extraJsonLd,
+  eyebrow, heading, lead, ctaLabel, ctaHref, stats = []
+} = Astro.props;
+
+const hasStats = stats.length > 0;
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  canonical={canonical}
+  ogImage={ogImage}
+  noindex={noindex}
+  extraJsonLd={extraJsonLd}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy tool-hero">
+    <div class:list={['container-base', 'tool-hero-grid', { 'tool-hero-grid--aside': hasStats }]}>
+      <div class="tool-hero-main">
+        <span class="eyebrow reveal-up reveal-up--immediate">{eyebrow}</span>
+        <h1 class="reveal-up reveal-up--immediate">{heading}</h1>
+        <p class="lead reveal-up reveal-up--immediate">{lead}</p>
+        {ctaLabel && ctaHref && (
+          <div class="tool-hero-ctas reveal-up reveal-up--immediate">
+            <a href={ctaHref} class="btn btn-primary">{ctaLabel}</a>
+          </div>
+        )}
+      </div>
+
+      {hasStats && (
+        <aside class="tool-hero-aside reveal-up reveal-up--immediate">
+          {stats.map((s) => (
+            <div class="tool-hero-stat">
+              <div class="tool-hero-stat-num">{s.num}</div>
+              <div class="tool-hero-stat-label">{s.label}</div>
+            </div>
+          ))}
+        </aside>
+      )}
+    </div>
+  </section>
+
+  <!-- HERRAMIENTA EMBEBIDA -->
+  <slot />
+
+  <!-- CONVERSIÓN AL FINAL (opcional) -->
+  <slot name="conversion" />
+
+</Base>
+
+<style>
+  /* HERO — generalizado desde el diagnóstico para servir a cualquier herramienta */
+  .tool-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .tool-hero h1 { max-width: 22ch; margin: 1.25rem 0 1.5rem; }
+  .tool-hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; }
+
+  .tool-hero-aside {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .tool-hero-stat {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+  .tool-hero-stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .tool-hero-stat-label {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.35rem;
+  }
+
+  @media (min-width: 1024px) {
+    .tool-hero-grid--aside { grid-template-columns: 1.5fr 1fr; gap: 4rem; }
+  }
+</style>

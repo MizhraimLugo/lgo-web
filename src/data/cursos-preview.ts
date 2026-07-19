@@ -33,7 +33,7 @@ export const cursos: Course[] = [
   //  LEAD MAGNET — Diagnóstico gratuito
   // ───────────────────────────────────────────────────────────
   {
-    slug: 'diagnostico-salud-empresarial',
+    slug: 'diagnostico',
     name: 'Diagnóstico de Salud Empresarial',
     shortName: 'Diagnóstico Empresarial',
     format: 'gratuito',
@@ -41,7 +41,9 @@ export const cursos: Course[] = [
     audience: 'Empresarios y directivos de cualquier régimen y giro.',
     blurb:
       'Cincuenta preguntas que tu negocio debe poder contestar, organizadas en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio. Al final recibes un diagnóstico personalizado y una ruta de acción.',
-    url: '/cursos/diagnostico-salud-empresarial/',
+    // La herramienta vive en su propia landing de nivel superior (/diagnostico/),
+    // fuera de /cursos/. Sigue apareciendo como tarjeta en el estante de cursos.
+    url: '/diagnostico/',
     cta: 'Tomar el diagnóstico',
     featured: true,
     customPage: true

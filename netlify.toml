@@ -42,3 +42,23 @@
   to = "/contratos/donacion-bien-inmueble/"
   status = 301
   force = true
+
+# ── Reubicación del Diagnóstico (SEO) ──
+# El Diagnóstico de Salud Empresarial se movió de /cursos/diagnostico-salud-empresarial/
+# a su propia landing de nivel superior /diagnostico/. La URL vieja ya estaba indexada,
+# así que un 301 permanente traspasa las señales a la nueva. NO lleva force=true: la
+# página vieja ya no se genera (se eliminó del build), así que no hay archivo estático
+# que le gane al redirect.
+#
+# Se declaran AMBAS formas explícitamente (con y sin diagonal final): la
+# normalización de trailing-slash de Netlify en el `from` de una regla no está
+# garantizada, así que no dependemos de ella. Las dos apuntan a la canónica /diagnostico/.
+[[redirects]]
+  from = "/cursos/diagnostico-salud-empresarial/"
+  to = "/diagnostico/"
+  status = 301
+
+[[redirects]]
+  from = "/cursos/diagnostico-salud-empresarial"
+  to = "/diagnostico/"
+  status = 301
