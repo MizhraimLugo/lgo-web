@@ -1,0 +1,199 @@
+---
+// Ficha destacada de una herramienta, para reutilizar en Inicio, /cursos u otras
+// secciones. Mismo tratamiento visual que ContratosFeature (card oscuro + filete
+// de acento + panel derecho), pero genérico: el texto viene por props y el visual
+// se puede sobreescribir con el slot "visual".
+//
+// El visual por defecto es un panel de diagnóstico (score + barras por territorio).
+// Para otra herramienta (p. ej. /marcas) clona el bloque en la página o pásale un
+// <slot name="visual"> propio. Ver docs: src/layouts/README-herramientas.md
+export interface Props {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  /** Chips/etiquetas bajo el cuerpo (como los ejemplos de contratos). */
+  bullets?: string[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+const {
+  eyebrow = 'Nuevo · Herramienta gratuita',
+  title = 'Descubre qué tan sano está tu negocio.',
+  body = 'Cincuenta preguntas en cinco territorios. Al final recibes un puntaje, un nivel de salud y una ruta de acción — en diez minutos, sin costo.',
+  bullets = ['Orden financiero', 'Régimen fiscal', 'Utilidad y flujo', 'Riesgos cotidianos', 'Socios y patrimonio'],
+  ctaLabel = 'Hacer el diagnóstico →',
+  ctaHref = '/diagnostico/'
+} = Astro.props;
+---
+<section class="hf">
+  <div class="container-base">
+    <div class="hf-card reveal-up">
+      <div class="hf-text">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 class="hf-title">{title}</h2>
+        <p class="hf-body">{body}</p>
+        {bullets.length > 0 && (
+          <ul class="hf-chips">
+            {bullets.map((b) => <li>{b}</li>)}
+          </ul>
+        )}
+        <a href={ctaHref} class="btn btn-primary hf-cta">{ctaLabel}</a>
+      </div>
+
+      <div class="hf-visual" aria-hidden="true">
+        <slot name="visual">
+          <!-- Visual por defecto: panel de diagnóstico -->
+          <div class="hf-panel">
+            <div class="hf-panel-head">
+              <span class="hf-panel-badge"></span>
+              <span class="hf-panel-score">
+                <span class="hf-panel-score-num">82</span>
+                <span class="hf-panel-score-max">/100</span>
+              </span>
+            </div>
+            <div class="hf-bars">
+              <span class="hf-bar" style="--w: 90%"></span>
+              <span class="hf-bar" style="--w: 70%"></span>
+              <span class="hf-bar" style="--w: 85%"></span>
+              <span class="hf-bar" style="--w: 60%"></span>
+              <span class="hf-bar" style="--w: 78%"></span>
+            </div>
+            <span class="hf-panel-tag"></span>
+          </div>
+        </slot>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hf { padding-block: 3rem; }
+  @media (min-width: 1024px) { .hf { padding-block: 4rem; } }
+
+  .hf-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    background: var(--color-foreground-strong);
+    color: var(--color-on-dark);
+    border-radius: var(--radius-lg);
+    padding: 2.25rem;
+    overflow: hidden;
+  }
+  /* filete de acento superior */
+  .hf-card::before {
+    content: '';
+    position: absolute; inset: 0 0 auto 0; height: 4px;
+    background: var(--color-accent);
+  }
+  @media (min-width: 880px) {
+    .hf-card {
+      grid-template-columns: 1.3fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      padding: 3rem 3.25rem;
+    }
+  }
+
+  .hf-text .eyebrow { color: var(--color-accent-soft); }
+  .hf-text .eyebrow::before { background: var(--color-accent-soft); }
+
+  .hf-title {
+    color: var(--color-on-dark);
+    font-size: var(--text-3xl);
+    margin: 1rem 0 0.85rem;
+    max-width: 18ch;
+    letter-spacing: -0.018em;
+  }
+  .hf-body {
+    color: rgba(250, 248, 244, 0.82);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    max-width: 44ch;
+    margin: 0 0 1.25rem;
+  }
+
+  .hf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .hf-chips li {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-on-dark);
+    padding: 0.35rem 0.7rem;
+    border: 1px solid rgba(250, 248, 244, 0.22);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .hf-cta { box-shadow: 0 10px 24px -10px rgba(212, 84, 26, 0.7); }
+
+  /* ---------- Visual por defecto: panel de diagnóstico ---------- */
+  .hf-visual {
+    position: relative;
+    height: 14rem;
+    display: none;
+  }
+  @media (min-width: 880px) { .hf-visual { display: block; } }
+
+  .hf-panel {
+    position: absolute;
+    right: 1.5rem; top: 0.25rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    border-top: 3px solid var(--color-accent);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+  }
+  .hf-panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .hf-panel-badge {
+    width: 2.2rem; height: 0.55rem; border-radius: 2px;
+    background: var(--color-accent);
+  }
+  .hf-panel-score { display: inline-flex; align-items: baseline; gap: 0.15rem; }
+  .hf-panel-score-num {
+    font-size: 1.75rem; font-weight: 700; line-height: 1;
+    color: var(--color-foreground-strong);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+  }
+  .hf-panel-score-max { font-size: 0.8rem; color: var(--color-muted); font-weight: 500; }
+
+  .hf-bars { display: flex; flex-direction: column; gap: 0.55rem; }
+  .hf-bar {
+    height: 0.5rem;
+    border-radius: 3px;
+    background: var(--color-surface-band);
+    position: relative;
+    overflow: hidden;
+  }
+  .hf-bar::before {
+    content: '';
+    position: absolute; inset: 0 auto 0 0;
+    width: var(--w, 60%);
+    background: var(--color-accent);
+    border-radius: 3px;
+  }
+  .hf-panel-tag {
+    align-self: flex-start;
+    width: 4.5rem; height: 1.15rem;
+    border-radius: var(--radius-xs);
+    background: var(--color-accent-soft);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hf-panel { transition: transform 400ms cubic-bezier(0.16,1,0.3,1); }
+    .hf-card:hover .hf-panel { transform: translateY(-6px); }
+  }
+</style>
