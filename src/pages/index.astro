@@ -3,21 +3,22 @@ import Base from '@layouts/Base.astro';
 import CtaBand from '@components/CtaBand.astro';
 import PostCard from '@components/PostCard.astro';
 import CourseCard from '@components/CourseCard.astro';
-import ContratosFeature from '@components/contratos/ContratosFeature.astro';
-import HerramientaFeature from '@components/herramientas/HerramientaFeature.astro';
-import MarcaMock from '@components/marcas/MarcaMock.astro';
+import HerramientaCard from '@components/herramientas/HerramientaCard.astro';
 import { business } from '@data/business';
 import { ecosystemBrands } from '@data/brands';
+import { publishedHerramientas } from '@data/herramientas';
 import { recentPosts } from '@data/perspectivas';
-import { featuredCourse, nonFeaturedCourses } from '@data/cursos-preview';
+import { nonFeaturedCourses } from '@data/cursos-preview';
 
 const title = 'Grupo LGO — Ecosistema empresarial integrado | Guadalajara, Jalisco';
 const description = business.description;
 const path = '/';
 
 const posts = await recentPosts(3);
-const courseFeatured = featuredCourse();
-const otherCourses = nonFeaturedCourses();
+// El home lista solo los cursos del catálogo. El Diagnóstico (marcado como
+// `featured` en cursos-preview) ya tiene presencia propia en la sección
+// "Herramientas gratuitas" de arriba, así que aquí se omite para no duplicarlo.
+const cursos = nonFeaturedCourses();
 ---
 <Base title={title} description={description} path={path}>
 
@@ -93,20 +94,35 @@ const otherCourses = nonFeaturedCourses();
     </div>
   </section>
 
-  <!-- CONTRATOS — autoservicio de documentos -->
-  <ContratosFeature />
+  <!-- HERRAMIENTAS GRATUITAS — consolida Diagnóstico + Calculadora de marca +
+       Documentos legales en UNA sección. Antes eran tres teasers sueltos y
+       dispersos (Contratos y Marcas aquí, Diagnóstico más abajo). Ahora las tres
+       tienen presencia igual; copy y tarjetas salen del data layer (mismas que
+       /herramientas). Nueva herramienta publicada = una tarjeta más, sin tocar aquí. -->
+  <section id="herramientas" class="section band-cream">
+    <div class="container-base">
+      <header class="herramientas-head">
+        <div>
+          <span class="eyebrow">Herramientas gratuitas</span>
+          <h2>Adelántate a los problemas, sin costo.</h2>
+          <p class="lead">
+            Diagnósticos y calculadoras de Grupo LGO para resolver una pregunta
+            concreta de tu empresa hoy — sin registro y con el mismo criterio con
+            el que asesoramos a nuestros clientes.
+          </p>
+        </div>
+        <a href="/herramientas/" class="herramientas-all">
+          Ver todas las herramientas <span aria-hidden="true">→</span>
+        </a>
+      </header>
 
-  <!-- MARCAS — calculadora de plazos IMPI (herramienta gratuita) -->
-  <HerramientaFeature
-    eyebrow="Nuevo · Herramienta gratuita"
-    title="¿Cuándo tienes que renovar tu marca?"
-    body="Captura las fechas de tu registro y calcula al instante el vencimiento, la ventana de renovación, el periodo de gracia y la declaración de uso de tercer año. Sin costo, sin registro."
-    bullets={['Renovación', 'Declaración de uso', 'Periodo de gracia', 'Varias marcas']}
-    ctaLabel="Ir a la calculadora →"
-    ctaHref="/marcas/"
-  >
-    <MarcaMock slot="visual" />
-  </HerramientaFeature>
+      <div class="herramientas-grid">
+        {publishedHerramientas.map((h) => (
+          <HerramientaCard herramienta={h} />
+        ))}
+      </div>
+    </div>
+  </section>
 
   <!-- POR QUÉ INTEGRADO IMPORTA — la tesis -->
   <section class="section band-dark">
@@ -194,19 +210,16 @@ const otherCourses = nonFeaturedCourses();
     </div>
   </section>
 
-  <!-- DIAGNÓSTICO — herramienta gratuita (lead magnet) -->
-  <HerramientaFeature />
-
   <!-- CURSOS -->
   <section id="cursos" class="section band-cream">
     <div class="container-base">
       <header class="cursos-head">
         <div>
-          <span class="eyebrow">Cursos y herramientas</span>
+          <span class="eyebrow">Cursos</span>
           <h2>Aprende cómo decidimos. Aplícalo a tu negocio.</h2>
           <p class="lead">
-            Diagnósticos gratuitos, cursos online y masterclasses presenciales en
-            Lorenzana 781. Tres formatos, un mismo criterio.
+            Cursos online y masterclasses presenciales en Lorenzana 781, con el
+            mismo criterio con el que asesoramos a las empresas del ecosistema.
           </p>
         </div>
         <a href="/cursos/" class="cursos-all">
@@ -214,14 +227,8 @@ const otherCourses = nonFeaturedCourses();
         </a>
       </header>
 
-      {courseFeatured && (
-        <div class="cursos-featured-wrap">
-          <CourseCard course={courseFeatured} layout="featured" />
-        </div>
-      )}
-
       <div class="cursos-grid">
-        {otherCourses.map((c) => (
+        {cursos.map((c) => (
           <CourseCard course={c} layout="standard" />
         ))}
       </div>
@@ -340,6 +347,39 @@ const otherCourses = nonFeaturedCourses();
     .tesis-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
   }
 
+  /* HERRAMIENTAS */
+  .herramientas-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+  }
+  .herramientas-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .herramientas-head .lead { max-width: 52ch; }
+
+  .herramientas-all {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    padding-block: 0.5rem;
+  }
+  .herramientas-all:hover { color: var(--color-accent-deep); }
+
+  @media (min-width: 1024px) {
+    .herramientas-head { grid-template-columns: 1fr auto; gap: 3rem; }
+  }
+
+  .herramientas-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .herramientas-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .herramientas-grid { grid-template-columns: repeat(3, 1fr); } }
+
   /* PERSPECTIVAS */
   .perspectivas-head {
     display: grid;
@@ -396,10 +436,6 @@ const otherCourses = nonFeaturedCourses();
 
   @media (min-width: 1024px) {
     .cursos-head { grid-template-columns: 1fr auto; gap: 3rem; }
-  }
-
-  .cursos-featured-wrap {
-    margin-bottom: 1.25rem;
   }
 
   .cursos-grid {
