@@ -1,0 +1,742 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  CALCULADORA DE DECLARACIÓN DE USO Y RENOVACIÓN DE MARCA (IMPI)
+// ════════════════════════════════════════════════════════════════
+//
+// Componente autónomo de la herramienta /marcas. TODA la lógica de marca vive
+// aquí (UI) o en el motor `@data/marcas` (cálculo puro y probado). El layout
+// ToolLanding se mantiene genérico: no conoce nada de marcas.
+//
+// Sin gate de correo: la calculadora es de uso libre e inmediato. La conversión
+// vive en la banda final de la página (CTA a Grupo LGO).
+---
+<section id="calculadora" class="section">
+  <div class="container-base">
+    <header class="calc-head">
+      <span class="eyebrow">La herramienta</span>
+      <h2>Calcula tus plazos de marca.</h2>
+      <p class="lead">
+        Captura las fechas de tu registro y la herramienta te devuelve, para cada marca,
+        cuándo vence la renovación, cuándo abre y cierra su ventana, y si te corresponde
+        la declaración de uso de tercer año. Puedes calcular varias marcas a la vez.
+      </p>
+    </header>
+
+    <!-- Aviso: uso libre + orientativo (menciones completas en primera aparición) -->
+    <div class="calc-aviso" role="note">
+      <p>
+        Esta herramienta es orientativa y no constituye asesoría legal. Los plazos se
+        calculan conforme a la <strong>Ley Federal de Protección a la Propiedad Industrial</strong>,
+        pero pueden variar según el caso concreto y los actos registrales de cada marca ante el
+        <strong>Instituto Mexicano de la Propiedad Industrial</strong> (IMPI). Para confirmar
+        una fecha antes de actuar, consúltalo con Grupo LGO.
+      </p>
+    </div>
+
+    <form id="marcas-form" class="marcas" novalidate>
+      <div class="marcas-lista" data-lista></div>
+
+      <div class="marcas-acciones">
+        <button type="button" class="btn btn-ghost" data-agregar>
+          + Agregar otra marca
+        </button>
+        <button type="submit" class="btn btn-primary" data-calcular>
+          Calcular plazos
+        </button>
+      </div>
+    </form>
+
+    <!-- RESULTADOS (ocultos hasta calcular) -->
+    <section class="resultados" data-resultados hidden aria-live="polite">
+      <header class="resultados-head">
+        <h3>Resultados</h3>
+        <button type="button" class="btn btn-ghost btn-copiar" data-copiar>
+          Copiar tabla
+        </button>
+      </header>
+
+      <div class="tabla-wrap">
+        <table class="tabla-marcas" data-tabla>
+          <thead>
+            <tr>
+              <th scope="col">Marca</th>
+              <th scope="col">Fecha ancla</th>
+              <th scope="col">Declaración de uso (3.er año)</th>
+              <th scope="col">Renovación</th>
+              <th scope="col">Estado vs. hoy</th>
+            </tr>
+          </thead>
+          <tbody data-tabla-body></tbody>
+        </table>
+      </div>
+
+      <p class="tabla-leyenda">
+        Los estados se calculan contra la fecha de hoy. La renovación incluye la
+        declaración de uso correspondiente.
+      </p>
+    </section>
+
+    <!-- Fundamento legal — diferenciador de precisión -->
+    <aside class="calc-fundamento">
+      <h3>Fundamento</h3>
+      <p>
+        Cálculos basados en los artículos <strong>178</strong> (vigencia de diez años y
+        renovación), <strong>237</strong> (ventana de renovación de seis meses previos y
+        periodo de gracia de seis meses posteriores, con tarifa adicional),
+        <strong>233</strong> (declaración de uso al tercer año, dentro de los tres meses
+        posteriores, cuya omisión produce caducidad) y <strong>21</strong> (los plazos en
+        meses y años se cuentan de fecha a fecha) de la Ley Federal de Protección a la
+        Propiedad Industrial.
+      </p>
+      <p class="calc-fundamento-nota">
+        La declaración de uso de tercer año aplica únicamente a marcas otorgadas a partir
+        del 10 de agosto de 2018; las anteriores presentan el uso junto con la renovación.
+      </p>
+      <p class="calc-fundamento-fuente">
+        Última revisión de la herramienta: julio de 2026. Consulta el texto vigente en el
+        <a
+          href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPPI.pdf"
+          target="_blank"
+          rel="noopener"
+        >sitio oficial de la Cámara de Diputados</a>.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<!-- Plantilla de una marca (clonada por JS) -->
+<template data-tpl-marca>
+  <fieldset class="marca-card" data-marca>
+    <div class="marca-card-top">
+      <legend class="marca-legend">Marca <span data-indice>1</span></legend>
+      <button type="button" class="marca-remove" data-remover aria-label="Quitar esta marca" hidden>
+        Quitar
+      </button>
+    </div>
+
+    <div class="marca-grid">
+      <!-- Fecha de otorgamiento — siempre visible, obligatoria -->
+      <div class="field field--wide">
+        <label>
+          Fecha de otorgamiento del registro <span aria-hidden="true">*</span>
+        </label>
+        <input type="date" data-otorgamiento required aria-required="true" />
+        <small class="field-help">La que aparece en el título, no la de presentación de la solicitud.</small>
+      </div>
+
+      <!-- Toggle: otorgada antes del 5 de noviembre de 2020 -->
+      <div class="field field--wide">
+        <label class="switch">
+          <input type="checkbox" data-toggle />
+          <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+          <span class="switch-label">Marca otorgada antes del 5 de noviembre de 2020</span>
+        </label>
+        <small class="field-help">
+          En ese supuesto, la vigencia de diez años se cuenta desde la presentación de la solicitud.
+        </small>
+      </div>
+
+      <!-- Red de seguridad (no bloqueante): fecha anterior a la LFPPI con toggle apagado -->
+      <p class="marca-aviso-toggle field--wide" data-aviso-toggle role="status" hidden>
+        Esta fecha es anterior al 5 de noviembre de 2020. Si tu marca se rige por la ley
+        anterior, activa la casilla para calcular la renovación desde la fecha de presentación.
+      </p>
+
+      <!-- Fecha de presentación — solo si el toggle está encendido -->
+      <div class="field field--wide" data-presentacion-wrap hidden>
+        <label>
+          Fecha de presentación de la solicitud <span aria-hidden="true">*</span>
+        </label>
+        <input type="date" data-presentacion aria-required="true" />
+      </div>
+
+      <!-- Opcionales — solo informativos -->
+      <div class="field">
+        <label>Nombre de la marca <span class="opt">(opcional)</span></label>
+        <input type="text" data-nombre autocomplete="off" placeholder="p. ej. Lorenzana" />
+      </div>
+      <div class="field">
+        <label>Clase <span class="opt">(opcional)</span></label>
+        <input type="text" data-clase autocomplete="off" inputmode="numeric" placeholder="p. ej. 45" />
+      </div>
+      <div class="field">
+        <label>Número de registro <span class="opt">(opcional)</span></label>
+        <input type="text" data-registro autocomplete="off" placeholder="p. ej. 2345678" />
+      </div>
+    </div>
+
+    <p class="marca-error" data-error hidden></p>
+  </fieldset>
+</template>
+
+<style>
+  .calc-head { margin-bottom: 2rem; max-width: 44rem; }
+  .calc-head h2 { margin: 1rem 0 0.75rem; max-width: 22ch; }
+  .calc-head .lead { max-width: 58ch; }
+
+  /* AVISO — nota orientativa, tono neutro (no alarmante). La advertencia
+     peach se reserva para el aviso del toggle (.marca-aviso-toggle). */
+  .calc-aviso {
+    background: var(--color-surface-alt);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .calc-aviso p {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+    max-width: 72ch;
+  }
+  .calc-aviso strong { font-weight: 700; color: var(--color-foreground-strong); }
+
+  /* LISTA DE MARCAS */
+  .marcas-lista { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .marca-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.75rem;
+    margin: 0;
+  }
+  .marca-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .marca-legend {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-deep);
+    padding: 0;
+  }
+  .marca-remove {
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+  }
+  .marca-remove:hover { border-color: var(--color-alert); color: var(--color-alert); }
+
+  .marca-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 640px) { .marca-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .marca-grid { grid-template-columns: repeat(3, 1fr); } }
+  .field--wide { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .field label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-foreground-strong);
+  }
+  .field label span[aria-hidden] { color: var(--color-accent); margin-left: 2px; }
+  .field .opt { color: var(--color-muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
+  .field-help { font-size: var(--text-xs); color: var(--color-muted); line-height: 1.5; }
+
+  .field input[type='date'],
+  .field input[type='text'] {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-foreground-strong);
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.9rem;
+    width: 100%;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212, 84, 26, 0.12);
+  }
+  .field input.is-error { border-color: var(--color-alert); }
+
+  /* SWITCH (toggle) */
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    cursor: pointer;
+    flex-direction: row;
+  }
+  .switch input { position: absolute; opacity: 0; pointer-events: none; }
+  .switch-track {
+    position: relative;
+    width: 2.6rem;
+    height: 1.5rem;
+    background: var(--color-border-strong);
+    border-radius: 999px;
+    flex-shrink: 0;
+    transition: background 180ms ease;
+  }
+  .switch-thumb {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 1.1rem; height: 1.1rem;
+    background: var(--color-surface);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    transition: transform 180ms ease;
+  }
+  .switch input:checked + .switch-track { background: var(--color-accent); }
+  .switch input:checked + .switch-track .switch-thumb { transform: translateX(1.1rem); }
+  .switch input:focus-visible + .switch-track { box-shadow: 0 0 0 3px rgba(212, 84, 26, 0.25); }
+  .switch-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .marca-error {
+    margin: 1rem 0 0;
+    background: rgba(177, 70, 56, 0.08);
+    border-left: 3px solid var(--color-alert);
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-xs);
+    color: var(--color-alert);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  /* Aviso del toggle: advertencia (no error) — mismo tono que el estado "gracia" */
+  .marca-aviso-toggle {
+    margin: -0.5rem 0 0;
+    background: var(--color-accent-soft);
+    border-left: 3px solid var(--color-accent);
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-xs);
+    color: var(--color-accent-deep);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    max-width: 72ch;
+  }
+
+  /* ACCIONES */
+  .marcas-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    align-items: center;
+  }
+  .marcas-acciones .btn-primary { margin-left: auto; }
+  @media (max-width: 520px) {
+    .marcas-acciones .btn { width: 100%; }
+    .marcas-acciones .btn-primary { margin-left: 0; }
+  }
+
+  /* RESULTADOS */
+  .resultados {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  .resultados-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .resultados-head h3 { margin: 0; }
+  .btn-copiar { font-size: var(--text-sm); padding: 0.5rem 1rem; }
+  .btn-copiar.is-done { color: var(--color-success); border-color: var(--color-success); }
+
+  .tabla-wrap { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+  .tabla-marcas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    min-width: 720px;
+  }
+  .tabla-marcas thead th {
+    text-align: left;
+    background: var(--color-surface-alt);
+    color: var(--color-foreground-strong);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+
+  /* Las filas de la tabla se inyectan por JS (innerHTML) y NO reciben el
+     scoping de Astro; se estilizan con :global() ancladas bajo .tabla-wrap
+     (server-rendered) para no filtrar reglas al resto del sitio. */
+  .tabla-wrap :global(tbody td) {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-divider);
+    vertical-align: top;
+    color: var(--color-foreground);
+    line-height: 1.5;
+    font-size: var(--text-sm);
+  }
+  .tabla-wrap :global(tbody tr:last-child td) { border-bottom: none; }
+
+  .tabla-wrap :global(.celda-marca-nombre) { font-weight: 700; color: var(--color-foreground-strong); }
+  .tabla-wrap :global(.celda-meta) { color: var(--color-muted); font-size: var(--text-xs); margin-top: 0.2rem; }
+  .tabla-wrap :global(.celda-fechas) { display: flex; flex-direction: column; gap: 0.2rem; }
+  .tabla-wrap :global(.celda-fechas .lbl) { color: var(--color-muted); font-size: var(--text-xs); }
+  .tabla-wrap :global(.celda-fechas .val) { font-variant-numeric: tabular-nums; color: var(--color-foreground-strong); font-weight: 600; }
+  .tabla-wrap :global(.celda-noaplica) { color: var(--color-muted); font-style: italic; font-size: var(--text-xs); max-width: 26ch; }
+
+  .tabla-wrap :global(.estado-badge) {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    line-height: 1.4;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-xs);
+    border-left: 3px solid currentColor;
+  }
+  .tabla-wrap :global(.estado-badge + .estado-badge) { margin-top: 0.5rem; }
+  .tabla-wrap :global(.estado-grupo-lbl) { display: block; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); font-weight: 700; margin-bottom: 0.25rem; }
+  .tabla-wrap :global(.tono-pendiente) { color: var(--color-muted);        background: var(--color-surface-alt); }
+  .tabla-wrap :global(.tono-abierto)   { color: var(--color-success);      background: rgba(91, 140, 112, 0.10); }
+  .tabla-wrap :global(.tono-gracia)    { color: var(--color-accent-deep);  background: var(--color-accent-soft); }
+  .tabla-wrap :global(.tono-vencido)   { color: var(--color-alert);        background: rgba(177, 70, 56, 0.08); }
+  .tabla-wrap :global(.tono-caducidad) { color: var(--color-alert);        background: rgba(177, 70, 56, 0.08); }
+  .tabla-wrap :global(.tono-info)      { color: var(--color-muted);        background: var(--color-surface-alt); }
+
+  .tabla-leyenda { font-size: var(--text-xs); color: var(--color-muted); margin-top: 1rem; line-height: 1.55; }
+
+  /* ── Vista apilada en móvil (< 640px) ──
+     Debajo del breakpoint, la tabla de 5 columnas se convierte en una tarjeta
+     por marca con pares etiqueta/valor verticales. Cada <td> lleva data-label
+     (inyectado por JS) que se muestra vía ::before. Se elimina el scroll
+     horizontal. Arriba del breakpoint, la tabla queda intacta. */
+  @media (max-width: 639px) {
+    .tabla-wrap { overflow-x: visible; border: none; border-radius: 0; }
+    .tabla-marcas { display: block; min-width: 0; }
+    .tabla-marcas thead { display: none; }
+
+    .tabla-wrap :global(tbody) { display: block; }
+    .tabla-wrap :global(tbody tr) {
+      display: block;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-top: 3px solid var(--color-accent);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.25rem;
+      margin-bottom: 1rem;
+    }
+    .tabla-wrap :global(tbody tr:last-child) { margin-bottom: 0; }
+    .tabla-wrap :global(tbody td),
+    .tabla-wrap :global(tbody tr:last-child td) {
+      display: block;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .tabla-wrap :global(tbody td:last-child) { border-bottom: none; }
+    .tabla-wrap :global(tbody td)::before {
+      content: attr(data-label);
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.4rem;
+    }
+    /* La celda de ancla usa flex en escritorio; en apilado va en bloque */
+    .tabla-wrap :global(td.celda-fechas) { display: block; }
+  }
+
+  /* FUNDAMENTO */
+  .calc-fundamento {
+    margin-top: 2.5rem;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem 1.75rem;
+  }
+  .calc-fundamento h3 {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-deep);
+    margin: 0 0 0.75rem;
+  }
+  .calc-fundamento p {
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-foreground);
+    margin: 0 0 0.75rem;
+    max-width: 74ch;
+  }
+  .calc-fundamento p:last-child { margin-bottom: 0; }
+  .calc-fundamento strong { color: var(--color-foreground-strong); font-weight: 700; }
+  .calc-fundamento-nota { font-size: var(--text-xs) !important; color: var(--color-muted) !important; }
+  .calc-fundamento-fuente { font-size: var(--text-xs) !important; color: var(--color-muted) !important; margin-top: 0.75rem !important; }
+  .calc-fundamento-fuente a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .calc-fundamento-fuente a:hover { color: var(--color-accent-deep); }
+</style>
+
+<script>
+  import {
+    calcularMarca,
+    hoyUTC,
+    parseISO,
+    FECHA_LFPPI_VIGENTE,
+    type EntradaMarca,
+    type ResultadoMarca
+  } from '@data/marcas';
+  import { humanizar } from '@data/marcas-format';
+
+  // ── Selectores ───
+  const form = document.querySelector<HTMLFormElement>('#marcas-form')!;
+  const lista = document.querySelector<HTMLElement>('[data-lista]')!;
+  const tpl = document.querySelector<HTMLTemplateElement>('[data-tpl-marca]')!;
+  const btnAgregar = document.querySelector<HTMLButtonElement>('[data-agregar]')!;
+  const resultados = document.querySelector<HTMLElement>('[data-resultados]')!;
+  const tablaBody = document.querySelector<HTMLElement>('[data-tabla-body]')!;
+  const btnCopiar = document.querySelector<HTMLButtonElement>('[data-copiar]')!;
+
+  const hoy = hoyUTC();
+
+  // ── Formateo de fechas (es-MX: dd/mm/aaaa, sin corrimiento de zona) ───
+  const fmt = (d: Date): string => {
+    const dd = String(d.getUTCDate()).padStart(2, '0');
+    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const yy = d.getUTCFullYear();
+    return `${dd}/${mm}/${yy}`;
+  };
+
+  // Humanización de plazos largos: helpers puros en @data/marcas-format
+  // (compartidos con las pruebas del motor). Solo cambian el TEXTO del contador
+  // de estado; no tocan las fechas exactas de la tabla ni la lógica del motor.
+
+  // ── Alta / baja de marcas ───
+  const renumerar = () => {
+    const cards = Array.from(lista.querySelectorAll<HTMLElement>('[data-marca]'));
+    cards.forEach((card, i) => {
+      const idx = card.querySelector('[data-indice]');
+      if (idx) idx.textContent = String(i + 1);
+      const rem = card.querySelector<HTMLButtonElement>('[data-remover]');
+      if (rem) rem.hidden = cards.length <= 1; // no permitir quitar la única marca
+    });
+  };
+
+  const agregarMarca = (): HTMLElement => {
+    const frag = tpl.content.cloneNode(true) as DocumentFragment;
+    const card = frag.querySelector<HTMLElement>('[data-marca]')!;
+
+    // Toggle → muestra/oculta la fecha de presentación
+    const toggle = card.querySelector<HTMLInputElement>('[data-toggle]')!;
+    const presWrap = card.querySelector<HTMLElement>('[data-presentacion-wrap]')!;
+    const presInput = card.querySelector<HTMLInputElement>('[data-presentacion]')!;
+    const otorInput = card.querySelector<HTMLInputElement>('[data-otorgamiento]')!;
+    const avisoToggle = card.querySelector<HTMLElement>('[data-aviso-toggle]')!;
+
+    // Red de seguridad (por marca): si la fecha de otorgamiento es anterior al
+    // 5 de noviembre de 2020 y el toggle sigue apagado, mostramos un aviso NO
+    // bloqueante. No cambia ningún cálculo por sí solo — el ancla solo cambia si
+    // el usuario activa el toggle. Se reevalúa al cambiar la fecha o el toggle.
+    const corteLFPPI = parseISO(FECHA_LFPPI_VIGENTE)!;
+    const reevaluarAviso = () => {
+      const f = parseISO(otorInput.value.trim());
+      const anterior = !!f && f.getTime() < corteLFPPI.getTime();
+      avisoToggle.hidden = !(anterior && !toggle.checked);
+    };
+    otorInput.addEventListener('input', reevaluarAviso);
+    otorInput.addEventListener('change', reevaluarAviso);
+
+    toggle.addEventListener('change', () => {
+      presWrap.hidden = !toggle.checked;
+      presInput.required = toggle.checked;
+      if (!toggle.checked) presInput.classList.remove('is-error');
+      reevaluarAviso();
+    });
+
+    // Quitar
+    card.querySelector<HTMLButtonElement>('[data-remover]')!.addEventListener('click', () => {
+      card.remove();
+      renumerar();
+    });
+
+    lista.appendChild(frag);
+    renumerar();
+    return card;
+  };
+
+  // ── Lectura de una tarjeta a EntradaMarca ───
+  const leerMarca = (card: HTMLElement): EntradaMarca => {
+    const val = (sel: string) => card.querySelector<HTMLInputElement>(sel)?.value.trim() ?? '';
+    return {
+      otorgamiento: val('[data-otorgamiento]'),
+      anteriorLFPPI: card.querySelector<HTMLInputElement>('[data-toggle]')!.checked,
+      presentacion: val('[data-presentacion]') || undefined,
+      nombre: val('[data-nombre]') || undefined,
+      clase: val('[data-clase]') || undefined,
+      registro: val('[data-registro]') || undefined
+    };
+  };
+
+  // ── Render de la tabla ───
+  const badge = (texto: string, tono: string, etiqueta?: string): string => {
+    const lbl = etiqueta ? `<span class="estado-grupo-lbl">${etiqueta}</span>` : '';
+    return `<span class="estado-badge tono-${tono}">${lbl}${texto}</span>`;
+  };
+
+  const celdaMarca = (e: EntradaMarca, i: number): string => {
+    const nombre = e.nombre || `Marca ${i + 1}`;
+    const meta: string[] = [];
+    if (e.clase) meta.push(`Clase ${e.clase}`);
+    if (e.registro) meta.push(`Reg. ${e.registro}`);
+    const metaStr = meta.length ? `<div class="celda-meta">${meta.join(' · ')}</div>` : '';
+    return `<div class="celda-marca-nombre">${nombre}</div>${metaStr}`;
+  };
+
+  const celdaDU = (r: ResultadoMarca): string => {
+    const du = r.declaracionUso;
+    if (!du.aplica) return `<div class="celda-noaplica">${du.mensaje}</div>`;
+    return `
+      <div class="celda-fechas">
+        <span><span class="lbl">Abre:</span> <span class="val">${fmt(du.apertura)}</span></span>
+        <span><span class="lbl">Cierra:</span> <span class="val">${fmt(du.cierre)}</span></span>
+      </div>`;
+  };
+
+  const celdaRenovacion = (r: ResultadoMarca): string => {
+    const rn = r.renovacion;
+    return `
+      <div class="celda-fechas">
+        <span><span class="lbl">Vence:</span> <span class="val">${fmt(rn.vencimiento)}</span></span>
+        <span><span class="lbl">Ventana abre:</span> <span class="val">${fmt(rn.ventanaAbre)}</span></span>
+        <span><span class="lbl">Fin de gracia:</span> <span class="val">${fmt(rn.graciaFin)}</span></span>
+      </div>`;
+  };
+
+  const celdaEstado = (r: ResultadoMarca): string => {
+    const partes: string[] = [];
+    if (r.declaracionUso.aplica) {
+      partes.push(badge(humanizar(r.declaracionUso.estado.texto), r.declaracionUso.estado.tono, 'Declaración de uso'));
+    }
+    partes.push(badge(humanizar(r.renovacion.estado.texto), r.renovacion.estado.tono, 'Renovación'));
+    return partes.join('');
+  };
+
+  // ── Texto plano para copiar ───
+  let filasTexto: string[][] = [];
+  const construirFilaTexto = (e: EntradaMarca, r: ResultadoMarca, i: number): string[] => {
+    const nombre = e.nombre || `Marca ${i + 1}`;
+    const meta = [e.clase ? `Clase ${e.clase}` : '', e.registro ? `Reg. ${e.registro}` : ''].filter(Boolean).join(' / ');
+    const ancla = `${fmt(r.renovacion.ancla)} (${r.renovacion.anclaEtiqueta})`;
+    const du = r.declaracionUso.aplica
+      ? `Abre ${fmt(r.declaracionUso.apertura)} — Cierra ${fmt(r.declaracionUso.cierre)}`
+      : 'No aplica (se presenta con la renovación)';
+    const ren = `Vence ${fmt(r.renovacion.vencimiento)} — Ventana abre ${fmt(r.renovacion.ventanaAbre)} — Fin de gracia ${fmt(r.renovacion.graciaFin)}`;
+    const estado = [
+      r.declaracionUso.aplica ? `DU: ${humanizar(r.declaracionUso.estado.texto)}` : '',
+      `Renovación: ${humanizar(r.renovacion.estado.texto)}`
+    ].filter(Boolean).join(' | ');
+    return [meta ? `${nombre} (${meta})` : nombre, ancla, du, ren, estado];
+  };
+
+  // ── Calcular ───
+  const calcular = () => {
+    const cards = Array.from(lista.querySelectorAll<HTMLElement>('[data-marca]'));
+    const filas: string[] = [];
+    filasTexto = [];
+    let hayValidas = false;
+
+    cards.forEach((card, i) => {
+      const errBox = card.querySelector<HTMLElement>('[data-error]')!;
+      const entrada = leerMarca(card);
+      const r = calcularMarca(entrada, hoy);
+
+      // Marcar/limpiar inputs con error
+      const otorInput = card.querySelector<HTMLInputElement>('[data-otorgamiento]')!;
+      const presInput = card.querySelector<HTMLInputElement>('[data-presentacion]')!;
+      otorInput.classList.toggle('is-error', !entrada.otorgamiento);
+      presInput.classList.toggle('is-error', entrada.anteriorLFPPI && !entrada.presentacion);
+
+      if (r.errores.length > 0) {
+        errBox.innerHTML = r.errores.join('<br>');
+        errBox.hidden = false;
+        return; // no tabular esta marca
+      }
+      errBox.hidden = true;
+
+      hayValidas = true;
+      filas.push(`
+        <tr>
+          <td data-label="Marca">${celdaMarca(entrada, i)}</td>
+          <td class="celda-fechas" data-label="Fecha ancla"><span class="val">${fmt(r.renovacion.ancla)}</span><span class="lbl">(${r.renovacion.anclaEtiqueta})</span></td>
+          <td data-label="Declaración de uso (3.er año)">${celdaDU(r)}</td>
+          <td data-label="Renovación">${celdaRenovacion(r)}</td>
+          <td data-label="Estado vs. hoy">${celdaEstado(r)}</td>
+        </tr>`);
+      filasTexto.push(construirFilaTexto(entrada, r, i));
+    });
+
+    if (!hayValidas) {
+      resultados.hidden = true;
+      // Llevar al usuario al primer error
+      const primerError = lista.querySelector<HTMLElement>('.marca-error:not([hidden])');
+      primerError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    tablaBody.innerHTML = filas.join('');
+    resultados.hidden = false;
+    btnCopiar.classList.remove('is-done');
+    btnCopiar.textContent = 'Copiar tabla';
+    resultados.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // ── Copiar tabla ───
+  const copiarTabla = async () => {
+    const encabezados = ['Marca', 'Fecha ancla', 'Declaración de uso (3.er año)', 'Renovación', 'Estado vs. hoy'];
+    const lineas = [encabezados.join('\t'), ...filasTexto.map((f) => f.join('\t'))];
+    const texto = lineas.join('\n');
+    try {
+      await navigator.clipboard.writeText(texto);
+      btnCopiar.classList.add('is-done');
+      btnCopiar.textContent = 'Copiado ✓';
+    } catch {
+      // Respaldo: seleccionar mediante textarea temporal
+      const ta = document.createElement('textarea');
+      ta.value = texto;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); btnCopiar.textContent = 'Copiado ✓'; } catch { btnCopiar.textContent = 'Copia manual'; }
+      ta.remove();
+    }
+  };
+
+  // ── Bootstrap ───
+  agregarMarca(); // primera marca
+  btnAgregar.addEventListener('click', () => agregarMarca());
+  btnCopiar.addEventListener('click', copiarTabla);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calcular();
+  });
+</script>

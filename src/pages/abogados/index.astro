@@ -6,6 +6,8 @@ import Logo from '@components/Logo.astro';
 import PostCard from '@components/PostCard.astro';
 import ServiceCard from '@components/ServiceCard.astro';
 import ContratosFeature from '@components/contratos/ContratosFeature.astro';
+import HerramientaFeature from '@components/herramientas/HerramientaFeature.astro';
+import MarcaMock from '@components/marcas/MarcaMock.astro';
 import { business } from '@data/business';
 import { getBrand } from '@data/brands';
 import { servicesByBrand } from '@data/services';
@@ -134,6 +136,18 @@ const breadcrumbLd = {
     title="¿Necesitas un contrato hoy mismo?"
     body="Prepara documentos redactados por LGO Abogados con nuestro asistente: cuéntale tu situación, lo llena contigo y lo descargas listo para firmar."
   />
+
+  <!-- MARCAS — herramienta de propiedad intelectual -->
+  <HerramientaFeature
+    eyebrow="Propiedad intelectual · Herramienta gratuita"
+    title="¿Ya sabes cuándo renovar tu marca?"
+    body="Calcula gratis el vencimiento, la ventana de renovación, el periodo de gracia y la declaración de uso de tercer año de tus registros ante el IMPI. Si prefieres, nosotros presentamos el trámite por ti."
+    bullets={['Renovación', 'Declaración de uso', 'Periodo de gracia', 'Varias marcas']}
+    ctaLabel="Ir a la calculadora →"
+    ctaHref="/marcas/"
+  >
+    <MarcaMock slot="visual" />
+  </HerramientaFeature>
 
   <!-- SECTORES -->
   <section class="section band-cream">

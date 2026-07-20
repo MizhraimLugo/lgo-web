@@ -1,0 +1,100 @@
+---
+import ToolLanding from '@layouts/ToolLanding.astro';
+import CtaBand from '@components/CtaBand.astro';
+import Faq from '@components/Faq.astro';
+import CalculadoraMarcas from '@components/marcas/CalculadoraMarcas.astro';
+import { business } from '@data/business';
+import { faqsMarcas } from '@data/marcas-faqs';
+
+const path = '/marcas/';
+const title = 'Calculadora de Renovación y Declaración de Uso de Marca (IMPI) | Grupo LGO';
+const description =
+  'Calcula gratis los plazos de tu marca registrada: vencimiento y ventana de renovación, periodo de gracia y declaración de uso de tercer año. Fechas conforme a la Ley Federal de Protección a la Propiedad Industrial.';
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Marcas', item: business.url + path }
+  ]
+};
+
+// Herramienta interactiva gratuita → WebApplication. publisher/provider
+// referencian por @id la Organización paraguas (Grupo LGO) que Base.astro define.
+// Mismo patrón que /diagnostico — no se re-hardcodea la Organización.
+const webAppLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Calculadora de Renovación y Declaración de Uso de Marca',
+  description,
+  url: business.url + path,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'es-MX',
+  isAccessibleForFree: true,
+  publisher: { '@id': `${business.url}/#organization` },
+  provider: { '@id': `${business.url}/#organization` },
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'MXN'
+  }
+};
+
+// FAQPage: expone las preguntas frecuentes (visibles con <Faq>) para AEO/GEO.
+// Mismo patrón que /abogados. El texto de las respuestas está pendiente de
+// aprobación (ver src/data/marcas-faqs.ts) — no toca hechos legales nuevos.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqsMarcas.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+
+const stats = [
+  { num: 3, label: 'plazos por marca' },
+  { num: '10', label: 'años de vigencia' },
+  { num: '~2', label: 'minutos' }
+];
+---
+<ToolLanding
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, webAppLd, faqLd]}
+  eyebrow="Herramienta gratuita · Propiedad intelectual"
+  heading="¿Cuándo tienes que renovar tu marca?"
+  lead="Captura las fechas de tu registro y calcula al instante el vencimiento, la ventana de renovación, el periodo de gracia y la declaración de uso de tercer año — de varias marcas a la vez."
+  ctaLabel="Calcular mis plazos"
+  ctaHref="#calculadora"
+  stats={stats}
+>
+
+  <!-- HERRAMIENTA -->
+  <CalculadoraMarcas />
+
+  <!-- PREGUNTAS FRECUENTES — pasajes autónomos citables (AEO/GEO) + FAQPage schema -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <Faq items={faqsMarcas} title="Preguntas frecuentes sobre plazos de marca" />
+    </div>
+  </section>
+
+  <!-- CONVERSIÓN AL FINAL (banda estática, sin gate) -->
+  <CtaBand
+    slot="conversion"
+    eyebrow="LGO Abogados · Propiedad intelectual"
+    title="¿Quieres que nosotros presentemos el trámite?"
+    body="El equipo de propiedad intelectual de Grupo LGO revisa tus fechas, prepara la declaración de uso o la renovación y la presenta ante el Instituto Mexicano de la Propiedad Industrial por ti."
+    primaryLabel="Hablar con un abogado"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  />
+
+</ToolLanding>
