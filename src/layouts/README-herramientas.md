@@ -89,9 +89,12 @@ todas con un hero/stats consistente.
    </HerramientaFeature>
    ```
 
-4. **Descubrimiento** (regla del sitio): las herramientas **no** van al nav principal. Se
-   descubren por el teaser en Inicio, el cruce desde secciones afines y SEO. Cuando exista
-   `/herramientas`, ese índice las listará.
+4. **Descubrimiento**: las herramientas viven en el dropdown **"Herramientas ▾"** del nav
+   (cuyo label lleva al índice `/herramientas`), en la sección "Herramientas gratuitas" de
+   Inicio, en el cruce desde secciones afines (ej. `/marcas` desde `/abogados`) y por SEO.
+   El dropdown del nav, el índice `/herramientas` y la sección del home iteran la misma
+   fuente única — `src/data/herramientas.ts` — con `HerramientaCard.astro` como tarjeta:
+   publicar una herramienta ahí (`published: true`) la añade a los tres a la vez.
 
 ## Nota sobre `/diagnostico`
 Es la referencia viva del patrón: `src/pages/diagnostico/index.astro` (herramienta con

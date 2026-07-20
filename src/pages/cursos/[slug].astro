@@ -1,11 +1,10 @@
 ---
-// Plantilla dinámica para todos los cursos del catálogo, excepto los que
-// tienen su propia página personalizada (Diagnóstico).
+// Plantilla dinámica para los cursos del catálogo con página estándar
+// (los de cursos-preview.ts sin customPage).
 //
-// Para cada curso en cursos-preview.ts (sin customPage), genera una
-// página landing con hero + descripción extendida + outcomes + lista de
-// espera. Cuando el curso esté disponible, solo cambia el formatLabel
-// y el CTA en cursos-preview.ts.
+// Para cada uno genera una página landing con hero + descripción extendida +
+// outcomes + lista de espera. Cuando el curso esté disponible, solo cambia el
+// formatLabel y el CTA en cursos-preview.ts.
 
 import Base from '@layouts/Base.astro';
 import { business } from '@data/business';
