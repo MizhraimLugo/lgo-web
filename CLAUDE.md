@@ -24,7 +24,15 @@ Reglas de contenido para esta sección:
   admiración. Sin emojis.
 
 Reglas de marca:
-- Naranja institucional #F45A24, gris institucional #3A3A3A.
+- Colores: se usan exclusivamente los tokens semánticos ya definidos en
+  global.css (--color-accent, --color-background, --color-surface,
+  --color-foreground-strong, --color-muted, --color-border, --color-on-accent).
+  No se declaran valores hexadecimales ni se introducen colores nuevos en esta
+  sección. Nota pendiente para todo el sitio, fuera del alcance de esta sección:
+  los primitivos de color vigentes corresponden a la paleta anterior de Grupo
+  LGO; la paleta institucional confirmada es naranja #F45A24 y gris #3A3A3A, y
+  los logotipos ya están en esa paleta. La migración del primitivo se atenderá
+  como tarea independiente, con verificación de contraste.
 - El naranja es color de acento: no debe superar el 10-15% de la superficie
   visual de la página. Nada de fondos naranjas de página completa.
 - Tipografía y tokens: se reutilizan los del sitio, no se introducen nuevos.
