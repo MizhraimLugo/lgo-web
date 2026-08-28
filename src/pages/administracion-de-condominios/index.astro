@@ -403,6 +403,51 @@ const faqLd = {
     </div>
   </section>
 
+  <!-- CAMBIO DE ADMINISTRADOR — cómo se contrata, entre el respaldo y la
+       experiencia. Sin número de bloque, igual que la ficha del tablero y el
+       bloque de tecnología, para no recorrer la numeración de los siguientes.
+       No se citan leyes ni artículos, no se comprometen plazos de transición y
+       no se sugiere que la asamblea la convoque la administración entrante: la
+       decisión es del condominio. -->
+  <section class="section band-dark">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">El cambio de administrador</span>
+        <h2>Cambiar de administrador es un proceso, no un salto</h2>
+        <p class="transicion-intro">
+          Lo que detiene a un Consejo no suele ser la decisión, sino el trámite: llevarlo
+          a asamblea, recibir lo que había y no quedar a la deriva mientras tanto. Es un
+          camino que ya hemos recorrido.
+        </p>
+      </div>
+      <div>
+        <ul class="transicion">
+          <li>
+            <h3>El frente legal</h3>
+            <p>
+              La decisión es del condominio y se toma en asamblea. Acompañamos ese
+              proceso, junto con la firma legal del grupo, para que la designación y las
+              formalidades que la hacen válida queden en orden.
+            </p>
+          </li>
+          <li>
+            <h3>El frente operativo</h3>
+            <p>
+              La entrega-recepción: información financiera, expediente, contratos con
+              proveedores y la operación del inmueble. Recibimos lo que exista y dejamos
+              constancia de lo que no se entregó, para que el punto de partida quede
+              documentado.
+            </p>
+          </li>
+        </ul>
+        <p class="transicion-nota">
+          Este acompañamiento está incluido en los honorarios de administración. No se
+          cobra aparte.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- 7. EXPERIENCIA -->
   <section class="section band-cream">
     <div class="container-base">
@@ -561,11 +606,15 @@ const faqLd = {
   @media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
 
-  .respaldo-intro { margin-top: 1rem; max-width: 34ch; }
+  .respaldo-intro,
+  .transicion-intro { margin-top: 1rem; max-width: 34ch; }
 
-  /* Respaldo: los tres apoyos del ecosistema */
-  .respaldo { display: grid; gap: 1.75rem; }
-  .respaldo h3 {
+  /* Respaldo (los apoyos del ecosistema) y cambio de administrador (los dos
+     frentes del acompañamiento) comparten la misma lista de encabezado y texto. */
+  .respaldo,
+  .transicion { display: grid; gap: 1.75rem; }
+  .respaldo h3,
+  .transicion h3 {
     font-size: 1.0625rem;
     margin: 0 0 0.4rem;
     letter-spacing: -0.01em;
@@ -575,7 +624,15 @@ const faqLd = {
     text-decoration: none;
   }
   .respaldo h3 a:hover { color: var(--color-accent-hover); }
-  .respaldo p { margin: 0; max-width: 56ch; }
+  .respaldo p,
+  .transicion p { margin: 0; max-width: 56ch; }
+
+  .transicion-nota {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-accent);
+    max-width: 56ch;
+  }
 
   /* Tablero en vivo: panel esquemático que se pasa por el slot "visual" de
      HerramientaFeature. Deliberadamente sin cifras: la regla de no invención
