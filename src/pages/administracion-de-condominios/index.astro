@@ -71,12 +71,17 @@ const segmentos = [
 // Apoyo de inteligencia artificial por frente del alcance, indexado por el slug
 // de services.ts. Se recorre `frentes` para renderizarlo, de modo que la lista
 // no pueda desincronizarse de los frentes descritos más arriba en la página.
+//
+// Cada entrada dice qué hace el apoyo, no repite el nombre del frente. Un frente
+// sin entrada aquí no aparece en la lista, así que si se añade un séptimo frente
+// al alcance, este bloque no lo inventa: se queda fuera hasta que se le escriba
+// su apoyo.
 const apoyoIa: Record<string, string> = {
   financiero: 'conciliación de pagos contra estados de cuenta',
-  cobranza: 'seguimiento de la cobranza',
+  cobranza: 'identificación de adeudos y preparación de los avisos de cobro',
   'incidencias-y-mantenimiento': 'clasificación y rastreo de incidencias',
-  comunicacion: 'control de las comunicaciones',
-  documental: 'organización del expediente documental',
+  comunicacion: 'clasificación de lo que entra por el canal y borradores de respuesta',
+  documental: 'indexación del expediente para encontrar un documento cuando hace falta',
   gobernanza: 'preparación del material para asamblea'
 };
 
@@ -147,6 +152,14 @@ const faqLd = {
         <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
         <a href="#alcance" class="btn btn-ghost">Ver el alcance del servicio</a>
       </div>
+
+      <!-- Credenciales. Solo datos autorizados: no agregar número de unidades,
+           superficie administrada, número de inmuebles, testimonios, ni nombres
+           de condominios, plazas, desarrolladoras o clientes. -->
+      <ul class="hechos hero-credenciales reveal-up reveal-up--immediate">
+        <li>Cinco años de administración directa de condominios verticales y horizontales.</li>
+        <li>Asesoría vigente en administración condominal para desarrolladoras inmobiliarias.</li>
+      </ul>
     </div>
   </section>
 
@@ -351,6 +364,8 @@ const faqLd = {
             La administración se lleva en plataformas especializadas, no en hojas de
             cálculo: estado de cuenta consultable, registro de pagos, canal de
             comunicación y reportes con historial. Trabajamos con Condovive y Be Resident.
+            Eso es el piso mínimo del oficio, no la diferencia: la diferencia está en lo
+            que se hace encima.
           </p>
         </article>
 
@@ -361,7 +376,7 @@ const faqLd = {
             <a href="#alcance">el alcance del servicio</a>:
           </p>
           <ul class="tec-frentes">
-            {frentes.map((f) => (
+            {frentes.filter((f) => apoyoIa[f.slug]).map((f) => (
               <li><strong>{f.name}.</strong> {apoyoIa[f.slug]}</li>
             ))}
           </ul>
@@ -455,26 +470,11 @@ const faqLd = {
     </div>
   </section>
 
-  <!-- 7. EXPERIENCIA -->
-  <section class="section band-cream">
-    <div class="container-base">
-      <header class="section-head">
-        <span class="eyebrow">Experiencia</span>
-        <h2>Experiencia en la administración de condominios verticales y horizontales</h2>
-      </header>
-      <!-- Solo datos autorizados. No agregar número de unidades, superficie
-           administrada, número de inmuebles, testimonios, ni nombres de
-           condominios, plazas, desarrolladoras o clientes.
-           Las plataformas NO se listan aquí: se nombran en el bloque de
-           tecnología, que es donde tienen contexto. -->
-      <ul class="hechos">
-        <li>Cinco años de experiencia en la administración directa de condominios verticales y horizontales.</li>
-        <li>Servicios de asesoría en administración condominal que prestamos a desarrolladoras inmobiliarias.</li>
-        <li>Metodología de Mantenimiento Productivo Total adaptada a la administración condominal, con supervisión documentada de proveedores.</li>
-        <li>Operación concentrada en la Zona Metropolitana de Guadalajara.</li>
-      </ul>
-    </div>
-  </section>
+  <!-- El bloque de experiencia se retiró como sección propia: de sus cuatro
+       hechos, la metodología repetía el bloque de supervisión y la cobertura
+       geográfica ya está en el hero y en la meta description. Los dos hechos
+       restantes subieron al hero, como credenciales bajo el llamado a la
+       acción, que es donde la prueba sirve para decidir si se sigue leyendo. -->
 
   <!-- 8. PREGUNTAS FRECUENTES -->
   <section class="section">
@@ -501,6 +501,14 @@ const faqLd = {
   .hero-logo { margin-bottom: 1.5rem; }
   .hero h1 { max-width: 18ch; margin: 0 0 1.5rem; }
   .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  /* Credenciales del hero: la misma lista con filete del resto de la página,
+     en dos columnas cuando hay ancho. */
+  .hero-credenciales { margin-top: 2.5rem; }
+  .hero-credenciales li { font-size: var(--text-sm); max-width: 40ch; }
+  @media (min-width: 880px) {
+    .hero-credenciales { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  }
 
   .section-head {
     margin-bottom: 2.5rem;
