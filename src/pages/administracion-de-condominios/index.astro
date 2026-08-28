@@ -3,8 +3,10 @@
 //  LGO ADMINISTRADORES INMOBILIARIOS — landing de la división
 // ════════════════════════════════════════════════════════════════
 //
-// ESQUELETO. La estructura y los encabezados son definitivos; el cuerpo de
-// cada bloque está marcado como TODO y espera contenido autorizado.
+// La estructura y los encabezados son definitivos. Los bloques 1 a 4 (hero,
+// problema, segmentos y alcance) llevan contenido definitivo; del 5 al 9, y los
+// metadatos de la página, siguen marcados como TODO a la espera de contenido
+// autorizado.
 //
 // Regla de no invención (CLAUDE.md): no se escriben cifras, años de
 // experiencia, nombres de clientes, condominios, plazas comerciales,
@@ -37,11 +39,25 @@ const description =
 // Los seis frentes del alcance viven en el data layer, no en la plantilla.
 const frentes = servicesByBrand('administradores');
 
-// Segmentos atendidos. Nombres definitivos; detalle pendiente de autorización.
+// Segmentos atendidos. El registro cambia en cada uno porque el interlocutor
+// cambia: asamblea, consejo o propietario. En plaza comercial el texto se
+// plantea como oferta de servicio, sin afirmar experiencia previa ni cartera.
 const segmentos = [
-  { name: 'Condominio vertical', detail: 'TODO: describir el segmento con información autorizada.' },
-  { name: 'Condominio horizontal', detail: 'TODO: describir el segmento con información autorizada.' },
-  { name: 'Plaza comercial', detail: 'TODO: describir el segmento con información autorizada.' }
+  {
+    name: 'Condominio vertical',
+    detail:
+      'Decide la asamblea. El trabajo se concentra en cobrar las cuotas, en que las cuentas se entiendan sin necesidad de traducirlas y en que la convivencia no dependa de quién levante más la voz.'
+  },
+  {
+    name: 'Condominio horizontal',
+    detail:
+      'Decide la asamblea o el consejo. El peso está en las áreas comunes, la seguridad, el control de accesos y las vialidades internas, que se deterioran cuando nadie las supervisa a diario.'
+  },
+  {
+    name: 'Plaza comercial',
+    detail:
+      'Decide el propietario, el desarrollador o un comité de inversionistas. La conversación es de rentabilidad de la operación: cuota de mantenimiento por metro cuadrado, contratos de arrendamiento y ocupación. Ofrecemos la administración bajo ese criterio.'
+  }
 ];
 
 const breadcrumbLd = {
@@ -80,9 +96,13 @@ const faqLd = {
       <div class="hero-logo reveal-up reveal-up--immediate">
         <Logo brand="administradores" height={48} alt={brand.name} />
       </div>
-      <h1 class="reveal-up reveal-up--immediate">{brand.name}</h1>
+      <h1 class="reveal-up reveal-up--immediate">
+        Administrar un condominio no es solo cobrar cuotas.
+      </h1>
       <p class="lead reveal-up reveal-up--immediate">
-        TODO: promesa central de la división, pendiente de contenido autorizado.
+        Un condominio tiene obligaciones fiscales, contables y laborales propias, y toma
+        decisiones en asamblea que pueden impugnarse cuando se toman mal. {brand.name}
+        administra con la firma legal y la firma contable del mismo grupo detrás.
       </p>
       <div class="hero-ctas reveal-up reveal-up--immediate">
         <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
@@ -97,11 +117,19 @@ const faqLd = {
       <div>
         <span class="eyebrow">El problema</span>
         <h2>Síntomas de una administración deficiente</h2>
+        <p class="problema-intro">
+          Rara vez aparece uno solo. Cuando la administración se queda corta, los
+          síntomas se presentan juntos y llevan tiempo acumulándose.
+        </p>
       </div>
-      <div class="prose-lgo">
-        <p>TODO: describir los síntomas con información autorizada.</p>
-        <p>TODO: continuar el bloque con información autorizada.</p>
-      </div>
+      <ul class="sintomas">
+        <li>El estado de cuenta llega tarde, o llega y nadie logra explicarlo en la asamblea.</li>
+        <li>Hay quien no paga desde hace tiempo y la cobranza se reduce a mencionarlo en la siguiente reunión.</li>
+        <li>Las asambleas se convocan de prisa y las actas se levantan a medias, así que cualquier acuerdo queda expuesto a impugnación.</li>
+        <li>El condominio tiene personal a su cargo, pero sus obligaciones fiscales y laborales no las está atendiendo nadie.</li>
+        <li>El mantenimiento se atiende cuando algo se descompone, sin bitácora ni evidencia de lo que se hizo.</li>
+        <li>Se contrata proveedores y después nadie revisa lo que entregaron ni lo que cobraron.</li>
+      </ul>
     </div>
   </section>
 
@@ -110,8 +138,11 @@ const faqLd = {
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">A quién atendemos</span>
-        <h2>Los inmuebles que administramos</h2>
-        <p class="lead">TODO: introducción del bloque, pendiente de contenido autorizado.</p>
+        <h2>Cada inmueble se administra distinto</h2>
+        <p class="lead">
+          El interlocutor cambia con el tipo de inmueble, y con él cambia lo que hay que
+          resolver primero.
+        </p>
       </header>
 
       <div class="segmentos-grid">
@@ -131,7 +162,10 @@ const faqLd = {
       <header class="section-head">
         <span class="eyebrow">Alcance del servicio</span>
         <h2>Los frentes que cubre la administración</h2>
-        <p class="lead">TODO: introducción del bloque, pendiente de contenido autorizado.</p>
+        <p class="lead">
+          El trabajo se organiza en frentes. Esto es lo que el condominio recibe en
+          cada uno.
+        </p>
       </header>
 
       <div class="services-grid">
@@ -257,6 +291,28 @@ const faqLd = {
   .split-grid h2 { max-width: 20ch; margin-top: 1rem; }
   @media (min-width: 1024px) {
     .split-grid { grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+  }
+  .problema-intro { margin-top: 1rem; max-width: 34ch; }
+
+  /* Síntomas: lista con filete de acento como marcador */
+  .sintomas {
+    display: grid;
+    gap: 1rem;
+  }
+  .sintomas li {
+    position: relative;
+    padding-left: 1.75rem;
+    line-height: 1.6;
+    max-width: 58ch;
+  }
+  .sintomas li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.85rem;
+    height: 2px;
+    background: var(--color-accent);
   }
 
   /* Segmentos */
