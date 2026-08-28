@@ -61,6 +61,18 @@ const segmentos = [
   }
 ];
 
+// Apoyo de inteligencia artificial por frente del alcance, indexado por el slug
+// de services.ts. Se recorre `frentes` para renderizarlo, de modo que la lista
+// no pueda desincronizarse de los frentes descritos más arriba en la página.
+const apoyoIa: Record<string, string> = {
+  financiero: 'conciliación de pagos contra estados de cuenta',
+  cobranza: 'seguimiento de la cobranza',
+  'incidencias-y-mantenimiento': 'clasificación y rastreo de incidencias',
+  comunicacion: 'control de las comunicaciones',
+  documental: 'organización del expediente documental',
+  gobernanza: 'preparación del material para asamblea'
+};
+
 // Apoyos del ecosistema. Los nombres y las rutas se resuelven desde brands.ts:
 // la plantilla no incrusta ni el nombre de las divisiones ni sus URLs.
 const respaldo = [
@@ -301,6 +313,58 @@ const faqLd = {
     </div>
   </section>
 
+  <!-- TECNOLOGÍA — diferenciador de la división, entre metodología y respaldo.
+       Sin número de bloque, igual que la ficha del tablero, para no recorrer la
+       numeración con la que ya se referencian los bloques siguientes.
+       No se publican cifras de ahorro o eficiencia, arquitectura interna,
+       modelos ni proveedores de inteligencia artificial. -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Tecnología</span>
+        <h2>Tecnología que hace posible la supervisión</h2>
+        <p class="lead">
+          La administración condominal tradicional no documenta porque documentar bien es
+          caro. La tecnología es lo que vuelve costeable ese nivel de trazabilidad en un
+          condominio de tamaño medio.
+        </p>
+      </header>
+
+      <div class="tec-grid">
+        <article class="tec-item">
+          <h3 class="tec-name">Plataforma</h3>
+          <p class="tec-detail">
+            La administración se lleva en plataformas especializadas, no en hojas de
+            cálculo: estado de cuenta consultable, registro de pagos, canal de
+            comunicación y reportes con historial. Trabajamos con Condovive y Be Resident.
+          </p>
+        </article>
+
+        <article class="tec-item">
+          <h3 class="tec-name">Inteligencia artificial en la operación interna</h3>
+          <p class="tec-detail">
+            La usamos puertas adentro, sobre los mismos frentes que cubre
+            <a href="#alcance">el alcance del servicio</a>:
+          </p>
+          <ul class="tec-frentes">
+            {frentes.map((f) => (
+              <li><strong>{f.name}.</strong> {apoyoIa[f.slug]}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="tec-item">
+          <h3 class="tec-name">El límite</h3>
+          <p class="tec-detail">
+            La inteligencia artificial asiste; no decide ni administra. Cada decisión, y la
+            responsabilidad que la acompaña, es de la administración y del Consejo de
+            Administración. Nada se entrega sin que una persona lo revise antes.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- 6. RESPALDO DEL ECOSISTEMA -->
   <section class="section">
     <div class="container-base split-grid">
@@ -431,22 +495,50 @@ const faqLd = {
     gap: 1rem;
   }
   @media (min-width: 640px) { .segmentos-grid { grid-template-columns: repeat(3, 1fr); } }
-  .segmento-item {
+
+  /* Tecnología: mismo grid y mismo panel que los segmentos, para que los tres
+     apartados (plataforma, inteligencia artificial y límite) pesen igual. */
+  .tec-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 880px) { .tec-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .tec-frentes {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+  .tec-frentes li {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .tec-frentes strong { color: var(--color-foreground-strong); }
+  .tec-detail a { color: var(--color-accent); text-decoration: none; }
+  .tec-detail a:hover { color: var(--color-accent-hover); }
+
+  .segmento-item,
+  .tec-item {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     padding: 1.5rem;
     transition: border-color 200ms ease;
   }
-  .segmento-item:hover { border-color: var(--color-accent); }
-  .segmento-name {
+  .segmento-item:hover,
+  .tec-item:hover { border-color: var(--color-accent); }
+  .segmento-name,
+  .tec-name {
     font-size: 1rem;
     font-weight: 700;
     color: var(--color-foreground-strong);
     margin: 0 0 0.5rem;
     letter-spacing: -0.01em;
   }
-  .segmento-detail {
+  .segmento-detail,
+  .tec-detail {
     font-size: var(--text-xs);
     line-height: 1.6;
     color: var(--color-muted);
