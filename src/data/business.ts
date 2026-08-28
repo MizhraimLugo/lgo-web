@@ -9,10 +9,9 @@ export const business = {
   tagline: 'Resolver problemas y dar tranquilidad.',
   url: 'https://lgo.mx',
   email: 'contacto@lgo.mx',
-  phone: '+52 33 3233 6337',
-  phoneE164: '+523332336337',
-  whatsapp: '523332336337',
-  whatsappUrl: 'https://wa.me/523332336337',
+  phone: '+52 33 1876 1361',
+  phoneE164: '+523318761361',
+  whatsappUrl: 'https://wa.me/523318761361',
   address: {
     street: 'Lorenzana 781',
     neighborhood: 'Jardines del Bosque',
