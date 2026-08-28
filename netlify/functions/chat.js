@@ -9,12 +9,15 @@
 // sin estado (encaja con Netlify Functions). La ANTHROPIC_API_KEY vive SOLO
 // en el servidor. Sin dependencias: fetch nativo (Node 18+).
 import { contratosCatalogo } from '../../src/data/contratos-catalogo.ts';
+import { business } from '../../src/data/business.ts';
 import {
   getDocumento, aplicarValores, vistaCampos, faltantesObligatorios, estaCompleto
 } from '../lib/contratos-fields.js';
 
 const MODEL = 'claude-sonnet-4-6'; // alterna a 'claude-haiku-4-5-20251001' para bajar costo
-const WHATSAPP = 'https://wa.me/523332336337';
+// Fuente única de verdad: src/data/business.ts. NO hardcodear el número aquí:
+// esbuild bundlea el .ts igual que el catálogo, así que no puede divergir del sitio.
+const WHATSAPP = business.whatsappUrl;
 const MAX_HISTORIAL = 24;   // mensajes de texto previos máximos
 const MAX_TOOL_ITERS = 6;   // iteraciones del loop de tool use por turno
 
