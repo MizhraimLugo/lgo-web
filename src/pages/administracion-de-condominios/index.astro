@@ -203,7 +203,7 @@ const faqLd = {
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">A quién atendemos</span>
-        <h2>Cada inmueble se administra distinto</h2>
+        <h2>Cada inmueble se administra distinto.</h2>
         <p class="lead">
           El interlocutor cambia con el tipo de inmueble, y con él cambia lo que hay que
           resolver primero.
@@ -284,10 +284,6 @@ const faqLd = {
           administración condominal. Los proveedores especializados ejecutan —limpieza,
           seguridad, jardinería, alberca, elevadores— y la administración no ejecuta:
           supervisa. Esa supervisión es estructurada y queda documentada.
-        </p>
-        <p class="metodo-credencial">
-          Además de administrar, prestamos asesoría en administración condominal a
-          desarrolladoras inmobiliarias.
         </p>
       </div>
       <ol class="metodo-list">
@@ -431,6 +427,10 @@ const faqLd = {
           </li>
         ))}
       </ul>
+      <p class="respaldo-nota">
+        Además de administrar, prestamos asesoría en administración condominal a
+        desarrolladoras inmobiliarias.
+      </p>
     </div>
   </section>
 
@@ -444,7 +444,7 @@ const faqLd = {
     <div class="container-base split-grid">
       <div>
         <span class="eyebrow">El cambio de administrador</span>
-        <h2>Cambiar de administrador es un proceso, no un salto</h2>
+        <h2>Cambiar de administrador es un proceso, no un salto.</h2>
         <p class="transicion-intro">
           Lo que detiene a un Consejo no suele ser la decisión, sino el trámite: llevarlo
           a asamblea, recibir lo que había y no quedar a la deriva mientras tanto. Es un
@@ -654,7 +654,11 @@ const faqLd = {
   .respaldo p,
   .transicion p { margin: 0; max-width: 56ch; }
 
-  .transicion-nota {
+  /* Nota de cierre de bloque, fuera de la lista que la precede: los honorarios
+     del acompañamiento en el cambio de administrador, y la asesoría a
+     desarrolladoras al final del respaldo. */
+  .transicion-nota,
+  .respaldo-nota {
     margin-top: 1.75rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--color-accent);
@@ -746,13 +750,6 @@ const faqLd = {
   }
   .metodo-grid h2 { max-width: 18ch; margin: 1rem 0; }
   .metodo-intro { max-width: 38ch; }
-  .metodo-credencial {
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--color-accent);
-    max-width: 38ch;
-    font-size: var(--text-sm);
-  }
 
   .metodo-list {
     display: grid;
