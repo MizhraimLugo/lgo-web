@@ -3,10 +3,10 @@
 //  LGO ADMINISTRADORES INMOBILIARIOS — landing de la división
 // ════════════════════════════════════════════════════════════════
 //
-// La estructura y los encabezados son definitivos. Los bloques 1 a 4 (hero,
-// problema, segmentos y alcance) llevan contenido definitivo; del 5 al 9, y los
-// metadatos de la página, siguen marcados como TODO a la espera de contenido
-// autorizado.
+// La estructura y los encabezados son definitivos. Los bloques 1 a 7 llevan
+// contenido definitivo; las preguntas frecuentes (respuestas en faqs.ts), el
+// cierre y los metadatos de la página siguen marcados como TODO a la espera de
+// contenido autorizado.
 //
 // Regla de no invención (CLAUDE.md): no se escriben cifras, años de
 // experiencia, nombres de clientes, condominios, plazas comerciales,
@@ -58,6 +58,25 @@ const segmentos = [
     name: 'Plaza comercial',
     detail:
       'Decide el propietario, el desarrollador o un comité de inversionistas. La conversación es de rentabilidad de la operación: cuota de mantenimiento por metro cuadrado, contratos de arrendamiento y ocupación. Ofrecemos la administración bajo ese criterio.'
+  }
+];
+
+// Apoyos del ecosistema. Los nombres y las rutas se resuelven desde brands.ts:
+// la plantilla no incrusta ni el nombre de las divisiones ni sus URLs.
+const respaldo = [
+  {
+    brand: getBrand('contadores')!,
+    detail:
+      'Contabilidad y cumplimiento fiscal del condominio, incluidas las obligaciones que genera su propio personal.'
+  },
+  {
+    brand: getBrand('abogados')!,
+    detail:
+      'Asambleas, reglamentos y cobranza judicial. Cuando un adeudo llega a la vía judicial, se atiende como asunto legal aparte de la cuota de administración.'
+  },
+  {
+    brand: getBrand('facturacion')!,
+    detail: 'Facturación electrónica de las cuotas de mantenimiento.'
   }
 ];
 
@@ -207,41 +226,75 @@ const faqLd = {
   </HerramientaFeature>
 
   <!-- 5. METODOLOGÍA DE SUPERVISIÓN -->
-  <!-- TODO: el número de pasos es provisional. Definir los pasos reales
-       antes de redactar el contenido. -->
+  <!-- Se explica el método, no se publican los formatos: ni el contenido de las
+       listas de verificación, ni el kit de bitácoras, ni el cuestionario de
+       inventario. Tampoco se nombran plataformas ni proveedores. -->
   <section class="section band-dark">
     <div class="container-base metodo-grid">
       <div>
         <span class="eyebrow">Metodología</span>
         <h2>Cómo supervisamos la operación</h2>
+        <p class="metodo-intro">
+          Trabajamos con el modelo de Mantenimiento Productivo Total, adaptado a la
+          administración condominal. Los proveedores especializados ejecutan —limpieza,
+          seguridad, jardinería, alberca, elevadores— y la administración no ejecuta:
+          supervisa. Esa supervisión es estructurada y queda documentada.
+        </p>
       </div>
       <ol class="metodo-list">
         <li>
           <span class="metodo-num" aria-hidden="true">01</span>
           <div>
-            <h3>TODO: nombre del paso</h3>
-            <p>TODO: describir el paso con información autorizada.</p>
+            <h3>Levantamiento</h3>
+            <p>
+              Se documenta qué hay: inventario de activos, estado del inmueble, contratos
+              vigentes con proveedores y la situación financiera y documental con la que
+              arranca la administración. Es la línea base contra la que se mide todo lo demás.
+            </p>
           </div>
         </li>
         <li>
           <span class="metodo-num" aria-hidden="true">02</span>
           <div>
-            <h3>TODO: nombre del paso</h3>
-            <p>TODO: describir el paso con información autorizada.</p>
+            <h3>Programa y alcance</h3>
+            <p>
+              Por cada servicio contratado se define qué debe entregar el proveedor y con
+              qué frecuencia, y se calendariza el mantenimiento preventivo de los activos
+              levantados. Aquí el mantenimiento deja de ser reactivo.
+            </p>
           </div>
         </li>
         <li>
           <span class="metodo-num" aria-hidden="true">03</span>
           <div>
-            <h3>TODO: nombre del paso</h3>
-            <p>TODO: describir el paso con información autorizada.</p>
+            <h3>Inspección</h3>
+            <p>
+              La administración no ejecuta: verifica. Cada servicio se inspecciona contra
+              su lista de verificación, con un resultado de cumplimiento y las
+              observaciones que correspondan.
+            </p>
           </div>
         </li>
         <li>
           <span class="metodo-num" aria-hidden="true">04</span>
           <div>
-            <h3>TODO: nombre del paso</h3>
-            <p>TODO: describir el paso con información autorizada.</p>
+            <h3>Bitácora</h3>
+            <p>
+              Lo ejecutado y lo observado queda registrado, con evidencia. Es lo que
+              convierte la supervisión en algo demostrable ante el Consejo y ante la
+              asamblea, en lugar de una opinión.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">05</span>
+          <div>
+            <h3>Reporte y decisión</h3>
+            <p>
+              El Consejo recibe el resultado del ciclo y decide: qué se corrige, qué se
+              renegocia con el proveedor y qué debe subir a asamblea. Entre un ciclo y el
+              siguiente, el tablero mantiene la parte financiera a la vista.
+            </p>
           </div>
         </li>
       </ol>
@@ -254,11 +307,28 @@ const faqLd = {
       <div>
         <span class="eyebrow">Respaldo</span>
         <h2>Una división que opera dentro de {business.brand}</h2>
+        <p class="respaldo-intro">
+          Una administradora aislada tiene que subcontratar lo que no es operación del
+          inmueble, o dejarlo fuera. Aquí esas piezas están en el mismo grupo.
+        </p>
       </div>
-      <div class="prose-lgo">
-        <p>TODO: describir el respaldo del ecosistema con información autorizada.</p>
-        <p>TODO: continuar el bloque con información autorizada.</p>
-      </div>
+      <ul class="respaldo">
+        {respaldo.map((r) => (
+          <li>
+            <h3>
+              <a
+                href={r.brand.url}
+                target={r.brand.internal ? undefined : '_blank'}
+                rel={r.brand.internal ? undefined : 'noopener'}
+              >
+                {r.brand.shortName}
+                {!r.brand.internal && <span aria-hidden="true"> ↗</span>}
+              </a>
+            </h3>
+            <p>{r.detail}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -269,12 +339,17 @@ const faqLd = {
         <span class="eyebrow">Experiencia</span>
         <h2>Experiencia en la administración de condominios verticales y horizontales</h2>
       </header>
-      <div class="prose-lgo">
-        <!-- TODO: redactar sin cifras, años de operación, número de unidades,
-             superficie administrada ni nombres de condominios o clientes,
-             salvo que se autoricen expresamente. -->
-        <p>TODO: describir la experiencia con información autorizada.</p>
-      </div>
+      <!-- Solo datos autorizados. No agregar número de unidades, superficie
+           administrada, número de inmuebles, testimonios, ni nombres de
+           condominios, plazas, desarrolladoras o clientes.
+           Las plataformas NO se listan aquí: se nombran en el bloque de
+           tecnología, que es donde tienen contexto. -->
+      <ul class="hechos">
+        <li>Cinco años de experiencia en la administración directa de condominios verticales y horizontales.</li>
+        <li>Servicios de asesoría en administración condominal que prestamos a desarrolladoras inmobiliarias.</li>
+        <li>Metodología de Mantenimiento Productivo Total adaptada a la administración condominal, con supervisión documentada de proveedores.</li>
+        <li>Operación concentrada en la Zona Metropolitana de Guadalajara.</li>
+      </ul>
     </div>
   </section>
 
@@ -324,18 +399,22 @@ const faqLd = {
   }
   .problema-intro { margin-top: 1rem; max-width: 34ch; }
 
-  /* Síntomas: lista con filete de acento como marcador */
-  .sintomas {
+  /* Lista con filete de acento como marcador. La comparten los síntomas del
+     bloque del problema y los hechos del bloque de experiencia. */
+  .sintomas,
+  .hechos {
     display: grid;
     gap: 1rem;
   }
-  .sintomas li {
+  .sintomas li,
+  .hechos li {
     position: relative;
     padding-left: 1.75rem;
     line-height: 1.6;
     max-width: 58ch;
   }
-  .sintomas li::before {
+  .sintomas li::before,
+  .hechos li::before {
     content: '';
     position: absolute;
     left: 0;
@@ -382,6 +461,22 @@ const faqLd = {
   }
   @media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .respaldo-intro { margin-top: 1rem; max-width: 34ch; }
+
+  /* Respaldo: los tres apoyos del ecosistema */
+  .respaldo { display: grid; gap: 1.75rem; }
+  .respaldo h3 {
+    font-size: 1.0625rem;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .respaldo h3 a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .respaldo h3 a:hover { color: var(--color-accent-hover); }
+  .respaldo p { margin: 0; max-width: 56ch; }
 
   /* Tablero en vivo: panel esquemático que se pasa por el slot "visual" de
      HerramientaFeature. Deliberadamente sin cifras: la regla de no invención
@@ -457,6 +552,7 @@ const faqLd = {
     align-items: start;
   }
   .metodo-grid h2 { max-width: 18ch; margin: 1rem 0; }
+  .metodo-intro { max-width: 38ch; }
 
   .metodo-list {
     display: grid;
