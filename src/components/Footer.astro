@@ -40,9 +40,12 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
 
     <div>
       <div class="footer-col-title">Navegación</div>
+      {/* Un grupo sin página propia (Servicios abre dropdown, no navega) apunta
+          al grid del ecosistema en el home; el resto usa su href. Evita el
+          <a> sin href. */}
       <ul class="footer-nav">
         {nav.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
+          <li><a href={item.href ?? '/#ecosistema'}>{item.label}</a></li>
         ))}
       </ul>
     </div>

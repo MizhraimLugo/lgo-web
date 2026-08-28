@@ -1,0 +1,93 @@
+---
+import Base from '@layouts/Base.astro';
+import HerramientaCard from '@components/herramientas/HerramientaCard.astro';
+import { business } from '@data/business';
+import { publishedHerramientas } from '@data/herramientas';
+
+const path = '/herramientas/';
+const title = 'Herramientas gratuitas para tu empresa | Grupo LGO';
+const description =
+  'Diagnósticos y calculadoras gratuitas de Grupo LGO: diagnóstico de salud empresarial, calculadora de plazos de marca ante el IMPI y generador de documentos legales. Sin costo ni registro.';
+
+// Breadcrumb: Inicio → Herramientas.
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Herramientas', item: business.url + path }
+  ]
+};
+
+// CollectionPage (+ ItemList) que enlaza cada herramienta por su URL. Referencia
+// la Organización paraguas por @id (#organization) que Base.astro define — mismo
+// patrón que el catálogo de /contratos. La lista sale del data layer, así que
+// una herramienta nueva publicada entra al schema sin tocar esta página.
+const herramientasLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${business.url}${path}#collection`,
+  name: 'Herramientas gratuitas de Grupo LGO',
+  description,
+  url: business.url + path,
+  inLanguage: 'es-MX',
+  isPartOf: { '@id': `${business.url}/#website` },
+  about: { '@id': `${business.url}/#organization` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: publishedHerramientas.length,
+    itemListElement: publishedHerramientas.map((h, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: h.name,
+      url: `${business.url}${h.url}`
+    }))
+  }
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, herramientasLd]}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up">Herramientas gratuitas</span>
+      <h1 class="tools-hero-title reveal-up reveal-up--delay-1">
+        Herramientas gratuitas para adelantarte a los problemas.
+      </h1>
+      <p class="lead reveal-up reveal-up--delay-2">
+        Diagnósticos y calculadoras que Grupo LGO pone a tu disposición sin costo
+        ni registro. Cada una resuelve una pregunta concreta de tu empresa con el
+        mismo criterio con el que asesoramos a nuestros clientes.
+      </p>
+    </div>
+  </section>
+
+  <!-- ESTANTE DE HERRAMIENTAS -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <div class="tools-grid">
+        {publishedHerramientas.map((h) => (
+          <HerramientaCard herramienta={h} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .tools-hero-title { max-width: 20ch; margin: 1.25rem 0 1.5rem; }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .tools-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

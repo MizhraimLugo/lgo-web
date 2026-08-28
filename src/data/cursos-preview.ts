@@ -1,5 +1,10 @@
-// Catálogo de cursos del ecosistema LGO.
-// Tres formatos coexisten: gratuito (lead magnet), online (pagado), presencial.
+// Catálogo de cursos del ecosistema LGO (online y presencial).
+//
+// El Diagnóstico de Salud Empresarial NO vive aquí: es una herramienta gratuita,
+// no un curso. Su ficha está en src/data/herramientas.ts y su página en
+// /diagnostico/. Antes se listaba aquí como lead magnet; se movió para no mezclar
+// herramientas con el catálogo de cursos (el nav "Herramientas" y /herramientas
+// son ahora su hogar).
 //
 // PLACEHOLDER de catálogo — la página /cursos/ y el hub recogen estos datos.
 // Cuando se lance la plataforma de pago real, este archivo se reemplaza por
@@ -29,26 +34,6 @@ export type Course = {
 };
 
 export const cursos: Course[] = [
-  // ───────────────────────────────────────────────────────────
-  //  LEAD MAGNET — Diagnóstico gratuito
-  // ───────────────────────────────────────────────────────────
-  {
-    slug: 'diagnostico',
-    name: 'Diagnóstico de Salud Empresarial',
-    shortName: 'Diagnóstico Empresarial',
-    format: 'gratuito',
-    formatLabel: 'Diagnóstico interactivo gratuito',
-    audience: 'Empresarios y directivos de cualquier régimen y giro.',
-    blurb:
-      'Cincuenta preguntas que tu negocio debe poder contestar, organizadas en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio. Al final recibes un diagnóstico personalizado y una ruta de acción.',
-    // La herramienta vive en su propia landing de nivel superior (/diagnostico/),
-    // fuera de /cursos/. Sigue apareciendo como tarjeta en el estante de cursos.
-    url: '/diagnostico/',
-    cta: 'Tomar el diagnóstico',
-    featured: true,
-    customPage: true
-  },
-
   // ───────────────────────────────────────────────────────────
   //  CURSOS ONLINE — el catálogo comercial
   // ───────────────────────────────────────────────────────────
