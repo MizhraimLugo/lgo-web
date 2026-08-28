@@ -96,6 +96,27 @@ todas con un hero/stats consistente.
    fuente única — `src/data/herramientas.ts` — con `HerramientaCard.astro` como tarjeta:
    publicar una herramienta ahí (`published: true`) la añade a los tres a la vez.
 
+## Segundo uso de `HerramientaFeature`: prestación destacada de un servicio
+
+Además de promocionar herramientas públicas y gratuitas, el teaser se usa para dar peso
+visual a una **prestación destacada dentro de un servicio**, que no vive en una URL propia
+ni es de acceso libre. Hoy lo hace `/administracion-de-condominios/` con el tablero
+financiero en vivo del Consejo de Administración.
+
+Cuando se use así:
+
+- El `eyebrow` **no** dice "Herramienta gratuita": nombra la prestación (p. ej.
+  "Transparencia financiera"). El tratamiento visual es el mismo, pero la promesa no es
+  la de una herramienta abierta.
+- El `body` deja explícito **quién tiene acceso**, para que el visitante no suponga que
+  puede entrar. En el caso del tablero, el acceso es del Consejo de Administración y no
+  de cada condómino.
+- El `ctaHref` apunta a `/contacto/`: no hay URL de herramienta a la que mandar, y la
+  conversación es comercial.
+- El visual va por `slot="visual"`. El panel por defecto muestra un puntaje sobre 100
+  (viene del diagnóstico); en una sección donde una cifra visible sería un dato inventado,
+  pásale un mock propio sin números.
+
 ## Nota sobre `/diagnostico`
 Es la referencia viva del patrón: `src/pages/diagnostico/index.astro` (herramienta con
 gate + cuestionario + resultado dinámico) y el teaser en `src/pages/index.astro`. La lógica

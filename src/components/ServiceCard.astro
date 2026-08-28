@@ -13,7 +13,7 @@ const Element = (href ? 'a' : 'article') as 'a' | 'article';
 ---
 <Element
   class={`service-card service-card--${featured ? 'featured' : 'standard'}`}
-  href={href}
+  href={href || undefined}
 >
   <div class="service-header">
     <span class="service-number" aria-hidden="true">{number}</span>

@@ -1,0 +1,797 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  LGO ADMINISTRADORES INMOBILIARIOS — landing de la división
+// ════════════════════════════════════════════════════════════════
+//
+// Todos los bloques de la página llevan contenido definitivo, incluidas las
+// preguntas frecuentes, que viven en faqs.ts (faqsAdministradores) y alimentan
+// tanto el acordeón visible como el FAQPage en JSON-LD.
+//
+// Regla de no invención (CLAUDE.md): no se escriben cifras, años de
+// experiencia, nombres de clientes, condominios, plazas comerciales,
+// desarrolladoras, unidades administradas, superficie, testimonios,
+// certificaciones, premios ni referencias legales sin autorización expresa.
+//
+// El nombre comercial de la división NO se escribe aquí: vive en brands.ts
+// (id 'administradores') y se lee con getBrand. Un renombramiento se resuelve
+// en el data layer, sin tocar esta plantilla.
+
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import Faq from '@components/Faq.astro';
+import HerramientaFeature from '@components/herramientas/HerramientaFeature.astro';
+import Logo from '@components/Logo.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import { business } from '@data/business';
+import { getBrand } from '@data/brands';
+import { servicesByBrand } from '@data/services';
+import { faqsAdministradores } from '@data/faqs';
+
+const brand = getBrand('administradores')!;
+const path = brand.url;
+
+// Metadatos con intención de búsqueda local. Mismo patrón que /abogados y
+// /contadores: marca, categoría y plaza en el título; qué se hace, con qué
+// respaldo y dónde se opera en la descripción. Seo.astro los reutiliza tal cual
+// para Open Graph y Twitter, así que no se declaran por separado.
+//
+// Se usa `shortName` y no `name` para no pasar del largo que manejan las otras
+// divisiones: con el nombre completo el título llegaría a ochenta caracteres y
+// el buscador cortaría justo la plaza, que es lo que debe quedar visible.
+const title = `${brand.shortName} | Administración de condominios en Guadalajara`;
+const description =
+  `Administración de condominios verticales, horizontales y plazas comerciales, con el respaldo legal y contable de ${business.brand}. Operamos en Guadalajara, Zapopan y su zona metropolitana.`;
+
+// Los seis frentes del alcance viven en el data layer, no en la plantilla.
+// Sus tarjetas van sin enlace (href vacío): seis llamados iguales a contacto se
+// leen como plantilla y le restan fuerza al de la ficha del tablero, que viene
+// enseguida.
+const frentes = servicesByBrand('administradores');
+
+// Credenciales del hero. Solo datos autorizados: no agregar número de unidades,
+// superficie administrada, número de inmuebles, testimonios, ni nombres de
+// condominios, plazas, desarrolladoras o clientes.
+//
+// La asesoría a desarrolladoras NO va aquí: en el hero, un consejero puede
+// leerla como que trabajamos para la contraparte. Vive en el bloque de
+// metodología, donde se lee como experiencia técnica.
+const credenciales = [
+  'Cinco años de administración directa de condominios verticales y horizontales.'
+];
+
+// Segmentos atendidos. El registro cambia en cada uno porque el interlocutor
+// cambia: asamblea, consejo o propietario. En plaza comercial el texto se
+// plantea como oferta de servicio, sin afirmar experiencia previa ni cartera.
+const segmentos = [
+  {
+    name: 'Condominio vertical',
+    detail:
+      'Decide la asamblea. El trabajo se concentra en cobrar las cuotas, en que las cuentas se entiendan sin necesidad de traducirlas y en que la convivencia no dependa de quién levante más la voz.'
+  },
+  {
+    name: 'Condominio horizontal',
+    detail:
+      'Decide la asamblea o el consejo. El peso está en las áreas comunes, la seguridad, el control de accesos y las vialidades internas, que se deterioran cuando nadie las supervisa a diario.'
+  },
+  {
+    name: 'Plaza comercial',
+    detail:
+      'Decide el propietario, el desarrollador o un comité de inversionistas. La conversación es de rentabilidad de la operación: cuota de mantenimiento por metro cuadrado, contratos de arrendamiento y ocupación. La administración se lleva con ese criterio, el de una operación comercial.'
+  }
+];
+
+// Apoyo de inteligencia artificial por frente del alcance, indexado por el slug
+// de services.ts. Se recorre `frentes` para renderizarlo, de modo que la lista
+// no pueda desincronizarse de los frentes descritos más arriba en la página.
+//
+// Cada entrada dice qué hace el apoyo, no repite el nombre del frente. Un frente
+// sin entrada aquí no aparece en la lista, así que si se añade un séptimo frente
+// al alcance, este bloque no lo inventa: se queda fuera hasta que se le escriba
+// su apoyo.
+const apoyoIa: Record<string, string> = {
+  financiero: 'conciliación de pagos contra estados de cuenta',
+  cobranza: 'identificación de adeudos y preparación de los avisos de cobro',
+  'incidencias-y-mantenimiento': 'clasificación y rastreo de incidencias',
+  comunicacion: 'clasificación de lo que entra por el canal y borradores de respuesta',
+  documental: 'indexación del expediente para encontrar un documento cuando hace falta',
+  gobernanza: 'preparación del material para asamblea'
+};
+
+// Apoyos del ecosistema. Los nombres y las rutas se resuelven desde brands.ts:
+// la plantilla no incrusta ni el nombre de las divisiones ni sus URLs.
+const respaldo = [
+  {
+    brand: getBrand('contadores')!,
+    detail:
+      'Contabilidad y cumplimiento fiscal del condominio, incluidas las obligaciones que genera su propio personal.'
+  },
+  {
+    brand: getBrand('abogados')!,
+    detail:
+      'Asambleas, reglamentos y cobranza judicial. Cuando un adeudo llega a la vía judicial, se atiende como asunto legal aparte de la cuota de administración.'
+  },
+  {
+    brand: getBrand('facturacion')!,
+    detail: 'Facturación electrónica de las cuotas de mantenimiento.'
+  }
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: brand.shortName, item: business.url + brand.url }
+  ]
+};
+
+// FAQPage para AEO/GEO. La Organización de la división ya la declara Base.astro
+// a partir de brands.ts (@id .../#administradores): aquí solo se referencia por
+// @id, nunca se re-declara.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  publisher: { '@id': `${business.url}/#administradores` },
+  mainEntity: faqsAdministradores.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  ogImage="/images/og-administracion-de-condominios.jpg"
+  extraJsonLd={[breadcrumbLd, faqLd]}
+>
+
+  <!-- 1. HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <div class="hero-logo reveal-up reveal-up--immediate">
+        <Logo brand="administradores" height={48} alt={brand.name} />
+      </div>
+      <h1 class="reveal-up reveal-up--immediate">
+        Administrar un condominio no es solo cobrar cuotas.
+      </h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Un condominio tiene obligaciones fiscales, contables y laborales propias, y toma
+        decisiones en asamblea que pueden impugnarse cuando se toman mal. {brand.name}
+        administra con la firma legal y la firma contable del mismo grupo detrás.
+      </p>
+      <div class="hero-ctas reveal-up reveal-up--immediate">
+        <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
+        <a href="#alcance" class="btn btn-ghost">Ver el alcance del servicio</a>
+      </div>
+
+      <ul class="hechos hero-credenciales reveal-up reveal-up--immediate">
+        {credenciales.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. EL PROBLEMA -->
+  <section class="section band-cream">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">El problema</span>
+        <h2>Síntomas de una administración deficiente</h2>
+        <p class="problema-intro">
+          Rara vez aparece uno solo. Cuando la administración se queda corta, los
+          síntomas se presentan juntos y llevan tiempo acumulándose.
+        </p>
+      </div>
+      <ul class="sintomas">
+        <li>El estado de cuenta llega tarde, o llega y nadie logra explicarlo en la asamblea.</li>
+        <li>Hay quien no paga desde hace tiempo y la cobranza se reduce a mencionarlo en la siguiente reunión.</li>
+        <li>Las asambleas se convocan de prisa y las actas se levantan a medias, así que cualquier acuerdo queda expuesto a impugnación.</li>
+        <li>El condominio tiene personal a su cargo, pero sus obligaciones fiscales y laborales no las está atendiendo nadie.</li>
+        <li>El mantenimiento se atiende cuando algo se descompone, sin bitácora ni evidencia de lo que se hizo.</li>
+        <li>Se contrata proveedores y después nadie revisa lo que entregaron ni lo que cobraron.</li>
+      </ul>
+      <p class="sintomas-cierre">
+        Ninguno de estos síntomas es exclusivo de un tipo de inmueble, pero no todos
+        pesan igual en cada uno.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. SEGMENTOS -->
+  <section class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">A quién atendemos</span>
+        <h2>Cada inmueble se administra distinto.</h2>
+        <p class="lead">
+          El interlocutor cambia con el tipo de inmueble, y con él cambia lo que hay que
+          resolver primero.
+        </p>
+      </header>
+
+      <div class="segmentos-grid">
+        {segmentos.map((s) => (
+          <article class="segmento-item">
+            <h3 class="segmento-name">{s.name}</h3>
+            <p class="segmento-detail">{s.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ALCANCE DEL SERVICIO -->
+  <section id="alcance" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Alcance del servicio</span>
+        <h2>Los frentes que cubre la administración</h2>
+        <p class="lead">
+          El trabajo se organiza en frentes. Esto es lo que el condominio recibe en
+          cada uno.
+        </p>
+      </header>
+
+      <div class="services-grid">
+        {frentes.map((s, i) => (
+          <ServiceCard service={s} number={String(i + 1).padStart(2, '0')} href="" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLERO EN VIVO — prestación destacada, entre el alcance y la metodología.
+       No es una herramienta pública: el acceso es del Consejo de Administración,
+       y por eso el CTA lleva a contacto y no a una URL propia. Ver la nota sobre
+       este segundo uso del componente en src/layouts/README-herramientas.md. -->
+  <HerramientaFeature
+    eyebrow="Transparencia financiera"
+    title="El Consejo no tiene que esperar al corte del mes."
+    body="Además del informe mensual, el Consejo de Administración consulta en vivo la situación financiera del condominio: lo que entró, lo que está pendiente de cobro y en qué se ha gastado. El acceso es del Consejo de Administración, no de cada condómino."
+    bullets={['Ingresos y egresos', 'Cuotas pendientes', 'Estado del presupuesto', 'Acceso del Consejo']}
+    ctaLabel="Hablemos de tu condominio →"
+    ctaHref="/contacto/"
+  >
+    <div slot="visual" class="tablero-mock" aria-hidden="true">
+      <div class="tablero-mock-head">
+        <span class="tablero-mock-badge"></span>
+        <span class="tablero-mock-live"></span>
+      </div>
+      <div class="tablero-mock-bars">
+        <span class="tablero-mock-bar" style="--w: 78%"></span>
+        <span class="tablero-mock-bar" style="--w: 54%"></span>
+        <span class="tablero-mock-bar" style="--w: 88%"></span>
+      </div>
+      <div class="tablero-mock-rows">
+        <span class="tablero-mock-row"></span>
+        <span class="tablero-mock-row tablero-mock-row--short"></span>
+      </div>
+    </div>
+  </HerramientaFeature>
+
+  <!-- 5. METODOLOGÍA DE SUPERVISIÓN -->
+  <!-- Se explica el método, no se publican los formatos: ni el contenido de las
+       listas de verificación, ni el kit de bitácoras, ni el cuestionario de
+       inventario. Tampoco se nombran plataformas ni proveedores. -->
+  <section class="section band-dark">
+    <div class="container-base metodo-grid">
+      <div>
+        <span class="eyebrow">Metodología</span>
+        <h2>Cómo supervisamos la operación</h2>
+        <p class="metodo-intro">
+          Trabajamos con el modelo de Mantenimiento Productivo Total, adaptado a la
+          administración condominal. Los proveedores especializados ejecutan —limpieza,
+          seguridad, jardinería, alberca, elevadores— y la administración no ejecuta:
+          supervisa. Esa supervisión es estructurada y queda documentada.
+        </p>
+      </div>
+      <ol class="metodo-list">
+        <li>
+          <span class="metodo-num" aria-hidden="true">01</span>
+          <div>
+            <h3>Levantamiento</h3>
+            <p>
+              Se documenta qué hay: inventario de activos, estado del inmueble, contratos
+              vigentes con proveedores y la situación financiera y documental con la que
+              arranca la administración. Es la línea base contra la que se mide todo lo demás.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">02</span>
+          <div>
+            <h3>Programa y alcance</h3>
+            <p>
+              Por cada servicio contratado se define qué debe entregar el proveedor y con
+              qué frecuencia, y se calendariza el mantenimiento preventivo de los activos
+              levantados. Aquí el mantenimiento deja de ser reactivo.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">03</span>
+          <div>
+            <h3>Inspección</h3>
+            <p>
+              La administración no ejecuta: verifica. Cada servicio se inspecciona contra
+              su lista de verificación, con un resultado de cumplimiento y las
+              observaciones que correspondan.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">04</span>
+          <div>
+            <h3>Bitácora</h3>
+            <p>
+              Lo ejecutado y lo observado queda registrado, con evidencia. Es lo que
+              convierte la supervisión en algo demostrable ante el Consejo y ante la
+              asamblea, en lugar de una opinión.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">05</span>
+          <div>
+            <h3>Reporte y decisión</h3>
+            <p>
+              El Consejo recibe el resultado del ciclo y decide: qué se corrige, qué se
+              renegocia con el proveedor y qué debe subir a asamblea. Entre un ciclo y el
+              siguiente, el tablero mantiene la parte financiera a la vista.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- TECNOLOGÍA — diferenciador de la división, entre metodología y respaldo.
+       Sin número de bloque, igual que la ficha del tablero, para no recorrer la
+       numeración con la que ya se referencian los bloques siguientes.
+       No se publican cifras de ahorro o eficiencia, arquitectura interna,
+       modelos ni proveedores de inteligencia artificial. -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Tecnología</span>
+        <h2>Tecnología que hace posible la supervisión</h2>
+        <p class="lead">
+          La administración condominal tradicional no documenta porque documentar bien es
+          caro. La tecnología es lo que vuelve costeable ese nivel de trazabilidad.
+        </p>
+      </header>
+
+      <div class="tec-grid">
+        <article class="tec-item">
+          <h3 class="tec-name">Plataforma</h3>
+          <p class="tec-detail">
+            La administración se lleva en plataformas especializadas, no en hojas de
+            cálculo: estado de cuenta consultable, registro de pagos, canal de
+            comunicación y reportes con historial. Trabajamos con Condovive y Be Resident.
+            Eso es el piso mínimo del oficio, no la diferencia: la diferencia está en lo
+            que se hace encima.
+          </p>
+        </article>
+
+        <article class="tec-item">
+          <h3 class="tec-name">Inteligencia artificial en la operación interna</h3>
+          <p class="tec-detail">
+            La usamos puertas adentro, sobre los mismos frentes que cubre
+            <a href="#alcance">el alcance del servicio</a>:
+          </p>
+          <ul class="tec-frentes">
+            {frentes.filter((f) => apoyoIa[f.slug]).map((f) => (
+              <li><strong>{f.name}.</strong> {apoyoIa[f.slug]}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="tec-item">
+          <h3 class="tec-name">El límite</h3>
+          <p class="tec-detail">
+            La inteligencia artificial asiste; no decide ni administra. Cada decisión, y la
+            responsabilidad que la acompaña, es de la administración y del Consejo de
+            Administración. Nada se entrega sin que una persona lo revise antes.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. RESPALDO DEL ECOSISTEMA -->
+  <section class="section">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">Respaldo</span>
+        <h2>Una división que opera dentro de {business.brand}</h2>
+        <p class="respaldo-intro">
+          Una administradora aislada tiene que subcontratar lo que no es operación del
+          inmueble, o dejarlo fuera. Aquí esas piezas están en el mismo grupo.
+        </p>
+      </div>
+      <ul class="respaldo">
+        {respaldo.map((r) => (
+          <li>
+            <h3>
+              <a
+                href={r.brand.url}
+                target={r.brand.internal ? undefined : '_blank'}
+                rel={r.brand.internal ? undefined : 'noopener'}
+              >
+                {r.brand.shortName}
+                {!r.brand.internal && <span aria-hidden="true"> ↗</span>}
+              </a>
+            </h3>
+            <p>{r.detail}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="respaldo-nota">
+        Además de administrar, prestamos asesoría en administración condominal a
+        desarrolladoras inmobiliarias.
+      </p>
+    </div>
+  </section>
+
+  <!-- CAMBIO DE ADMINISTRADOR — cómo se contrata, entre el respaldo y la
+       experiencia. Sin número de bloque, igual que la ficha del tablero y el
+       bloque de tecnología, para no recorrer la numeración de los siguientes.
+       No se citan leyes ni artículos, no se comprometen plazos de transición y
+       no se sugiere que la asamblea la convoque la administración entrante: la
+       decisión es del condominio. -->
+  <section class="section band-dark">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">El cambio de administrador</span>
+        <h2>Cambiar de administrador es un proceso, no un salto.</h2>
+        <p class="transicion-intro">
+          Lo que detiene a un Consejo no suele ser la decisión, sino el trámite: llevarlo
+          a asamblea, recibir lo que había y no quedar a la deriva mientras tanto. Es un
+          camino que ya hemos recorrido.
+        </p>
+      </div>
+      <div>
+        <ul class="transicion">
+          <li>
+            <h3>El frente legal</h3>
+            <p>
+              La decisión es del condominio y se toma en asamblea. Acompañamos ese
+              proceso, junto con la firma legal del grupo, para que la designación y las
+              formalidades que la hacen válida queden en orden.
+            </p>
+          </li>
+          <li>
+            <h3>El frente operativo</h3>
+            <p>
+              La entrega-recepción: información financiera, expediente, contratos con
+              proveedores y la operación del inmueble. Recibimos lo que exista y dejamos
+              constancia de lo que no se entregó, para que el punto de partida quede
+              documentado.
+            </p>
+          </li>
+        </ul>
+        <p class="transicion-nota">
+          Este acompañamiento está incluido en los honorarios de administración. No se
+          cobra aparte.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- El bloque de experiencia se retiró como sección propia: de sus cuatro
+       hechos, la metodología repetía el bloque de supervisión y la cobertura
+       geográfica ya está en el hero y en la meta description. Los dos hechos
+       restantes subieron al hero, como credenciales bajo el llamado a la
+       acción, que es donde la prueba sirve para decidir si se sigue leyendo. -->
+
+  <!-- 8. PREGUNTAS FRECUENTES -->
+  <section class="section">
+    <div class="container-base">
+      <Faq items={faqsAdministradores} title="Preguntas frecuentes" />
+    </div>
+  </section>
+
+  <!-- 9. CIERRE Y CONTACTO -->
+  <CtaBand
+    eyebrow="Hablemos"
+    title="Una conversación sobre tu inmueble"
+    body="Si formas parte del Consejo de Administración o eres propietario del inmueble, y lo que leíste describe cómo está administrado hoy, cuéntanos la situación. El siguiente paso es una conversación, no una contratación."
+    primaryLabel="Solicitar consulta"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  >
+    <p class="cierre-firma">
+      Responde por esta división <strong>Edgar Mizhraim Lugo García</strong>,
+      Socio Director de {business.brand}.
+    </p>
+  </CtaBand>
+
+</Base>
+
+<style>
+  .hero-logo { margin-bottom: 1.5rem; }
+  .hero h1 { max-width: 18ch; margin: 0 0 1.5rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  /* Credenciales del hero: la misma lista con filete del resto de la página. */
+  .hero-credenciales { margin-top: 2.5rem; }
+  .hero-credenciales li { font-size: var(--text-sm); max-width: 46ch; }
+
+  .section-head {
+    margin-bottom: 2.5rem;
+    max-width: 38rem;
+  }
+  .section-head h2 { margin: 1rem 0 0.75rem; max-width: 26ch; }
+  .section-head .lead { max-width: 52ch; }
+
+  /* Bloques a dos columnas (problema, respaldo) */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .split-grid h2 { max-width: 20ch; margin-top: 1rem; }
+  @media (min-width: 1024px) {
+    .split-grid { grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+  }
+  .problema-intro { margin-top: 1rem; max-width: 34ch; }
+
+  /* Lista con filete de acento como marcador. La comparten los síntomas del
+     bloque del problema y los hechos del bloque de experiencia. */
+  .sintomas,
+  .hechos {
+    display: grid;
+    gap: 1rem;
+  }
+  .sintomas li,
+  .hechos li {
+    position: relative;
+    padding-left: 1.75rem;
+    line-height: 1.6;
+    max-width: 58ch;
+  }
+  .sintomas-cierre { margin-top: 1.5rem; max-width: 58ch; }
+
+  .sintomas li::before,
+  .hechos li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.85rem;
+    height: 2px;
+    background: var(--color-accent);
+  }
+
+  /* Segmentos */
+  .segmentos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) { .segmentos-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Tecnología: mismo grid y mismo panel que los segmentos, para que los tres
+     apartados (plataforma, inteligencia artificial y límite) pesen igual. */
+  .tec-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 880px) { .tec-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .tec-frentes {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+  .tec-frentes li {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .tec-frentes strong { color: var(--color-foreground-strong); }
+  .tec-detail a { color: var(--color-accent); text-decoration: none; }
+  .tec-detail a:hover { color: var(--color-accent-hover); }
+
+  .segmento-item,
+  .tec-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    transition: border-color 200ms ease;
+  }
+  .segmento-item:hover,
+  .tec-item:hover { border-color: var(--color-accent); }
+  .segmento-name,
+  .tec-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .segmento-detail,
+  .tec-detail {
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  /* Alcance */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .respaldo-intro,
+  .transicion-intro { margin-top: 1rem; max-width: 34ch; }
+
+  /* Respaldo (los apoyos del ecosistema) y cambio de administrador (los dos
+     frentes del acompañamiento) comparten la misma lista de encabezado y texto. */
+  .respaldo,
+  .transicion { display: grid; gap: 1.75rem; }
+  .respaldo h3,
+  .transicion h3 {
+    font-size: 1.0625rem;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .respaldo h3 a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .respaldo h3 a:hover { color: var(--color-accent-hover); }
+  .respaldo p,
+  .transicion p { margin: 0; max-width: 56ch; }
+
+  /* Nota de cierre de bloque, fuera de la lista que la precede: los honorarios
+     del acompañamiento en el cambio de administrador, y la asesoría a
+     desarrolladoras al final del respaldo. */
+  .transicion-nota,
+  .respaldo-nota {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-accent);
+    max-width: 56ch;
+  }
+
+  /* Tablero en vivo: panel esquemático que se pasa por el slot "visual" de
+     HerramientaFeature. Deliberadamente sin cifras: la regla de no invención
+     aplica también a los mocks, aunque sean decorativos. */
+  .tablero-mock {
+    position: absolute;
+    right: 1.5rem;
+    top: 0.25rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    border-top: 3px solid var(--color-accent);
+    box-shadow: var(--shadow-card);
+  }
+  .tablero-mock-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tablero-mock-badge {
+    width: 2.2rem;
+    height: 0.55rem;
+    border-radius: 2px;
+    background: var(--color-accent);
+  }
+  .tablero-mock-live {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+  }
+  .tablero-mock-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .tablero-mock-bar {
+    height: 0.5rem;
+    border-radius: 3px;
+    background: var(--color-surface-band);
+    position: relative;
+    overflow: hidden;
+  }
+  .tablero-mock-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--w, 60%);
+    background: var(--color-accent);
+    border-radius: 3px;
+  }
+  .tablero-mock-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .tablero-mock-row {
+    height: 0.45rem;
+    border-radius: 2px;
+    background: var(--color-border);
+  }
+  .tablero-mock-row--short { width: 60%; }
+
+  /* Firma del cierre: mismo tratamiento que la firma de autor de los artículos
+     —nombre en negrita sobre el cargo—, en una línea y sin datos de contacto,
+     que ya resuelven los botones de arriba. */
+  .cierre-firma {
+    margin-top: 1.75rem;
+    font-size: var(--text-sm);
+    max-width: 46ch;
+  }
+  .cierre-firma strong { color: var(--color-on-dark); }
+
+  /* Metodología */
+  .metodo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .metodo-grid h2 { max-width: 18ch; margin: 1rem 0; }
+  .metodo-intro { max-width: 38ch; }
+
+  .metodo-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .metodo-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .metodo-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: var(--color-accent-deep);
+    color: var(--color-accent-soft);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .metodo-list h3 {
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-on-dark);
+    letter-spacing: -0.01em;
+  }
+  /* El color lo pone `.band-dark p` en global.css: no se declara aquí para no
+     introducir un literal de color en la sección. */
+  .metodo-list p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 56ch;
+  }
+  @media (min-width: 1024px) {
+    .metodo-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; }
+    .metodo-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+  }
+</style>

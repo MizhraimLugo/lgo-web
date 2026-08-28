@@ -62,3 +62,28 @@
   from = "/cursos/diagnostico-salud-empresarial"
   to = "/diagnostico/"
   status = 301
+
+# ── Alias de la división de administración inmobiliaria ──
+# La URL canónica de la sección es /administracion-de-condominios/.
+# /administradores/ queda como alias permanente: el nombre corto es el que la
+# gente escribe a mano y el que puede aparecer en referencias externas.
+#
+# force=true es necesario, por la misma razón que en el 301 de donacion-bien-inmueble-2:
+# el `redirects` de astro.config.mjs genera dist/administradores/index.html (una página
+# de redirección con meta refresh, canonical y noindex) y, sin force, ese archivo
+# estático le ganaría a esta regla. Con force, Netlify responde 301 en el servidor y la
+# página de Astro queda solo como respaldo si el sitio se sirve fuera de Netlify.
+#
+# Se declaran ambas formas (con y sin diagonal final), igual que en el 301 del
+# Diagnóstico: la normalización de trailing-slash en el `from` no está garantizada.
+[[redirects]]
+  from = "/administradores/"
+  to = "/administracion-de-condominios/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/administradores"
+  to = "/administracion-de-condominios/"
+  status = 301
+  force = true
