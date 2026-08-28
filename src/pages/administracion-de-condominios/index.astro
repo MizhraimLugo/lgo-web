@@ -20,6 +20,7 @@
 import Base from '@layouts/Base.astro';
 import CtaBand from '@components/CtaBand.astro';
 import Faq from '@components/Faq.astro';
+import HerramientaFeature from '@components/herramientas/HerramientaFeature.astro';
 import Logo from '@components/Logo.astro';
 import ServiceCard from '@components/ServiceCard.astro';
 import { business } from '@data/business';
@@ -175,6 +176,35 @@ const faqLd = {
       </div>
     </div>
   </section>
+
+  <!-- TABLERO EN VIVO — prestación destacada, entre el alcance y la metodología.
+       No es una herramienta pública: el acceso es del Consejo de Administración,
+       y por eso el CTA lleva a contacto y no a una URL propia. Ver la nota sobre
+       este segundo uso del componente en src/layouts/README-herramientas.md. -->
+  <HerramientaFeature
+    eyebrow="Transparencia financiera"
+    title="El Consejo no tiene que esperar al corte del mes."
+    body="Además del informe mensual, el Consejo de Administración consulta en vivo la situación financiera del condominio: lo que entró, lo que está pendiente de cobro y en qué se ha gastado. El acceso es del Consejo de Administración, no de cada condómino."
+    bullets={['Ingresos y egresos', 'Cuotas pendientes', 'Estado del presupuesto', 'Acceso del Consejo']}
+    ctaLabel="Hablemos de tu condominio →"
+    ctaHref="/contacto/"
+  >
+    <div slot="visual" class="tablero-mock" aria-hidden="true">
+      <div class="tablero-mock-head">
+        <span class="tablero-mock-badge"></span>
+        <span class="tablero-mock-live"></span>
+      </div>
+      <div class="tablero-mock-bars">
+        <span class="tablero-mock-bar" style="--w: 78%"></span>
+        <span class="tablero-mock-bar" style="--w: 54%"></span>
+        <span class="tablero-mock-bar" style="--w: 88%"></span>
+      </div>
+      <div class="tablero-mock-rows">
+        <span class="tablero-mock-row"></span>
+        <span class="tablero-mock-row tablero-mock-row--short"></span>
+      </div>
+    </div>
+  </HerramientaFeature>
 
   <!-- 5. METODOLOGÍA DE SUPERVISIÓN -->
   <!-- TODO: el número de pasos es provisional. Definir los pasos reales
@@ -353,6 +383,72 @@ const faqLd = {
   @media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
 
+  /* Tablero en vivo: panel esquemático que se pasa por el slot "visual" de
+     HerramientaFeature. Deliberadamente sin cifras: la regla de no invención
+     aplica también a los mocks, aunque sean decorativos. */
+  .tablero-mock {
+    position: absolute;
+    right: 1.5rem;
+    top: 0.25rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    border-top: 3px solid var(--color-accent);
+    box-shadow: var(--shadow-card);
+  }
+  .tablero-mock-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tablero-mock-badge {
+    width: 2.2rem;
+    height: 0.55rem;
+    border-radius: 2px;
+    background: var(--color-accent);
+  }
+  .tablero-mock-live {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+  }
+  .tablero-mock-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .tablero-mock-bar {
+    height: 0.5rem;
+    border-radius: 3px;
+    background: var(--color-surface-band);
+    position: relative;
+    overflow: hidden;
+  }
+  .tablero-mock-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--w, 60%);
+    background: var(--color-accent);
+    border-radius: 3px;
+  }
+  .tablero-mock-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .tablero-mock-row {
+    height: 0.45rem;
+    border-radius: 2px;
+    background: var(--color-border);
+  }
+  .tablero-mock-row--short { width: 60%; }
+
   /* Metodología */
   .metodo-grid {
     display: grid;
@@ -393,9 +489,10 @@ const faqLd = {
     color: var(--color-on-dark);
     letter-spacing: -0.01em;
   }
+  /* El color lo pone `.band-dark p` en global.css: no se declara aquí para no
+     introducir un literal de color en la sección. */
   .metodo-list p {
     font-size: 0.9375rem;
-    color: rgba(250, 248, 244, 0.78);
     line-height: 1.65;
     margin: 0;
     max-width: 56ch;
