@@ -64,7 +64,7 @@ const segmentos = [
   {
     name: 'Plaza comercial',
     detail:
-      'Decide el propietario, el desarrollador o un comité de inversionistas. La conversación es de rentabilidad de la operación: cuota de mantenimiento por metro cuadrado, contratos de arrendamiento y ocupación. Ofrecemos la administración bajo ese criterio.'
+      'Decide el propietario, el desarrollador o un comité de inversionistas. La conversación es de rentabilidad de la operación: cuota de mantenimiento por metro cuadrado, contratos de arrendamiento y ocupación. La administración se lleva con ese criterio, el de una operación comercial.'
   }
 ];
 
@@ -169,6 +169,10 @@ const faqLd = {
         <li>El mantenimiento se atiende cuando algo se descompone, sin bitácora ni evidencia de lo que se hizo.</li>
         <li>Se contrata proveedores y después nadie revisa lo que entregaron ni lo que cobraron.</li>
       </ul>
+      <p class="sintomas-cierre">
+        Ninguno de estos síntomas es exclusivo de un tipo de inmueble, pero no todos
+        pesan igual en cada uno.
+      </p>
     </div>
   </section>
 
@@ -207,9 +211,12 @@ const faqLd = {
         </p>
       </header>
 
+      <!-- Las tarjetas van sin enlace: seis llamados iguales a contacto se leen
+           como plantilla y le restan fuerza al de la ficha del tablero, que
+           viene enseguida. -->
       <div class="services-grid">
         {frentes.map((s, i) => (
-          <ServiceCard service={s} number={String(i + 1).padStart(2, '0')} />
+          <ServiceCard service={s} number={String(i + 1).padStart(2, '0')} href="" />
         ))}
       </div>
     </div>
@@ -479,7 +486,7 @@ const faqLd = {
   <!-- 9. CIERRE Y CONTACTO -->
   <CtaBand
     eyebrow="Hablemos"
-    title="Una conversación sobre tu inmueble, sin compromiso"
+    title="Una conversación sobre tu inmueble"
     body="Si formas parte del Consejo de Administración o eres propietario del inmueble, y lo que leíste describe cómo está administrado hoy, cuéntanos la situación. El siguiente paso es una conversación, no una contratación."
     primaryLabel="Solicitar consulta"
     primaryHref="/contacto/"
@@ -529,6 +536,8 @@ const faqLd = {
     line-height: 1.6;
     max-width: 58ch;
   }
+  .sintomas-cierre { margin-top: 1.5rem; max-width: 58ch; }
+
   .sintomas li::before,
   .hechos li::before {
     content: '';
