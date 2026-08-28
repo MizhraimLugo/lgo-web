@@ -43,7 +43,21 @@ const description =
   `Administración de condominios verticales, horizontales y plazas comerciales, con el respaldo legal y contable de ${business.brand}. Operamos en Guadalajara, Zapopan y su zona metropolitana.`;
 
 // Los seis frentes del alcance viven en el data layer, no en la plantilla.
+// Sus tarjetas van sin enlace (href vacío): seis llamados iguales a contacto se
+// leen como plantilla y le restan fuerza al de la ficha del tablero, que viene
+// enseguida.
 const frentes = servicesByBrand('administradores');
+
+// Credenciales del hero. Solo datos autorizados: no agregar número de unidades,
+// superficie administrada, número de inmuebles, testimonios, ni nombres de
+// condominios, plazas, desarrolladoras o clientes.
+//
+// La asesoría a desarrolladoras NO va aquí: en el hero, un consejero puede
+// leerla como que trabajamos para la contraparte. Vive en el bloque de
+// metodología, donde se lee como experiencia técnica.
+const credenciales = [
+  'Cinco años de administración directa de condominios verticales y horizontales.'
+];
 
 // Segmentos atendidos. El registro cambia en cada uno porque el interlocutor
 // cambia: asamblea, consejo o propietario. En plaza comercial el texto se
@@ -151,12 +165,8 @@ const faqLd = {
         <a href="#alcance" class="btn btn-ghost">Ver el alcance del servicio</a>
       </div>
 
-      <!-- Credenciales. Solo datos autorizados: no agregar número de unidades,
-           superficie administrada, número de inmuebles, testimonios, ni nombres
-           de condominios, plazas, desarrolladoras o clientes. -->
       <ul class="hechos hero-credenciales reveal-up reveal-up--immediate">
-        <li>Cinco años de administración directa de condominios verticales y horizontales.</li>
-        <li>Asesoría vigente en administración condominal para desarrolladoras inmobiliarias.</li>
+        {credenciales.map((c) => <li>{c}</li>)}
       </ul>
     </div>
   </section>
@@ -222,9 +232,6 @@ const faqLd = {
         </p>
       </header>
 
-      <!-- Las tarjetas van sin enlace: seis llamados iguales a contacto se leen
-           como plantilla y le restan fuerza al de la ficha del tablero, que
-           viene enseguida. -->
       <div class="services-grid">
         {frentes.map((s, i) => (
           <ServiceCard service={s} number={String(i + 1).padStart(2, '0')} href="" />
@@ -276,6 +283,10 @@ const faqLd = {
           administración condominal. Los proveedores especializados ejecutan —limpieza,
           seguridad, jardinería, alberca, elevadores— y la administración no ejecuta:
           supervisa. Esa supervisión es estructurada y queda documentada.
+        </p>
+        <p class="metodo-credencial">
+          Además de administrar, prestamos asesoría en administración condominal a
+          desarrolladoras inmobiliarias.
         </p>
       </div>
       <ol class="metodo-list">
@@ -350,8 +361,7 @@ const faqLd = {
         <h2>Tecnología que hace posible la supervisión</h2>
         <p class="lead">
           La administración condominal tradicional no documenta porque documentar bien es
-          caro. La tecnología es lo que vuelve costeable ese nivel de trazabilidad en un
-          condominio de tamaño medio.
+          caro. La tecnología es lo que vuelve costeable ese nivel de trazabilidad.
         </p>
       </header>
 
@@ -500,13 +510,9 @@ const faqLd = {
   .hero h1 { max-width: 18ch; margin: 0 0 1.5rem; }
   .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
 
-  /* Credenciales del hero: la misma lista con filete del resto de la página,
-     en dos columnas cuando hay ancho. */
+  /* Credenciales del hero: la misma lista con filete del resto de la página. */
   .hero-credenciales { margin-top: 2.5rem; }
-  .hero-credenciales li { font-size: var(--text-sm); max-width: 40ch; }
-  @media (min-width: 880px) {
-    .hero-credenciales { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-  }
+  .hero-credenciales li { font-size: var(--text-sm); max-width: 46ch; }
 
   .section-head {
     margin-bottom: 2.5rem;
@@ -724,6 +730,13 @@ const faqLd = {
   }
   .metodo-grid h2 { max-width: 18ch; margin: 1rem 0; }
   .metodo-intro { max-width: 38ch; }
+  .metodo-credencial {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-accent);
+    max-width: 38ch;
+    font-size: var(--text-sm);
+  }
 
   .metodo-list {
     display: grid;
