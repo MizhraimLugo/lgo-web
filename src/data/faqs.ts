@@ -71,17 +71,17 @@ export const faqsContadores: FaqItem[] = [
 // y siguientes). NO por la Ley sobre el Régimen de Propiedad y Condominio de
 // Inmuebles para el Estado de Jalisco, abrogada en 1995, ni por el Código Urbano.
 // Solo se citan artículos verificados contra el texto oficial y expresamente
-// autorizados: 1011, 1013 bis, 1019, 1020, 1022, 1023, 1025, 1026 y 1029. No
-// añadir ninguno más sin verificación y autorización.
+// autorizados: 1011, 1013 bis, 1017, 1019, 1020, 1022, 1023, 1025, 1026 y 1029.
+// No añadir ninguno más sin verificación y autorización.
 //
 // Estilo de cita: comercial, no técnico. Primero la respuesta útil en lenguaje
 // llano, después el fundamento en una sola frase. Sin fracciones, sin
 // transcripción literal del texto legal.
 //
-// Terminología: al órgano de gobierno del condominio se le llama siempre
-// "Consejo de Administración". El "comité de vigilancia" del artículo 1011 es
-// una figura legal distinta —es quien celebra el contrato de administración
-// profesional— y se nombra así a propósito: no unificar los dos términos.
+// Terminología: el Título Sexto del Código Civil del Estado de Jalisco no
+// regula ningún comité de vigilancia; el órgano de vigilancia del administrador
+// es el consejo de administración, conforme al artículo 1017. En la sección se
+// le llama siempre "Consejo de Administración".
 //
 // Estas respuestas viajan también en el FAQPage del JSON-LD, así que cada una
 // debe sostenerse sola, fuera del contexto de la página.
@@ -92,7 +92,7 @@ export const faqsAdministradores: FaqItem[] = [
   },
   {
     q: '¿Nos quedamos amarrados a un contrato largo?',
-    a: 'No. Cuando la asamblea decide contratar servicios profesionales de administración, quien celebra el contrato es el comité de vigilancia, que es un órgano distinto del Consejo de Administración, y ese contrato no puede exceder de un año: se renueva únicamente mientras la asamblea no determine lo contrario. El Código Civil del Estado de Jalisco lo fija en su artículo 1011. Es una protección para el condominio, porque cada año hay un punto natural para revisar si el servicio debe continuar, sin necesidad de argumentar una salida.'
+    a: 'No. La designación del administrador es facultad de la asamblea, y la asamblea ordinaria se celebra cuando menos una vez al año, dentro del primer trimestre, con ese punto entre los que se resuelven: ahí el condominio ratifica o cambia, sin procedimiento especial y sin tener que argumentar una salida. Cuando además se contratan servicios profesionales de administración, ese contrato no puede exceder de un año y se renueva únicamente mientras la asamblea no determine lo contrario. Entre una asamblea y otra, la vigilancia del desempeño corresponde al Consejo de Administración, que puede pedir informes y cuentas cuando lo estime necesario. El Código Civil del Estado de Jalisco lo establece en sus artículos 1011, 1017 y 1020. Y si hace falta resolverlo fuera de ese periodo, la asamblea puede reunirse en cualquier tiempo: no hay que esperar al año siguiente.'
   },
   {
     q: '¿Qué pasa con la información del condominio cuando termina el contrato?',
