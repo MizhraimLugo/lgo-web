@@ -63,10 +63,41 @@ export const faqsContadores: FaqItem[] = [
   }
 ];
 
+// Las preguntas son definitivas; las respuestas están pendientes de contenido
+// autorizado (regla de no invención del CLAUDE.md). No se publica esta sección
+// hasta que las respuestas se sustituyan por texto aprobado.
+export const faqsAdministradores: FaqItem[] = [
+  {
+    q: '¿Qué incluye el servicio de administración inmobiliaria?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  },
+  {
+    q: '¿Cómo se lleva el control financiero y qué se entrega cada mes?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  },
+  {
+    q: '¿Cómo se maneja la cobranza de cuotas y la morosidad?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  },
+  {
+    q: '¿Cómo se reportan las incidencias y se les da seguimiento?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  },
+  {
+    q: '¿Cómo se comunica la administración con los condóminos y con el comité?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  },
+  {
+    q: '¿Atienden plazas comerciales además de condominios?',
+    a: 'TODO: redactar respuesta con información autorizada.'
+  }
+];
+
 // Mapa de FAQs por práctica. Cuando se lance una nueva, se añade entry aquí.
 const FAQS_BY_BRAND: Partial<Record<LgoPracticeId, FaqItem[]>> = {
   abogados: faqsAbogados,
-  contadores: faqsContadores
+  contadores: faqsContadores,
+  administradores: faqsAdministradores
   // tecnologia: faqsTecnologia,   // ← cuando se lance, descomentar
   // marketing:  faqsMarketing,    // ← cuando se lance, descomentar
 };

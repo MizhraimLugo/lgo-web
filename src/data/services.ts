@@ -99,6 +99,52 @@ export const services: Service[] = [
     brand: 'contadores',
     blurb:
       'Tableros mensuales en lenguaje claro: cuánto vendiste, cuánto cobraste, qué quedó, cuánto debes. Para decidir con visibilidad.'
+  },
+
+  // LGO ADMINISTRADORES INMOBILIARIOS
+  // Los seis frentes del alcance del servicio. Los nombres son definitivos;
+  // los blurb están pendientes de contenido autorizado (regla de no invención).
+  {
+    slug: 'financiero',
+    name: 'Financiero',
+    shortName: 'Financiero',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente financiero con información autorizada.'
+  },
+  {
+    slug: 'cobranza',
+    name: 'Cobranza',
+    shortName: 'Cobranza',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente de cobranza con información autorizada.'
+  },
+  {
+    slug: 'incidencias-y-mantenimiento',
+    name: 'Incidencias y mantenimiento',
+    shortName: 'Incidencias y mantenimiento',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente de incidencias y mantenimiento con información autorizada.'
+  },
+  {
+    slug: 'comunicacion',
+    name: 'Comunicación',
+    shortName: 'Comunicación',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente de comunicación con información autorizada.'
+  },
+  {
+    slug: 'documental',
+    name: 'Documental',
+    shortName: 'Documental',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente documental con información autorizada.'
+  },
+  {
+    slug: 'gobernanza',
+    name: 'Gobernanza',
+    shortName: 'Gobernanza',
+    brand: 'administradores',
+    blurb: 'TODO: describir el frente de gobernanza con información autorizada.'
   }
 ];
 

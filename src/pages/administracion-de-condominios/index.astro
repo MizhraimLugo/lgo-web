@@ -1,0 +1,351 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  LGO ADMINISTRADORES INMOBILIARIOS — landing de la división
+// ════════════════════════════════════════════════════════════════
+//
+// ESQUELETO. La estructura y los encabezados son definitivos; el cuerpo de
+// cada bloque está marcado como TODO y espera contenido autorizado.
+//
+// Regla de no invención (CLAUDE.md): no se escriben cifras, años de
+// experiencia, nombres de clientes, condominios, plazas comerciales,
+// desarrolladoras, unidades administradas, superficie, testimonios,
+// certificaciones, premios ni referencias legales sin autorización expresa.
+//
+// El nombre comercial de la división NO se escribe aquí: vive en brands.ts
+// (id 'administradores') y se lee con getBrand. Un renombramiento se resuelve
+// en el data layer, sin tocar esta plantilla.
+
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import Faq from '@components/Faq.astro';
+import Logo from '@components/Logo.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import { business } from '@data/business';
+import { getBrand } from '@data/brands';
+import { servicesByBrand } from '@data/services';
+import { faqsAdministradores } from '@data/faqs';
+
+const brand = getBrand('administradores')!;
+const path = brand.url;
+
+// TODO: título y descripción provisionales. Sustituir por los definitivos
+// antes de publicar (se usan en <title>, meta description y Open Graph).
+const title = `TODO: título provisional | ${brand.name}`;
+const description =
+  'TODO: descripción provisional de la sección, pendiente de contenido autorizado.';
+
+// Los seis frentes del alcance viven en el data layer, no en la plantilla.
+const frentes = servicesByBrand('administradores');
+
+// Segmentos atendidos. Nombres definitivos; detalle pendiente de autorización.
+const segmentos = [
+  { name: 'Condominio vertical', detail: 'TODO: describir el segmento con información autorizada.' },
+  { name: 'Condominio horizontal', detail: 'TODO: describir el segmento con información autorizada.' },
+  { name: 'Plaza comercial', detail: 'TODO: describir el segmento con información autorizada.' }
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: brand.shortName, item: business.url + brand.url }
+  ]
+};
+
+// FAQPage para AEO/GEO. La Organización de la división ya la declara Base.astro
+// a partir de brands.ts (@id .../#administradores): aquí solo se referencia por
+// @id, nunca se re-declara.
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  publisher: { '@id': `${business.url}/#administradores` },
+  mainEntity: faqsAdministradores.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, faqLd]}
+>
+
+  <!-- 1. HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <div class="hero-logo reveal-up reveal-up--immediate">
+        <Logo brand="administradores" height={48} alt={brand.name} />
+      </div>
+      <h1 class="reveal-up reveal-up--immediate">{brand.name}</h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        TODO: promesa central de la división, pendiente de contenido autorizado.
+      </p>
+      <div class="hero-ctas reveal-up reveal-up--immediate">
+        <a href="/contacto/" class="btn btn-primary">Solicitar consulta</a>
+        <a href="#alcance" class="btn btn-ghost">Ver el alcance del servicio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. EL PROBLEMA -->
+  <section class="section band-cream">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">El problema</span>
+        <h2>Síntomas de una administración deficiente</h2>
+      </div>
+      <div class="prose-lgo">
+        <p>TODO: describir los síntomas con información autorizada.</p>
+        <p>TODO: continuar el bloque con información autorizada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SEGMENTOS -->
+  <section class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">A quién atendemos</span>
+        <h2>Los inmuebles que administramos</h2>
+        <p class="lead">TODO: introducción del bloque, pendiente de contenido autorizado.</p>
+      </header>
+
+      <div class="segmentos-grid">
+        {segmentos.map((s) => (
+          <article class="segmento-item">
+            <h3 class="segmento-name">{s.name}</h3>
+            <p class="segmento-detail">{s.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ALCANCE DEL SERVICIO -->
+  <section id="alcance" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Alcance del servicio</span>
+        <h2>Los frentes que cubre la administración</h2>
+        <p class="lead">TODO: introducción del bloque, pendiente de contenido autorizado.</p>
+      </header>
+
+      <div class="services-grid">
+        {frentes.map((s, i) => (
+          <ServiceCard service={s} number={String(i + 1).padStart(2, '0')} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. METODOLOGÍA DE SUPERVISIÓN -->
+  <!-- TODO: el número de pasos es provisional. Definir los pasos reales
+       antes de redactar el contenido. -->
+  <section class="section band-dark">
+    <div class="container-base metodo-grid">
+      <div>
+        <span class="eyebrow">Metodología</span>
+        <h2>Cómo supervisamos la operación</h2>
+      </div>
+      <ol class="metodo-list">
+        <li>
+          <span class="metodo-num" aria-hidden="true">01</span>
+          <div>
+            <h3>TODO: nombre del paso</h3>
+            <p>TODO: describir el paso con información autorizada.</p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">02</span>
+          <div>
+            <h3>TODO: nombre del paso</h3>
+            <p>TODO: describir el paso con información autorizada.</p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">03</span>
+          <div>
+            <h3>TODO: nombre del paso</h3>
+            <p>TODO: describir el paso con información autorizada.</p>
+          </div>
+        </li>
+        <li>
+          <span class="metodo-num" aria-hidden="true">04</span>
+          <div>
+            <h3>TODO: nombre del paso</h3>
+            <p>TODO: describir el paso con información autorizada.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. RESPALDO DEL ECOSISTEMA -->
+  <section class="section">
+    <div class="container-base split-grid">
+      <div>
+        <span class="eyebrow">Respaldo</span>
+        <h2>Una división que opera dentro de {business.brand}</h2>
+      </div>
+      <div class="prose-lgo">
+        <p>TODO: describir el respaldo del ecosistema con información autorizada.</p>
+        <p>TODO: continuar el bloque con información autorizada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. EXPERIENCIA -->
+  <section class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Experiencia</span>
+        <h2>Experiencia en la administración de condominios verticales y horizontales</h2>
+      </header>
+      <div class="prose-lgo">
+        <!-- TODO: redactar sin cifras, años de operación, número de unidades,
+             superficie administrada ni nombres de condominios o clientes,
+             salvo que se autoricen expresamente. -->
+        <p>TODO: describir la experiencia con información autorizada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PREGUNTAS FRECUENTES -->
+  <section class="section">
+    <div class="container-base">
+      <Faq items={faqsAdministradores} title="Preguntas frecuentes" />
+    </div>
+  </section>
+
+  <!-- 9. CIERRE Y CONTACTO -->
+  <CtaBand
+    eyebrow="Hablemos"
+    title="TODO: título de cierre provisional"
+    body="TODO: cuerpo del cierre, pendiente de contenido autorizado."
+    primaryLabel="Solicitar consulta"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  />
+
+</Base>
+
+<style>
+  .hero-logo { margin-bottom: 1.5rem; }
+  .hero h1 { max-width: 18ch; margin: 0 0 1.5rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  .section-head {
+    margin-bottom: 2.5rem;
+    max-width: 38rem;
+  }
+  .section-head h2 { margin: 1rem 0 0.75rem; max-width: 26ch; }
+  .section-head .lead { max-width: 52ch; }
+
+  /* Bloques a dos columnas (problema, respaldo) */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .split-grid h2 { max-width: 20ch; margin-top: 1rem; }
+  @media (min-width: 1024px) {
+    .split-grid { grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+  }
+
+  /* Segmentos */
+  .segmentos-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) { .segmentos-grid { grid-template-columns: repeat(3, 1fr); } }
+  .segmento-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    transition: border-color 200ms ease;
+  }
+  .segmento-item:hover { border-color: var(--color-accent); }
+  .segmento-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .segmento-detail {
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  /* Alcance */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px)  { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Metodología */
+  .metodo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .metodo-grid h2 { max-width: 18ch; margin: 1rem 0; }
+
+  .metodo-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .metodo-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .metodo-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    background: var(--color-accent-deep);
+    color: var(--color-accent-soft);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-xs);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .metodo-list h3 {
+    font-size: 1.125rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-on-dark);
+    letter-spacing: -0.01em;
+  }
+  .metodo-list p {
+    font-size: 0.9375rem;
+    color: rgba(250, 248, 244, 0.78);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 56ch;
+  }
+  @media (min-width: 1024px) {
+    .metodo-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; }
+    .metodo-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
+  }
+</style>

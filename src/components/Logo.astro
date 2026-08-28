@@ -9,7 +9,7 @@ import type { BrandId } from '@data/brands';
 import { getBrand } from '@data/brands';
 
 export interface Props {
-  brand: Extract<BrandId, 'grupo' | 'abogados' | 'contadores' | 'tecnologia' | 'marketing'>;
+  brand: Extract<BrandId, 'grupo' | 'abogados' | 'contadores' | 'administradores' | 'tecnologia' | 'marketing'>;
   /** Altura del logo en px. El ancho se calcula con aspect-ratio. */
   height?: number;
   /** Clase CSS adicional. */

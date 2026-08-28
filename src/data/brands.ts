@@ -24,9 +24,9 @@
 //  - 'facturacion'  — servicio LGO con sitio externo propio (lgo-facturacion.com)
 //  - 'lorenzana'    — marca aliada externa (otra paleta, otro sitio)
 
-/** Las cuatro firmas internas de LGO. Tipo cerrado deliberadamente:
- *  añadir una quinta requiere decisión estratégica, no solo data entry. */
-export type LgoPracticeId = 'abogados' | 'contadores' | 'tecnologia' | 'marketing';
+/** Las divisiones internas de LGO con página propia. Tipo cerrado deliberadamente:
+ *  añadir una nueva requiere decisión estratégica, no solo data entry. */
+export type LgoPracticeId = 'abogados' | 'contadores' | 'administradores' | 'tecnologia' | 'marketing';
 
 export type BrandId = 'grupo' | LgoPracticeId | 'facturacion' | 'lorenzana';
 
@@ -74,6 +74,17 @@ export const brands: Brand[] = [
     description:
       'Contabilidad mensual, cumplimiento fiscal, declaraciones anuales y planeación estratégica para empresas que operan bien y quieren proteger lo que han construido.',
     url: '/contadores/',
+    internal: true,
+    published: true
+  },
+  {
+    id: 'administradores',
+    name: 'LGO Administradores Inmobiliarios',
+    shortName: 'LGO Administradores Inmobiliarios',
+    specialty: 'Administración inmobiliaria',
+    description:
+      'Administración de condominios verticales, condominios horizontales y plazas comerciales en la Zona Metropolitana de Guadalajara.',
+    url: '/administracion-de-condominios/',
     internal: true,
     published: true
   },
@@ -139,10 +150,11 @@ export const brands: Brand[] = [
 export const getBrand = (id: BrandId): Brand | undefined =>
   brands.find((b) => b.id === id);
 
-/** IDs de las prácticas LGO (las cuatro firmas internas). */
+/** IDs de las prácticas LGO (las divisiones internas con página propia). */
 export const LGO_PRACTICE_IDS: LgoPracticeId[] = [
   'abogados',
   'contadores',
+  'administradores',
   'tecnologia',
   'marketing'
 ];
