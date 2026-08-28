@@ -80,7 +80,7 @@ export const brands: Brand[] = [
   {
     id: 'administradores',
     name: 'LGO Administradores Inmobiliarios',
-    shortName: 'LGO Administradores Inmobiliarios',
+    shortName: 'LGO Administradores',
     specialty: 'Administración inmobiliaria',
     description:
       'Administración de condominios verticales, condominios horizontales y plazas comerciales en la Zona Metropolitana de Guadalajara.',
