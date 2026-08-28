@@ -502,7 +502,12 @@ const faqLd = {
     secondaryLabel="WhatsApp"
     secondaryHref={business.whatsappUrl}
     variant="dark"
-  />
+  >
+    <p class="cierre-firma">
+      Responde por esta división <strong>Edgar Mizhraim Lugo García</strong>,
+      Socio Director de {business.brand}.
+    </p>
+  </CtaBand>
 
 </Base>
 
@@ -721,6 +726,16 @@ const faqLd = {
     background: var(--color-border);
   }
   .tablero-mock-row--short { width: 60%; }
+
+  /* Firma del cierre: mismo tratamiento que la firma de autor de los artículos
+     —nombre en negrita sobre el cargo—, en una línea y sin datos de contacto,
+     que ya resuelven los botones de arriba. */
+  .cierre-firma {
+    margin-top: 1.75rem;
+    font-size: var(--text-sm);
+    max-width: 46ch;
+  }
+  .cierre-firma strong { color: var(--color-on-dark); }
 
   /* Metodología */
   .metodo-grid {
