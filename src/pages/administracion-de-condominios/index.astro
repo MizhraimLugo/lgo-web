@@ -790,8 +790,12 @@ const faqLd = {
     margin: 0;
     max-width: 56ch;
   }
+  /* Los pasos se quedan en una sola columna también en escritorio. Partir en dos
+     la mitad derecha dejaba el texto a unos treinta caracteres por línea —la
+     mitad de lo legible—, y con cinco pasos la última fila quedaba coja. En una
+     columna el texto va a unos sesenta caracteres y el bloque no crece de alto,
+     porque cada paso pasa de ocho líneas a tres o cuatro. */
   @media (min-width: 1024px) {
     .metodo-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; }
-    .metodo-list { grid-template-columns: 1fr 1fr; gap: 2rem 2.5rem; }
   }
 </style>
