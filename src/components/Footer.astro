@@ -3,6 +3,7 @@ import Logo from '@components/Logo.astro';
 import { business } from '@data/business';
 import { nav } from '@data/nav';
 import { publishedSubBrands, publishedExternalBrands } from '@data/brands';
+import { AVISO_PRIVACIDAD_PATH } from '@data/aviso-privacidad';
 
 const year = 2026;  // estampado en build; actualizar manualmente (no Date.now por workflow)
 ---
@@ -64,6 +65,17 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
 
   <div class="container-base footer-bottom">
     <span>© {year} {business.brand}. Todos los derechos reservados.</span>
+
+    {/* Legal: el aviso es obligación de publicidad (artículo 15 de la Ley) y
+        «Configurar cookies» reabre el gestor de consentimiento, como promete
+        el apartado VIII del propio aviso. */}
+    <nav class="footer-legal" aria-label="Legal">
+      <a href={AVISO_PRIVACIDAD_PATH}>Aviso de privacidad</a>
+      <button type="button" class="footer-legal-btn" data-configurar-cookies>
+        Configurar cookies
+      </button>
+    </nav>
+
     <span>{business.address.locality}, {business.address.region}, {business.address.country}</span>
   </div>
 </footer>
@@ -172,4 +184,26 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
     font-size: var(--text-xs);
     color: rgba(250,248,244,0.38);
   }
+
+  .footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+  }
+  .footer-legal a,
+  .footer-legal-btn {
+    font-family: inherit;
+    font-size: var(--text-xs);
+    color: rgba(250,248,244,0.6);
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .footer-legal a:hover,
+  .footer-legal-btn:hover { color: var(--color-on-dark); text-decoration: underline; }
+  .footer-legal a:focus-visible,
+  .footer-legal-btn:focus-visible { outline: 2px solid var(--color-accent-soft); outline-offset: 3px; }
 </style>

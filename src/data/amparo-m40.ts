@@ -21,6 +21,7 @@
 // módulo se resuelve igual bajo Vite/Astro y bajo `node --test`, que corre el
 // TypeScript nativo sin conocer los paths del tsconfig.
 import { parseISO, diffDays } from './marcas.ts';
+import { AVISO_PRIVACIDAD_PATH } from './aviso-privacidad.ts';
 
 export const M40 = {
   acuerdo: {
@@ -59,15 +60,11 @@ export const M40 = {
   /** WhatsApp de captación de la sección (distinto del conmutador del sitio). */
   whatsapp: '523318761361',
   /**
-   * Aviso de privacidad del sitio, enlazado desde la casilla de consentimiento
-   * de la autoevaluación y desde los avisos del pie de la landing.
-   *
-   * [VERIFICAR] Hoy el sitio NO publica un aviso de privacidad. Mientras esta
-   * cadena esté vacía, la casilla y el pie muestran el texto SIN hipervínculo
-   * (preferible a un enlace roto). Al publicar el aviso, basta poner su ruta
-   * aquí —p. ej. '/aviso-de-privacidad/'— y el enlace aparece en toda la sección.
+   * Aviso de privacidad del sitio, enlazado desde los avisos del pie de la
+   * landing. Sale de @data/aviso-privacidad para no repetir la ruta: el
+   * aviso simplificado de la autoevaluación enlaza al mismo lugar.
    */
-  avisoPrivacidadUrl: '',
+  avisoPrivacidadUrl: AVISO_PRIVACIDAD_PATH,
   /** Firma visible de la sección. Sin número de cédula, por decisión editorial. */
   firma: {
     nombre: 'Edgar Lugo',

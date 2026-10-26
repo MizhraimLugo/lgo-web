@@ -7,6 +7,7 @@
 // formatLabel y el CTA en cursos-preview.ts.
 
 import Base from '@layouts/Base.astro';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
 import { business } from '@data/business';
 import { cursos, templatedCourses, type Course } from '@data/cursos-preview';
 
@@ -144,6 +145,8 @@ const subjectLabel =
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" data-next-redirect />
+            <AvisoSimplificado idPrefix="curso" />
+
             <button type="submit" class="btn btn-primary">{course.cta}</button>
           </form>
         </div>

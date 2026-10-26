@@ -67,6 +67,10 @@ export const handler = async (event) => {
   const correo = limpia(body.correo, 160);
   const clasificacion = limpia(body.clasificacion, 40);
   const origen = limpia(body.origen, 500);
+  // Consentimiento: qué versión del aviso aceptó y si quiere publicidad.
+  // La casilla obligatoria la impone el formulario; aquí solo se registra.
+  const avisoVersion = limpia(body.avisoVersion, 40);
+  const mercadotecnia = body.mercadotecnia === true;
 
   const digitos = whatsapp.replace(/\D/g, '');
   if (nombre.length < 2 || digitos.length < 10) {
@@ -105,6 +109,8 @@ export const handler = async (event) => {
     `- **Clasificación:** ${etiquetaClasificacion}`,
     `- **Fecha y hora:** ${cuando}`,
     `- **Página de origen:** ${origen || '(no registrada)'}`,
+    `- **Aviso de privacidad aceptado:** versión ${avisoVersion || '(no registrada)'}`,
+    `- **Acepta mercadotecnia:** ${mercadotecnia ? 'Sí' : 'No'}`,
     ``,
     `**Respuestas**`,
     ...lineasRespuestas

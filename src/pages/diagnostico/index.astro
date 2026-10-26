@@ -1,5 +1,7 @@
 ---
 import ToolLanding from '@layouts/ToolLanding.astro';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
+import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
 import { business } from '@data/business';
 import {
   territorios,
@@ -105,13 +107,11 @@ const stats = [
 
         <p id="gate-error" class="gate-error" hidden></p>
 
+        <AvisoSimplificado idPrefix="gate" />
+
         <button type="submit" class="btn btn-primary gate-submit" data-gate-submit>
           Acceder al diagnóstico →
         </button>
-        <p class="gate-helper">
-          Al continuar aceptas que un consultor de Grupo LGO pueda contactarte si tu
-          diagnóstico lo amerita. Sin spam, sin compromiso.
-        </p>
       </form>
     </div>
   </section>
@@ -683,7 +683,7 @@ const stats = [
   }
 </style>
 
-<script define:vars={{ formAjaxEndpoint, business }}>
+<script define:vars={{ formAjaxEndpoint, business, avisoVersion: AVISO_PRIVACIDAD_VERSION }}>
   // ════════════════════════════════════════════════════════════════
   //  DIAGNÓSTICO INTERACTIVO — Flujo con gate + AJAX
   // ════════════════════════════════════════════════════════════════
@@ -861,11 +861,16 @@ const stats = [
       e.preventDefault();
       gateError.hidden = true;
 
+      // El consentimiento viaja en el mismo correo del lead: la casilla
+      // obligatoria ya la impuso el aviso simplificado.
+      const casillaMkt = gateForm.querySelector('[data-aviso-mercadotecnia]');
       const data = {
         name: gateForm.name.value.trim(),
         empresa: gateForm.empresa.value.trim(),
         phone: gateForm.phone.value.trim(),
-        email: gateForm.email.value.trim()
+        email: gateForm.email.value.trim(),
+        aviso_version: avisoVersion,
+        acepta_mercadotecnia: casillaMkt && casillaMkt.checked ? 'Sí' : 'No'
       };
 
       // Validación básica

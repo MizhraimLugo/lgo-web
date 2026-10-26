@@ -1,5 +1,6 @@
 ---
 import Base from '@layouts/Base.astro';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
 import { business } from '@data/business';
 
 const title = 'Contacto y consulta | Grupo LGO — Guadalajara';
@@ -126,6 +127,8 @@ const autoResponse =
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_next" data-next-redirect />
           <input type="hidden" name="_autoresponse" value={autoResponse} />
+
+          <AvisoSimplificado idPrefix="contacto" />
 
           <button type="submit" class="btn btn-primary form-submit">Enviar consulta</button>
         </form>

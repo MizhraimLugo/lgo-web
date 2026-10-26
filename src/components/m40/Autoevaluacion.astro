@@ -20,9 +20,8 @@
 // deja un enlace manual por si el navegador bloqueó la ventana.
 
 import { preguntas, TOTAL_PREGUNTAS } from '@data/amparo-m40-autoevaluacion';
-import { M40, M40_WHATSAPP_URL, M40_WHATSAPP_GENERAL } from '@data/amparo-m40';
-
-const avisoUrl = M40.avisoPrivacidadUrl;
+import { M40_WHATSAPP_URL, M40_WHATSAPP_GENERAL } from '@data/amparo-m40';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
 ---
 <section id="autoevaluacion" class="section band-cream">
   <div class="container-base">
@@ -175,16 +174,7 @@ const avisoUrl = M40.avisoPrivacidadUrl;
             <input type="text" id="ae-empresa" name="empresa" tabindex="-1" autocomplete="off" />
           </div>
 
-          <label class="ae-consentimiento">
-            <input type="checkbox" name="aviso" required data-ae-aviso aria-describedby="ae-aviso-err" />
-            <span>
-              Acepto que Grupo LGO me contacte sobre mi caso y he leído el
-              {avisoUrl
-                ? <a href={avisoUrl}>aviso de privacidad</a>
-                : <span>aviso de privacidad</span>}.
-            </span>
-          </label>
-          <p class="ae-error" id="ae-aviso-err" role="alert" hidden></p>
+          <AvisoSimplificado idPrefix="ae" />
 
           <div class="ae-captura-acciones">
             <button type="submit" class="btn btn-primary" data-ae-enviar>
@@ -447,27 +437,6 @@ const avisoUrl = M40.avisoPrivacidadUrl;
     overflow: hidden;
   }
 
-  .ae-consentimiento {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    cursor: pointer;
-  }
-  .ae-consentimiento input {
-    width: 1.125rem;
-    height: 1.125rem;
-    margin-top: 0.2rem;
-    accent-color: var(--color-accent);
-    flex-shrink: 0;
-  }
-  .ae-consentimiento span {
-    font-size: var(--text-sm);
-    line-height: 1.6;
-    color: var(--color-muted);
-    max-width: 58ch;
-  }
-  .ae-consentimiento a { font-weight: 700; color: var(--color-accent); }
 
   .ae-captura-acciones {
     display: flex;
@@ -498,6 +467,7 @@ const avisoUrl = M40.avisoPrivacidadUrl;
     precioCorto,
     waMensajeAutoevaluacion
   } from '@data/amparo-m40';
+  import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
 
   const raiz = document.querySelector<HTMLElement>('[data-ae]');
 
@@ -534,7 +504,8 @@ const avisoUrl = M40.avisoPrivacidadUrl;
     const inputWhatsapp = captura.querySelector<HTMLInputElement>('#ae-whatsapp')!;
     const inputCorreo = captura.querySelector<HTMLInputElement>('#ae-correo')!;
     const inputEmpresa = captura.querySelector<HTMLInputElement>('#ae-empresa')!;
-    const inputAviso = captura.querySelector<HTMLInputElement>('[data-ae-aviso]')!;
+    const inputAviso = captura.querySelector<HTMLInputElement>('[data-aviso-obligatoria]')!;
+    const inputMercadotecnia = captura.querySelector<HTMLInputElement>('[data-aviso-mercadotecnia]')!;
 
     // ── Estado ───
     let indice = 0;
@@ -737,6 +708,9 @@ const avisoUrl = M40.avisoPrivacidadUrl;
         whatsapp: inputWhatsapp.value.trim(),
         correo: inputCorreo.value.trim(),
         empresa: inputEmpresa.value, // honeypot
+        // Consentimiento: qué versión del aviso aceptó y si quiere publicidad.
+        avisoVersion: AVISO_PRIVACIDAD_VERSION,
+        mercadotecnia: inputMercadotecnia.checked,
         clasificacion: c.id,
         respuestas: Object.fromEntries(
           preguntas.map((p) => [

@@ -21,6 +21,10 @@ export const handler = async (event) => {
   const nombre = limpia(body.nombre, 120);
   const telefono = limpia(body.telefono, 40);
   const correo = limpia(body.correo, 160);
+  // Consentimiento del aviso simplificado: qué versión aceptó y si quiere
+  // comunicaciones comerciales. La casilla obligatoria la impone el formulario.
+  const avisoVersion = limpia(body.avisoVersion, 40);
+  const mercadotecnia = body.mercadotecnia === true;
 
   const telDigits = telefono.replace(/\D/g, '');
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo);
@@ -41,7 +45,9 @@ export const handler = async (event) => {
           name: `Lead contratos: ${nombre}`,
           markdown_description:
             `**Lead del asistente de /contratos**\n\n` +
-            `- **Nombre:** ${nombre}\n- **Teléfono:** ${telefono}\n- **Correo:** ${correo}\n- **Fecha:** ${cuando}`
+            `- **Nombre:** ${nombre}\n- **Teléfono:** ${telefono}\n- **Correo:** ${correo}\n- **Fecha:** ${cuando}` +
+            `\n- **Aviso de privacidad aceptado:** versión ${avisoVersion || '(no registrada)'}` +
+            `\n- **Acepta mercadotecnia:** ${mercadotecnia ? 'Sí' : 'No'}`
         })
       });
       resultados.clickup = r.ok;
@@ -67,6 +73,8 @@ export const handler = async (event) => {
             `<p><strong>Nombre:</strong> ${escapeHtml(nombre)}<br>` +
             `<strong>Teléfono:</strong> ${escapeHtml(telefono)}<br>` +
             `<strong>Correo:</strong> ${escapeHtml(correo)}<br>` +
+            `<strong>Aviso aceptado:</strong> ${escapeHtml(avisoVersion || 'no registrada')}<br>` +
+            `<strong>Acepta mercadotecnia:</strong> ${mercadotecnia ? 'Sí' : 'No'}<br>` +
             `<strong>Fecha:</strong> ${cuando}</p>`
         })
       });

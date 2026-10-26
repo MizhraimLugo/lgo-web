@@ -43,4 +43,28 @@ const perspectivas = defineCollection({
   })
 });
 
-export const collections = { perspectivas };
+// ──────────────────────────────────────────────────────────────────
+//  LEGAL — páginas de texto largo (aviso de privacidad, términos…)
+// ──────────────────────────────────────────────────────────────────
+//
+// Markdown en src/content/legal/. Una página por archivo, renderizada por
+// src/pages/<id>/index.astro. El cuerpo NO lleva su propio H1 ni la fecha:
+// la página los compone desde `title` y `lastUpdated`, así que el documento
+// queda con un solo <h1> y la fecha siempre coincide con el frontmatter.
+
+const legal = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/legal'
+  }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    /** Fecha visible bajo el título, en formato 'YYYY-MM-DD'. */
+    lastUpdated: z.string(),
+    /** Versión del aviso que se registra junto a cada consentimiento. */
+    privacyVersion: z.string()
+  })
+});
+
+export const collections = { perspectivas, legal };
