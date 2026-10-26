@@ -20,9 +20,16 @@
 import Base from '@layouts/Base.astro';
 import Faq from '@components/Faq.astro';
 import Autoevaluacion from '@components/m40/Autoevaluacion.astro';
+import BloqueAutoridad from '@components/m40/BloqueAutoridad.astro';
 import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
 import { business } from '@data/business';
 import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
+import {
+  BLOQUE_PLAZO,
+  BLOQUE_REFORMA,
+  BLOQUE_DEFENSA,
+  AVISOS_AUTORIDAD
+} from '@data/amparo-m40-autoridad';
 import {
   M40,
   M40_WHATSAPP_GENERAL,
@@ -425,8 +432,11 @@ const documentos = [
     </div>
   </section>
 
+  <!-- ═══ A · EL PLAZO (bloques de autoridad) ═══ -->
+  <BloqueAutoridad bloque={BLOQUE_PLAZO} banda="blanco" />
+
   <!-- ═══ 4.3 POR QUÉ HAY DEFENSA ═══ -->
-  <section id="por-que" class="section band-blanco">
+  <section id="por-que" class="section band-cream">
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Por qué hay defensa</span>
@@ -454,6 +464,9 @@ const documentos = [
       </aside>
     </div>
   </section>
+
+  <!-- ═══ C · LA DEFENSA DEL IMSS (bloques de autoridad) ═══ -->
+  <BloqueAutoridad bloque={BLOQUE_DEFENSA} banda="blanco" />
 
   <!-- ═══ 4.4 ¿APLICO? (autoevaluación) ═══ -->
   <Autoevaluacion />
@@ -654,8 +667,11 @@ const documentos = [
     </div>
   </section>
 
+  <!-- ═══ B · LA REFORMA DE 2025 (bloques de autoridad) ═══ -->
+  <BloqueAutoridad bloque={BLOQUE_REFORMA} banda="crema" />
+
   <!-- ═══ 4.9 PREGUNTAS FRECUENTES ═══ -->
-  <section id="preguntas" class="section band-cream">
+  <section id="preguntas" class="section band-blanco">
     <div class="container-base">
       <Faq items={faqsAmparoM40} title="Preguntas frecuentes sobre la Modalidad 40" />
       <a href={M40_WHATSAPP_GENERAL} class="btn btn-outline faq-cta" target="_blank" rel="noopener">
@@ -665,7 +681,7 @@ const documentos = [
   </section>
 
   <!-- ═══ 4.11 QUIÉN TE ATIENDE ═══ -->
-  <section id="quien" class="section band-blanco">
+  <section id="quien" class="section band-cream">
     <div class="container-base">
       <div class="quien">
         <span class="eyebrow">Quién te atiende</span>
@@ -703,6 +719,7 @@ const documentos = [
           La información de esta página es general y no constituye asesoría para un caso
           concreto.
         </li>
+        {AVISOS_AUTORIDAD.map((a) => <li>{a}</li>)}
         <li>
           El resultado de un juicio de amparo depende de la valoración de la autoridad
           judicial; no garantizamos resultados.
@@ -979,7 +996,8 @@ const documentos = [
     gap: 0.875rem;
     margin-top: 2rem;
     padding: 1.25rem 1.5rem;
-    background: var(--color-surface-alt);
+    /* La sección pasó a banda crema: la caja se despega en blanco. */
+    background: var(--color-surface);
     border-left: 3px solid var(--color-border-strong);
     border-radius: var(--radius-xs);
     max-width: 58rem;

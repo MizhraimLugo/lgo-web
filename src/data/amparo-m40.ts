@@ -30,11 +30,39 @@ export const M40 = {
     /** Inicio de vigencia del tope para nuevas inscripciones. [VERIFICAR] */
     vigenciaDesde: '2026-10-22'
   },
+  /** La reforma a la Ley de Amparo que endureció el acceso. [VERIFICAR] */
+  reformaAmparo: {
+    fechaDOF: '2025-10-16',
+    vigenciaDesde: '2025-10-17'
+  },
   plazos: {
     /** Fecha de corte interno de recepción de expedientes. Es la que se muestra al público. */
     corteInterno: '2026-11-26',
     /** Último día de vigencia del precio de lanzamiento. */
-    lanzamientoHasta: '2026-11-15'
+    lanzamientoHasta: '2026-11-15',
+    /**
+     * Días hábiles para impugnar el acuerdo por su sola vigencia.
+     * [VERIFICAR] artículo 17, fracción I de la Ley de Amparo.
+     */
+    diasAcuerdo: 30,
+    /**
+     * Días hábiles para impugnar la respuesta del IMSS a una solicitud.
+     * [VERIFICAR] artículo 17, primer párrafo de la Ley de Amparo.
+     */
+    diasRespuesta: 15,
+    /**
+     * Vencimiento del plazo contra el acuerdo, según el cómputo del despacho.
+     *
+     * NO es un dato que se derive solo: depende de los días que el Poder
+     * Judicial declare inhábiles. Por eso vive aquí, fechado y marcado, y no
+     * se calcula en la plantilla: si el calendario cambia, se corrige en un
+     * lugar y la página entera lo refleja.
+     *
+     * [VERIFICAR] calendario oficial de días inhábiles del PJF para 2026.
+     */
+    vencimientoAcuerdo: '2026-12-03',
+    /** Años para ejercer la continuación voluntaria. [VERIFICAR art. 219 LSS] */
+    aniosContinuacion: 5
   },
   precios: {
     /** Tasa de IVA aplicable. Los montos de abajo son ANTES de IVA, en MXN. */

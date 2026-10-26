@@ -422,6 +422,16 @@ test('la pregunta de plazos no abre con nuestra fecha de corte', async () => {
 
   const primeraFrase = plazos.a.split('. ')[0];
   assert.doesNotMatch(primeraFrase, /\d{1,2} de \w+ de \d{4}/, 'la primera frase no lleva la fecha');
-  assert.match(plazos.a, /no es el mismo que nuestra fecha|fecha interna/i);
-  assert.match(plazos.a, /plazo (de la ley|legal)/i);
+
+  // Tiene que distinguir los dos relojes: el que da la ley, en días hábiles,
+  // y el nuestro, rotulado como propio.
+  assert.match(plazos.a, /días hábiles/i, 'menciona el plazo legal en días hábiles');
+  assert.match(
+    plazos.a,
+    /nuestro cómputo|nuestra fecha|fecha interna|nosotros recibimos/i,
+    'marca como nuestra la fecha de recepción'
+  );
+  // Y los plazos que cita son los de la configuración, no otros.
+  assert.ok(plazos.a.includes(`${M40.plazos.diasAcuerdo} días hábiles`));
+  assert.ok(plazos.a.includes(`${M40.plazos.diasRespuesta} días hábiles`));
 });

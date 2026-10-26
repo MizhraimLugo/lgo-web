@@ -22,9 +22,10 @@
 //
 // VERIFICAR (sección 9 del encargo) — afirmaciones jurídicas pendientes de
 // cotejo contra fuente oficial antes del merge:
-//   · P1 «¿Hasta cuándo puedo ampararme?» — las dos vías (impugnar el acuerdo
-//     por sí mismo o reclamar el acto concreto de aplicación) y que sus plazos
-//     corren por separado.
+//   · P1 «¿Hasta cuándo puedo ampararme?» — los plazos concretos y el cómputo
+//     del vencimiento. El texto es el Bloque D del documento de autoridad de
+//     Edgar; las fechas y los días salen de `M40.plazos`, así que esta
+//     respuesta y el bloque del plazo no pueden decir cosas distintas.
 //   · P2 «¿Me sirve si empecé a cotizar después de 1997?» — cómo se calcula la
 //     pensión con la Ley de 1973 (salario promedio de los últimos años) frente
 //     a la de 1997 (cuenta individual).
@@ -40,6 +41,7 @@ import type { FaqItem } from './faqs';
 import { M40, fechaLarga, fechaCorta } from './amparo-m40.ts';
 
 const corte = fechaLarga(M40.plazos.corteInterno);
+const vence = fechaLarga(M40.plazos.vencimientoAcuerdo);
 /** Año de la última revisión, para fechar lo que caduca. */
 const anio = M40.ultimaActualizacion.slice(0, 4);
 
@@ -51,7 +53,7 @@ export const faqsAmparoM40: FaqItem[] = [
     // estarlo. Primero la distinción, después la fecha, siempre rotulada.
     // VERIFICAR: las dos vías y que sus plazos corren por separado.
     q: '¿Hasta cuándo puedo ampararme?',
-    a: `Depende del camino, y el plazo de la ley no es el mismo que nuestra fecha de recepción. En LGO recibimos expedientes para el amparo contra el tope de la Modalidad 40 hasta el ${corte}: esa es una fecha interna nuestra, el margen que necesitamos para revisar tus documentos y preparar el caso sin prisas. El plazo legal corre aparte y hay dos caminos: pelear el acuerdo del IMSS en sí, cuyo término es breve y ya empezó, o esperar a que el IMSS te aplique el tope al contestar un trámite tuyo, lo que abre un plazo propio y más corto desde esa respuesta. Si el IMSS ya te contestó aplicando el tope, escríbenos hoy. Cuál de los dos corre en tu caso y cuántos días quedan te lo decimos en el diagnóstico, con tus fechas a la vista.`
+    a: `Depende de tu caso. Contra el acuerdo, el plazo de ${M40.plazos.diasAcuerdo} días hábiles corre desde el ${fechaLarga(M40.acuerdo.vigenciaDesde)} y, por nuestro cómputo, vence el ${vence}; nosotros recibimos expedientes hasta el ${corte} para presentar con margen. Si el IMSS ya respondió una solicitud tuya aplicando el tope, tienes ${M40.plazos.diasRespuesta} días hábiles desde el día siguiente a que surta efectos esa notificación. Escríbenos y te decimos en qué reloj estás.`
   },
   {
     // VERIFICAR: cómo se calcula la pensión en cada régimen.

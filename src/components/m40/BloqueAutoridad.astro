@@ -1,0 +1,180 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  BLOQUE DE AUTORIDAD — texto público + fundamento desplegable
+// ════════════════════════════════════════════════════════════════
+//
+// Dos capas que no se mezclan, como pide el documento de autoridad:
+//
+//   · Arriba, lo que lee cualquiera. Sin artículos ni fracciones.
+//   · Abajo, un <details> con las citas legales, en tipografía menor.
+//
+// El desplegable es un <details> nativo: funciona sin JavaScript, el
+// buscador lo indexa aunque esté cerrado y el lector de pantalla lo anuncia
+// como lo que es. El fundamento NO se oculta a los rastreadores —es
+// precisamente la parte que demuestra que la página sabe de lo que habla—,
+// solo se guarda para no estorbarle a quien no es abogado.
+//
+// Los textos llegan con `<strong>` y se pintan con `set:html`: son cadenas
+// nuestras, literales en @data/amparo-m40-autoridad, sin nada de origen
+// externo.
+
+import type { BloqueAutoridad } from '@data/amparo-m40-autoridad';
+
+export interface Props {
+  bloque: BloqueAutoridad;
+  /** Banda de fondo, para mantener la alternancia de la página. */
+  banda?: 'blanco' | 'crema';
+}
+
+const { bloque, banda = 'blanco' } = Astro.props;
+---
+<section id={bloque.id} class:list={['section', banda === 'crema' ? 'band-cream' : 'band-blanco']}>
+  <div class="container-base">
+    <header class="section-head">
+      <span class="eyebrow">{bloque.eyebrow}</span>
+      <h2>{bloque.titulo}</h2>
+    </header>
+
+    <div class="autoridad">
+      {bloque.cuerpo.map((t) =>
+        t.tipo === 'intro' ? (
+          <p class="autoridad-intro" set:html={t.texto} />
+        ) : t.tipo === 'apartado' ? (
+          <div class="autoridad-apartado">
+            <h3>{t.titulo}</h3>
+            {t.parrafos.map((p) => <p set:html={p} />)}
+          </div>
+        ) : t.tipo === 'cierre' ? (
+          <p class="autoridad-cierre" set:html={t.texto} />
+        ) : (
+          <p class="autoridad-nota" set:html={t.texto} />
+        )
+      )}
+
+      <details class="fundamento">
+        <summary>
+          Ver fundamento legal
+          <span class="fundamento-icono" aria-hidden="true">+</span>
+        </summary>
+        <div class="fundamento-cuerpo">
+          <ul>
+            {bloque.fundamento.map((f) => <li>{f}</li>)}
+          </ul>
+          {bloque.fundamentoNota && <p class="fundamento-nota">{bloque.fundamentoNota}</p>}
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band-blanco { background: var(--color-surface); }
+
+  /* Mismo tratamiento de encabezado que el resto de la página: sus estilos
+     viven en la plantilla y el ámbito de Astro no los trae hasta aquí. */
+  .section-head { margin-bottom: 2.5rem; max-width: 44rem; }
+  .section-head h2 {
+    margin: 1rem 0 0;
+    font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    max-width: 26ch;
+  }
+
+  .autoridad { max-width: var(--container-prose); }
+
+  .autoridad-intro {
+    margin: 0 0 1.75rem;
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+
+  .autoridad-apartado { margin-bottom: 1.75rem; }
+  .autoridad-apartado h3 {
+    margin: 0 0 0.625rem;
+    font-size: var(--text-lg);
+    line-height: 1.35;
+    color: var(--color-foreground-strong);
+  }
+  .autoridad-apartado p {
+    margin: 0 0 0.875rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .autoridad-apartado p:last-child { margin-bottom: 0; }
+
+  .autoridad-nota,
+  .autoridad-cierre {
+    margin: 0 0 1.75rem;
+    padding-left: 1.125rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .autoridad :global(strong) { color: var(--color-foreground-strong); font-weight: 700; }
+
+  /* ── Fundamento ── */
+  .fundamento {
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .fundamento > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 48px;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-accent-strong);
+  }
+  .fundamento > summary::-webkit-details-marker { display: none; }
+  .fundamento > summary:hover { color: var(--color-accent-deep); }
+  .fundamento-icono {
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 200ms ease;
+  }
+  .fundamento[open] .fundamento-icono { transform: rotate(45deg); }
+
+  .fundamento-cuerpo { padding-bottom: 1.5rem; }
+  .fundamento-cuerpo ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+  }
+  .fundamento-cuerpo li {
+    position: relative;
+    padding-left: 1.125rem;
+    /* Tipografía menor: es material de consulta, no de lectura corrida. */
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+  .fundamento-cuerpo li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+  .fundamento-nota {
+    margin: 1.25rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider);
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+</style>
