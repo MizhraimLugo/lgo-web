@@ -1111,8 +1111,16 @@ const documentos = [
   .faq-cta { margin-top: 2rem; }
 
   /* ── 4.10 CHECKLIST ── */
-  .checklist { display: grid; grid-template-columns: 1fr; gap: 0.75rem; max-width: 48rem; }
-  @media (min-width: 760px) { .checklist { grid-template-columns: 1fr 1fr; } }
+  /* Una sola columna. En dos, los cinco puntos dejaban filas de altura
+     dispar —unos caben en un renglón y otros no— y el último se quedaba
+     solo en la última fila. Es una lista para ir tachando: se lee hacia
+     abajo. */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    max-width: 40rem;
+  }
   .checklist li {
     display: flex;
     align-items: flex-start;
