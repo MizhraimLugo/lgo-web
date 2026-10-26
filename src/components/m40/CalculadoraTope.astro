@@ -1,0 +1,398 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  CALCULADORA DEL TOPE — cuánto salario te recorta el acuerdo
+// ════════════════════════════════════════════════════════════════
+//
+// Las dos tarjetas de arriba enfrentan los topes generales, pero el tope nuevo
+// es el último salario de cada quien más una UMA: la cifra que importa es
+// distinta para cada visitante. Esto la calcula con dos números que ya sabe.
+//
+// EL LÍMITE, que no se mueve: esto compara SALARIO REGISTRABLE, no pensión.
+// La pensión depende de las semanas cotizadas, del promedio de las últimas 250
+// y de la edad de retiro; estimarla aquí sería publicar una cifra que nadie
+// verificó. El resultado lo dice con todas sus letras, en el cuerpo y no en
+// letra chica.
+//
+// NO SE RECABA NADA. Los dos campos viven y mueren en el navegador: no hay
+// envío, no hay almacenamiento, no hay aviso de privacidad que mostrar porque
+// no hay tratamiento de datos. Por eso tampoco lleva `data-aviso`.
+//
+// Sin JavaScript se ve el enlace a WhatsApp en lugar del formulario: más vale
+// no ofrecer la herramienta que ofrecerla rota.
+
+import { M40_WHATSAPP_GENERAL } from '@data/amparo-m40';
+---
+<div class="calc" data-calc>
+  <h3 class="calc-titulo">Cuánto te recorta a ti</h3>
+  <p class="calc-intro">
+    Dos cifras y lo sabes. No pedimos ningún dato personal: los números se quedan
+    en tu navegador y no se envían a ninguna parte.
+  </p>
+
+  {/* Lo que se ve si el script no corre. El propio script lo esconde. */}
+  <p class="calc-sinjs" data-calc-sinjs>
+    <a href={M40_WHATSAPP_GENERAL} target="_blank" rel="noopener">
+      Escríbenos y lo calculamos contigo
+    </a>
+  </p>
+
+  <form class="calc-form" data-calc-form hidden novalidate>
+    <div class="calc-campos">
+      <div class="calc-campo">
+        <label for="calc-ultimo">Tu último salario, al mes</label>
+        <div class="calc-input">
+          <span class="calc-signo" aria-hidden="true">$</span>
+          <input
+            type="text"
+            id="calc-ultimo"
+            data-calc-ultimo
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="20,000"
+            aria-describedby="calc-ultimo-ayuda"
+          />
+        </div>
+        <p class="calc-ayuda" id="calc-ultimo-ayuda">
+          El que tenías registrado cuando te dieron de baja.
+        </p>
+      </div>
+
+      <div class="calc-campo">
+        <label for="calc-meta">Con cuánto querías registrarte</label>
+        <div class="calc-input">
+          <span class="calc-signo" aria-hidden="true">$</span>
+          <input
+            type="text"
+            id="calc-meta"
+            data-calc-meta
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="50,000"
+            aria-describedby="calc-meta-ayuda"
+          />
+        </div>
+        <p class="calc-ayuda" id="calc-meta-ayuda">
+          Lo que pensabas cotizar en Modalidad 40.
+        </p>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary calc-btn" data-calc-btn>
+      Ver cuánto cambia
+    </button>
+
+    <p class="calc-error" data-calc-error role="alert" hidden></p>
+  </form>
+
+  <div class="calc-resultado" data-calc-resultado aria-live="polite" hidden>
+    <div class="calc-comparacion">
+      <div class="calc-lado">
+        <span class="calc-lado-rotulo">Antes podías registrar</span>
+        <p class="calc-lado-cifra" data-calc-antes></p>
+      </div>
+      <div class="calc-lado calc-lado--ahora">
+        <span class="calc-lado-rotulo">Ahora puedes registrar</span>
+        <p class="calc-lado-cifra" data-calc-ahora></p>
+      </div>
+    </div>
+
+    <p class="calc-veredicto" data-calc-veredicto></p>
+
+    {/* El límite va en el cuerpo del resultado, no en una nota al pie: es la
+        advertencia que evita que alguien lea un recorte de salario como un
+        recorte de pensión. */}
+    <p class="calc-limite">
+      Esto es <strong>salario registrado, no pensión</strong>. Cuánto cambia tu pensión
+      depende de tus semanas cotizadas, del promedio de las últimas 250 y de tu edad de
+      retiro. Eso se revisa caso por caso.
+    </p>
+
+    <div class="calc-acciones">
+      <a href="#autoevaluacion" class="btn btn-outline">Ver si tu caso aplica</a>
+      <button type="button" class="btn btn-ghost" data-calc-otro>Probar otras cifras</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .calc {
+    margin-top: 2.5rem;
+    padding: 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    max-width: 44rem;
+  }
+  @media (min-width: 34rem) { .calc { padding: 1.75rem; } }
+  @media (min-width: 48rem) { .calc { padding: 2rem 2.25rem; } }
+
+  .calc-titulo {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-xl);
+    line-height: 1.25;
+    color: var(--color-foreground-strong);
+  }
+  .calc-intro {
+    margin: 0 0 1.5rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .calc-sinjs { margin: 0; font-size: var(--text-base); font-weight: 600; }
+
+  /* ── Campos ── */
+  .calc-campos { display: grid; gap: 1.125rem; margin-bottom: 1.5rem; }
+  @media (min-width: 34rem) {
+    .calc-campos { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  }
+
+  /* Un <input> trae un ancho intrínseco de unos 285 px (su `size` por defecto)
+     y un elemento de rejilla no se encoge por debajo de su contenido mínimo:
+     sin esto, los dos campos empujan la tarjeta fuera de una pantalla de 360. */
+  .calc-campo { min-width: 0; }
+  .calc-input { min-width: 0; }
+
+  .calc-campo label {
+    display: block;
+    margin-bottom: 0.4375rem;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+  .calc-input {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    background: var(--color-surface);
+    overflow: hidden;
+    transition: border-color 160ms ease;
+  }
+  .calc-input:focus-within { border-color: var(--color-accent); }
+  .calc-signo {
+    display: flex;
+    align-items: center;
+    padding: 0 0.625rem 0 0.875rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-muted);
+    background: var(--color-background);
+    border-right: 1px solid var(--color-divider);
+  }
+  .calc-input input {
+    flex: 1;
+    min-width: 0;
+    min-height: 48px;
+    padding: 0.625rem 0.875rem 0.625rem 0.75rem;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-foreground-strong);
+  }
+  .calc-input input:focus { outline: none; }
+  .calc-input:has(input:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  .calc-ayuda {
+    margin: 0.375rem 0 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .calc-btn { width: 100%; }
+  @media (min-width: 34rem) { .calc-btn { width: auto; } }
+
+  .calc-error {
+    margin: 0.875rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    font-weight: 600;
+    color: var(--color-accent-deep);
+  }
+
+  /* ── Resultado ── */
+  .calc-resultado { margin-top: 1.75rem; }
+
+  .calc-comparacion {
+    display: grid;
+    gap: 1px;
+    background: var(--color-divider);
+    border: 1px solid var(--color-divider);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+  @media (min-width: 34rem) {
+    .calc-comparacion { grid-template-columns: 1fr 1fr; }
+  }
+  /* Cuando el acuerdo no recorta nada no hay dos lados que enfrentar. */
+  .calc-resultado[data-sin-recorte] .calc-comparacion { display: none; }
+
+  .calc-lado { padding: 1.125rem 1.25rem; background: var(--color-surface); }
+  .calc-lado--ahora { background: var(--color-background); }
+  .calc-lado-rotulo {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .calc-lado-cifra {
+    margin: 0;
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-foreground-strong);
+  }
+
+  .calc-veredicto {
+    margin: 1.25rem 0 0;
+    padding-left: 1.125rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    color: var(--color-foreground-strong);
+  }
+  .calc-veredicto :global(strong) {
+    display: block;
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.125rem;
+  }
+
+  .calc-limite {
+    margin: 1.25rem 0 0;
+    padding-top: 1.125rem;
+    border-top: 1px solid var(--color-divider);
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+  .calc-limite strong { color: var(--color-foreground-strong); }
+
+  .calc-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.375rem;
+  }
+</style>
+
+<script>
+  import { fmtMXN } from '@data/amparo-m40';
+  import { calcularTope, validarTope, type ErrorTope } from '@data/amparo-m40-tope';
+
+  const raiz = document.querySelector<HTMLElement>('[data-calc]');
+
+  if (raiz) {
+    const sinJs = raiz.querySelector<HTMLElement>('[data-calc-sinjs]')!;
+    const form = raiz.querySelector<HTMLFormElement>('[data-calc-form]')!;
+    const inputUltimo = raiz.querySelector<HTMLInputElement>('[data-calc-ultimo]')!;
+    const inputMeta = raiz.querySelector<HTMLInputElement>('[data-calc-meta]')!;
+    const error = raiz.querySelector<HTMLElement>('[data-calc-error]')!;
+    const resultado = raiz.querySelector<HTMLElement>('[data-calc-resultado]')!;
+    const antesEl = raiz.querySelector<HTMLElement>('[data-calc-antes]')!;
+    const ahoraEl = raiz.querySelector<HTMLElement>('[data-calc-ahora]')!;
+    const veredicto = raiz.querySelector<HTMLElement>('[data-calc-veredicto]')!;
+    const btnOtro = raiz.querySelector<HTMLButtonElement>('[data-calc-otro]')!;
+
+    // El script corrió: cambiamos el enlace por la herramienta.
+    sinJs.hidden = true;
+    form.hidden = false;
+
+    /** Lo que escribe la gente: "20,000", "$20 000", "20000.50". */
+    const aNumero = (txt: string): number => {
+      const limpio = txt.replace(/[^\d.]/g, '');
+      return limpio === '' ? Number.NaN : Number(limpio);
+    };
+
+    // Los centavos se respetan: mostrar "20,001" cuando se escribió 20000.50
+    // haría que la cifra en pantalla no cuadre con el resultado.
+    const conSeparadores = (n: number) =>
+      n.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
+    const MENSAJES: Record<ErrorTope, string> = {
+      'ultimo-vacio': 'Escribe el salario con el que te dieron de baja.',
+      'meta-vacia': 'Escribe el salario con el que querías registrarte.',
+      'meta-menor':
+        'El salario con el que querías registrarte es menor al que ya tenías. Revisa las dos cifras.'
+    };
+
+    // Al salir del campo, la cifra se acomoda con separadores de miles.
+    for (const campo of [inputUltimo, inputMeta]) {
+      campo.addEventListener('blur', () => {
+        const n = aNumero(campo.value);
+        if (Number.isFinite(n) && n > 0) campo.value = conSeparadores(n);
+      });
+    }
+
+    const mostrarError = (texto: string) => {
+      error.textContent = texto;
+      error.hidden = false;
+      resultado.hidden = true;
+    };
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+
+      const ultimo = aNumero(inputUltimo.value);
+      const meta = aNumero(inputMeta.value);
+
+      const falla = validarTope(ultimo, meta);
+      if (falla) {
+        mostrarError(MENSAJES[falla]);
+        (falla === 'meta-vacia' ? inputMeta : inputUltimo).focus();
+        return;
+      }
+
+      error.hidden = true;
+
+      // Enviar con Enter no dispara el `blur`, así que las dos cifras se
+      // acomodan aquí: el resultado y los campos deben verse iguales.
+      inputUltimo.value = conSeparadores(ultimo);
+      inputMeta.value = conSeparadores(meta);
+
+      const r = calcularTope(ultimo, meta);
+
+      if (r.afecta) {
+        delete resultado.dataset.sinRecorte;
+        antesEl.textContent = fmtMXN(Math.round(r.antes));
+        ahoraEl.textContent = fmtMXN(Math.round(r.ahora));
+        veredicto.innerHTML =
+          `<strong>${fmtMXN(Math.round(r.recorte))}</strong> menos al mes de salario registrado` +
+          (r.metaSobreTopeGeneral
+            ? ', contando desde el tope general que ya existía antes del acuerdo.'
+            : '.');
+      } else {
+        // Sin recorte no se enfrentan dos cifras: se dice que no le toca.
+        resultado.dataset.sinRecorte = '';
+        veredicto.innerHTML =
+          '<strong>El acuerdo no te limita.</strong> Lo que querías registrar cabe dentro ' +
+          'del tope nuevo, así que puedes inscribirte con esa cantidad.';
+      }
+
+      resultado.hidden = false;
+    });
+
+    btnOtro.addEventListener('click', () => {
+      resultado.hidden = true;
+      error.hidden = true;
+      inputUltimo.value = '';
+      inputMeta.value = '';
+      inputUltimo.focus();
+    });
+  }
+</script>

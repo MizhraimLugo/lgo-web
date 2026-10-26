@@ -22,6 +22,7 @@ import Faq from '@components/Faq.astro';
 import Autoevaluacion from '@components/m40/Autoevaluacion.astro';
 import BloqueAutoridad from '@components/m40/BloqueAutoridad.astro';
 import SelectorPlazo from '@components/m40/SelectorPlazo.astro';
+import CalculadoraTope from '@components/m40/CalculadoraTope.astro';
 import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
 import { business } from '@data/business';
 import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
@@ -427,9 +428,7 @@ const documentos = [
         pensión que tenías proyectada.
       </p>
 
-      <a href="#autoevaluacion" class="enlace-flecha">
-        Calcular si me afecta <span aria-hidden="true">&rarr;</span>
-      </a>
+      <CalculadoraTope />
     </div>
   </section>
 
@@ -906,20 +905,6 @@ const documentos = [
     color: var(--color-foreground-strong);
     max-width: 46ch;
   }
-
-  /* El naranja base no alcanza 4.5:1 sobre crema en texto chico; este enlace
-     usa el tono profundo del mismo token para cumplir contraste. */
-  .enlace-flecha {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 48px;
-    margin-top: 1.25rem;
-    font-size: var(--text-base);
-    font-weight: 700;
-    color: var(--color-accent-deep);
-  }
-  .enlace-flecha:hover { text-decoration: underline; }
 
   /* ── 4.2 LOS DOS TOPES ── */
   .topes { display: grid; grid-template-columns: 1fr; gap: 1rem; }
