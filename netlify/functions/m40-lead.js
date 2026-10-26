@@ -5,25 +5,56 @@
 // secretos solo en variables de entorno del servidor y la respuesta nunca
 // bloquea al visitante — la isla ya lo mandó a WhatsApp antes de llamar aquí.
 //
+// Dos canales, y el segundo existe por una razón concreta: el mensaje de
+// WhatsApp que el visitante acaba de enviar trae su nombre y su clasificación,
+// pero NO trae la versión del aviso de privacidad que aceptó ni si autorizó
+// mercadotecnia. Si ClickUp no recibe el lead y no hubiera respaldo, ese
+// consentimiento no quedaría registrado en ninguna parte.
+//
+//   1. ClickUp, la lista "Amparo M40".
+//   2. Si ClickUp falla o no está configurado, correo a LEAD_EMAIL_TO con el
+//      expediente completo. Se registra con nivel `error`, no `warn`.
+//
+// El visitante no depende de ninguno de los dos: la isla lo mandó a WhatsApp
+// antes de llamar aquí.
+//
 // Variables de entorno (Netlify, nunca en el repositorio):
 //   CLICKUP_API_TOKEN     token de la integración (el mismo de registrar-lead).
 //                         Se acepta CLICKUP_TOKEN como alias.
 //   CLICKUP_M40_LIST_ID   id de la lista "Amparo M40". Es una variable PROPIA:
 //                         CLICKUP_LIST_ID ya apunta a la lista de /contratos y
 //                         los leads de M40 no deben caer ahí.
+//   RESEND_API_KEY        el mismo de registrar-lead.js. Sin él no hay respaldo.
+//   LEAD_EMAIL_FROM       remitente. Opcional; hay valor por defecto.
+//   LEAD_EMAIL_TO         destinatario. Opcional; por defecto contacto@lgo.mx.
 //
-// Datos personales: se envían a ClickUp (destinatario previsto) y NO se
+// Datos personales: se envían a ClickUp y, como respaldo, al correo de la
+// propia firma —los dos son destinatarios previstos en el aviso— y NO se
 // escriben en los logs. A los logs solo van el resultado de la operación y la
 // clasificación, que no identifica a nadie.
 
 const CLICKUP_TOKEN = process.env.CLICKUP_API_TOKEN || process.env.CLICKUP_TOKEN;
 const CLICKUP_LIST = process.env.CLICKUP_M40_LIST_ID;
 
+// Mismas variables que registrar-lead.js y generar.js: si Resend ya está
+// configurado para el resto del sitio, el respaldo funciona sin dar de alta
+// nada nuevo. [VERIFICAR] qué remitente tiene verificado el dominio en Resend:
+// registrar-lead usa `no-reply@lgo.mx` y generar.js `no-reply@send.lgo.mx`.
+const EMAIL_FROM = process.env.LEAD_EMAIL_FROM || 'Amparo M40 LGO <no-reply@lgo.mx>';
+const EMAIL_TO = process.env.LEAD_EMAIL_TO || 'contacto@lgo.mx';
+
 /** Tope del cuerpo de la petición. Un lead legítimo ronda 1 KB. */
 const MAX_BODY = 8_000;
 
-/** Estatus inicial de la tarjeta en la lista. Lo configura Edgar en ClickUp. */
-const ESTATUS_INICIAL = 'Lead';
+/**
+ * Estatus inicial de la tarjeta en la lista "Amparo M40 - Leads y expedientes".
+ *
+ * Es "en proceso" —un estatus que ClickUp trae de fábrica— y no "Lead", porque
+ * la lista todavía no tiene su flujo propio configurado. Cuando Edgar lo cree,
+ * basta cambiar esta línea: si el estatus no existiera, el alta se reintenta
+ * sola en modo degradado y el lead no se pierde.
+ */
+const ESTATUS_INICIAL = 'en proceso';
 
 /**
  * Espejo mínimo de src/data/amparo-m40.ts y de las clasificaciones de
@@ -84,12 +115,9 @@ export const handler = async (event) => {
     return json(400, { error: 'Clasificación desconocida.' });
   }
 
-  if (!CLICKUP_TOKEN || !CLICKUP_LIST) {
-    console.warn('m40-lead: ClickUp no configurado (CLICKUP_API_TOKEN / CLICKUP_M40_LIST_ID).');
-    return json(200, { ok: true, registrado: false });
-  }
-
-  // ── Expediente de la tarea ──
+  // ── Expediente ──
+  // Se arma SIEMPRE, antes de saber si ClickUp está disponible: es el mismo
+  // contenido que llevan la tarea y el correo de respaldo.
   const cuando = new Date().toISOString();
   const respuestas = body.respuestas && typeof body.respuestas === 'object' ? body.respuestas : {};
 
@@ -132,10 +160,109 @@ export const handler = async (event) => {
     due_date_time: false
   };
 
-  const alta = await crearTarea(tarea);
-  if (!alta.ok) return json(502, { ok: false, error: 'No se pudo registrar el lead.' });
-  return json(200, { ok: true, registrado: true, degradado: alta.degradado });
+  // ── Registro: ClickUp primero; el correo entra solo si ClickUp no lo recibió ──
+  const registrado = { clickup: false, correo: false, degradado: false };
+
+  if (CLICKUP_TOKEN && CLICKUP_LIST) {
+    const alta = await crearTarea(tarea);
+    registrado.clickup = alta.ok;
+    registrado.degradado = !!alta.degradado;
+  } else {
+    // Nivel `error`, no `warn`: sin esta variable el consentimiento del aviso
+    // de privacidad no queda registrado en ninguna parte, y eso no es una
+    // advertencia de operación, es una falla que hay que atender.
+    console.error(
+      'm40-lead: ClickUp NO configurado (CLICKUP_API_TOKEN / CLICKUP_M40_LIST_ID).' +
+        ' Se intenta el respaldo por correo.'
+    );
+  }
+
+  if (!registrado.clickup) {
+    registrado.correo = await enviarRespaldo({
+      nombre,
+      whatsapp,
+      correo,
+      etiquetaClasificacion,
+      cuando,
+      origen,
+      avisoVersion,
+      mercadotecnia,
+      respuestas
+    });
+  }
+
+  if (!registrado.clickup && !registrado.correo) {
+    console.error('m40-lead: el lead NO quedó registrado en ningún canal.');
+    return json(502, { ok: false, error: 'No se pudo registrar el lead.' });
+  }
+  return json(200, { ok: true, registrado });
 };
+
+/**
+ * Respaldo por correo cuando ClickUp no recibió el lead.
+ *
+ * Existe para que el consentimiento nunca se quede sin registrar: el visitante
+ * ya se fue a WhatsApp, pero la versión del aviso que aceptó y si autorizó
+ * mercadotecnia solo viven aquí. Un mensaje de WhatsApp trae el nombre y la
+ * clasificación; no trae nada de esto.
+ *
+ * Usa las mismas variables que el resto de las funciones del sitio, así que si
+ * Resend ya está configurado no hay que dar de alta nada nuevo.
+ */
+async function enviarRespaldo(datos) {
+  if (!process.env.RESEND_API_KEY) {
+    console.error('m40-lead: Resend tampoco está configurado (RESEND_API_KEY). El lead se pierde.');
+    return false;
+  }
+
+  const filas = M40_FUNCION.codigos.map((codigo) => {
+    const r = datos.respuestas[codigo];
+    const pregunta = limpia(r && r.pregunta, 200) || '(sin registrar)';
+    const respuesta = limpia(r && r.respuesta, 200) || '(sin respuesta)';
+    return `<tr><td><strong>${codigo}</strong></td><td>${escapeHtml(pregunta)}</td><td>${escapeHtml(respuesta)}</td></tr>`;
+  });
+
+  const html =
+    `<h2>Lead de Modalidad 40 — respaldo por correo</h2>` +
+    `<p>Este lead llega por correo porque <strong>no se pudo dar de alta en ClickUp</strong>. ` +
+    `Revisa <code>CLICKUP_M40_LIST_ID</code> y <code>CLICKUP_API_TOKEN</code> en Netlify.</p>` +
+    `<p><strong>Nombre:</strong> ${escapeHtml(datos.nombre)}<br>` +
+    `<strong>WhatsApp:</strong> ${escapeHtml(datos.whatsapp)}<br>` +
+    `<strong>Correo:</strong> ${escapeHtml(datos.correo || '(no proporcionado)')}<br>` +
+    `<strong>Clasificación:</strong> ${escapeHtml(datos.etiquetaClasificacion)}<br>` +
+    `<strong>Fecha y hora:</strong> ${escapeHtml(datos.cuando)}<br>` +
+    `<strong>Página de origen:</strong> ${escapeHtml(datos.origen || '(no registrada)')}<br>` +
+    `<strong>Aviso de privacidad aceptado:</strong> versión ${escapeHtml(datos.avisoVersion || '(no registrada)')}<br>` +
+    `<strong>Acepta mercadotecnia:</strong> ${datos.mercadotecnia ? 'Sí' : 'No'}</p>` +
+    `<h3>Respuestas</h3>` +
+    `<table border="1" cellpadding="6" cellspacing="0">${filas.join('')}</table>`;
+
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: EMAIL_FROM,
+        to: [EMAIL_TO],
+        ...(datos.correo ? { reply_to: datos.correo } : {}),
+        subject: `[Respaldo] Lead M40: ${datos.nombre} · ${datos.etiquetaClasificacion}`,
+        html
+      })
+    });
+    if (r.ok) {
+      console.error('m40-lead: lead entregado por correo de respaldo; ClickUp sigue sin recibirlo.');
+      return true;
+    }
+    console.error('m40-lead: Resend rechazó el respaldo', r.status, (await r.text()).slice(0, 300));
+    return false;
+  } catch (err) {
+    console.error('m40-lead: error de red con Resend', err && err.message);
+    return false;
+  }
+}
 
 /**
  * Crea la tarea en ClickUp. Si la lista todavía no tiene la etiqueta o el
@@ -193,6 +320,14 @@ function manana() {
 }
 
 function limpia(v, max) { return (typeof v === 'string' ? v : '').trim().slice(0, max); }
+
+/** Escapa lo que va al HTML del correo de respaldo: son datos del visitante. */
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
 function json(statusCode, obj) {
   return { statusCode, headers: { 'content-type': 'application/json' }, body: JSON.stringify(obj) };

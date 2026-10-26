@@ -347,9 +347,14 @@ test('fechaMexicoAMs: mediodía de Ciudad de México, no del host', () => {
 
 // ── Contrato HTTP de la función ──
 //
-// Sin CLICKUP_API_TOKEN ni CLICKUP_M40_LIST_ID en el entorno, el alta se omite
-// y la respuesta es 200 con `registrado: false`: el visitante nunca ve un error
-// porque la lista no esté configurada.
+// En las pruebas no hay ninguna variable de entorno, así que ningún canal de
+// registro está disponible y un lead válido termina en 502. Eso NO afecta al
+// visitante: la isla lo mandó a WhatsApp antes de llamar aquí y descarta la
+// respuesta.
+//
+// Por eso las pruebas de validación comprueban "no es 400" en lugar de "es
+// 200": lo que verifican es que el cuerpo se acepta, no qué pasó después con
+// el registro. Mezclar las dos cosas las ataba a una configuración.
 
 const post = (cuerpo: unknown) =>
   handler({ httpMethod: 'POST', body: typeof cuerpo === 'string' ? cuerpo : JSON.stringify(cuerpo) });
@@ -387,26 +392,67 @@ test('m40-lead: exige nombre y WhatsApp de 10 dígitos', async () => {
   assert.equal((await post({ ...LEAD_OK, nombre: 'A' })).statusCode, 400);
   assert.equal((await post({ ...LEAD_OK, whatsapp: '33123' })).statusCode, 400);
   // El formato humano con espacios y guiones sí pasa: se cuentan los dígitos.
-  assert.equal((await post({ ...LEAD_OK, whatsapp: '33 1234-5678' })).statusCode, 200);
+  assert.notEqual((await post({ ...LEAD_OK, whatsapp: '33 1234-5678' })).statusCode, 400);
 });
 
 test('m40-lead: valida el correo solo si viene', async () => {
   assert.equal((await post({ ...LEAD_OK, correo: 'no-es-correo' })).statusCode, 400);
-  assert.equal((await post({ ...LEAD_OK, correo: '' })).statusCode, 200);
-  assert.equal((await post({ ...LEAD_OK, correo: 'persona@ejemplo.mx' })).statusCode, 200);
+  assert.notEqual((await post({ ...LEAD_OK, correo: '' })).statusCode, 400);
+  assert.notEqual((await post({ ...LEAD_OK, correo: 'persona@ejemplo.mx' })).statusCode, 400);
 });
 
 test('m40-lead: rechaza una clasificación que el motor no produce', async () => {
   assert.equal((await post({ ...LEAD_OK, clasificacion: 'vip' })).statusCode, 400);
   for (const id of Object.keys(M40_FUNCION.clasificaciones)) {
-    assert.equal((await post({ ...LEAD_OK, clasificacion: id })).statusCode, 200, id);
+    assert.notEqual((await post({ ...LEAD_OK, clasificacion: id })).statusCode, 400, id);
   }
 });
 
-test('m40-lead: sin ClickUp configurado responde 200 sin registrar', async () => {
+test('m40-lead: el respaldo por correo lleva el consentimiento completo', async () => {
+  // Esta es la razón de ser del respaldo. El mensaje de WhatsApp que el
+  // visitante acaba de enviar trae su nombre y su clasificación; NO trae qué
+  // versión del aviso aceptó ni si autorizó mercadotecnia. Si ClickUp no
+  // recibe el lead y el correo no llevara esos dos datos, el consentimiento no
+  // quedaría registrado en ninguna parte.
+  const fetchOriginal = globalThis.fetch;
+  const claveOriginal = process.env.RESEND_API_KEY;
+  let enviado: any = null;
+
+  globalThis.fetch = (async (_url: any, opts: any) => {
+    enviado = JSON.parse(opts.body);
+    return { ok: true, status: 200, text: async () => '' };
+  }) as unknown as typeof fetch;
+  process.env.RESEND_API_KEY = 'clave-de-prueba';
+
+  try {
+    const r = await post({
+      ...LEAD_OK,
+      correo: 'persona@ejemplo.mx',
+      avisoVersion: '2026-10-26',
+      mercadotecnia: true
+    });
+
+    assert.equal(r.statusCode, 200);
+    assert.equal(JSON.parse(r.body).registrado.correo, true);
+    assert.ok(enviado, 'debió llamar a Resend');
+    assert.match(enviado.html, /versión 2026-10-26/);
+    assert.match(enviado.html, /Acepta mercadotecnia:<\/strong> Sí/);
+    // Y el asunto tiene que delatar que ClickUp falló, no parecer un aviso normal.
+    assert.match(enviado.subject, /^\[Respaldo\]/);
+  } finally {
+    globalThis.fetch = fetchOriginal;
+    if (claveOriginal === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = claveOriginal;
+  }
+});
+
+test('m40-lead: sin ningún canal configurado, el lead no se registra y se dice', async () => {
+  // Ni ClickUp ni Resend: el lead se pierde y la función lo reporta como lo
+  // que es. El 502 queda en los registros de Netlify, que es donde tiene que
+  // verse; al visitante no le llega, porque ya está en WhatsApp.
   const r = await post(LEAD_OK);
-  assert.equal(r.statusCode, 200);
-  assert.deepEqual(JSON.parse(r.body), { ok: true, registrado: false });
+  assert.equal(r.statusCode, 502);
+  assert.equal(JSON.parse(r.body).ok, false);
 });
 
 // ── Riesgo de citación ─────────────────────────────────────────────
