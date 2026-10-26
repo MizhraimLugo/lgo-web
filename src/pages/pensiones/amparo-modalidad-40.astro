@@ -803,6 +803,8 @@ const documentos = [
   }
   .remate--centrado { margin-inline: auto; text-align: center; max-width: 34ch; }
 
+  /* El naranja base no alcanza 4.5:1 sobre crema en texto chico; este enlace
+     usa el tono profundo del mismo token para cumplir contraste. */
   .enlace-flecha {
     display: inline-flex;
     align-items: center;
@@ -811,9 +813,9 @@ const documentos = [
     margin-top: 1.25rem;
     font-size: var(--text-base);
     font-weight: 700;
-    color: var(--color-accent);
+    color: var(--color-accent-deep);
   }
-  .enlace-flecha:hover { color: var(--color-accent-deep); }
+  .enlace-flecha:hover { text-decoration: underline; }
 
   /* ── 4.2 LOS DOS TOPES ── */
   .topes { display: grid; grid-template-columns: 1fr; gap: 1rem; }
