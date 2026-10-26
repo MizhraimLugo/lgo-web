@@ -595,8 +595,12 @@ const documentos = [
               <s class="precio-antes">{precioCorto(M40.precios.amparo)}</s>
               <span class="precio-ahora">{precioCorto(M40.precios.amparoLanzamiento)}</span>
               <span class="precio-iva">{fmtMXN(conIva(M40.precios.amparoLanzamiento))} con IVA</span>
+              {/* "A más tardar", no "antes del": `lanzamientoVigente` cuenta
+                  el último día como válido, y "antes del 15" lo excluiría. El
+                  texto decía una cosa y el código hacía otra —a favor del
+                  cliente, pero decía otra. */}
               <span class="precio-cond">
-                Si contratas antes del {fechaCorta(M40.plazos.lanzamientoHasta)}
+                Si contratas a más tardar el {fechaCorta(M40.plazos.lanzamientoHasta)}
               </span>
             </p>
           )}
