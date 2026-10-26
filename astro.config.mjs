@@ -1,7 +1,34 @@
 // @ts-check
+import { readFileSync, readdirSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import { M40 } from './src/data/amparo-m40.ts';
+import { AVISO_PRIVACIDAD_PATH, AVISO_PRIVACIDAD_VERSION } from './src/data/aviso-privacidad.ts';
+
+// ── lastmod del sitemap ──
+//
+// Solo se declara donde hay una fecha REAL que respalde la afirmación. Poner
+// la fecha del build en todas las URL diría que el sitio entero cambió hoy,
+// que es falso y a la larga se descuenta. Las que no tienen fuente de fecha
+// salen sin lastmod, que es lo correcto: la ausencia no penaliza.
+//
+//   · artículos de /perspectivas → el `date` de su frontmatter
+//   · /pensiones/amparo-modalidad-40/ → `M40.ultimaActualizacion`
+//   · /aviso-de-privacidad/ → la versión del aviso (una prueba la mantiene
+//     igual al frontmatter del documento)
+
+/** @type {Map<string, string>} ruta → fecha ISO (YYYY-MM-DD) */
+const fechas = new Map([
+  ['/pensiones/amparo-modalidad-40/', M40.ultimaActualizacion],
+  [AVISO_PRIVACIDAD_PATH, AVISO_PRIVACIDAD_VERSION]
+]);
+
+for (const archivo of readdirSync('./src/content/perspectivas').filter((f) => f.endsWith('.md'))) {
+  const crudo = readFileSync(`./src/content/perspectivas/${archivo}`, 'utf8');
+  const m = crudo.match(/^date:\s*"?(\d{4}-\d{2}-\d{2})"?/m);
+  if (m) fechas.set(`/perspectivas/${archivo.replace(/\.md$/, '')}/`, m[1]);
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,6 +62,12 @@ export default defineConfig({
       //    SÍ entran. Coherente con /llms.txt y la consolidación de Fase E.
       // Las páginas en public/ tampoco entran al sitemap por defecto, pero
       // dejamos el filtro explícito por claridad.
+      // Agrega lastmod solo a las URL con fecha conocida; el resto queda igual.
+      serialize: (item) => {
+        const ruta = new URL(item.url).pathname;
+        const fecha = fechas.get(ruta);
+        return fecha ? { ...item, lastmod: new Date(`${fecha}T12:00:00Z`) } : item;
+      },
       filter: (page) =>
         !page.includes('/gracias/') &&
         !page.includes('/404') &&
