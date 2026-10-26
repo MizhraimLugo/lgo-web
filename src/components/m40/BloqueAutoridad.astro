@@ -1,0 +1,221 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  BLOQUE DE AUTORIDAD — texto público + fundamento desplegable
+// ════════════════════════════════════════════════════════════════
+//
+// Dos capas que no se mezclan, como pide el documento de autoridad:
+//
+//   · Arriba, lo que lee cualquiera. Sin artículos ni fracciones.
+//   · Abajo, las citas legales, en <FundamentoLegal>.
+//
+// Los textos llegan con `<strong>` y se pintan con `set:html`: son cadenas
+// nuestras, literales en @data/amparo-m40-autoridad, sin nada de origen
+// externo.
+//
+// Sobre `apartados="plegables"`: en el bloque de la defensa del IMSS los cinco
+// apartados son objeciones paralelas y autónomas —nadie necesita las cinco—, y
+// en texto corrido sumaban 520 palabras visibles, el doble que cualquier otra
+// sección de la página. Plegadas se recorren de un golpe y se abre la que
+// preocupa. El contenido no cambia y el buscador lo sigue indexando: un
+// <details> cerrado está en el HTML.
+//
+// Los bloques cuyos apartados se leen en orden —la reforma, donde el punto 3
+// supone el 1— se quedan abiertos. Plegar algo que se lee seguido solo añade
+// clics.
+
+import FundamentoLegal from './FundamentoLegal.astro';
+import type { BloqueAutoridad } from '@data/amparo-m40-autoridad';
+
+export interface Props {
+  bloque: BloqueAutoridad;
+  /** Banda de fondo, para mantener la alternancia de la página. */
+  banda?: 'blanco' | 'crema';
+  /** 'plegables' convierte cada apartado en un desplegable cerrado. */
+  apartados?: 'abiertos' | 'plegables';
+}
+
+const { bloque, banda = 'blanco', apartados = 'abiertos' } = Astro.props;
+
+// Numeramos los apartados aquí y no en los datos: un número escrito a mano se
+// desincroniza en cuanto se agrega o se quita una objeción.
+let cuenta = 0;
+const tramos = (bloque.cuerpo ?? []).map((t) =>
+  t.tipo === 'apartado' ? { ...t, num: ++cuenta } : t
+);
+
+const PALABRA = ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho'];
+const plegable = apartados === 'plegables' && cuenta > 1;
+const pista = plegable
+  ? `Son ${PALABRA[cuenta] ?? cuenta}. Abre cada una para ver nuestra respuesta.`
+  : null;
+---
+<section id={bloque.id} class:list={['section', banda === 'crema' ? 'band-cream' : 'band-blanco']}>
+  <div class="container-base">
+    <header class="section-head">
+      <span class="eyebrow">{bloque.eyebrow}</span>
+      <h2>{bloque.titulo}</h2>
+    </header>
+
+    <div class="autoridad">
+      {tramos.map((t) =>
+        t.tipo === 'intro' ? (
+          <Fragment>
+            <p class="autoridad-intro" set:html={t.texto} />
+            {pista && <p class="autoridad-pista">{pista}</p>}
+          </Fragment>
+        ) : t.tipo === 'apartado' ? (
+          plegable ? (
+            <details class="objecion">
+              <summary>
+                <span class="objecion-num" aria-hidden="true">{t.num}</span>
+                <h3 class="objecion-titulo">{t.titulo}</h3>
+                <span class="objecion-icono" aria-hidden="true">+</span>
+              </summary>
+              <div class="objecion-cuerpo">
+                {t.parrafos.map((p) => <p set:html={p} />)}
+              </div>
+            </details>
+          ) : (
+            <div class="autoridad-apartado">
+              <h3>{t.titulo}</h3>
+              {t.parrafos.map((p) => <p set:html={p} />)}
+            </div>
+          )
+        ) : t.tipo === 'cierre' ? (
+          <p class="autoridad-cierre" set:html={t.texto} />
+        ) : (
+          <p class="autoridad-nota" set:html={t.texto} />
+        )
+      )}
+
+      <FundamentoLegal citas={bloque.fundamento} nota={bloque.fundamentoNota} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .band-blanco { background: var(--color-surface); }
+
+  /* Mismo tratamiento de encabezado que el resto de la página: sus estilos
+     viven en la plantilla y el ámbito de Astro no los trae hasta aquí. */
+  .section-head { margin-bottom: 2.5rem; max-width: 44rem; }
+  .section-head h2 {
+    margin: 1rem 0 0;
+    font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    max-width: 26ch;
+  }
+
+  .autoridad { max-width: var(--container-prose); }
+
+  .autoridad-intro {
+    margin: 0 0 1.75rem;
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+  /* Cuando los apartados están plegados, la intro lleva la instrucción pegada:
+     sin ella, cinco títulos sueltos parecen una lista que no hace nada. */
+  .autoridad-intro:has(+ .autoridad-pista) { margin-bottom: 0.5rem; }
+  .autoridad-pista {
+    margin: 0 0 1.5rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .autoridad-apartado { margin-bottom: 1.75rem; }
+  .autoridad-apartado h3 {
+    margin: 0 0 0.625rem;
+    font-size: var(--text-lg);
+    line-height: 1.35;
+    color: var(--color-foreground-strong);
+  }
+  .autoridad-apartado p {
+    margin: 0 0 0.875rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .autoridad-apartado p:last-child { margin-bottom: 0; }
+
+  .autoridad-nota,
+  .autoridad-cierre {
+    margin: 0 0 1.75rem;
+    padding-left: 1.125rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .autoridad :global(strong) { color: var(--color-foreground-strong); font-weight: 700; }
+
+  /* ── Objeciones plegadas ── */
+  .objecion { border-bottom: 1px solid var(--color-divider); }
+  .objecion:first-of-type { border-top: 1px solid var(--color-divider); }
+  /* El cierre va después de la última objeción y necesita aire propio. */
+  .objecion + .autoridad-cierre { margin-top: 1.75rem; }
+
+  .objecion > summary {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr 1.25rem;
+    align-items: start;
+    gap: 0.875rem;
+    min-height: 48px;
+    padding: 1.0625rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .objecion > summary::-webkit-details-marker { display: none; }
+
+  .objecion-num {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent-strong);
+  }
+  .objecion-titulo {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.008em;
+    color: var(--color-foreground-strong);
+  }
+  .objecion > summary:hover .objecion-titulo { color: var(--color-accent-deep); }
+  .objecion-icono {
+    justify-self: end;
+    font-size: 1.25rem;
+    line-height: 1.1;
+    color: var(--color-accent-strong);
+    transition: transform 200ms ease;
+  }
+  .objecion[open] .objecion-icono { transform: rotate(45deg); }
+
+  .objecion-cuerpo {
+    /* Alineado con el título, saltando la columna del número. */
+    padding: 0 1.25rem 1.5rem calc(1.75rem + 0.875rem);
+  }
+  .objecion-cuerpo p {
+    margin: 0 0 0.875rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .objecion-cuerpo p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 40rem) {
+    /* En pantallas angostas el ancho vale más que la alineación. */
+    .objecion-cuerpo { padding-left: 0; padding-right: 0; }
+
+    /* Los títulos son citas largas: a 360 px ocupan cuatro líneas y solo caben
+       dos objeciones por pantalla. Compactados caben tres, que es la
+       diferencia entre ver una lista y ver el principio de una. */
+    .objecion > summary {
+      grid-template-columns: 1.375rem 1fr 1.25rem;
+      gap: 0.75rem;
+      padding: 0.875rem 0;
+    }
+    .objecion-titulo { font-size: var(--text-base); line-height: 1.35; }
+  }
+</style>

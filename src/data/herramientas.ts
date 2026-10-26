@@ -22,7 +22,7 @@
 //  cada herramienta viven en su propio módulo (marcas.ts, diagnostico.ts)
 //  y no se tocan desde aquí.
 
-export type HerramientaId = 'diagnostico' | 'marcas' | 'contratos';
+export type HerramientaId = 'diagnostico' | 'marcas' | 'contratos' | 'amparo-m40';
 
 export type Herramienta = {
   id: HerramientaId;
@@ -68,6 +68,24 @@ export const herramientas: Herramienta[] = [
     description:
       'Genera contratos listos para firmar en minutos, redactados por Grupo LGO y listos para descargar.',    cta: 'Ir a documentos',
     url: '/contratos/',
+    published: true
+  },
+  {
+    // La autoevaluación es gratuita y vive dentro de la landing del servicio
+    // (/pensiones/amparo-modalidad-40/), no en una URL propia: la `url` apunta a
+    // la canónica de esa página, cuyo primer CTA lleva al cuestionario. Así el
+    // ItemList del índice no enlaza un fragmento.
+    //
+    // A diferencia de las otras tres, esta herramienta acompaña a un servicio de
+    // pago con fecha límite. Si la campaña termina, basta `published: false`
+    // para retirarla del nav, del índice y del home de una sola vez.
+    id: 'amparo-m40',
+    name: 'Autoevaluación · Amparo Modalidad 40',
+    tagline: '¿Procede un amparo en tu caso?',
+    description:
+      'El IMSS limitó el salario con el que puedes inscribirte a la Modalidad 40. Cinco preguntas te dicen si tu caso coincide con los supuestos del amparo, sin dejar documentos.',
+    cta: 'Hacer la autoevaluación',
+    url: '/pensiones/amparo-modalidad-40/',
     published: true
   }
 ];

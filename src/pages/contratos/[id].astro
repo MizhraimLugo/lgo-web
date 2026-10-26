@@ -178,7 +178,7 @@ const relacionados = documentosRelacionados(contrato.id);
 
 <style>
   .crumbs { display: flex; gap: 0.5rem; align-items: center; font-size: var(--text-sm); color: var(--color-muted); margin-bottom: 1.25rem; }
-  .crumbs a { color: var(--color-accent); text-decoration: none; font-weight: 600; }
+  .crumbs a { color: var(--color-accent-strong); text-decoration: none; font-weight: 600; }
   .crumbs a:hover { text-decoration: underline; }
 
   .doc-badge {
@@ -196,7 +196,7 @@ const relacionados = documentosRelacionados(contrato.id);
     display: inline-flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
     font-size: var(--text-sm); color: var(--color-muted); margin: 1rem 0 0;
   }
-  .doc-revision svg { color: var(--color-accent); flex-shrink: 0; }
+  .doc-revision svg { color: var(--color-accent-strong); flex-shrink: 0; }
   .doc-revision strong { color: var(--color-foreground-strong); font-weight: 600; }
   .doc-revision time { color: var(--color-muted); }
 
@@ -220,7 +220,7 @@ const relacionados = documentosRelacionados(contrato.id);
   .doc-disclaimer strong { color: var(--color-foreground-strong); }
 
   /* Enlaces contextuales dentro de la explicación */
-  .doc-explica :global(.exp-link) { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .doc-explica :global(.exp-link) { color: var(--color-accent-strong); text-decoration: underline; text-underline-offset: 2px; }
   .doc-explica :global(.exp-link):hover { color: var(--color-accent-deep); }
 
   /* Documentos relacionados (malla interna por cluster temático) */
@@ -236,8 +236,8 @@ const relacionados = documentosRelacionados(contrato.id);
     border-radius: var(--radius-sm); color: var(--color-foreground-strong); text-decoration: none;
     font-size: var(--text-sm); font-weight: 600; transition: border-color 180ms ease, color 180ms ease;
   }
-  .doc-relacionados-lista a:hover { border-color: var(--color-accent); color: var(--color-accent); }
-  .doc-relacionados-lista a::after { content: ' →'; color: var(--color-accent); font-weight: 700; }
+  .doc-relacionados-lista a:hover { border-color: var(--color-accent); color: var(--color-accent-strong); }
+  .doc-relacionados-lista a::after { content: ' →'; color: var(--color-accent-strong); font-weight: 700; }
 
   .doc-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
   @media (min-width: 960px) { .doc-grid { grid-template-columns: 1fr 20rem; gap: 3.5rem; align-items: start; } }
@@ -261,7 +261,7 @@ const relacionados = documentosRelacionados(contrato.id);
   .prep { display: flex; flex-direction: column; gap: 0.7rem; }
   .prep-eyebrow {
     font-size: var(--text-eyebrow); letter-spacing: 0.16em; text-transform: uppercase;
-    font-weight: 700; color: var(--color-accent);
+    font-weight: 700; color: var(--color-accent-strong);
   }
   .prep-note { font-size: var(--text-sm); color: var(--color-muted); margin: 0; }
   .prep-btn { width: 100%; }

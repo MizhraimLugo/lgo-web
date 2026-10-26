@@ -1,0 +1,744 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  AUTOEVALUACIÓN "¿ES TU CASO?" — Amparo Modalidad 40
+// ════════════════════════════════════════════════════════════════
+//
+// Isla interactiva de /pensiones/amparo-modalidad-40. Cinco preguntas, una
+// pantalla a la vez, barra de avance, resultado y captura mínima de contacto.
+//
+// Reparto de responsabilidades (mismo criterio que /marcas):
+//   · `@data/amparo-m40-autoevaluacion` — preguntas y clasificación (puro, probado).
+//   · este componente                   — UI, validación de formulario y envío.
+//   · `/.netlify/functions/m40-lead`    — alta del lead en ClickUp.
+//
+// Mejora progresiva: las cinco preguntas se renderizan en el HTML. Sin
+// JavaScript se leen todas (contenido indexable) y el <noscript> ofrece la
+// salida por WhatsApp; con JavaScript se convierten en un asistente por pasos.
+//
+// El lead NUNCA se pierde por un error técnico: WhatsApp se abre en el mismo
+// gesto del envío, antes de saber si la función respondió, y el panel final
+// deja un enlace manual por si el navegador bloqueó la ventana.
+
+import { preguntas, TOTAL_PREGUNTAS } from '@data/amparo-m40-autoevaluacion';
+import { M40_WHATSAPP_URL, M40_WHATSAPP_GENERAL } from '@data/amparo-m40';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
+---
+<section id="autoevaluacion" class="section band-cream">
+  <div class="container-base">
+    <header class="ae-head">
+      <span class="eyebrow">Autoevaluación</span>
+      <h2>¿Aplico para el amparo? Descúbrelo en 1 minuto</h2>
+      <p class="lead">
+        Cinco preguntas. Sin datos sensibles. Al final te decimos si tu perfil coincide.
+      </p>
+    </header>
+
+    {/*
+      COTEJADO 2026-10-26: los criterios de P2 y P3 —baja dentro de los últimos
+      cinco años y 52 semanas cotizadas en los cinco años previos a la baja—
+      salen de los artículos 218 y 219 de la Ley del Seguro Social, verificados
+      contra el texto vigente. Si la ley cambia, esta clasificación cambia.
+
+      Va en un comentario de Astro y no en uno de HTML: los `<!-- -->` del
+      template se publican, y las notas de cotejo son trabajo interno.
+    */}
+
+    <div class="ae" data-ae>
+      <!-- BARRA DE AVANCE -->
+      <div class="ae-avance" data-ae-avance hidden>
+        <div class="ae-avance-row">
+          <span class="ae-avance-txt">
+            Pregunta <strong data-ae-paso>1</strong> de {TOTAL_PREGUNTAS}
+          </span>
+          <span class="ae-avance-pct" data-ae-pct>20 %</span>
+        </div>
+        <div
+          class="ae-barra"
+          role="progressbar"
+          aria-label="Avance de la autoevaluación"
+          aria-valuemin="0"
+          aria-valuemax={TOTAL_PREGUNTAS}
+          aria-valuenow="1"
+          data-ae-barra
+        >
+          <span class="ae-barra-fill" data-ae-barra-fill style="--w: 20%"></span>
+        </div>
+      </div>
+
+      <!-- PREGUNTAS -->
+      <form class="ae-form" data-ae-form novalidate>
+        {preguntas.map((p, i) => (
+          <fieldset class="ae-paso" data-ae-pregunta={p.clave} data-ae-indice={i}>
+            <legend class="ae-legend">
+              <span class="ae-legend-codigo" aria-hidden="true">{p.codigo}</span>
+              {p.texto}
+            </legend>
+
+            <div class="ae-opciones">
+              {p.opciones.map((o) => (
+                <label class="ae-opcion">
+                  <input
+                    type="radio"
+                    name={p.clave}
+                    value={o.id}
+                    data-ae-opcion
+                  />
+                  <span class="ae-opcion-txt">{o.texto}</span>
+                </label>
+              ))}
+            </div>
+
+            <p class="ae-error" data-ae-error-pregunta role="alert" hidden>
+              Elige una opción para continuar.
+            </p>
+          </fieldset>
+        ))}
+
+        <!-- NAVEGACIÓN (solo con JavaScript) -->
+        <div class="ae-nav" data-ae-nav hidden>
+          <button type="button" class="btn btn-ghost" data-ae-atras>Atrás</button>
+          <button type="button" class="btn btn-primary" data-ae-siguiente>Siguiente</button>
+        </div>
+      </form>
+
+      <noscript>
+        <p class="ae-noscript">
+          La autoevaluación necesita JavaScript para darte el resultado. Si no puedes
+          activarlo, escríbenos por WhatsApp con tus respuestas y la revisamos contigo
+          sin costo: <a href={M40_WHATSAPP_GENERAL} target="_blank" rel="noopener">abrir WhatsApp</a>.
+        </p>
+      </noscript>
+
+      <!-- RESULTADO + CAPTURA -->
+      <div class="ae-resultado" data-ae-resultado hidden>
+        <div class="ae-resultado-card" data-ae-resultado-card>
+          <span class="ae-resultado-etiqueta" data-ae-etiqueta></span>
+          <p class="ae-resultado-msg" data-ae-mensaje></p>
+          <ul class="ae-motivos" data-ae-motivos hidden></ul>
+          <p class="ae-resultado-nota" data-ae-nota></p>
+        </div>
+
+        <form class="ae-captura" data-ae-captura novalidate>
+          <h3 class="ae-captura-titulo" data-ae-captura-titulo>¿A dónde te escribimos?</h3>
+          <p class="ae-captura-sub">
+            Solo tu nombre y un WhatsApp. Nada más — los documentos los pedimos después,
+            por un canal seguro.
+          </p>
+
+          <div class="ae-campos">
+            <div class="field">
+              <label for="ae-nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="ae-nombre"
+                name="nombre"
+                autocomplete="name"
+                maxlength="120"
+                required
+                aria-describedby="ae-nombre-err"
+              />
+              <p class="ae-error" id="ae-nombre-err" role="alert" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="ae-whatsapp">WhatsApp <span class="req" aria-hidden="true">*</span></label>
+              <input
+                type="tel"
+                id="ae-whatsapp"
+                name="whatsapp"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="10 dígitos"
+                maxlength="40"
+                required
+                aria-describedby="ae-whatsapp-err"
+              />
+              <p class="ae-error" id="ae-whatsapp-err" role="alert" hidden></p>
+            </div>
+
+            <div class="field field--wide">
+              <label for="ae-correo">Correo <span class="opt">(opcional)</span></label>
+              <input
+                type="email"
+                id="ae-correo"
+                name="correo"
+                autocomplete="email"
+                maxlength="160"
+                aria-describedby="ae-correo-err"
+              />
+              <p class="ae-error" id="ae-correo-err" role="alert" hidden></p>
+            </div>
+          </div>
+
+          <!-- Honeypot anti-spam: invisible para personas, tentador para bots.
+               La función descarta el envío si llega con contenido. -->
+          <div class="ae-trampa" aria-hidden="true">
+            <label for="ae-empresa">Empresa</label>
+            <input type="text" id="ae-empresa" name="empresa" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <AvisoSimplificado idPrefix="ae" />
+
+          <div class="ae-captura-acciones">
+            <button type="submit" class="btn btn-primary" data-ae-enviar>
+              Enviar y abrir WhatsApp
+            </button>
+            <button type="button" class="btn btn-ghost" data-ae-reiniciar>
+              Volver a empezar
+            </button>
+          </div>
+        </form>
+
+        <!-- Confirmación: el enlace manual es la red de seguridad si el
+             navegador bloqueó la ventana de WhatsApp. -->
+        <div class="ae-enviado" data-ae-enviado hidden>
+          <h3>Listo. Te escribimos en breve.</h3>
+          <p>
+            Abrimos WhatsApp con tu resultado. Si no se abrió,
+            <a href={M40_WHATSAPP_URL} target="_blank" rel="noopener" data-ae-wa-manual>
+              ábrelo desde aquí</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ae-head { max-width: 44rem; margin-bottom: 2.5rem; }
+  .ae-head h2 { margin: 1rem 0 0.75rem; max-width: 26ch; }
+  .ae-head .lead { max-width: 58ch; }
+
+  .ae {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    max-width: 48rem;
+  }
+  @media (min-width: 768px) { .ae { padding: 2.25rem; } }
+
+  /* ── AVANCE ── */
+  .ae-avance { margin-bottom: 2rem; }
+  .ae-avance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .ae-avance-txt, .ae-avance-pct {
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 700;
+  }
+  .ae-avance-txt strong { color: var(--color-foreground-strong); }
+  .ae-barra {
+    height: 4px;
+    background: var(--color-divider);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .ae-barra-fill {
+    display: block;
+    height: 100%;
+    width: var(--w, 0%);
+    background: var(--color-accent);
+    transition: width 260ms ease;
+  }
+
+  /* ── PREGUNTAS ── */
+  .ae-paso { border: none; padding: 0; margin: 0; }
+  .ae-paso + .ae-paso { margin-top: 2.5rem; }
+
+  .ae-legend {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--color-foreground-strong);
+    margin-bottom: 1.25rem;
+    max-width: 34ch;
+  }
+  /* Tono profundo del acento: el naranja base no alcanza 4.5:1 a 12 px. */
+  .ae-legend-codigo {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.22em;
+    color: var(--color-accent-deep);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .ae-opciones { display: flex; flex-direction: column; gap: 0.625rem; }
+
+  .ae-opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+  .ae-opcion:hover { border-color: var(--color-accent); }
+  .ae-opcion input { accent-color: var(--color-accent); width: 1.125rem; height: 1.125rem; flex-shrink: 0; }
+  .ae-opcion-txt { font-size: var(--text-base); color: var(--color-foreground); }
+  .ae-opcion:has(input:checked) {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+  .ae-opcion:has(input:checked) .ae-opcion-txt {
+    color: var(--color-foreground-strong);
+    font-weight: 600;
+  }
+  .ae-opcion:has(input:focus-visible) {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* ── NAVEGACIÓN ── */
+  .ae-nav {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-divider);
+  }
+
+  .ae-error {
+    margin: 0.625rem 0 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-alert);
+  }
+
+  .ae-noscript {
+    margin: 1.5rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  .ae-noscript a { font-weight: 700; color: var(--color-accent-strong); }
+
+  /* ── RESULTADO ── */
+  .ae-resultado-card {
+    border: 1px solid var(--color-border-strong);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+    background: var(--color-surface-alt);
+  }
+  .ae-resultado-card[data-tono='urgente'] { border-top-color: var(--color-alert); }
+  .ae-resultado-card[data-tono='apto'] { border-top-color: var(--color-success); }
+  .ae-resultado-card[data-tono='fuera'] { border-top-color: var(--color-muted-soft); }
+
+  .ae-resultado-etiqueta {
+    display: inline-block;
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-accent-strong);
+    margin-bottom: 0.75rem;
+  }
+  .ae-resultado-card[data-tono='urgente'] .ae-resultado-etiqueta { color: var(--color-alert); }
+  .ae-resultado-card[data-tono='apto'] .ae-resultado-etiqueta { color: var(--color-success); }
+  .ae-resultado-card[data-tono='fuera'] .ae-resultado-etiqueta { color: var(--color-muted); }
+
+  .ae-resultado-msg {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground-strong);
+    max-width: 30ch;
+  }
+  .ae-motivos { margin: 1.25rem 0 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .ae-motivos li {
+    position: relative;
+    padding-left: 1.125rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  .ae-motivos li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .ae-resultado-nota {
+    margin: 1.25rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+
+  /* ── CAPTURA ── */
+  .ae-captura { margin-top: 2rem; }
+  .ae-captura-titulo { font-size: var(--text-xl); margin: 0 0 0.5rem; }
+  .ae-captura-sub {
+    margin: 0 0 1.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    max-width: 56ch;
+  }
+
+  .ae-campos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .ae-campos { grid-template-columns: 1fr 1fr; }
+    .field--wide { grid-column: 1 / -1; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 0.375rem; }
+  .field label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+  .field .req { color: var(--color-accent-strong); }
+  .field .opt { font-weight: 400; color: var(--color-muted-soft); }
+  .field input {
+    min-height: 48px;
+    padding: 0.625rem 0.875rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-foreground-strong);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+  }
+  .field input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .field input[aria-invalid='true'] { border-color: var(--color-alert); }
+
+  /* Honeypot: fuera de la vista y del foco, sin display:none (algunos bots lo leen). */
+  .ae-trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+
+  .ae-captura-acciones {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.75rem;
+  }
+
+  .ae-enviado { margin-top: 2rem; }
+  .ae-enviado h3 { font-size: var(--text-xl); margin: 0 0 0.5rem; }
+  .ae-enviado p { margin: 0; font-size: var(--text-sm); }
+  .ae-enviado a { font-weight: 700; color: var(--color-accent-strong); }
+</style>
+
+<script>
+  import {
+    preguntas,
+    clasificar,
+    completas,
+    textoRespuesta,
+    type Respuestas,
+    type RespuestasParciales,
+    type ClasificacionId
+  } from '@data/amparo-m40-autoevaluacion';
+  import { M40_WHATSAPP_URL, waMensajeAutoevaluacion } from '@data/amparo-m40';
+  import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
+
+  const raiz = document.querySelector<HTMLElement>('[data-ae]');
+
+  if (raiz) {
+    const ENDPOINT = '/.netlify/functions/m40-lead';
+
+    // ── Selectores ───
+    const form = raiz.querySelector<HTMLFormElement>('[data-ae-form]')!;
+    const pasos = Array.from(raiz.querySelectorAll<HTMLFieldSetElement>('[data-ae-pregunta]'));
+    const avance = raiz.querySelector<HTMLElement>('[data-ae-avance]')!;
+    const avancePaso = raiz.querySelector<HTMLElement>('[data-ae-paso]')!;
+    const avancePct = raiz.querySelector<HTMLElement>('[data-ae-pct]')!;
+    const barra = raiz.querySelector<HTMLElement>('[data-ae-barra]')!;
+    const barraFill = raiz.querySelector<HTMLElement>('[data-ae-barra-fill]')!;
+    const nav = raiz.querySelector<HTMLElement>('[data-ae-nav]')!;
+    const btnAtras = raiz.querySelector<HTMLButtonElement>('[data-ae-atras]')!;
+    const btnSiguiente = raiz.querySelector<HTMLButtonElement>('[data-ae-siguiente]')!;
+
+    const resultado = raiz.querySelector<HTMLElement>('[data-ae-resultado]')!;
+    const resultadoCard = raiz.querySelector<HTMLElement>('[data-ae-resultado-card]')!;
+    const etiquetaEl = raiz.querySelector<HTMLElement>('[data-ae-etiqueta]')!;
+    const mensajeEl = raiz.querySelector<HTMLElement>('[data-ae-mensaje]')!;
+    const motivosEl = raiz.querySelector<HTMLUListElement>('[data-ae-motivos]')!;
+    const notaEl = raiz.querySelector<HTMLElement>('[data-ae-nota]')!;
+
+    const captura = raiz.querySelector<HTMLFormElement>('[data-ae-captura]')!;
+    const capturaTitulo = raiz.querySelector<HTMLElement>('[data-ae-captura-titulo]')!;
+    const enviado = raiz.querySelector<HTMLElement>('[data-ae-enviado]')!;
+    const waManual = raiz.querySelector<HTMLAnchorElement>('[data-ae-wa-manual]')!;
+    const btnEnviar = raiz.querySelector<HTMLButtonElement>('[data-ae-enviar]')!;
+    const btnReiniciar = raiz.querySelector<HTMLButtonElement>('[data-ae-reiniciar]')!;
+
+    const inputNombre = captura.querySelector<HTMLInputElement>('#ae-nombre')!;
+    const inputWhatsapp = captura.querySelector<HTMLInputElement>('#ae-whatsapp')!;
+    const inputCorreo = captura.querySelector<HTMLInputElement>('#ae-correo')!;
+    const inputEmpresa = captura.querySelector<HTMLInputElement>('#ae-empresa')!;
+    const inputAviso = captura.querySelector<HTMLInputElement>('[data-aviso-obligatoria]')!;
+    const inputMercadotecnia = captura.querySelector<HTMLInputElement>('[data-aviso-mercadotecnia]')!;
+
+    // ── Estado ───
+    let indice = 0;
+    const respuestas: RespuestasParciales = {};
+
+    /** Tono visual del resultado; el id de clasificación no se usa en CSS. */
+    const TONOS: Record<ClasificacionId, string> = {
+      'dudoso-urgente': 'urgente',
+      'no-apto': 'fuera',
+      apto: 'apto',
+      dudoso: 'duda'
+    };
+
+    /**
+     * Nota de cierre por clasificación: qué sigue después del resultado.
+     *
+     * El mensaje grande (`clasificar().mensaje`) y esta nota son las dos
+     * mitades del texto de resultado del encargo v2: el gancho arriba y el
+     * siguiente paso abajo. El precio sale de la configuración.
+     */
+    const NOTAS: Record<ClasificacionId, string> = {
+      'dudoso-urgente': 'Escríbenos hoy mismo.',
+      'no-apto': 'Si tienes dudas sobre tu pensión, escríbenos sin costo.',
+      apto:
+        'El siguiente paso es el diagnóstico: revisamos tus documentos y te decimos, por escrito, si te conviene el amparo y por qué vía. Escríbenos y lo agendamos hoy.',
+      dudoso: 'Necesitamos ver tus documentos para confirmarlo. Escríbenos y te decimos qué enviar.'
+    };
+
+    /** Título del bloque de captura según el resultado. */
+    const TITULOS: Record<ClasificacionId, string> = {
+      'dudoso-urgente': '¿A dónde te escribimos hoy?',
+      'no-apto': '¿Quieres que lo revisemos sin costo?',
+      apto: '¿A dónde te escribimos?',
+      dudoso: '¿A dónde te escribimos?'
+    };
+
+    // ── Navegación por pasos ───
+    const mostrarPaso = (n: number) => {
+      indice = Math.max(0, Math.min(n, pasos.length - 1));
+      pasos.forEach((p, i) => { p.hidden = i !== indice; });
+
+      const numero = indice + 1;
+      const pct = Math.round((numero / pasos.length) * 100);
+      avancePaso.textContent = String(numero);
+      avancePct.textContent = `${pct} %`;
+      barra.setAttribute('aria-valuenow', String(numero));
+      barraFill.style.setProperty('--w', `${pct}%`);
+
+      btnAtras.hidden = indice === 0;
+      btnSiguiente.textContent = indice === pasos.length - 1 ? 'Ver mi resultado' : 'Siguiente';
+
+      // El foco va a la pregunta: el lector de pantalla anuncia el paso nuevo.
+      const legend = pasos[indice].querySelector<HTMLElement>('.ae-legend');
+      legend?.setAttribute('tabindex', '-1');
+      legend?.focus({ preventScroll: true });
+    };
+
+    const errorPaso = (mostrar: boolean) => {
+      const err = pasos[indice].querySelector<HTMLElement>('[data-ae-error-pregunta]');
+      if (err) err.hidden = !mostrar;
+    };
+
+    const leerPaso = (): string | null => {
+      const elegido = pasos[indice].querySelector<HTMLInputElement>('input[type="radio"]:checked');
+      return elegido ? elegido.value : null;
+    };
+
+    btnSiguiente.addEventListener('click', () => {
+      const valor = leerPaso();
+      if (!valor) { errorPaso(true); return; }
+      errorPaso(false);
+
+      const clave = preguntas[indice].clave;
+      // El cast es seguro: el valor viene de las opciones de esta misma pregunta.
+      (respuestas as Record<string, string>)[clave] = valor;
+
+      if (indice < pasos.length - 1) {
+        mostrarPaso(indice + 1);
+      } else if (completas(respuestas)) {
+        mostrarResultado(respuestas);
+      }
+    });
+
+    btnAtras.addEventListener('click', () => {
+      errorPaso(false);
+      mostrarPaso(indice - 1);
+    });
+
+    // Elegir una opción borra el error de ese paso.
+    form.addEventListener('change', () => errorPaso(false));
+
+    // ── Resultado ───
+    let clasificacionActual: ReturnType<typeof clasificar> | null = null;
+
+    const mostrarResultado = (r: Respuestas) => {
+      const c = clasificar(r);
+      clasificacionActual = c;
+
+      resultadoCard.dataset.tono = TONOS[c.id];
+      etiquetaEl.textContent = c.etiqueta;
+      mensajeEl.textContent = c.mensaje;
+      notaEl.textContent = NOTAS[c.id];
+      capturaTitulo.textContent = TITULOS[c.id];
+
+      motivosEl.replaceChildren();
+      if (c.motivos.length) {
+        for (const m of c.motivos) {
+          const li = document.createElement('li');
+          li.textContent = m;
+          motivosEl.appendChild(li);
+        }
+      }
+      motivosEl.hidden = c.motivos.length === 0;
+
+      form.hidden = true;
+      avance.hidden = true;
+      resultado.hidden = false;
+      captura.hidden = false;
+      enviado.hidden = true;
+
+      resultadoCard.setAttribute('tabindex', '-1');
+      resultadoCard.focus({ preventScroll: true });
+      resultadoCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    btnReiniciar.addEventListener('click', () => {
+      form.reset();
+      captura.reset();
+      for (const k of Object.keys(respuestas)) delete (respuestas as Record<string, unknown>)[k];
+      clasificacionActual = null;
+      resultado.hidden = true;
+      form.hidden = false;
+      avance.hidden = false;
+      mostrarPaso(0);
+      raiz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // ── Validación del formulario ───
+    const setError = (input: HTMLInputElement, id: string, msg: string | null) => {
+      const el = raiz.querySelector<HTMLElement>(`#${id}`);
+      if (el) {
+        el.textContent = msg ?? '';
+        el.hidden = !msg;
+      }
+      if (msg) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    };
+
+    const validar = (): boolean => {
+      let ok = true;
+
+      const nombre = inputNombre.value.trim();
+      if (nombre.length < 2) {
+        setError(inputNombre, 'ae-nombre-err', 'Escribe tu nombre.');
+        ok = false;
+      } else setError(inputNombre, 'ae-nombre-err', null);
+
+      const digitos = inputWhatsapp.value.replace(/\D/g, '');
+      if (digitos.length < 10) {
+        setError(inputWhatsapp, 'ae-whatsapp-err', 'Escribe un WhatsApp a 10 dígitos.');
+        ok = false;
+      } else setError(inputWhatsapp, 'ae-whatsapp-err', null);
+
+      const correo = inputCorreo.value.trim();
+      if (correo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)) {
+        setError(inputCorreo, 'ae-correo-err', 'Revisa el correo.');
+        ok = false;
+      } else setError(inputCorreo, 'ae-correo-err', null);
+
+      if (!inputAviso.checked) {
+        setError(inputAviso, 'ae-aviso-err', 'Necesitamos tu aceptación para poder contactarte.');
+        ok = false;
+      } else setError(inputAviso, 'ae-aviso-err', null);
+
+      return ok;
+    };
+
+    // ── Envío ───
+    captura.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (!clasificacionActual || !completas(respuestas)) return;
+      if (!validar()) {
+        captura.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+        return;
+      }
+
+      const nombre = inputNombre.value.trim();
+      const c = clasificacionActual;
+
+      // 1. WhatsApp primero, en el mismo gesto del usuario: así ningún
+      //    bloqueador de ventanas lo cancela por haber esperado a la red.
+      const texto = waMensajeAutoevaluacion(c.etiqueta, nombre);
+      const waUrl = `${M40_WHATSAPP_URL}?text=${encodeURIComponent(texto)}`;
+      waManual.href = waUrl;
+      window.open(waUrl, '_blank', 'noopener');
+
+      // 2. El lead, después. `keepalive` lo entrega aunque la pestaña cambie;
+      //    si la función falla, el visitante ya está en WhatsApp.
+      const payload = {
+        nombre,
+        whatsapp: inputWhatsapp.value.trim(),
+        correo: inputCorreo.value.trim(),
+        empresa: inputEmpresa.value, // honeypot
+        // Consentimiento: qué versión del aviso aceptó y si quiere publicidad.
+        avisoVersion: AVISO_PRIVACIDAD_VERSION,
+        mercadotecnia: inputMercadotecnia.checked,
+        clasificacion: c.id,
+        respuestas: Object.fromEntries(
+          preguntas.map((p) => [
+            p.codigo,
+            { pregunta: p.texto, respuesta: textoRespuesta(p.clave, respuestas[p.clave] as string) }
+          ])
+        ),
+        origen: window.location.href
+      };
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(() => {
+        // Silencioso a propósito: el lead ya salió por WhatsApp.
+      });
+
+      btnEnviar.disabled = true;
+      captura.hidden = true;
+      enviado.hidden = false;
+      enviado.setAttribute('tabindex', '-1');
+      enviado.focus({ preventScroll: true });
+    });
+
+    // ── Arranque: de lista estática a asistente por pasos ───
+    avance.hidden = false;
+    nav.hidden = false;
+    mostrarPaso(0);
+  }
+</script>

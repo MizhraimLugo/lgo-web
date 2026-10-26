@@ -8,6 +8,7 @@
 // 4) Al completar: resumen + botón para enviar el documento al despacho
 //    (netlify/functions/registrar-documento → ClickUp + correo).
 import { business } from '@data/business';
+import AvisoSimplificado from '@components/AvisoSimplificado.astro';
 ---
 <section class="asistente" id="asistente" data-asistente>
   <div class="container-narrow">
@@ -50,10 +51,9 @@ import { business } from '@data/business';
             <input id="lead-correo" name="correo" type="email" autocomplete="email" required />
           </div>
           <p class="gf-error" data-gate-error hidden></p>
+          <AvisoSimplificado idPrefix="lead" />
+
           <button type="submit" class="btn btn-primary gate-btn">Iniciar conversación →</button>
-          <p class="gate-legal">
-            Al continuar aceptas que Grupo LGO te contacte sobre tu solicitud.
-          </p>
         </form>
       </div>
 
@@ -212,7 +212,7 @@ import { business } from '@data/business';
     padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 85%;
   }
   .chat-msg--bot { background: var(--color-surface-alt); color: var(--color-foreground); align-self: flex-start; border-bottom-left-radius: var(--radius-xs); }
-  .chat-msg--user { background: var(--color-accent); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
+  .chat-msg--user { background: var(--color-accent-strong); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
   .chat-msg :global(a) { color: inherit; font-weight: 700; text-decoration: underline; }
   .chat-typing { opacity: 0.55; letter-spacing: 0.25em; }
 
@@ -225,7 +225,7 @@ import { business } from '@data/business';
   .chat-input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
   .chat-send {
     display: inline-flex; align-items: center; justify-content: center; width: 46px; flex-shrink: 0;
-    background: var(--color-accent); color: var(--color-on-accent); border: none;
+    background: var(--color-accent-strong); color: var(--color-on-accent); border: none;
     border-radius: var(--radius-sm); cursor: pointer; transition: background 200ms ease;
   }
   .chat-send:hover { background: var(--color-accent-hover); }
@@ -284,6 +284,7 @@ import { business } from '@data/business';
 
 <script>
   import { business } from '../../data/business';
+  import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
 
   type Campo = { clave: string; etiqueta: string; tipo: string; obligatorio: boolean; activo: boolean; lleno: boolean; valor: string; opciones?: string[] };
   type Estado = { documento_id: string | null; documento_nombre: string | null; valores: Record<string, string>; campos: Campo[]; completo: boolean };
@@ -365,7 +366,16 @@ import { business } from '@data/business';
       gateError.textContent = err;
       if (err) return;
 
-      lead = { nombre, telefono, correo };
+      // Consentimiento: la casilla obligatoria ya la impuso el aviso
+      // simplificado; aquí solo se registra con qué versión y si acepta
+      // comunicaciones comerciales.
+      lead = {
+        nombre,
+        telefono,
+        correo,
+        avisoVersion: AVISO_PRIVACIDAD_VERSION,
+        mercadotecnia: data.get('mercadotecnia') === 'Sí'
+      };
       // Registra el lead (ClickUp + correo) en segundo plano; no bloquea la conversación.
       fetch('/.netlify/functions/registrar-lead', {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(lead)

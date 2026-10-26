@@ -1,0 +1,94 @@
+---
+// Visual esquemático (aria-hidden) para el teaser de Amparo Modalidad 40:
+// una mini autoevaluación con su barra de avance y el chip de resultado.
+// Se pasa como slot "visual" de HerramientaFeature. Mismo criterio que
+// MarcaMock: estilos propios y scoped para reutilizarlo sin duplicar CSS.
+---
+<div class="m40-mock" aria-hidden="true">
+  <div class="m40-mock-head">
+    <span class="m40-mock-badge"></span>
+    <span class="m40-mock-tag">Modalidad 40</span>
+  </div>
+
+  <div class="m40-mock-barra">
+    <span class="m40-mock-barra-fill"></span>
+  </div>
+
+  <div class="m40-mock-opcion m40-mock-opcion--on">
+    <span class="m40-mock-radio"></span>
+    <span class="m40-mock-lbl"></span>
+  </div>
+  <div class="m40-mock-opcion">
+    <span class="m40-mock-radio"></span>
+    <span class="m40-mock-lbl m40-mock-lbl--short"></span>
+  </div>
+  <div class="m40-mock-opcion">
+    <span class="m40-mock-radio"></span>
+    <span class="m40-mock-lbl m40-mock-lbl--mid"></span>
+  </div>
+
+  <span class="m40-mock-resultado"></span>
+</div>
+
+<style>
+  .m40-mock {
+    position: absolute;
+    right: 1.5rem; top: 0.25rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.4rem 1.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    border-top: 3px solid var(--color-accent);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+  }
+  .m40-mock-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.15rem;
+  }
+  .m40-mock-badge { width: 2.2rem; height: 0.55rem; border-radius: 2px; background: var(--color-accent); }
+  .m40-mock-tag {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.2rem 0.45rem; border-radius: var(--radius-xs);
+    color: var(--color-accent-deep); background: var(--color-accent-soft);
+  }
+
+  .m40-mock-barra {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--color-gray-150);
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+  }
+  .m40-mock-barra-fill { display: block; height: 100%; width: 60%; background: var(--color-accent); }
+
+  .m40-mock-opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.55rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+  }
+  .m40-mock-opcion--on { border-color: var(--color-accent); background: var(--color-accent-soft); }
+  .m40-mock-radio {
+    width: 0.6rem; height: 0.6rem; border-radius: 50%;
+    border: 2px solid var(--color-gray-200);
+    flex-shrink: 0;
+  }
+  .m40-mock-opcion--on .m40-mock-radio { border-color: var(--color-accent); background: var(--color-accent); }
+  .m40-mock-lbl { height: 0.45rem; width: 70%; border-radius: 2px; background: var(--color-gray-150); }
+  .m40-mock-lbl--short { width: 40%; }
+  .m40-mock-lbl--mid { width: 55%; }
+
+  .m40-mock-resultado {
+    align-self: flex-start; margin-top: 0.3rem;
+    width: 7rem; height: 1.15rem; border-radius: var(--radius-xs);
+    background: rgba(91, 140, 112, 0.18);
+    border-left: 3px solid var(--color-success);
+  }
+</style>

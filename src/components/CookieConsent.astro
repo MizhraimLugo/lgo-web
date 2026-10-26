@@ -1,0 +1,431 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  COOKIES — banner de consentimiento y gestor de preferencias
+// ════════════════════════════════════════════════════════════════
+//
+// Cumple el apartado VIII del aviso de privacidad: las cookies analíticas
+// **solo se activan si la persona las acepta**, y puede cambiar su elección
+// cuando quiera desde «Configurar cookies», al pie de cada página.
+//
+// Cómo funciona:
+//   · Sin elección guardada, se muestra el banner. Nada de analítica corre
+//     mientras tanto.
+//   · «Aceptar todas» / «Solo las necesarias» deciden en un clic; «Configurar»
+//     abre el panel con el detalle de cada categoría.
+//   · La elección se guarda en localStorage (una cookie necesaria, según el
+//     aviso) y se vuelve a preguntar si cambia el esquema de categorías.
+//   · Al aceptar las analíticas se inyecta Google Tag Manager. Si el
+//     contenedor no está configurado en @data/analytics, no se carga nada.
+//
+// El botón del pie (`[data-configurar-cookies]`) reabre el panel; vive en
+// Footer.astro para que esté en todas las páginas.
+
+import { CATEGORIAS } from '@data/analytics';
+---
+<div class="cookies" data-cookies hidden>
+
+  <!-- Banner: la primera pregunta, sin detalle -->
+  <section
+    class="cookie-banner"
+    data-cookie-banner
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="cookie-banner-titulo"
+    hidden
+  >
+    <div class="cookie-banner-texto">
+      <p class="cookie-banner-titulo" id="cookie-banner-titulo">Cookies en lgo.mx</p>
+      <p>
+        Las necesarias hacen funcionar el sitio. Las analíticas, solo si las aceptas.
+        {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
+      </p>
+    </div>
+    <div class="cookie-banner-acciones">
+      <button type="button" class="btn btn-ghost cookie-btn" data-cookie-configurar>
+        Configurar
+      </button>
+      <button type="button" class="btn btn-ghost cookie-btn" data-cookie-necesarias>
+        Solo necesarias
+      </button>
+      <button type="button" class="btn btn-primary cookie-btn" data-cookie-todas>
+        Aceptar todas
+      </button>
+    </div>
+  </section>
+
+  <!-- Panel: el detalle por categoría -->
+  <div class="cookie-fondo" data-cookie-fondo hidden></div>
+  <section
+    class="cookie-panel"
+    data-cookie-panel
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cookie-panel-titulo"
+    hidden
+  >
+    <header class="cookie-panel-head">
+      <p class="cookie-panel-titulo" id="cookie-panel-titulo">Configurar cookies</p>
+      <button type="button" class="cookie-cerrar" data-cookie-cerrar aria-label="Cerrar">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    <div class="cookie-categorias">
+      {CATEGORIAS.map((c) => (
+        <div class="cookie-categoria">
+          <label class="cookie-categoria-head" for={`cookie-${c.id}`}>
+            <input
+              type="checkbox"
+              id={`cookie-${c.id}`}
+              data-cookie-categoria={c.id}
+              checked={c.obligatoria}
+              disabled={c.obligatoria}
+            />
+            <span class="cookie-categoria-titulo">{c.titulo}</span>
+            {c.obligatoria && <span class="cookie-siempre">Siempre activas</span>}
+          </label>
+          <p class="cookie-categoria-texto">{c.texto}</p>
+        </div>
+      ))}
+    </div>
+
+    <footer class="cookie-panel-pie">
+      <a href="/aviso-de-privacidad/" class="cookie-enlace">Aviso de privacidad</a>
+      <button type="button" class="btn btn-primary cookie-btn" data-cookie-guardar>
+        Guardar preferencias
+      </button>
+    </footer>
+  </section>
+</div>
+
+<style>
+  .cookies { position: relative; z-index: 400; }
+
+  /* ── Banner ── */
+  .cookie-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 401;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem max(1rem, env(safe-area-inset-right, 0px))
+      calc(1.25rem + env(safe-area-inset-bottom, 0px)) max(1rem, env(safe-area-inset-left, 0px));
+    background: var(--color-foreground-strong);
+    color: var(--color-on-dark);
+    border-top: 3px solid var(--color-accent);
+  }
+  @media (min-width: 900px) {
+    .cookie-banner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding-inline: 3rem;
+    }
+  }
+
+  .cookie-banner-texto { max-width: 62ch; }
+  .cookie-banner-titulo {
+    margin: 0 0 0.375rem;
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--color-on-dark);
+  }
+  .cookie-banner p {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: rgba(250, 248, 244, 0.85);
+  }
+  .cookie-banner a { color: var(--color-accent-soft); font-weight: 700; }
+
+  .cookie-banner-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+  .cookie-btn { flex: 1 1 auto; white-space: nowrap; }
+  @media (min-width: 900px) { .cookie-btn { flex: 0 0 auto; } }
+  .cookie-banner .btn-ghost {
+    color: var(--color-on-dark);
+    border-color: rgba(250, 248, 244, 0.4);
+  }
+  .cookie-banner .btn-ghost:hover {
+    background: rgba(250, 248, 244, 0.08);
+    border-color: var(--color-on-dark);
+  }
+
+  /* En móvil el banner se queda con lo imprescindible: en una landing el
+     primer pantallazo tiene que seguir mostrando su oferta. El título sigue
+     ahí para `aria-labelledby`, solo deja de pintarse.
+     
+     Las dos decisiones —aceptar todas y solo las necesarias— comparten una
+     sola fila y conservan el mismo peso, que es lo que un banner honesto
+     exige. «Configurar» pasa a enlace: sigue visible y con área de toque
+     suficiente, pero no gasta una fila de 48 px. Entre eso y el título
+     oculto, el banner baja de 188 a ~140 px, que es lo que necesitaba el
+     encabezado de la landing para caber en una pantalla de 360 px. */
+  @media (max-width: 899px) {
+    .cookie-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 0.625rem;
+      padding-block: 0.75rem;
+    }
+    .cookie-banner-titulo {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .cookie-banner-texto { grid-column: 1 / -1; }
+    .cookie-banner p { font-size: var(--text-xs); }
+
+    .cookie-banner-acciones { display: contents; }
+
+    /* «Configurar» como enlace, en la misma línea del texto. */
+    .cookie-banner [data-cookie-configurar] {
+      grid-column: 1 / -1;
+      justify-self: start;
+      /* Enlace, pero con área de toque: 32 px de alto cumple el mínimo de
+         24 x 24 de WCAG 2.2 sin gastar una fila de botón de 48. */
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 0.125rem;
+      border: 0;
+      background: none;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-accent-soft);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+    .cookie-banner [data-cookie-configurar]:hover { color: var(--color-on-dark); background: none; }
+  }
+
+  /* ── Panel ── */
+  .cookie-fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 402;
+    background: rgba(26, 26, 26, 0.55);
+  }
+  .cookie-panel {
+    position: fixed;
+    z-index: 403;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: min(42rem, calc(100vh - 2rem));
+    overflow-y: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+  }
+
+  .cookie-panel-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .cookie-panel-titulo {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+  .cookie-cerrar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--color-muted);
+    cursor: pointer;
+  }
+  .cookie-cerrar:hover { border-color: var(--color-accent); color: var(--color-accent-strong); }
+
+  .cookie-categorias { display: flex; flex-direction: column; gap: 1.25rem; }
+  .cookie-categoria {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .cookie-categoria:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  .cookie-categoria-head {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+  }
+  .cookie-categoria-head input {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .cookie-categoria-head input:disabled { cursor: not-allowed; }
+  .cookie-categoria-titulo {
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+  .cookie-siempre {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .cookie-categoria-texto {
+    margin: 0;
+    padding-left: 1.75rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .cookie-panel-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .cookie-enlace { font-size: var(--text-sm); font-weight: 700; color: var(--color-accent-deep); }
+</style>
+
+<script>
+  import { GTM_ID, CONSENT_KEY, CONSENT_VERSION } from '@data/analytics';
+
+  const raiz = document.querySelector<HTMLElement>('[data-cookies]');
+
+  if (raiz) {
+    const banner = raiz.querySelector<HTMLElement>('[data-cookie-banner]')!;
+    const panel = raiz.querySelector<HTMLElement>('[data-cookie-panel]')!;
+    const fondo = raiz.querySelector<HTMLElement>('[data-cookie-fondo]')!;
+    const casillaAnaliticas = raiz.querySelector<HTMLInputElement>('[data-cookie-categoria="analiticas"]')!;
+
+    type Consentimiento = { version: number; analiticas: boolean; fecha: string };
+
+    // ── Almacenamiento ──
+    // localStorage puede fallar (ventana privada, datos bloqueados): en ese
+    // caso la elección vale para esta sesión y el banner volverá a aparecer,
+    // que es el comportamiento seguro.
+    const leer = (): Consentimiento | null => {
+      try {
+        const crudo = localStorage.getItem(CONSENT_KEY);
+        if (!crudo) return null;
+        const dato = JSON.parse(crudo);
+        if (!dato || dato.version !== CONSENT_VERSION) return null;
+        return { version: dato.version, analiticas: dato.analiticas === true, fecha: dato.fecha };
+      } catch {
+        return null;
+      }
+    };
+
+    const guardar = (analiticas: boolean) => {
+      const dato: Consentimiento = {
+        version: CONSENT_VERSION,
+        analiticas,
+        fecha: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem(CONSENT_KEY, JSON.stringify(dato));
+      } catch {
+        // Sin almacenamiento la elección no persiste; se respeta en esta carga.
+      }
+      aplicar(dato);
+    };
+
+    // ── Google Tag Manager, solo con consentimiento ──
+    let gtmCargado = false;
+    const cargarGtm = () => {
+      if (gtmCargado || !GTM_ID) return;
+      gtmCargado = true;
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+      document.head.appendChild(s);
+    };
+
+    const aplicar = (dato: Consentimiento) => {
+      if (dato.analiticas) cargarGtm();
+      casillaAnaliticas.checked = dato.analiticas;
+    };
+
+    // ── Mostrar y ocultar ──
+    const cerrarPanel = () => {
+      panel.hidden = true;
+      fondo.hidden = true;
+      document.removeEventListener('keydown', alEscape);
+    };
+
+    const alEscape = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') cerrarPanel();
+    };
+
+    const abrirPanel = () => {
+      const actual = leer();
+      casillaAnaliticas.checked = actual ? actual.analiticas : false;
+      banner.hidden = true;
+      fondo.hidden = false;
+      panel.hidden = false;
+      document.addEventListener('keydown', alEscape);
+      panel.querySelector<HTMLElement>('[data-cookie-cerrar]')?.focus();
+    };
+
+    const decidir = (analiticas: boolean) => {
+      guardar(analiticas);
+      banner.hidden = true;
+      cerrarPanel();
+    };
+
+    // ── Eventos ──
+    raiz.querySelector('[data-cookie-todas]')!.addEventListener('click', () => decidir(true));
+    raiz.querySelector('[data-cookie-necesarias]')!.addEventListener('click', () => decidir(false));
+    raiz.querySelector('[data-cookie-configurar]')!.addEventListener('click', abrirPanel);
+    raiz.querySelector('[data-cookie-cerrar]')!.addEventListener('click', cerrarPanel);
+    fondo.addEventListener('click', cerrarPanel);
+    raiz
+      .querySelector('[data-cookie-guardar]')!
+      .addEventListener('click', () => decidir(casillaAnaliticas.checked));
+
+    // «Configurar cookies» del pie: reabre el panel en cualquier momento.
+    document.querySelectorAll('[data-configurar-cookies]').forEach((b) =>
+      b.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        abrirPanel();
+      })
+    );
+
+    // ── Arranque ──
+    raiz.hidden = false;
+    const guardado = leer();
+    if (guardado) aplicar(guardado);
+    else banner.hidden = false;
+  }
+</script>

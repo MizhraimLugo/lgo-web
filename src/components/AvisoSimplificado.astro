@@ -1,0 +1,193 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  AVISO SIMPLIFICADO — bloque obligatorio de cada formulario
+// ════════════════════════════════════════════════════════════════
+//
+// Anexo A del aviso de privacidad (artículo 16, fracción II de la Ley): el
+// texto corto que debe acompañar a toda captura de datos, más las dos
+// casillas. Se usa igual en formularios nativos (contacto, cursos) que en
+// islas con JavaScript (autoevaluación, asistente de contratos).
+//
+//   · La casilla obligatoria lleva `required`, así que un formulario nativo
+//     no se envía sin ella; las islas comprueban además `.checked` antes de
+//     mandar nada.
+//   · La de mercadotecnia va DESMARCADA. Es una casilla HTML normal: si no
+//     se marca, no viaja ningún valor, que es justo lo que significa "no
+//     acepté". Las islas la leen y la mandan explícita al lead.
+//
+// El texto NO se edita aquí: vive en @data/aviso-privacidad y lo comparte con
+// la leyenda de WhatsApp y con la versión en texto plano.
+
+import {
+  AVISO_PRIVACIDAD_PATH,
+  AVISO_PRIVACIDAD_ETIQUETA,
+  AVISO_PRIVACIDAD_CORREO,
+  AVISO_SIMPLIFICADO_TITULO,
+  AVISO_CASILLAS,
+  tramosAvisoSimplificado
+} from '@data/aviso-privacidad';
+
+export interface Props {
+  /** Prefijo de los id. Debe ser único si hay más de un aviso en la página. */
+  idPrefix?: string;
+  /** Clase extra para colocarlo dentro del formulario que lo usa. */
+  class?: string;
+}
+
+const { idPrefix = 'aviso', class: className } = Astro.props;
+
+const idObligatoria = `${idPrefix}-aviso-obligatoria`;
+const idMercadotecnia = `${idPrefix}-aviso-mercadotecnia`;
+const idError = `${idPrefix}-aviso-err`;
+
+const tramos = tramosAvisoSimplificado();
+---
+<div class:list={['aviso-simplificado', className]} data-aviso>
+  <p class="aviso-texto">
+    <strong>{AVISO_SIMPLIFICADO_TITULO}</strong>{' '}
+    {tramos.map((t) =>
+      t.tipo === 'texto' ? (
+        <>{t.valor}</>
+      ) : t.tipo === 'correo' ? (
+        <a href={`mailto:${AVISO_PRIVACIDAD_CORREO}`}>{AVISO_PRIVACIDAD_CORREO}</a>
+      ) : (
+        <a href={AVISO_PRIVACIDAD_PATH}>{AVISO_PRIVACIDAD_ETIQUETA}</a>
+      )
+    )}
+  </p>
+
+  <label class="aviso-casilla" for={idObligatoria}>
+    <input
+      type="checkbox"
+      id={idObligatoria}
+      name={AVISO_CASILLAS.obligatoria.name}
+      value="Sí"
+      required
+      data-aviso-obligatoria
+      aria-describedby={idError}
+    />
+    <span>
+      {AVISO_CASILLAS.obligatoria.texto}
+      {' '}<span class="aviso-req" aria-hidden="true">*</span>
+    </span>
+  </label>
+
+  <label class="aviso-casilla" for={idMercadotecnia}>
+    <input
+      type="checkbox"
+      id={idMercadotecnia}
+      name={AVISO_CASILLAS.mercadotecnia.name}
+      value="Sí"
+      data-aviso-mercadotecnia
+    />
+    <span>{AVISO_CASILLAS.mercadotecnia.texto}</span>
+  </label>
+
+  <p class="aviso-error" id={idError} role="alert" data-aviso-error hidden></p>
+</div>
+
+<style>
+  .aviso-simplificado {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    margin-top: 1.5rem;
+    padding: 1.125rem 1.25rem;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+  }
+
+  .aviso-texto {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-muted);
+    max-width: 68ch;
+  }
+  .aviso-texto strong { color: var(--color-foreground-strong); }
+  .aviso-texto a { color: var(--color-accent-deep); font-weight: 700; }
+  .aviso-texto a:hover { text-decoration: underline; }
+
+  .aviso-casilla {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+  }
+  .aviso-casilla input {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    accent-color: var(--color-accent);
+  }
+  .aviso-casilla input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .aviso-casilla span {
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-foreground);
+    max-width: 62ch;
+  }
+  .aviso-req { color: var(--color-accent-deep); font-weight: 700; }
+
+  .aviso-error {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-alert);
+  }
+</style>
+
+<script>
+  // ── La casilla obligatoria bloquea el envío, en cualquier formulario ──
+  //
+  // Un solo escucha en `document` y en fase de CAPTURA: así corre antes que
+  // el handler del propio formulario —el asistente de contratos, la isla de
+  // la autoevaluación o el envío por AJAX del diagnóstico— y lo detiene antes
+  // de que mande nada. Hace falta porque varios formularios del sitio llevan
+  // `novalidate`, que desactiva la validación nativa del `required`.
+  const MENSAJE = 'Necesitamos tu aceptación del aviso de privacidad para continuar.';
+
+  document.addEventListener(
+    'submit',
+    (ev) => {
+      const form = ev.target;
+      if (!(form instanceof HTMLFormElement)) return;
+
+      const aviso = form.querySelector<HTMLElement>('[data-aviso]');
+      if (!aviso) return;
+
+      const casilla = aviso.querySelector<HTMLInputElement>('[data-aviso-obligatoria]');
+      const error = aviso.querySelector<HTMLElement>('[data-aviso-error]');
+      if (!casilla) return;
+
+      if (casilla.checked) {
+        if (error) error.hidden = true;
+        casilla.removeAttribute('aria-invalid');
+        return;
+      }
+
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (error) {
+        error.textContent = MENSAJE;
+        error.hidden = false;
+      }
+      casilla.setAttribute('aria-invalid', 'true');
+      casilla.focus();
+    },
+    true
+  );
+
+  // Marcar la casilla limpia el error sin esperar a otro envío.
+  document.addEventListener('change', (ev) => {
+    const casilla = ev.target;
+    if (!(casilla instanceof HTMLInputElement) || !casilla.matches('[data-aviso-obligatoria]')) return;
+    if (!casilla.checked) return;
+    const error = casilla.closest('[data-aviso]')?.querySelector<HTMLElement>('[data-aviso-error]');
+    if (error) error.hidden = true;
+    casilla.removeAttribute('aria-invalid');
+  });
+</script>

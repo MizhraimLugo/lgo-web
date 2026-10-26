@@ -17,7 +17,10 @@
   --color-gray-950:       #1A1A1A;
   --color-gray-900:       #3D3D3D;
   --color-gray-700:       #555555;
-  --color-gray-500:       #909090;
+  /* Subido de #909090: en texto chico se quedaba en 2.9-3.2:1 sobre los
+     fondos claros del sitio. #6B6B6B es el más claro que pasa 4.5:1 en los
+     cuatro (blanco, crema, fondo y banda). No se usa sobre fondo oscuro. */
+  --color-gray-500:       #6B6B6B;
   --color-gray-300:       #C8C8C8;
   --color-gray-200:       #D8D4CC;
   --color-gray-150:       #E2E2E2;
@@ -40,6 +43,12 @@
   --color-muted-soft:        var(--color-gray-500);
 
   --color-accent:            var(--color-orange-base);
+  /* El acento en su variante ACCESIBLE. El naranja base no llega a 4.5:1 ni
+     como texto pequeño sobre fondo claro (3.6–4.1) ni como fondo con texto
+     blanco encima (4.1). Todo lo que es texto de acento, y todo relleno de
+     acento que lleva texto, usa este tono; el base se queda para filetes,
+     viñetas, bordes y rellenos sin texto, donde el contraste no aplica. */
+  --color-accent-strong:     var(--color-orange-dark);
   --color-accent-hover:      var(--color-orange-dark);
   --color-accent-deep:       var(--color-orange-deeper);
   --color-accent-soft:       var(--color-orange-light);
@@ -249,7 +258,7 @@
     font-size: var(--text-eyebrow);
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     font-weight: 700;
     display: inline-flex;
     align-items: center;
@@ -308,22 +317,22 @@
   }
 
   .btn-primary {
-    background: var(--color-accent);
+    background: var(--color-accent-strong);
     color: var(--color-on-accent);
-    border-color: var(--color-accent);
+    border-color: var(--color-accent-strong);
   }
   .btn-primary:hover {
-    background: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+    background: var(--color-accent-deep);
+    border-color: var(--color-accent-deep);
   }
 
   .btn-outline {
     background: transparent;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     border-color: var(--color-accent);
   }
   .btn-outline:hover {
-    background: var(--color-accent);
+    background: var(--color-accent-strong);
     color: var(--color-on-accent);
   }
 
@@ -334,7 +343,7 @@
   }
   .btn-ghost:hover {
     border-color: var(--color-accent);
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
   }
 
   .band-dark .btn-ghost {

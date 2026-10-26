@@ -4,6 +4,7 @@ import CtaBand from '@components/CtaBand.astro';
 import PostCard from '@components/PostCard.astro';
 import CourseCard from '@components/CourseCard.astro';
 import HerramientaCard from '@components/herramientas/HerramientaCard.astro';
+import M40TeaserHome from '@components/m40/TeaserHome.astro';
 import { business } from '@data/business';
 import { ecosystemBrands } from '@data/brands';
 import { publishedHerramientas } from '@data/herramientas';
@@ -185,6 +186,13 @@ const cursos = nonFeaturedCourses();
     </div>
   </section>
 
+  <!-- AMPARO MODALIDAD 40 — campaña con fecha límite. Va aparte de la rejilla de
+       herramientas gratuitas a propósito: ahí la autoevaluación aparece como una
+       tarjeta más (sale del data layer), pero el servicio que la acompaña es de
+       pago y tiene plazo, y eso no cabe en una tarjeta. Se retira quitando este
+       bloque; la tarjeta se retira con `published: false` en herramientas.ts. -->
+  <M40TeaserHome />
+
   <!-- PERSPECTIVAS (blog agregado: mezcla Abogados + Contadores + Grupo) -->
   <section id="perspectivas" class="section">
     <div class="container-base">
@@ -266,7 +274,7 @@ const cursos = nonFeaturedCourses();
     font-size: var(--text-eyebrow);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     font-weight: 700;
   }
   .card h3 { margin: 0; }
@@ -274,7 +282,7 @@ const cursos = nonFeaturedCourses();
   .card-cta {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     margin-top: 0.5rem;
   }
 
@@ -361,7 +369,7 @@ const cursos = nonFeaturedCourses();
   .herramientas-all {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     text-decoration: none;
     white-space: nowrap;
     padding-block: 0.5rem;
@@ -394,7 +402,7 @@ const cursos = nonFeaturedCourses();
   .perspectivas-all {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     text-decoration: none;
     white-space: nowrap;
     padding-block: 0.5rem;
@@ -427,7 +435,7 @@ const cursos = nonFeaturedCourses();
   .cursos-all {
     font-size: var(--text-sm);
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     text-decoration: none;
     white-space: nowrap;
     padding-block: 0.5rem;

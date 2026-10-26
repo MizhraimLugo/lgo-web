@@ -1,0 +1,200 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  HUB — Pensiones (/pensiones/)
+// ════════════════════════════════════════════════════════════════
+//
+// Portada del hub de pensiones de LGO Abogados & Consultores. En la Fase 1
+// lista un solo servicio: el amparo contra el tope de la Modalidad 40.
+//
+// Para agregar otro servicio basta añadir una entrada a `servicios`: la
+// tarjeta, el ItemList del JSON-LD y el conteo del hero se actualizan solos.
+// Ningún número del copy está escrito a mano.
+
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import { business } from '@data/business';
+import { M40, M40_WHATSAPP_GENERAL, precioTexto } from '@data/amparo-m40';
+
+const path = '/pensiones/';
+const title = 'Pensiones y Modalidad 40 | LGO Abogados & Consultores';
+const description =
+  'Servicios legales en materia de pensiones del IMSS: amparo contra el tope de la Modalidad 40. Revisión de tu caso por abogados en Guadalajara, Jalisco.';
+
+type ServicioPension = {
+  nombre: string;
+  resumen: string;
+  /** Qué incluye, en tres o cuatro etiquetas cortas. */
+  etiquetas: string[];
+  href: string;
+  /** Línea de precio ya formateada. Opcional: un servicio puede no publicarlo. */
+  precio?: string;
+  cta: string;
+};
+
+const servicios: ServicioPension[] = [
+  {
+    nombre: 'Amparo Modalidad 40',
+    resumen:
+      'El IMSS limitó el salario con el que puedes inscribirte a la Modalidad 40. Revisamos tus documentos, te decimos si procede un amparo y por qué vía, y llevamos el juicio hasta la sentencia.',
+    etiquetas: ['Diagnóstico por escrito', 'Demanda y suspensión', 'Seguimiento del juicio'],
+    href: '/pensiones/amparo-modalidad-40/',
+    precio: `Diagnóstico ${precioTexto(M40.precios.diagnostico)}`,
+    cta: 'Ver el servicio'
+  }
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Pensiones', item: business.url + path }
+  ]
+};
+
+// CollectionPage con el ItemList de los servicios del hub — el mismo criterio
+// que el catálogo de /contratos.
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${business.url}${path}#collection`,
+  name: 'Pensiones — LGO Abogados & Consultores',
+  description,
+  url: business.url + path,
+  inLanguage: 'es-MX',
+  isPartOf: { '@id': `${business.url}/#website` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: servicios.length,
+    itemListElement: servicios.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: s.nombre,
+      url: business.url + s.href
+    }))
+  }
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, collectionLd]}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up reveal-up--immediate">LGO Abogados &amp; Consultores</span>
+      <h1 class="reveal-up reveal-up--immediate">Pensiones</h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Lo que se decide en los años previos a la pensión pesa el resto de la vida. Aquí
+        reunimos los asuntos de pensiones que atiende el despacho, con el alcance y el
+        precio a la vista antes de que contrates.
+      </p>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Servicios</span>
+        <h2>En qué podemos ayudarte.</h2>
+      </header>
+
+      <div class="servicios">
+        {servicios.map((s) => (
+          <article class="servicio reveal-up">
+            <div class="servicio-texto">
+              <h3>{s.nombre}</h3>
+              <p class="servicio-resumen">{s.resumen}</p>
+              <ul class="servicio-chips">
+                {s.etiquetas.map((e) => <li>{e}</li>)}
+              </ul>
+            </div>
+            <div class="servicio-pie">
+              {s.precio && <span class="servicio-precio">{s.precio}</span>}
+              <a href={s.href} class="btn btn-primary">{s.cta} →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="LGO Abogados & Consultores"
+    title="¿Tu caso no está en la lista?"
+    body="Cuéntanos tu situación y te decimos si es algo que atendemos y con qué alcance. Revisarlo contigo no tiene costo."
+    primaryLabel="Escríbenos por WhatsApp"
+    primaryHref={M40_WHATSAPP_GENERAL}
+    secondaryLabel="Ir a contacto"
+    secondaryHref="/contacto/"
+    variant="dark"
+  />
+
+</Base>
+
+<style>
+  .hero h1 { max-width: 18ch; margin: 1.25rem 0 1.5rem; }
+  .hero .lead { max-width: 46rem; }
+
+  .section-head { margin-bottom: 2.5rem; max-width: 42rem; }
+  .section-head h2 { margin: 1rem 0 0.75rem; max-width: 24ch; }
+
+  /* Una columna hoy; al agregar servicios la rejilla se reparte sola. */
+  .servicios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 900px) {
+    .servicios { grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr)); }
+  }
+
+  .servicio {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 2rem;
+  }
+  .servicio h3 { font-size: var(--text-2xl); margin: 0 0 0.75rem; max-width: 20ch; }
+  .servicio-resumen { margin: 0; font-size: var(--text-base); max-width: 58ch; }
+
+  .servicio-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .servicio-chips li {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-muted);
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+    padding: 0.3rem 0.6rem;
+  }
+
+  .servicio-pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-divider);
+  }
+  .servicio-precio {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+</style>

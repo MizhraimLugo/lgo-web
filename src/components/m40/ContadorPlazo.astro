@@ -1,0 +1,141 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  CONTADOR DE PLAZO — Amparo Modalidad 40
+// ════════════════════════════════════════════════════════════════
+//
+// Días naturales que faltan para la fecha de corte interno de recepción de
+// expedientes (`M40.plazos.corteInterno`). Dos reglas del encargo:
+//
+//   · Se calcula en el CLIENTE con zona horaria America/Mexico_City, para que
+//     el número no se quede congelado en la fecha del último build.
+//   · Si JavaScript falla, se muestra la FECHA ESTÁTICA — nunca un conteo
+//     viejo, que sería peor que no dar ninguno.
+//
+// Cuando la fecha pasa, el texto cambia solo (en el build y en el cliente) y
+// la página sigue publicada: la vía del acto concreto sigue abierta.
+
+import {
+  M40,
+  fechaLarga,
+  cortePasado,
+  TEXTO_CONTADOR_VENCIDO,
+  TEXTO_FECHA_INTERNA
+} from '@data/amparo-m40';
+
+export interface Props {
+  /** 'oscuro' para usarlo sobre una banda oscura (hereda el color del texto). */
+  tono?: 'claro' | 'oscuro';
+  class?: string;
+}
+
+const { tono = 'claro', class: className } = Astro.props;
+
+const corte = M40.plazos.corteInterno;
+const corteLargo = fechaLarga(corte);
+
+// Estado al momento del build. El cliente lo recalcula y, si el corte ya pasó,
+// aquí mismo se sirve el texto vencido sin esperar a que corra JavaScript.
+const yaPaso = cortePasado();
+
+// Fallback sin JavaScript: la fecha, no el conteo.
+const textoEstatico = yaPaso
+  ? TEXTO_CONTADOR_VENCIDO
+  : `Recibimos expedientes hasta el ${corteLargo}.`;
+---
+<div
+  class:list={['contador', `contador--${tono}`, className]}
+  data-contador
+  data-corte={corte}
+>
+  <svg class="contador-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+  </svg>
+  <div class="contador-cuerpo">
+    <p class="contador-texto" data-contador-texto>{textoEstatico}</p>
+    {/* Sin esta línea, el 26 de noviembre se lee —y se cita— como si fuera
+        el plazo que da la ley. Es nuestro corte interno. */}
+    {!yaPaso && <p class="contador-aclaracion">{TEXTO_FECHA_INTERNA}</p>}
+  </div>
+</div>
+
+<style>
+  .contador {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--color-accent-soft);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    padding: 0.9rem 1.1rem;
+    max-width: 44rem;
+  }
+  .contador-icono {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .contador-cuerpo { display: flex; flex-direction: column; gap: 0.2rem; }
+  .contador-aclaracion {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--color-accent-deep);
+    opacity: 0.85;
+  }
+  .contador--oscuro .contador-aclaracion { color: rgba(250, 248, 244, 0.7); opacity: 1; }
+  .contador-texto {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    font-weight: 700;
+    color: var(--color-accent-deep);
+  }
+  /* Animación mínima: el conteo que calcula el cliente entra con un fundido
+     en lugar de sustituir el texto de golpe. Va atada a `data-estado`, que
+     solo existe si el script corrió: sin JavaScript el texto estático se ve
+     completo desde el inicio. La regla global de `prefers-reduced-motion`
+     reduce la duración a cero. */
+  .contador[data-estado] .contador-texto {
+    animation: contador-aparece 320ms ease both;
+  }
+  @keyframes contador-aparece {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+  }
+
+  /* Sobre banda oscura: sin relleno de color, el texto hereda el de la banda. */
+  .contador--oscuro {
+    background: rgba(250, 248, 244, 0.08);
+    border-left-color: var(--color-accent-soft);
+  }
+  .contador--oscuro .contador-icono { stroke: var(--color-accent-soft); }
+  .contador--oscuro .contador-texto { color: var(--color-on-dark); }
+</style>
+
+<script>
+  import { diasHasta, hoyEnMexico, textoContador, TEXTO_CONTADOR_VENCIDO } from '@data/amparo-m40';
+
+  // Puede haber más de un contador en la página (hero y cierre): se actualizan
+  // todos con el mismo cómputo.
+  const nodos = document.querySelectorAll<HTMLElement>('[data-contador]');
+  if (nodos.length) {
+    const hoy = hoyEnMexico();
+
+    nodos.forEach((nodo) => {
+      const corte = nodo.dataset.corte;
+      const texto = nodo.querySelector<HTMLElement>('[data-contador-texto]');
+      if (!corte || !texto) return;
+
+      const dias = diasHasta(corte, hoy);
+      texto.textContent = dias >= 0 ? textoContador(dias) : TEXTO_CONTADOR_VENCIDO;
+      nodo.dataset.estado = dias >= 0 ? 'vigente' : 'vencido';
+    });
+  }
+</script>

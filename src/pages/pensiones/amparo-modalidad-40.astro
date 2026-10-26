@@ -1,0 +1,1379 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  LANDING — Amparo Modalidad 40 (/pensiones/amparo-modalidad-40/)
+// ════════════════════════════════════════════════════════════════
+//
+// Rediseño comercial (brief v2): primero el problema del cliente en una frase,
+// luego la cifra que duele, luego la solución y el precio. Encabezado oscuro,
+// cuerpo que alterna blanco y gris muy claro para dar ritmo, y naranja
+// reservado a la cifra clave y a los botones principales.
+//
+// NINGUNA fecha, precio ni tope está escrito a mano en este archivo: todo sale
+// de `@data/amparo-m40` y sus helpers. Cambiar `corteInterno`, un precio o el
+// valor de la UMA allí lo cambia en el encabezado, el contador, las tarjetas,
+// la comparativa, las FAQ, la barra fija y el pie.
+//
+// Los comentarios COTEJADO marcan las afirmaciones jurídicas de la página y la
+// fecha en que se verificaron contra fuente oficial. No son decoración: cuando
+// cambie la ley, son la lista de lo que hay que volver a mirar. Lo que sigue
+// marcado VERIFICAR es lo que falta, y está enlistado en el PR.
+
+import Base from '@layouts/Base.astro';
+import Faq from '@components/Faq.astro';
+import Autoevaluacion from '@components/m40/Autoevaluacion.astro';
+import BloqueAutoridad from '@components/m40/BloqueAutoridad.astro';
+import SelectorPlazo from '@components/m40/SelectorPlazo.astro';
+import CalculadoraTope from '@components/m40/CalculadoraTope.astro';
+import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
+import { business } from '@data/business';
+import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
+import {
+  BLOQUE_PLAZO,
+  BLOQUE_REFORMA,
+  BLOQUE_DEFENSA,
+  AVISOS_AUTORIDAD
+} from '@data/amparo-m40-autoridad';
+import {
+  M40,
+  M40_WHATSAPP_GENERAL,
+  precioCorto,
+  conIva,
+  fmtMXN,
+  fmtTope,
+  fmtMXNExacto,
+  fmtMXNAproximado,
+  fechaLarga,
+  fechaCorta,
+  lanzamientoVigente,
+  TEXTO_FECHA_INTERNA,
+  topeAnteriorDiario,
+  topeAnteriorMensual
+} from '@data/amparo-m40';
+
+const path = '/pensiones/amparo-modalidad-40/';
+const title = 'Amparo Modalidad 40 IMSS en Guadalajara | LGO Abogados';
+const description =
+  '¿El IMSS topó tu Modalidad 40? Revisamos si procede un amparo en tu caso. Diagnóstico $500 + IVA. Abogados en Guadalajara y Zapopan.';
+const ogImage = '/og-amparo-modalidad-40.jpg';
+
+// El precio de lanzamiento se decide en el build y se vuelve a comprobar en el
+// cliente (ver el <script> del final): así el tachado desaparece solo aunque no
+// haya un deploy nuevo justo después de la fecha.
+const hayLanzamiento = lanzamientoVigente();
+
+const vigenciaCorta = fechaCorta(M40.acuerdo.vigenciaDesde);
+const corteCorto = fechaCorta(M40.plazos.corteInterno);
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  '@id': `${business.url}${path}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Pensiones', item: business.url + '/pensiones/' },
+    { '@type': 'ListItem', position: 3, name: 'Amparo Modalidad 40', item: business.url + path }
+  ]
+};
+
+/**
+ * El servicio concreto, como `Service`.
+ *
+ * Antes era un `LegalService`, y eso creaba dos problemas: duplicaba la
+ * entidad "LGO Abogados & Consultores" que el layout ya declara en
+ * `#abogados` —la firma figuraba como proveedora de sí misma— y colgaba de
+ * un negocio local tres propiedades que no le pertenecen (`provider`,
+ * `serviceType`, `inLanguage` son de `Service`).
+ *
+ * Ahora la firma es una sola entidad, la de siempre, y esta página declara
+ * el SERVICIO que presta, con sus precios. Sin schema de reseñas ni
+ * calificaciones, por decisión editorial.
+ *
+ * Los precios salen de la misma configuración que pinta los visibles, así
+ * que no pueden desincronizarse. La oferta de lanzamiento solo se emite
+ * mientras está vigente.
+ */
+const oferta = (nombre: string, monto: number, validoHasta?: string) => ({
+  '@type': 'Offer',
+  name: nombre,
+  price: monto,
+  priceCurrency: 'MXN',
+  priceSpecification: {
+    '@type': 'PriceSpecification',
+    price: monto,
+    priceCurrency: 'MXN',
+    // Los montos publicados son ANTES de IVA.
+    valueAddedTaxIncluded: false
+  },
+  ...(validoHasta ? { priceValidUntil: validoHasta } : {})
+});
+
+const servicioLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${business.url}${path}#servicio`,
+  name: 'Amparo contra el tope salarial de la Modalidad 40 del IMSS',
+  serviceType: 'Juicio de amparo contra el tope salarial de la Modalidad 40 del IMSS',
+  description,
+  url: business.url + path,
+  image: business.url + ogImage,
+  provider: { '@id': `${business.url}/#abogados` },
+  // VERIFICAR: alcance del servicio. La pregunta frecuente dice que se
+  // revisan casos de cualquier estado, y el Organization del sitio ya
+  // declara México; antes este nodo decía solo la zona de Guadalajara y se
+  // contradecían.
+  areaServed: [
+    { '@type': 'City', name: business.address.locality },
+    { '@type': 'AdministrativeArea', name: business.address.region },
+    { '@type': 'Country', name: 'México' }
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Precios',
+    itemListElement: [
+      oferta('Diagnóstico', M40.precios.diagnostico),
+      hayLanzamiento
+        ? oferta('Amparo Modalidad 40, precio de lanzamiento', M40.precios.amparoLanzamiento, M40.plazos.lanzamientoHasta)
+        : oferta('Amparo Modalidad 40', M40.precios.amparo)
+    ]
+  }
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${business.url}${path}#webpage`,
+  url: business.url + path,
+  name: title,
+  inLanguage: 'es-MX',
+  // La fecha sale de la configuración, no se escribe a mano: es la señal de
+  // frescura que un buscador y un modelo pueden leer sin interpretar prosa.
+  dateModified: M40.ultimaActualizacion,
+  isPartOf: { '@id': `${business.url}/#website` },
+  about: { '@id': `${business.url}${path}#servicio` },
+  breadcrumb: { '@id': `${business.url}${path}#breadcrumb` },
+  mainEntity: faqsAmparoM40.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+
+// ── Contenido de las secciones (4.1 a 4.13 del brief v2) ──────────
+
+/** Franja de confianza del encabezado. */
+const confianza = [
+  { ico: 'pin', texto: 'Despacho en Guadalajara' },
+  { ico: 'escudo', texto: 'Precio cerrado, sin sorpresas' },
+  { ico: 'balanza', texto: 'Insistimos si el juez dice que no' },
+  { ico: 'documento', texto: 'Te decimos si no te conviene' }
+];
+
+/** 4.2 — Lo demás que cambió, además de los topes. */
+const otrosCambios = [
+  // COTEJADO 2026-10-26: fin de los pagos retroactivos.
+  { ico: 'calendario', texto: 'Ya no puedes pagar meses hacia atrás.' },
+  // COTEJADO 2026-10-26: el trámite quedó exclusivamente digital.
+  { ico: 'documento', texto: 'El trámite es solo digital.' },
+  // COTEJADO 2026-10-26: respeto de las condiciones contratadas a quien ya está inscrito.
+  {
+    ico: 'escudo',
+    texto: 'Si ya estás inscrito, conservas tus condiciones hasta que termine tu periodo.'
+  }
+];
+
+/**
+ * 4.5 — Comparativa de modelos de servicio. El precio sale de la
+ * configuración, igual que en la sección de precios.
+ */
+const comparativa = {
+  columnas: ['Formato gratuito', 'Gestor', 'LGO Abogados'],
+  filas: [
+    { criterio: 'Revisa si tu caso procede', valores: ['No', 'Variable', 'Sí, por escrito'] },
+    { criterio: 'Elige la vía correcta según tus fechas', valores: ['No', 'No', 'Sí'] },
+    {
+      criterio: 'Presenta y da seguimiento al juicio',
+      valores: ['Lo haces tú', 'No litiga', 'Sí, hasta sentencia']
+    },
+    { criterio: 'Insistir si el juez dice que no', valores: ['Por tu cuenta', 'No', 'Incluido'] },
+    {
+      criterio: 'Precio',
+      valores: [
+        'Gratis, pero el riesgo es tuyo',
+        'Variable',
+        `Cerrado: máximo ${precioCorto(M40.precios.amparo)}`
+      ]
+    }
+  ]
+};
+
+/** 4.6 — Los cuatro pasos del servicio. */
+const pasos = [
+  { titulo: 'Escríbenos.', texto: 'Haz la prueba o mándanos mensaje por WhatsApp.' },
+  {
+    titulo: `Diagnóstico — ${precioCorto(M40.precios.diagnostico)}.`,
+    texto:
+      'Revisamos tus documentos y te decimos, por escrito, si te conviene el amparo y por qué vía.'
+  },
+  {
+    titulo: 'Presentamos tu amparo.',
+    texto: 'Presentamos tu caso y pedimos la medida provisional, listos antes del corte.'
+  },
+  {
+    titulo: 'Te acompañamos hasta el final.',
+    texto: 'Seguimiento, sentencia y, si el juez no nos da la razón, insistimos ante otro tribunal. Te avisamos de cada avance.'
+  }
+];
+
+/** 4.7 — Lo que incluye el precio cerrado del amparo. */
+const incluye = [
+  'Presentar tu caso',
+  'Pedir una medida provisional',
+  'Seguimiento',
+  'Audiencia',
+  'Sentencia',
+  'Insistir ante otro tribunal'
+];
+
+/** 4.8 — Lo que decimos antes de cobrar. */
+const claridades = [
+  {
+    titulo: 'No hay garantías.',
+    texto: `Al ${fechaLarga(M40.ultimaActualizacion)} no conocemos sentencias sobre este acuerdo. Nadie puede asegurarte el resultado.`
+  },
+  {
+    titulo: 'Es una medida temporal.',
+    texto: 'Si el IMSS la cambia o el Congreso reforma la ley, el juicio podría quedarse sin objeto.'
+  },
+  {
+    titulo: 'Solo te protege a ti.',
+    texto: 'La sentencia beneficia únicamente a quien presentó el amparo.'
+  },
+  {
+    titulo: 'Toma tiempo.',
+    texto: 'Mientras se resuelve, quizá no cotices con el salario que buscas.'
+  },
+  {
+    // COTEJADO 2026-10-26: reforma de 2025 a la Ley de Amparo (requisitos y suspensión).
+    titulo: 'El acceso al amparo es más estricto desde 2025.',
+    texto: 'Por eso la estrategia importa.'
+  }
+];
+
+/** 4.10 — Documentos que conviene tener a la mano. */
+const documentos = [
+  'Constancia de semanas cotizadas (IMSS Digital)',
+  'Constancia de baja o movimientos afiliatorios',
+  'NSS, CURP e INE',
+  'Si ya estás en Modalidad 40: inscripción y pagos',
+  'Cualquier respuesta del IMSS'
+];
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  ogImage={ogImage}
+  extraJsonLd={[breadcrumbLd, servicioLd, faqLd]}
+>
+
+  <!-- Íconos lineales de la sección: un solo sprite y <use> donde se ocupan.
+       Sin dependencias nuevas y sin repetir el trazado en cada sección. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="ico-pin" viewBox="0 0 24 24">
+        <path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </symbol>
+      <symbol id="ico-escudo" viewBox="0 0 24 24">
+        <path d="M12 3l7 2.5v6c0 4.3-3 8-7 9.5-4-1.5-7-5.2-7-9.5v-6L12 3Z" />
+        <path d="M9 12l2.2 2.2L15.5 10" />
+      </symbol>
+      <symbol id="ico-balanza" viewBox="0 0 24 24">
+        <path d="M12 4.5v15" />
+        <path d="M8.5 19.5h7" />
+        <path d="M4 8h16" />
+        <path d="M4 8 1.5 13h5L4 8Z" />
+        <path d="M20 8l-2.5 5h5L20 8Z" />
+      </symbol>
+      <symbol id="ico-documento" viewBox="0 0 24 24">
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+        <path d="M14 3v5h5M9 13h6M9 17h4" />
+      </symbol>
+      <symbol id="ico-calendario" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="16" rx="2" />
+        <path d="M3 10h18M8 3v4M16 3v4" />
+      </symbol>
+      <symbol id="ico-check" viewBox="0 0 24 24">
+        <path d="M4 12.5l5 5L20 6.5" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ═══ 4.1 ENCABEZADO ═══ -->
+  <section class="hero band-dark" data-hero>
+    <div class="container-base">
+      <nav class="miga" aria-label="Ruta de navegación">
+        <ol>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/pensiones/">Pensiones</a></li>
+          <li><span aria-current="page">Amparo Modalidad 40</span></li>
+        </ol>
+      </nav>
+
+      <p class="pildora">
+        <span class="pildora-fuerte">Nuevas reglas IMSS</span> ·
+        Vigentes desde el {fechaLarga(M40.acuerdo.vigenciaDesde)}
+      </p>
+
+      <h1>
+        El IMSS le puso tope a tu Modalidad 40.
+        <span class="hero-h1-b">Tú puedes defenderte.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Si estabas por inscribirte para mejorar tu pensión, las reglas nuevas pueden dejarte
+        cotizando con mucho menos de lo que planeabas. Revisamos tu caso y, si procede,
+        presentamos tu amparo.
+      </p>
+
+      <!-- Cada precio es UN solo elemento: así, cuando el ancla se apila en
+           móvil, no se parte en "Diagnóstico" por un lado y el monto por otro. -->
+      <p class="hero-precio">
+        <span class="hero-precio-item">
+          Diagnóstico <strong>{precioCorto(M40.precios.diagnostico)}</strong>
+        </span>
+        <span class="hero-precio-sep" aria-hidden="true">·</span>
+        {hayLanzamiento && (
+          <span class="hero-precio-item" data-lanzamiento>
+            Amparo completo desde <strong>{precioCorto(M40.precios.amparoLanzamiento)}</strong>
+          </span>
+        )}
+        <span class="hero-precio-item" data-post-lanzamiento hidden={hayLanzamiento}>
+          Amparo completo <strong>{precioCorto(M40.precios.amparo)}</strong>
+        </span>
+      </p>
+
+      <div class="hero-ctas">
+        <a href={M40_WHATSAPP_GENERAL} class="btn btn-primary" target="_blank" rel="noopener">
+          Revisar mi caso por WhatsApp
+        </a>
+        <a href="#autoevaluacion" class="btn btn-ghost">¿Aplico? Haz la prueba en 1 minuto</a>
+      </div>
+
+      <ContadorPlazo tono="oscuro" class="hero-contador" />
+
+      <ul class="confianza">
+        {confianza.map((c) => (
+          <li>
+            <svg class="ico" aria-hidden="true" focusable="false"><use href={`#ico-${c.ico}`} /></svg>
+            {c.texto}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 4.2 EL GOLPE EN NÚMEROS ═══ -->
+  <section id="que-cambio" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">El golpe en números</span>
+        <h2>Esto es lo que cambió en la Modalidad 40</h2>
+      </header>
+
+      <div class="topes">
+        <article class="tope reveal-up">
+          <span class="tope-rotulo">Antes del {vigenciaCorta}</span>
+          <p class="tope-intro">Podías inscribirte con hasta</p>
+          <p class="tope-cifra">
+            {fmtTope(topeAnteriorDiario())}<span class="tope-unidad">diarios</span>
+          </p>
+          <p class="tope-nota">
+            El tope general: {M40.topeAnteriorVecesUMA} UMA. Con la UMA de 2026 en
+            {' '}{fmtMXNExacto(M40.uma2026)}, son {fmtMXNExacto(topeAnteriorDiario())} al día,
+            cerca de {fmtMXNAproximado(topeAnteriorMensual())} al mes.
+          </p>
+        </article>
+
+        {/* COTEJADO 2026-10-26: tope de las nuevas inscripciones al último salario de baja más una UMA. */}
+        <article class="tope tope--ahora reveal-up reveal-up--delay-1">
+          <span class="tope-rotulo">Desde el {vigenciaCorta}</span>
+          <p class="tope-intro">Tu último salario, más</p>
+          <p class="tope-cifra">
+            {fmtTope(M40.uma2026)}<span class="tope-unidad">diarios</span>
+          </p>
+          <p class="tope-nota">
+            Una UMA: {fmtMXNExacto(M40.uma2026)} al día en 2026. El tope pasa a ser el
+            último salario con el que te diste de baja más esa cantidad.
+          </p>
+        </article>
+      </div>
+
+      <ul class="cambios">
+        {otrosCambios.map((c) => (
+          <li>
+            <svg class="ico" aria-hidden="true" focusable="false"><use href={`#ico-${c.ico}`} /></svg>
+            {c.texto}
+          </li>
+        ))}
+      </ul>
+
+      {/* COTEJADO 2026-10-26: definición de la UMA y que el INEGI publica su
+          valor, junto con el valor de 2026 contra el DOF del 09/01/2026. */}
+      <p class="nota-chica">
+        La UMA es la Unidad de Medida y Actualización, la referencia con la que se miden
+        estos topes. Su valor lo publica el INEGI cada año.
+      </p>
+
+      <p class="remate">
+        Si saliste con un salario modesto, el tope nuevo puede reducir de forma importante la
+        pensión que tenías proyectada.
+      </p>
+
+      <CalculadoraTope />
+    </div>
+  </section>
+
+  <!-- ═══ A · EL PLAZO (bloques de autoridad) ═══ -->
+  <SelectorPlazo bloque={BLOQUE_PLAZO} banda="blanco" />
+
+  <!-- ═══ 4.3 POR QUÉ HAY DEFENSA ═══ -->
+  <section id="por-que" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Por qué hay defensa</span>
+        <h2>La ley dice una cosa. El acuerdo del IMSS, otra.</h2>
+      </header>
+
+      <div class="argumento">
+        {/* COTEJADO 2026-10-26: artículo 218 de la Ley del Seguro Social en su texto vigente. */}
+        <p>
+          La Ley del Seguro Social te permite seguir cotizando con tu último salario
+          <strong>o uno superior</strong>. El tope nuevo no viene de una reforma a esa ley:
+          viene de un acuerdo del Consejo Técnico del IMSS. Y un acuerdo no puede quitarte lo
+          que la ley te da.
+        </p>
+        <p class="argumento-cierre">Ese es el argumento con el que preparamos tu amparo.</p>
+      </div>
+
+      <aside class="honesto">
+        <svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-balanza" /></svg>
+        <p>
+          Al {fechaLarga(M40.ultimaActualizacion)} no conocemos sentencias sobre este acuerdo.
+          Por eso empezamos con un diagnóstico: si tu caso no tiene sentido, te lo decimos
+          antes de cobrarte el amparo.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══ C · LA DEFENSA DEL IMSS (bloques de autoridad) ═══ -->
+  <BloqueAutoridad bloque={BLOQUE_DEFENSA} banda="blanco" apartados="plegables" />
+
+  <!-- ═══ 4.4 ¿APLICO? (autoevaluación) ═══ -->
+  <Autoevaluacion />
+
+  <!-- ═══ 4.10 QUÉ NECESITAS ═══
+       Va aquí, y no en el lugar que le daba el encargo: quien acaba de ver
+       que su perfil coincide necesita saber qué juntar antes que por qué
+       contratarnos. Conserva su número para poder rastrearla al brief. -->
+  <section id="documentos" class="section band-blanco">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Qué necesitas</span>
+        <h2>Ten esto a la mano para tu diagnóstico</h2>
+      </header>
+
+      <ul class="checklist">
+        {documentos.map((d) => (
+          <li>
+            <span class="casilla" aria-hidden="true">
+              <svg class="ico" focusable="false"><use href="#ico-check" /></svg>
+            </span>
+            {d}
+          </li>
+        ))}
+      </ul>
+
+      <p class="nota-chica">
+        No necesitas tenerlo todo para escribirnos. Te guiamos para obtener lo que falte. No
+        envíes documentos por este sitio: te indicamos por WhatsApp o correo cómo hacerlo de
+        forma segura.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4.5 POR QUÉ CON NOSOTROS ═══ -->
+  <section id="por-que-nosotros" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Por qué con nosotros</span>
+        <h2>Un amparo no es un formato. Es tu defensa.</h2>
+      </header>
+
+      <!-- Tabla real (semántica y legible por lectores de pantalla). En móvil
+           cada fila se apila como tarjeta: los `role` explícitos conservan la
+           semántica de tabla cuando el CSS cambia el `display`. -->
+      <div class="comparativa">
+        <table role="table">
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col"><span class="sr-only">Criterio</span></th>
+              {comparativa.columnas.map((c, i) => (
+                <th
+                  role="columnheader"
+                  scope="col"
+                  class:list={['comp-col', i === comparativa.columnas.length - 1 && 'comp-col--lgo']}
+                >
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            {comparativa.filas.map((f) => (
+              <tr role="row">
+                <th role="rowheader" scope="row">{f.criterio}</th>
+                {f.valores.map((v, i) => (
+                  <td
+                    role="cell"
+                    data-col={comparativa.columnas[i]}
+                    class:list={[i === f.valores.length - 1 && 'comp-lgo']}
+                  >
+                    {v}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="nota-chica">
+        Comparación general de modelos de servicio; no se refiere a ningún proveedor en
+        particular.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4.6 CÓMO FUNCIONA ═══ -->
+  <section id="como-funciona" class="section band-blanco">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Cómo funciona</span>
+        <h2>Así de simple: cómo presentamos tu amparo</h2>
+      </header>
+
+      <ol class="pasos">
+        {pasos.map((p, i) => (
+          <li class="paso reveal-up">
+            <span class="paso-num" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══ 4.7 PRECIO ═══ -->
+  <section id="precio" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Precio</span>
+        <h2>Cuánto cuesta el amparo. Un precio, todo incluido.</h2>
+      </header>
+
+      <div class="precios">
+        <article class="precio precio--destacado">
+          <h3>Amparo Modalidad 40</h3>
+
+          {hayLanzamiento && (
+            <p class="precio-monto" data-lanzamiento data-hasta={M40.plazos.lanzamientoHasta}>
+              <s class="precio-antes">{precioCorto(M40.precios.amparo)}</s>
+              <span class="precio-ahora">{precioCorto(M40.precios.amparoLanzamiento)}</span>
+              <span class="precio-iva">{fmtMXN(conIva(M40.precios.amparoLanzamiento))} con IVA</span>
+              {/* "A más tardar", no "antes del": `lanzamientoVigente` cuenta
+                  el último día como válido, y "antes del 15" lo excluiría. El
+                  texto decía una cosa y el código hacía otra —a favor del
+                  cliente, pero decía otra. */}
+              <span class="precio-cond">
+                Si contratas a más tardar el {fechaCorta(M40.plazos.lanzamientoHasta)}
+              </span>
+            </p>
+          )}
+
+          <p class="precio-monto" data-post-lanzamiento hidden={hayLanzamiento}>
+            <span class="precio-ahora">{precioCorto(M40.precios.amparo)}</span>
+            <span class="precio-iva">{fmtMXN(conIva(M40.precios.amparo))} con IVA</span>
+          </p>
+
+          <ul class="incluye">
+            {incluye.map((x) => (
+              <li>
+                <svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-check" /></svg>
+                {x}
+              </li>
+            ))}
+          </ul>
+
+          <p class="precio-desc">El pago de tu diagnóstico se descuenta.</p>
+
+          <a href={M40_WHATSAPP_GENERAL} class="btn btn-primary" target="_blank" rel="noopener">
+            Quiero mi diagnóstico
+          </a>
+        </article>
+
+        <article class="precio">
+          <h3>Diagnóstico</h3>
+          <p class="precio-monto">
+            <span class="precio-ahora precio-ahora--chico">{precioCorto(M40.precios.diagnostico)}</span>
+            <span class="precio-iva">{fmtMXN(conIva(M40.precios.diagnostico))} con IVA</span>
+          </p>
+          <p class="precio-desc">Revisión de documentos y dictamen breve con la vía recomendada.</p>
+        </article>
+      </div>
+
+      <p class="familia">
+        <svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-escudo" /></svg>
+        <span>
+          <strong>
+            Amparo en familia: {Math.round(M40.precios.descuentoFamiliar * 100)} % de descuento
+            por persona
+          </strong>
+          {' '}a partir de dos integrantes del mismo hogar.
+        </span>
+      </p>
+
+      <p class="letra-fina">
+        Precios más IVA. No incluye cuotas al IMSS ni trámites de inscripción. Los descuentos
+        no se acumulan entre sí.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4.8 TE LO DECIMOS CLARO ═══ -->
+  <section id="claro" class="section band-blanco">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Te lo decimos claro</span>
+        <h2>Lo que nadie te dice del amparo (y nosotros sí)</h2>
+      </header>
+
+      <ul class="claridades">
+        {claridades.map((c) => (
+          <li class="claridad reveal-up">
+            <h3>{c.titulo}</h3>
+            <p>{c.texto}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ B · LA REFORMA DE 2025 (bloques de autoridad) ═══ -->
+  <BloqueAutoridad bloque={BLOQUE_REFORMA} banda="crema" />
+
+  <!-- ═══ 4.9 PREGUNTAS FRECUENTES ═══ -->
+  <section id="preguntas" class="section band-blanco">
+    <div class="container-base">
+      <Faq items={faqsAmparoM40} title="Preguntas frecuentes sobre la Modalidad 40" />
+      <a href={M40_WHATSAPP_GENERAL} class="btn btn-outline faq-cta" target="_blank" rel="noopener">
+        ¿Tienes otra duda? Pregúntanos.
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ 4.11 QUIÉN TE ATIENDE ═══ -->
+  <section id="quien" class="section band-cream">
+    <div class="container-base">
+      <div class="quien">
+        <span class="eyebrow">Quién te atiende</span>
+        <h2>{M40.firma.nombre}</h2>
+        <p class="quien-cargo">{M40.firma.puesto}, {M40.firma.division} | {business.brand}</p>
+        <p class="quien-sede">
+          {M40.sede}, {business.address.locality}, {business.address.region}.
+        </p>
+        <p class="quien-frase">Te atiende un abogado, no un call center.</p>
+        <p class="quien-enlace">
+          Conoce <a href="/abogados/">LGO Abogados &amp; Consultores</a>, la división que
+          lleva este asunto, y el resto de los <a href="/pensiones/">servicios de pensiones</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4.12 CIERRE ═══ -->
+  <section id="cierre" class="section-roomy band-dark" data-cierre>
+    <div class="container-narrow cierre">
+      <h2>Tu pensión no debería depender de un acuerdo.</h2>
+      <p class="cierre-sub">Revisa tu caso hoy. Recibimos expedientes hasta el {corteCorto}.</p>
+      <ContadorPlazo tono="oscuro" class="cierre-contador" />
+      <a href={M40_WHATSAPP_GENERAL} class="btn btn-primary" target="_blank" rel="noopener">
+        Revisar mi caso por WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ 4.13 AVISOS ═══ -->
+  <section class="section-tight band-blanco">
+    <div class="container-base">
+      <ul class="avisos">
+        <li>
+          La información de esta página es general y no constituye asesoría para un caso
+          concreto.
+        </li>
+        {AVISOS_AUTORIDAD.map((a) => <li>{a}</li>)}
+        <li>
+          El resultado de un juicio de amparo depende de la valoración de la autoridad
+          judicial; no garantizamos resultados.
+        </li>
+        <li>
+          El acuerdo del IMSS es una medida temporal que puede modificarse. Actualizamos esta
+          página conforme a publicaciones oficiales. Última actualización:
+          {' '}{fechaLarga(M40.ultimaActualizacion)}.
+        </li>
+        <li>La sentencia de amparo beneficia solo a quien lo promueve.</li>
+        <li>
+          Grupo LGO no realiza inscripciones al IMSS fuera de sus canales oficiales ni ofrece
+          inscribir con las reglas anteriores.
+        </li>
+        <li>
+          {/* El aviso ya está publicado y `avisoPrivacidadUrl` sale de
+              @data/aviso-privacidad, así que el enlace siempre se pinta. El
+              respaldo se queda como defensa barata por si alguien vacía la
+              constante: el párrafo sigue teniendo sentido sin el enlace. */}
+          {M40.avisoPrivacidadUrl
+            ? <a href={M40.avisoPrivacidadUrl}>Consulta el aviso de privacidad del sitio.</a>
+            : <span>El aviso de privacidad del sitio aplica a los datos que nos compartes.</span>}
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ BARRA FIJA (solo móvil) ═══ -->
+  <!-- Aparece cuando el encabezado sale de pantalla y se esconde donde la
+       página ya ofrece su propio botón: la autoevaluación, el cierre y el pie. -->
+  <div class="barra" data-barra>
+    <span class="barra-txt">
+      Revisa tu caso
+      <strong>{precioCorto(M40.precios.diagnostico)}</strong>
+    </span>
+    <a href={M40_WHATSAPP_GENERAL} class="btn btn-primary barra-btn" target="_blank" rel="noopener">
+      WhatsApp
+    </a>
+  </div>
+
+</Base>
+
+<style>
+  /* ── Sprite e íconos ── */
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .ico {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── Bandas ──
+     El cuerpo alterna blanco y gris muy claro. `band-cream` ya es global;
+     `band-blanco` es el blanco puro, que el fondo del sitio no da. */
+  .band-blanco { background: var(--color-surface); }
+
+  /* ── Miga de pan ──
+     Existe porque el JSON-LD ya declaraba esta ruta: el dato estructurado
+     debe reflejar navegación real, no una que solo vea el buscador. */
+  /* En móvil la miga se aprieta: el ancla de precio tiene que seguir
+     cabiendo en el primer pantallazo, con el banner de cookies arriba. */
+  .miga { margin-bottom: 0.75rem; }
+  @media (min-width: 768px) { .miga { margin-bottom: 1.5rem; } }
+  .miga ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .miga li { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-xs); }
+  .miga li + li::before {
+    content: '›';
+    color: rgba(250, 248, 244, 0.4);
+  }
+  .miga a { color: rgba(250, 248, 244, 0.7); text-decoration: underline; }
+  .miga a:hover { color: var(--color-on-dark); }
+  .miga [aria-current] { color: rgba(250, 248, 244, 0.55); }
+
+  /* ── 4.1 ENCABEZADO ──
+     Padding propio (no `section-roomy`): el ancla de precio tiene que caber en
+     el primer pantallazo de un móvil de 390 × 844. */
+  .hero { padding-block: 1.75rem 3.25rem; }
+  @media (min-width: 768px) { .hero { padding-block: 4.5rem 4rem; } }
+  @media (min-width: 1024px) { .hero { padding-block: 6rem 5rem; } }
+
+  /* `inline-block` y no flex: en pantallas angostas el texto se parte como
+     párrafo y el separador viaja con él, en lugar de quedar colgando. */
+  .pildora {
+    display: inline-block;
+    margin: 0 0 0.875rem;
+    padding: 0.45rem 1rem;
+    line-height: 1.5;
+    border: 1px solid rgba(250, 248, 244, 0.28);
+    border-radius: 999px;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(250, 248, 244, 0.85);
+  }
+  .pildora-fuerte { color: var(--color-accent-soft); font-weight: 700; }
+
+  .hero h1 {
+    margin: 0 0 1.125rem;
+    font-size: clamp(2.125rem, 1.5rem + 3.2vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 24ch;
+  }
+  .hero-h1-b { display: block; color: var(--color-accent-soft); }
+
+  .hero-sub {
+    margin: 0 0 1rem;
+    font-size: var(--text-base);
+    line-height: 1.5;
+    max-width: 52ch;
+  }
+  @media (min-width: 768px) { .hero-sub { font-size: var(--text-lg); } }
+
+  .hero-precio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.6rem;
+    margin: 0 0 1.75rem;
+    font-size: var(--text-base);
+    color: rgba(250, 248, 244, 0.85);
+  }
+  .hero-precio strong { color: var(--color-on-dark); font-weight: 700; white-space: nowrap; }
+  .hero-precio-sep { color: rgba(250, 248, 244, 0.4); }
+  /* En pantallas angostas los dos precios van uno por línea y el separador
+     sobra: de lo contrario queda colgando al final de la primera. */
+  @media (max-width: 639px) {
+    .hero-precio { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+    .hero-precio-sep { display: none; }
+  }
+
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .hero-ctas .btn { flex: 1 1 auto; min-width: 15rem; }
+  @media (min-width: 640px) { .hero-ctas .btn { flex: 0 0 auto; } }
+
+  .hero-contador { margin-top: 1.75rem; }
+
+  .confianza {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(250, 248, 244, 0.16);
+  }
+  @media (min-width: 620px) { .confianza { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .confianza { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; } }
+  .confianza li {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: rgba(250, 248, 244, 0.85);
+  }
+  .confianza .ico { color: var(--color-accent-soft); }
+
+  /* ── Encabezados de sección ── */
+  .section-head { margin-bottom: 2.5rem; max-width: 44rem; }
+  .section-head h2 {
+    margin: 1rem 0 0;
+    font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    max-width: 26ch;
+  }
+
+  .nota-chica {
+    margin: 2rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+
+  .remate {
+    margin: 2rem 0 0;
+    font-size: var(--text-lg);
+    line-height: 1.55;
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+    max-width: 46ch;
+  }
+
+  /* ── 4.2 LOS DOS TOPES ── */
+  .topes { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 760px) { .topes { grid-template-columns: 1fr 1fr; gap: 1.25rem; } }
+
+  .tope {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+  }
+  @media (min-width: 760px) { .tope { padding: 2rem; } }
+  .tope--ahora { border-top-color: var(--color-accent); }
+
+  .tope-rotulo {
+    display: block;
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-muted);
+    margin-bottom: 1rem;
+  }
+  .tope--ahora .tope-rotulo { color: var(--color-accent-strong); }
+
+  .tope-intro { margin: 0 0 0.375rem; font-size: var(--text-base); color: var(--color-muted); }
+
+  .tope-cifra {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 2rem + 3.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--color-foreground-strong);
+  }
+  .tope--ahora .tope-cifra { color: var(--color-accent-strong); }
+  .tope-unidad {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .tope-nota { margin: 1rem 0 0; font-size: var(--text-sm); color: var(--color-muted); }
+
+  .cambios { display: grid; grid-template-columns: 1fr; gap: 0.875rem; margin-top: 2rem; }
+  @media (min-width: 900px) { .cambios { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+  .cambios li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: var(--text-base);
+    line-height: 1.55;
+  }
+  .cambios .ico { color: var(--color-accent-strong); margin-top: 0.15rem; }
+
+  /* ── 4.3 ARGUMENTO ── */
+  .argumento { max-width: var(--container-prose); }
+  .argumento p { margin: 0; font-size: var(--text-lg); line-height: 1.65; }
+  .argumento strong { color: var(--color-foreground-strong); }
+  .argumento-cierre {
+    margin-top: 1.25rem;
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+
+  .honesto {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    /* La sección pasó a banda crema: la caja se despega en blanco. */
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    max-width: 58rem;
+  }
+  .honesto .ico { color: var(--color-muted); margin-top: 0.15rem; }
+  .honesto p { margin: 0; font-size: var(--text-sm); line-height: 1.65; color: var(--color-muted); }
+
+  /* ── 4.5 COMPARATIVA ── */
+  .comparativa table { width: 100%; border-collapse: collapse; }
+  @media (min-width: 820px) {
+    .comparativa table { table-layout: fixed; }
+    .comparativa thead th:first-child { width: 31%; }
+    .comparativa thead th:not(:first-child) { width: 23%; }
+  }
+  .comparativa th, .comparativa td {
+    text-align: left;
+    padding: 1rem;
+    font-size: var(--text-sm);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .comparativa thead th {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    border-bottom: 2px solid var(--color-border-strong);
+  }
+  .comparativa .comp-col--lgo { color: var(--color-accent-strong); }
+  .comparativa tbody th {
+    width: 32%;
+    padding-left: 0;
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+  .comparativa td { color: var(--color-muted); }
+  .comparativa .comp-lgo {
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+    /* Blanco, no crema: la sección va sobre banda crema y el relleno
+       tiene que despegarse de ella. */
+    background: var(--color-surface);
+  }
+
+  @media (max-width: 819px) {
+    .comparativa thead { display: none; }
+    .comparativa table,
+    .comparativa tbody,
+    .comparativa tr,
+    .comparativa th,
+    .comparativa td { display: block; }
+    .comparativa tr {
+      border: 1px solid var(--color-border);
+      border-top: 3px solid var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+    }
+    .comparativa tr + tr { margin-top: 0.875rem; }
+    .comparativa tbody th {
+      width: auto;
+      padding: 0 0 0.75rem;
+      font-size: var(--text-lg);
+      border-bottom: none;
+    }
+    .comparativa td {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.625rem 0;
+      text-align: right;
+      background: none;
+      border-bottom: none;
+      border-top: 1px solid var(--color-divider);
+    }
+    .comparativa td::before {
+      content: attr(data-col);
+      flex-shrink: 0;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-muted);
+    }
+  }
+
+  /* ── 4.6 PASOS ── */
+  .pasos { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  @media (min-width: 900px) { .pasos { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+  .paso { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+  @media (min-width: 900px) { .paso { grid-template-columns: 1fr; gap: 0.875rem; } }
+  .paso-num {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    line-height: 0.9;
+    color: var(--color-accent-strong);
+    font-variant-numeric: tabular-nums;
+  }
+  .paso h3 { margin: 0 0 0.375rem; font-size: var(--text-lg); }
+  .paso p { margin: 0; font-size: var(--text-sm); line-height: 1.6; color: var(--color-muted); }
+
+  /* ── 4.7 PRECIO ── */
+  .precios { display: grid; grid-template-columns: 1fr; gap: 1.25rem; align-items: start; }
+  @media (min-width: 860px) { .precios { grid-template-columns: 1.3fr 1fr; gap: 1.5rem; } }
+
+  .precio {
+    /* Las dos tarjetas van en blanco sobre la banda crema; a la destacada
+       la distingue su borde de acento, no el relleno. */
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.75rem;
+  }
+  .precio--destacado {
+    background: var(--color-surface);
+    border: 1px solid var(--color-accent);
+    border-top: 3px solid var(--color-accent);
+    padding: 2rem;
+  }
+  .precio h3 { margin: 0 0 1.25rem; font-size: var(--text-xl); }
+
+  .precio-monto { display: flex; flex-direction: column; gap: 0.3rem; margin: 0 0 1.5rem; }
+  .precio-antes {
+    font-size: var(--text-lg);
+    color: var(--color-muted);
+    text-decoration-thickness: 2px;
+  }
+  .precio-ahora {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 1.9rem + 2.6vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-accent-strong);
+  }
+  .precio-ahora--chico { font-size: var(--text-3xl); color: var(--color-foreground-strong); }
+  .precio-iva {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .precio-cond {
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+
+  .incluye {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+    margin: 0 0 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  @media (min-width: 560px) { .incluye { grid-template-columns: 1fr 1fr; } }
+  .incluye li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-foreground);
+  }
+  .incluye .ico { width: 1rem; height: 1rem; color: var(--color-success); }
+
+  .precio-desc { margin: 0 0 1.5rem; font-size: var(--text-sm); color: var(--color-muted); }
+  .precio .btn { width: 100%; }
+  .precio:not(.precio--destacado) .precio-desc { margin-bottom: 0; }
+
+  .familia {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 46rem;
+    margin: 1.75rem 0 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-accent-soft);
+    border-radius: 999px;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-accent-deep);
+  }
+  .familia .ico { color: var(--color-accent-strong); margin-top: 0.1rem; }
+  .familia strong { font-weight: 700; }
+  @media (max-width: 520px) { .familia { border-radius: var(--radius-sm); } }
+
+  .letra-fina {
+    margin: 1.5rem 0 0;
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+
+  /* ── 4.8 CLARIDADES ── */
+  .claridades { display: grid; grid-template-columns: 1fr; gap: 0.875rem; }
+  @media (min-width: 680px) { .claridades { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .claridades { grid-template-columns: repeat(3, 1fr); } }
+  .claridad {
+    /* Crema sobre banda blanca: antes era al revés. */
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1.375rem;
+  }
+  .claridad h3 { margin: 0 0 0.5rem; font-size: var(--text-base); }
+  .claridad p { margin: 0; font-size: var(--text-sm); line-height: 1.6; color: var(--color-muted); }
+
+  /* ── 4.9 FAQ ── */
+  .faq-cta { margin-top: 2rem; }
+
+  /* ── 4.10 CHECKLIST ── */
+  /* Una sola columna. En dos, los cinco puntos dejaban filas de altura
+     dispar —unos caben en un renglón y otros no— y el último se quedaba
+     solo en la última fila. Es una lista para ir tachando: se lee hacia
+     abajo. */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    max-width: 40rem;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+  .casilla {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-xs);
+    background: var(--color-surface);
+    color: var(--color-accent-strong);
+  }
+  .casilla .ico { width: 0.875rem; height: 0.875rem; stroke-width: 2.4; }
+
+  /* ── 4.11 QUIÉN TE ATIENDE ── */
+  .quien { max-width: 44rem; }
+  .quien h2 { margin: 1rem 0 0.5rem; font-size: var(--text-3xl); }
+  .quien-cargo {
+    margin: 0 0 0.5rem;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-foreground-strong);
+  }
+  .quien-sede { margin: 0 0 1.25rem; font-size: var(--text-sm); color: var(--color-muted); }
+  .quien-enlace {
+    margin: 1.25rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+  .quien-enlace a { color: var(--color-accent-strong); font-weight: 600; text-decoration: underline; }
+
+  .quien-frase {
+    margin: 0;
+    padding-left: 1.125rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+
+  /* ── 4.12 CIERRE ── */
+  .cierre { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .cierre h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.875rem, 1.4rem + 2.4vw, 2.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    max-width: 24ch;
+  }
+  .cierre-sub { margin: 0 0 1.75rem; font-size: var(--text-lg); max-width: 40ch; }
+  .cierre-contador { margin-bottom: 1.75rem; text-align: left; }
+
+  /* ── 4.13 AVISOS ── */
+  .avisos {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    max-width: var(--container-prose);
+  }
+  /* `muted-soft` (#909090) se queda en 2.9:1 sobre el fondo del sitio: en
+     texto chico no alcanza, así que los avisos van con el gris medio. */
+  .avisos li { font-size: var(--text-xs); line-height: 1.6; color: var(--color-muted); }
+  .avisos a { color: var(--color-muted); font-weight: 600; }
+
+  /* ── BARRA FIJA (móvil) ── */
+  .barra {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 150;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    padding-bottom: calc(0.625rem + env(safe-area-inset-bottom, 0px));
+    background: var(--color-foreground-strong);
+    border-top: 1px solid rgba(250, 248, 244, 0.16);
+    transform: translateY(110%);
+    transition: transform 260ms ease;
+  }
+  @media (max-width: 819px) { .barra { display: flex; } }
+  .barra[data-visible='true'] { transform: translateY(0); }
+
+  .barra-txt {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--text-xs);
+    line-height: 1.3;
+    color: rgba(250, 248, 244, 0.75);
+  }
+  .barra-txt strong { font-size: var(--text-base); color: var(--color-on-dark); }
+  .barra-btn { flex-shrink: 0; padding-inline: 1.25rem; }
+
+  @media (max-width: 819px) {
+    /* Mientras la barra está arriba, el documento reserva su altura: así no
+       tapa el final del contenido ni el pie. */
+    :global(body:has([data-barra][data-visible='true'])) { padding-bottom: 4.5rem; }
+    /* Con el menú móvil abierto la barra se retira: son dos capas fijas. */
+    :global(body:has([data-mobile-menu]:not([hidden]))) .barra { transform: translateY(110%); }
+  }
+</style>
+
+<script>
+  import { lanzamientoVigente } from '@data/amparo-m40';
+
+  // ── 1. Precio de lanzamiento ──
+  // La página es estática: si nadie publica un deploy justo después de la
+  // fecha, el tachado seguiría visible. Esta comprobación en el cliente lo
+  // retira igualmente y descubre el precio de lista, con la zona horaria de la
+  // sección.
+  if (!lanzamientoVigente()) {
+    document.querySelectorAll<HTMLElement>('[data-lanzamiento]').forEach((el) => el.remove());
+    document.querySelectorAll<HTMLElement>('[data-post-lanzamiento]').forEach((el) => {
+      el.hidden = false;
+    });
+  }
+
+  // ── 2. Barra fija del móvil ──
+  // Aparece cuando el encabezado termina de salir de pantalla y se esconde
+  // donde la página ya ofrece su propio botón: la autoevaluación, el cierre y
+  // el pie. Así nunca compite con un CTA ni tapa el formulario de captura.
+  const barra = document.querySelector<HTMLElement>('[data-barra]');
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+
+  if (barra && hero && 'IntersectionObserver' in window) {
+    const zonasPropias = [
+      document.getElementById('autoevaluacion'),
+      document.querySelector('[data-cierre]'),
+      document.querySelector('.site-footer')
+    ].filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+    let heroFuera = false;
+    const visibles = new Set<Element>();
+
+    const pintar = () => {
+      barra.dataset.visible = String(heroFuera && visibles.size === 0);
+    };
+
+    new IntersectionObserver(([entrada]) => {
+      heroFuera = !entrada.isIntersecting;
+      pintar();
+    }).observe(hero);
+
+    const observador = new IntersectionObserver((entradas) => {
+      for (const e of entradas) {
+        if (e.isIntersecting) visibles.add(e.target);
+        else visibles.delete(e.target);
+      }
+      pintar();
+    });
+    zonasPropias.forEach((el) => observador.observe(el));
+  }
+</script>

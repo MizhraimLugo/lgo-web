@@ -68,6 +68,11 @@ const collectionLd = {
         <p class="empty">Aún no hay artículos publicados. Vuelve pronto.</p>
       ) : (
         <>
+          {/* El título de la rejilla no se dibuja, pero tiene que existir: sin él
+          el documento salta del <h1> a los <h3> de las tarjetas y el orden de
+          encabezados queda roto para quien navega por estructura. */}
+          <h2 class="sr-only">Artículos publicados</h2>
+
           <!-- TOOLBAR: búsqueda + filtros por categoría -->
           <div class="toolbar" data-toolbar>
             <div class="search-wrap">

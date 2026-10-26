@@ -1,0 +1,483 @@
+// ════════════════════════════════════════════════════════════════
+//  PRUEBAS — Amparo Modalidad 40 (config + autoevaluación)
+// ════════════════════════════════════════════════════════════════
+//
+// Corre con Node 24 (TypeScript nativo, sin compilar):
+//   node --test src/data/amparo-m40.test.ts
+//
+// Cubre lo que el encargo exige probar:
+//   · las cuatro clasificaciones de la autoevaluación y su precedencia,
+//   · los precios con IVA tal como se muestran al público,
+//   · la desaparición de la tarjeta de lanzamiento al pasar su fecha,
+//   · el contador de plazo y su texto una vez pasado el corte,
+//   · los dos topes de cotización, calculados desde el valor de la UMA,
+//   · los mensajes prellenados de WhatsApp.
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  M40,
+  conIva,
+  fmtMXN,
+  precioTexto,
+  precioCorto,
+  fmtTope,
+  topeAnteriorDiario,
+  topeAnteriorMensual,
+  fechaLarga,
+  fechaCorta,
+  hoyEnMexico,
+  diasHasta,
+  lanzamientoVigente,
+  cortePasado,
+  textoContador,
+  TEXTO_CONTADOR_VENCIDO,
+  TEXTO_FECHA_INTERNA,
+  fmtMXNExacto,
+  fmtMXNAproximado,
+  M40_WHATSAPP_GENERAL,
+  M40_WA_MENSAJE_GENERAL,
+  waMensajeAutoevaluacion
+} from './amparo-m40.ts';
+import {
+  clasificar,
+  completas,
+  preguntas,
+  textoRespuesta,
+  TOTAL_PREGUNTAS,
+  type Respuestas
+} from './amparo-m40-autoevaluacion.ts';
+
+/** Perfil que coincide en las cinco preguntas; los casos parten de él. */
+const APTO: Respuestas = { p1: 'si', p2: 'menos-5', p3: 'si', p4: 'no', p5: 'no' };
+
+/** Construye un perfil variando el apto. */
+const perfil = (cambios: Partial<Respuestas>): Respuestas => ({ ...APTO, ...cambios });
+
+// ── Dinero ─────────────────────────────────────────────────────────
+
+test('conIva: 16 % redondeado al peso', () => {
+  assert.equal(conIva(500), 580);
+  assert.equal(conIva(5500), 6380);
+  assert.equal(conIva(4500), 5220);
+});
+
+test('fmtMXN: separador de miles', () => {
+  assert.equal(fmtMXN(500), '$500');
+  assert.equal(fmtMXN(5500), '$5,500');
+  assert.equal(fmtMXN(1234567), '$1,234,567');
+});
+
+test('precioTexto: los tres precios públicos de la sección', () => {
+  assert.equal(precioTexto(M40.precios.diagnostico), '$500 + IVA ($580)');
+  assert.equal(precioTexto(M40.precios.amparo), '$5,500 + IVA ($6,380)');
+  assert.equal(precioTexto(M40.precios.amparoLanzamiento), '$4,500 + IVA ($5,220)');
+});
+
+test('descuento familiar: 10 % por persona sobre el precio máximo', () => {
+  const conDescuento = M40.precios.amparo * (1 - M40.precios.descuentoFamiliar);
+  assert.equal(conDescuento, 4950);
+});
+
+test('precioCorto: sin el total, para rótulos y botones', () => {
+  assert.equal(precioCorto(M40.precios.diagnostico), '$500 + IVA');
+  assert.equal(precioCorto(M40.precios.amparo), '$5,500 + IVA');
+  assert.equal(precioCorto(M40.precios.amparoLanzamiento), '$4,500 + IVA');
+});
+
+// ── Topes de cotización ────────────────────────────────────────────
+
+test('fmtTope: un máximo se redondea hacia abajo, nunca hacia arriba', () => {
+  assert.equal(fmtTope(2932.75), '$2,932');
+  assert.equal(fmtTope(117.31), '$117');
+  assert.equal(fmtTope(500), '$500');
+});
+
+test('topes: salen del valor de la UMA, no de una cifra escrita a mano', () => {
+  assert.equal(topeAnteriorDiario(), M40.uma2026 * M40.topeAnteriorVecesUMA);
+  assert.equal(fmtTope(topeAnteriorDiario()), '$2,932');
+  assert.equal(fmtMXN(topeAnteriorMensual()), '$89,156');
+});
+
+test('topes: cambiar la UMA recalcula las dos cifras de la comparativa', () => {
+  // El tope diario es proporcional a la UMA: el doble de UMA, el doble de tope.
+  const diario = topeAnteriorDiario();
+  const porUma = diario / M40.uma2026;
+  assert.equal(porUma, M40.topeAnteriorVecesUMA);
+  assert.ok(topeAnteriorMensual() > diario, 'el tope mensual supera al diario');
+});
+
+// ── Fechas ─────────────────────────────────────────────────────────
+
+test('fechaLarga: formato largo en español', () => {
+  assert.equal(fechaLarga('2026-11-26'), '26 de noviembre de 2026');
+  assert.equal(fechaLarga('2026-01-01'), '1 de enero de 2026');
+});
+
+test('hoyEnMexico: usa la fecha de America/Mexico_City, no la del host', () => {
+  // 2026-11-26T03:00Z son las 21:00 del 25 de noviembre en Ciudad de México
+  // (UTC-6): la fecha local es el 25, no el 26.
+  const hoy = hoyEnMexico(new Date('2026-11-26T03:00:00Z'));
+  assert.equal(hoy.toISOString().slice(0, 10), '2026-11-25');
+
+  // Ya entrado el día en México.
+  const despues = hoyEnMexico(new Date('2026-11-26T18:00:00Z'));
+  assert.equal(despues.toISOString().slice(0, 10), '2026-11-26');
+});
+
+test('diasHasta: positivo antes, 0 el día mismo, negativo después', () => {
+  const corte = M40.plazos.corteInterno;
+  assert.equal(diasHasta(corte, hoyEnMexico(new Date('2026-11-16T18:00:00Z'))), 10);
+  assert.equal(diasHasta(corte, hoyEnMexico(new Date('2026-11-26T18:00:00Z'))), 0);
+  assert.equal(diasHasta(corte, hoyEnMexico(new Date('2026-11-27T18:00:00Z'))), -1);
+});
+
+test('lanzamientoVigente: el último día cuenta y al siguiente ya no', () => {
+  const dia = (iso: string) => hoyEnMexico(new Date(`${iso}T18:00:00Z`));
+  assert.equal(lanzamientoVigente(dia('2026-11-14')), true);
+  assert.equal(lanzamientoVigente(dia('2026-11-15')), true); // 15 de noviembre: aún vigente
+  assert.equal(lanzamientoVigente(dia('2026-11-16')), false); // después: desaparece sola
+});
+
+test('cortePasado: cambia al día siguiente del corte', () => {
+  const dia = (iso: string) => hoyEnMexico(new Date(`${iso}T18:00:00Z`));
+  assert.equal(cortePasado(dia('2026-11-26')), false);
+  assert.equal(cortePasado(dia('2026-11-27')), true);
+});
+
+test('fechaCorta: día y mes, sin año', () => {
+  assert.equal(fechaCorta('2026-11-26'), '26 de noviembre');
+  assert.equal(fechaCorta('2026-10-22'), '22 de octubre');
+});
+
+test('textoContador: la fecha primero, la cuenta después', () => {
+  assert.equal(textoContador(31), 'Recibimos expedientes hasta el 26 de noviembre · Faltan 31 días');
+  assert.match(textoContador(1), /· Falta 1 día$/);
+});
+
+test('TEXTO_CONTADOR_VENCIDO: cierra NUESTRA recepción, no un plazo de la ley', () => {
+  // Lo que se cierra es la campaña, no el término legal. Una frase que los
+  // confunda puede hacer que alguien se dé por vencido sin estarlo, y es
+  // justo la que un modelo citaría suelta.
+  assert.match(TEXTO_CONTADOR_VENCIDO, /recepción de expedientes/);
+  assert.match(TEXTO_CONTADOR_VENCIDO, /El plazo de la ley es otro/);
+  assert.doesNotMatch(TEXTO_CONTADOR_VENCIDO, /plazo .{0,20}ya pasó|venció|perdiste/i);
+  assert.match(TEXTO_CONTADOR_VENCIDO, /escríbenos/i);
+});
+
+test('TEXTO_FECHA_INTERNA: dice de quién es la fecha del contador', () => {
+  assert.match(TEXTO_FECHA_INTERNA, /nuestra fecha/i);
+  assert.match(TEXTO_FECHA_INTERNA, /no el plazo de la ley/i);
+});
+
+test('los topes se muestran con una cuenta que el lector puede rehacer', () => {
+  // La cifra grande va truncada ($2,932) y por sí sola no cuadra con la UMA
+  // truncada (25 × 117 = 2,925). La nota lleva los valores exactos.
+  assert.equal(fmtMXNExacto(M40.uma2026), '$117.31');
+  assert.equal(fmtMXNExacto(topeAnteriorDiario()), '$2,932.75');
+  assert.equal(fmtMXNAproximado(topeAnteriorMensual()), '$89,000');
+});
+
+// ── Autoevaluación: los cuatro casos ───────────────────────────────
+
+test('Caso APTO — el perfil coincide en las cinco preguntas', () => {
+  const r = clasificar(APTO);
+  assert.equal(r.id, 'apto');
+  assert.equal(r.mensaje, 'Tu perfil coincide.');
+  assert.deepEqual(r.motivos, []);
+});
+
+test('Caso APTO — también con Modalidad 40 por terminar', () => {
+  assert.equal(clasificar(perfil({ p4: 'si-termina-pronto' })).id, 'apto');
+});
+
+test('Caso DUDOSO-URGENTE — P5 = Sí gana sobre cualquier otra respuesta', () => {
+  const r = clasificar(perfil({ p5: 'si' }));
+  assert.equal(r.id, 'dudoso-urgente');
+  assert.equal(r.mensaje, 'Atención: si el IMSS ya te respondió, tu plazo es más corto.');
+});
+
+test('Caso DUDOSO-URGENTE — la urgencia precede incluso a la no aptitud', () => {
+  // Perfil que sería 'no-apto' por P1, P2, P3 y P4, pero con P5 = Sí.
+  const r = clasificar({ p1: 'no', p2: 'mas-5', p3: 'no', p4: 'si-falta-mucho', p5: 'si' });
+  assert.equal(r.id, 'dudoso-urgente');
+});
+
+test('Caso NO APTO — cada condición por separado', () => {
+  for (const cambio of [
+    { p1: 'no' } as const,
+    { p2: 'mas-5' } as const,
+    { p3: 'no' } as const,
+    { p4: 'si-falta-mucho' } as const
+  ]) {
+    const r = clasificar(perfil(cambio));
+    assert.equal(r.id, 'no-apto', `esperaba no-apto con ${JSON.stringify(cambio)}`);
+    assert.equal(
+      r.mensaje,
+      'Por ahora el amparo no parece ser para ti, y preferimos decírtelo.'
+    );
+    assert.equal(r.motivos.length, 1, 'un solo motivo cuando falla una sola condición');
+  }
+});
+
+test('Caso NO APTO — lista todos los motivos que apliquen', () => {
+  const r = clasificar({ p1: 'no', p2: 'mas-5', p3: 'no', p4: 'si-falta-mucho', p5: 'no' });
+  assert.equal(r.id, 'no-apto');
+  assert.equal(r.motivos.length, 4);
+});
+
+test('Caso DUDOSO — "No sé" en P1 o P3', () => {
+  assert.equal(clasificar(perfil({ p1: 'no-se' })).id, 'dudoso');
+  assert.equal(clasificar(perfil({ p3: 'no-se' })).id, 'dudoso');
+  assert.equal(clasificar(perfil({ p3: 'no-se' })).mensaje, 'Puede que sí.');
+});
+
+test('Caso DUDOSO — "Sigo dado de alta" en P2', () => {
+  assert.equal(clasificar(perfil({ p2: 'sigo-alta' })).id, 'dudoso');
+});
+
+test('Clasificación — toda combinación cae en una de las cuatro', () => {
+  const ids = new Set<string>();
+  for (const p1 of ['si', 'no', 'no-se'] as const)
+    for (const p2 of ['menos-5', 'mas-5', 'sigo-alta'] as const)
+      for (const p3 of ['si', 'no', 'no-se'] as const)
+        for (const p4 of ['no', 'si-termina-pronto', 'si-falta-mucho'] as const)
+          for (const p5 of ['no', 'si'] as const) {
+            const r = clasificar({ p1, p2, p3, p4, p5 });
+            assert.ok(
+              ['apto', 'dudoso', 'dudoso-urgente', 'no-apto'].includes(r.id),
+              `clasificación inesperada: ${r.id}`
+            );
+            assert.ok(r.etiqueta.length > 0);
+            assert.ok(r.mensaje.length > 0);
+            ids.add(r.id);
+          }
+  // Las 162 combinaciones producen las cuatro clasificaciones, ninguna muerta.
+  assert.deepEqual([...ids].sort(), ['apto', 'dudoso', 'dudoso-urgente', 'no-apto']);
+});
+
+// ── Cuestionario ───────────────────────────────────────────────────
+
+test('preguntas: cinco, con clave única y opciones', () => {
+  assert.equal(TOTAL_PREGUNTAS, 5);
+  assert.equal(preguntas.length, 5);
+  assert.deepEqual(preguntas.map((p) => p.clave), ['p1', 'p2', 'p3', 'p4', 'p5']);
+  assert.deepEqual(preguntas.map((p) => p.codigo), ['P1', 'P2', 'P3', 'P4', 'P5']);
+  for (const p of preguntas) {
+    assert.ok(p.opciones.length >= 2, `${p.codigo} necesita al menos dos opciones`);
+    const ids = p.opciones.map((o) => o.id);
+    assert.equal(new Set(ids).size, ids.length, `${p.codigo} tiene ids repetidos`);
+  }
+});
+
+test('completas: exige las cinco respuestas', () => {
+  assert.equal(completas({}), false);
+  assert.equal(completas({ p1: 'si', p2: 'menos-5', p3: 'si', p4: 'no' }), false);
+  assert.equal(completas(APTO), true);
+});
+
+test('textoRespuesta: traduce el id al texto que vio el visitante', () => {
+  assert.equal(textoRespuesta('p2', 'menos-5'), 'Menos de 5 años');
+  assert.equal(textoRespuesta('p4', 'si-termina-pronto'), 'Sí, y mi periodo termina pronto');
+  // Un id desconocido se devuelve tal cual, sin lanzar.
+  assert.equal(textoRespuesta('p1', 'otro'), 'otro');
+});
+
+// ── Mensajes de WhatsApp ───────────────────────────────────────────
+
+test('WhatsApp general: la liga lleva el mensaje prellenado y el número de la sección', () => {
+  assert.ok(M40_WHATSAPP_GENERAL.startsWith(`https://wa.me/${M40.whatsapp}?text=`));
+  assert.equal(
+    decodeURIComponent(M40_WHATSAPP_GENERAL.split('?text=')[1]),
+    M40_WA_MENSAJE_GENERAL
+  );
+});
+
+test('WhatsApp: ningún mensaje lleva emojis', () => {
+  const sinEmoji = /^[\p{L}\p{N}\p{P}\p{Zs}]+$/u;
+  assert.match(M40_WA_MENSAJE_GENERAL, sinEmoji);
+  assert.match(waMensajeAutoevaluacion('Apto', 'Ana'), sinEmoji);
+});
+
+test('WhatsApp de la autoevaluación: interpola resultado y nombre', () => {
+  assert.equal(
+    waMensajeAutoevaluacion('Apto', 'Ana'),
+    'Hola, hice la prueba de Modalidad 40 en lgo.mx. Resultado: Apto. Mi nombre es Ana.'
+  );
+});
+
+// ── La función de leads no puede desincronizarse de la configuración ──
+//
+// netlify/functions/m40-lead.js es un bundle aparte del sitio y declara su
+// propio espejo de fechas y clasificaciones. Estas pruebas lo atan a la fuente:
+// si alguien cambia `corteInterno` en amparo-m40.ts y olvida la función, falla
+// aquí y no en producción.
+
+import { handler, M40_FUNCION, fechaMexicoAMs } from '../../netlify/functions/m40-lead.js';
+
+/** Mapa id -> etiqueta tal como lo produce el motor, recorriendo todo el espacio. */
+function etiquetasDelMotor(): Record<string, string> {
+  const mapa: Record<string, string> = {};
+  for (const p1 of ['si', 'no', 'no-se'] as const)
+    for (const p2 of ['menos-5', 'mas-5', 'sigo-alta'] as const)
+      for (const p3 of ['si', 'no', 'no-se'] as const)
+        for (const p4 of ['no', 'si-termina-pronto', 'si-falta-mucho'] as const)
+          for (const p5 of ['no', 'si'] as const) {
+            const c = clasificar({ p1, p2, p3, p4, p5 });
+            mapa[c.id] = c.etiqueta;
+          }
+  return mapa;
+}
+
+test('m40-lead: la fecha de corte del espejo es la de la configuración', () => {
+  assert.equal(M40_FUNCION.corteInterno, M40.plazos.corteInterno);
+});
+
+test('m40-lead: las clasificaciones del espejo son las del motor', () => {
+  assert.deepEqual(M40_FUNCION.clasificaciones, etiquetasDelMotor());
+});
+
+test('m40-lead: los códigos del espejo son los del cuestionario', () => {
+  assert.deepEqual(M40_FUNCION.codigos, preguntas.map((p) => p.codigo));
+});
+
+test('fechaMexicoAMs: mediodía de Ciudad de México, no del host', () => {
+  assert.equal(fechaMexicoAMs('2026-11-26'), Date.parse('2026-11-26T18:00:00Z'));
+});
+
+// ── Contrato HTTP de la función ──
+//
+// En las pruebas no hay ninguna variable de entorno, así que ningún canal de
+// registro está disponible y un lead válido termina en 502. Eso NO afecta al
+// visitante: la isla lo mandó a WhatsApp antes de llamar aquí y descarta la
+// respuesta.
+//
+// Por eso las pruebas de validación comprueban "no es 400" en lugar de "es
+// 200": lo que verifican es que el cuerpo se acepta, no qué pasó después con
+// el registro. Mezclar las dos cosas las ataba a una configuración.
+
+const post = (cuerpo: unknown) =>
+  handler({ httpMethod: 'POST', body: typeof cuerpo === 'string' ? cuerpo : JSON.stringify(cuerpo) });
+
+const LEAD_OK = {
+  nombre: 'Persona de prueba',
+  whatsapp: '3312345678',
+  clasificacion: 'apto',
+  respuestas: {},
+  origen: 'https://lgo.mx/pensiones/amparo-modalidad-40/'
+};
+
+test('m40-lead: solo acepta POST', async () => {
+  const r = await handler({ httpMethod: 'GET', body: '' });
+  assert.equal(r.statusCode, 405);
+});
+
+test('m40-lead: rechaza un cuerpo desmedido antes de parsearlo', async () => {
+  const r = await post('x'.repeat(9000));
+  assert.equal(r.statusCode, 413);
+});
+
+test('m40-lead: rechaza JSON inválido', async () => {
+  const r = await post('{no-json');
+  assert.equal(r.statusCode, 400);
+});
+
+test('m40-lead: el honeypot se descarta en silencio con 200', async () => {
+  const r = await post({ ...LEAD_OK, empresa: 'bot s.a. de c.v.' });
+  assert.equal(r.statusCode, 200);
+  assert.deepEqual(JSON.parse(r.body), { ok: true });
+});
+
+test('m40-lead: exige nombre y WhatsApp de 10 dígitos', async () => {
+  assert.equal((await post({ ...LEAD_OK, nombre: 'A' })).statusCode, 400);
+  assert.equal((await post({ ...LEAD_OK, whatsapp: '33123' })).statusCode, 400);
+  // El formato humano con espacios y guiones sí pasa: se cuentan los dígitos.
+  assert.notEqual((await post({ ...LEAD_OK, whatsapp: '33 1234-5678' })).statusCode, 400);
+});
+
+test('m40-lead: valida el correo solo si viene', async () => {
+  assert.equal((await post({ ...LEAD_OK, correo: 'no-es-correo' })).statusCode, 400);
+  assert.notEqual((await post({ ...LEAD_OK, correo: '' })).statusCode, 400);
+  assert.notEqual((await post({ ...LEAD_OK, correo: 'persona@ejemplo.mx' })).statusCode, 400);
+});
+
+test('m40-lead: rechaza una clasificación que el motor no produce', async () => {
+  assert.equal((await post({ ...LEAD_OK, clasificacion: 'vip' })).statusCode, 400);
+  for (const id of Object.keys(M40_FUNCION.clasificaciones)) {
+    assert.notEqual((await post({ ...LEAD_OK, clasificacion: id })).statusCode, 400, id);
+  }
+});
+
+test('m40-lead: el respaldo por correo lleva el consentimiento completo', async () => {
+  // Esta es la razón de ser del respaldo. El mensaje de WhatsApp que el
+  // visitante acaba de enviar trae su nombre y su clasificación; NO trae qué
+  // versión del aviso aceptó ni si autorizó mercadotecnia. Si ClickUp no
+  // recibe el lead y el correo no llevara esos dos datos, el consentimiento no
+  // quedaría registrado en ninguna parte.
+  const fetchOriginal = globalThis.fetch;
+  const claveOriginal = process.env.RESEND_API_KEY;
+  let enviado: any = null;
+
+  globalThis.fetch = (async (_url: any, opts: any) => {
+    enviado = JSON.parse(opts.body);
+    return { ok: true, status: 200, text: async () => '' };
+  }) as unknown as typeof fetch;
+  process.env.RESEND_API_KEY = 'clave-de-prueba';
+
+  try {
+    const r = await post({
+      ...LEAD_OK,
+      correo: 'persona@ejemplo.mx',
+      avisoVersion: '2026-10-26',
+      mercadotecnia: true
+    });
+
+    assert.equal(r.statusCode, 200);
+    assert.equal(JSON.parse(r.body).registrado.correo, true);
+    assert.ok(enviado, 'debió llamar a Resend');
+    assert.match(enviado.html, /versión 2026-10-26/);
+    assert.match(enviado.html, /Acepta mercadotecnia:<\/strong> Sí/);
+    // Y el asunto tiene que delatar que ClickUp falló, no parecer un aviso normal.
+    assert.match(enviado.subject, /^\[Respaldo\]/);
+  } finally {
+    globalThis.fetch = fetchOriginal;
+    if (claveOriginal === undefined) delete process.env.RESEND_API_KEY;
+    else process.env.RESEND_API_KEY = claveOriginal;
+  }
+});
+
+test('m40-lead: sin ningún canal configurado, el lead no se registra y se dice', async () => {
+  // Ni ClickUp ni Resend: el lead se pierde y la función lo reporta como lo
+  // que es. El 502 queda en los registros de Netlify, que es donde tiene que
+  // verse; al visitante no le llega, porque ya está en WhatsApp.
+  const r = await post(LEAD_OK);
+  assert.equal(r.statusCode, 502);
+  assert.equal(JSON.parse(r.body).ok, false);
+});
+
+// ── Riesgo de citación ─────────────────────────────────────────────
+//
+// La fecha de corte es de LGO, no de la ley. Si la primera frase de la
+// respuesta sobre plazos la suelta sin rotular, quien la cite —una persona o
+// un modelo— la presentará como el término del amparo.
+
+test('la pregunta de plazos no abre con nuestra fecha de corte', async () => {
+  const { faqsAmparoM40 } = await import('./amparo-m40-faqs.ts');
+  const plazos = faqsAmparoM40.find((f) => /Hasta cuándo/.test(f.q));
+  assert.ok(plazos, 'debe existir la pregunta de plazos');
+
+  const primeraFrase = plazos.a.split('. ')[0];
+  assert.doesNotMatch(primeraFrase, /\d{1,2} de \w+ de \d{4}/, 'la primera frase no lleva la fecha');
+
+  // Tiene que distinguir los dos relojes: el que da la ley, en días hábiles,
+  // y el nuestro, rotulado como propio.
+  assert.match(plazos.a, /días hábiles/i, 'menciona el plazo legal en días hábiles');
+  assert.match(
+    plazos.a,
+    /nuestro cómputo|nuestra fecha|fecha interna|nosotros recibimos/i,
+    'marca como nuestra la fecha de recepción'
+  );
+  // Y los plazos que cita son los de la configuración, no otros.
+  assert.ok(plazos.a.includes(`${M40.plazos.diasAcuerdo} días hábiles`));
+  assert.ok(plazos.a.includes(`${M40.plazos.diasRespuesta} días hábiles`));
+});
