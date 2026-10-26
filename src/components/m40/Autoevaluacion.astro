@@ -20,19 +20,17 @@
 // deja un enlace manual por si el navegador bloqueó la ventana.
 
 import { preguntas, TOTAL_PREGUNTAS } from '@data/amparo-m40-autoevaluacion';
-import { M40, M40_WHATSAPP_URL } from '@data/amparo-m40';
+import { M40, M40_WHATSAPP_URL, M40_WHATSAPP_GENERAL } from '@data/amparo-m40';
 
 const avisoUrl = M40.avisoPrivacidadUrl;
 ---
 <section id="autoevaluacion" class="section band-cream">
   <div class="container-base">
     <header class="ae-head">
-      <span class="eyebrow">¿Es tu caso?</span>
-      <h2>Cinco preguntas para saber si procede revisar tu caso.</h2>
+      <span class="eyebrow">Autoevaluación</span>
+      <h2>¿Aplico? Descúbrelo en 1 minuto</h2>
       <p class="lead">
-        No pedimos tu Número de Seguridad Social, tu CURP ni documentos. Son cinco
-        respuestas que nos dicen si tu perfil coincide con los supuestos del amparo
-        y con qué urgencia conviene revisarlo.
+        Cinco preguntas. Sin datos sensibles. Al final te decimos si tu perfil coincide.
       </p>
     </header>
 
@@ -105,7 +103,7 @@ const avisoUrl = M40.avisoPrivacidadUrl;
         <p class="ae-noscript">
           La autoevaluación necesita JavaScript para darte el resultado. Si no puedes
           activarlo, escríbenos por WhatsApp con tus respuestas y la revisamos contigo
-          sin costo: <a href={M40_WHATSAPP_URL} target="_blank" rel="noopener">abrir WhatsApp</a>.
+          sin costo: <a href={M40_WHATSAPP_GENERAL} target="_blank" rel="noopener">abrir WhatsApp</a>.
         </p>
       </noscript>
 
@@ -493,7 +491,12 @@ const avisoUrl = M40.avisoPrivacidadUrl;
     type RespuestasParciales,
     type ClasificacionId
   } from '@data/amparo-m40-autoevaluacion';
-  import { M40, M40_WHATSAPP_URL, precioTexto } from '@data/amparo-m40';
+  import {
+    M40,
+    M40_WHATSAPP_URL,
+    precioCorto,
+    waMensajeAutoevaluacion
+  } from '@data/amparo-m40';
 
   const raiz = document.querySelector<HTMLElement>('[data-ae]');
 
@@ -544,15 +547,18 @@ const avisoUrl = M40.avisoPrivacidadUrl;
       dudoso: 'duda'
     };
 
-    /** Nota de cierre por clasificación: qué sigue después del resultado. */
+    /**
+     * Nota de cierre por clasificación: qué sigue después del resultado.
+     *
+     * El mensaje grande (`clasificar().mensaje`) y esta nota son las dos
+     * mitades del texto de resultado del encargo v2: el gancho arriba y el
+     * siguiente paso abajo. El precio sale de la configuración.
+     */
     const NOTAS: Record<ClasificacionId, string> = {
-      'dudoso-urgente':
-        'Cuando el IMSS ya resolvió una solicitud, el plazo corre aparte y es más corto que el del acuerdo. Déjanos tus datos y te escribimos hoy mismo.',
-      'no-apto':
-        'Si crees que algo de esto no aplica a tu caso, escríbenos: revisarlo contigo no tiene costo.',
-      apto: `El diagnóstico cuesta ${precioTexto(M40.precios.diagnostico)} y se descuenta del precio del amparo si lo contratas. Déjanos tus datos y te decimos cómo enviar tus documentos de forma segura.`,
-      dudoso:
-        'Con dos o tres datos más de tus documentos podemos decirte si procede y por qué vía. Déjanos tus datos y lo revisamos contigo.'
+      'dudoso-urgente': 'Escríbenos hoy mismo.',
+      'no-apto': 'Si tienes dudas sobre tu pensión, escríbenos sin costo.',
+      apto: `El siguiente paso es tu diagnóstico de ${precioCorto(M40.precios.diagnostico)}. Escríbenos y lo agendamos hoy.`,
+      dudoso: 'Necesitamos ver tus documentos para confirmarlo. Escríbenos y te decimos qué enviar.'
     };
 
     /** Título del bloque de captura según el resultado. */
@@ -718,7 +724,7 @@ const avisoUrl = M40.avisoPrivacidadUrl;
 
       // 1. WhatsApp primero, en el mismo gesto del usuario: así ningún
       //    bloqueador de ventanas lo cancela por haber esperado a la red.
-      const texto = `Hola, hice la autoevaluación de Modalidad 40 en lgo.mx. Resultado: ${c.etiqueta}. Mi nombre es ${nombre}.`;
+      const texto = waMensajeAutoevaluacion(c.etiqueta, nombre);
       const waUrl = `${M40_WHATSAPP_URL}?text=${encodeURIComponent(texto)}`;
       waManual.href = waUrl;
       window.open(waUrl, '_blank', 'noopener');

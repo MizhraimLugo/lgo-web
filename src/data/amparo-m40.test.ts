@@ -9,7 +9,9 @@
 //   · las cuatro clasificaciones de la autoevaluación y su precedencia,
 //   · los precios con IVA tal como se muestran al público,
 //   · la desaparición de la tarjeta de lanzamiento al pasar su fecha,
-//   · el contador de plazo y su texto una vez pasado el corte.
+//   · el contador de plazo y su texto una vez pasado el corte,
+//   · los dos topes de cotización, calculados desde el valor de la UMA,
+//   · los mensajes prellenados de WhatsApp.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,13 +20,21 @@ import {
   conIva,
   fmtMXN,
   precioTexto,
+  precioCorto,
+  fmtTope,
+  topeAnteriorDiario,
+  topeAnteriorMensual,
   fechaLarga,
+  fechaCorta,
   hoyEnMexico,
   diasHasta,
   lanzamientoVigente,
   cortePasado,
   textoContador,
-  TEXTO_CONTADOR_VENCIDO
+  TEXTO_CONTADOR_VENCIDO,
+  M40_WHATSAPP_GENERAL,
+  M40_WA_MENSAJE_GENERAL,
+  waMensajeAutoevaluacion
 } from './amparo-m40.ts';
 import {
   clasificar,
@@ -66,6 +76,34 @@ test('descuento familiar: 10 % por persona sobre el precio máximo', () => {
   assert.equal(conDescuento, 4950);
 });
 
+test('precioCorto: sin el total, para rótulos y botones', () => {
+  assert.equal(precioCorto(M40.precios.diagnostico), '$500 + IVA');
+  assert.equal(precioCorto(M40.precios.amparo), '$5,500 + IVA');
+  assert.equal(precioCorto(M40.precios.amparoLanzamiento), '$4,500 + IVA');
+});
+
+// ── Topes de cotización ────────────────────────────────────────────
+
+test('fmtTope: un máximo se redondea hacia abajo, nunca hacia arriba', () => {
+  assert.equal(fmtTope(2932.75), '$2,932');
+  assert.equal(fmtTope(117.31), '$117');
+  assert.equal(fmtTope(500), '$500');
+});
+
+test('topes: salen del valor de la UMA, no de una cifra escrita a mano', () => {
+  assert.equal(topeAnteriorDiario(), M40.uma2026 * M40.topeAnteriorVecesUMA);
+  assert.equal(fmtTope(topeAnteriorDiario()), '$2,932');
+  assert.equal(fmtMXN(topeAnteriorMensual()), '$89,156');
+});
+
+test('topes: cambiar la UMA recalcula las dos cifras de la comparativa', () => {
+  // El tope diario es proporcional a la UMA: el doble de UMA, el doble de tope.
+  const diario = topeAnteriorDiario();
+  const porUma = diario / M40.uma2026;
+  assert.equal(porUma, M40.topeAnteriorVecesUMA);
+  assert.ok(topeAnteriorMensual() > diario, 'el tope mensual supera al diario');
+});
+
 // ── Fechas ─────────────────────────────────────────────────────────
 
 test('fechaLarga: formato largo en español', () => {
@@ -104,12 +142,14 @@ test('cortePasado: cambia al día siguiente del corte', () => {
   assert.equal(cortePasado(dia('2026-11-27')), true);
 });
 
-test('textoContador: concuerda en singular y plural', () => {
-  assert.equal(
-    textoContador(31),
-    'Faltan 31 días para la fecha límite de recepción de expedientes (26 de noviembre de 2026).'
-  );
-  assert.match(textoContador(1), /^Falta 1 día /);
+test('fechaCorta: día y mes, sin año', () => {
+  assert.equal(fechaCorta('2026-11-26'), '26 de noviembre');
+  assert.equal(fechaCorta('2026-10-22'), '22 de octubre');
+});
+
+test('textoContador: la fecha primero, la cuenta después', () => {
+  assert.equal(textoContador(31), 'Recibimos expedientes hasta el 26 de noviembre · Faltan 31 días');
+  assert.match(textoContador(1), /· Falta 1 día$/);
 });
 
 test('TEXTO_CONTADOR_VENCIDO: deja abierta la vía del acto concreto', () => {
@@ -122,7 +162,7 @@ test('TEXTO_CONTADOR_VENCIDO: deja abierta la vía del acto concreto', () => {
 test('Caso APTO — el perfil coincide en las cinco preguntas', () => {
   const r = clasificar(APTO);
   assert.equal(r.id, 'apto');
-  assert.equal(r.mensaje, 'Tu perfil coincide. El siguiente paso es el diagnóstico.');
+  assert.equal(r.mensaje, 'Tu perfil coincide.');
   assert.deepEqual(r.motivos, []);
 });
 
@@ -133,7 +173,7 @@ test('Caso APTO — también con Modalidad 40 por terminar', () => {
 test('Caso DUDOSO-URGENTE — P5 = Sí gana sobre cualquier otra respuesta', () => {
   const r = clasificar(perfil({ p5: 'si' }));
   assert.equal(r.id, 'dudoso-urgente');
-  assert.equal(r.mensaje, 'Tu plazo puede ser más corto. Escríbenos hoy.');
+  assert.equal(r.mensaje, 'Atención: si el IMSS ya te respondió, tu plazo es más corto.');
 });
 
 test('Caso DUDOSO-URGENTE — la urgencia precede incluso a la no aptitud', () => {
@@ -151,7 +191,10 @@ test('Caso NO APTO — cada condición por separado', () => {
   ]) {
     const r = clasificar(perfil(cambio));
     assert.equal(r.id, 'no-apto', `esperaba no-apto con ${JSON.stringify(cambio)}`);
-    assert.equal(r.mensaje, 'Por ahora el amparo no parece ser para ti.');
+    assert.equal(
+      r.mensaje,
+      'Por ahora el amparo no parece ser para ti, y preferimos decírtelo.'
+    );
     assert.equal(r.motivos.length, 1, 'un solo motivo cuando falla una sola condición');
   }
 });
@@ -165,7 +208,7 @@ test('Caso NO APTO — lista todos los motivos que apliquen', () => {
 test('Caso DUDOSO — "No sé" en P1 o P3', () => {
   assert.equal(clasificar(perfil({ p1: 'no-se' })).id, 'dudoso');
   assert.equal(clasificar(perfil({ p3: 'no-se' })).id, 'dudoso');
-  assert.equal(clasificar(perfil({ p3: 'no-se' })).mensaje, 'Necesitamos revisar tus documentos.');
+  assert.equal(clasificar(perfil({ p3: 'no-se' })).mensaje, 'Puede que sí.');
 });
 
 test('Caso DUDOSO — "Sigo dado de alta" en P2', () => {
@@ -217,6 +260,29 @@ test('textoRespuesta: traduce el id al texto que vio el visitante', () => {
   assert.equal(textoRespuesta('p4', 'si-termina-pronto'), 'Sí, y mi periodo termina pronto');
   // Un id desconocido se devuelve tal cual, sin lanzar.
   assert.equal(textoRespuesta('p1', 'otro'), 'otro');
+});
+
+// ── Mensajes de WhatsApp ───────────────────────────────────────────
+
+test('WhatsApp general: la liga lleva el mensaje prellenado y el número de la sección', () => {
+  assert.ok(M40_WHATSAPP_GENERAL.startsWith(`https://wa.me/${M40.whatsapp}?text=`));
+  assert.equal(
+    decodeURIComponent(M40_WHATSAPP_GENERAL.split('?text=')[1]),
+    M40_WA_MENSAJE_GENERAL
+  );
+});
+
+test('WhatsApp: ningún mensaje lleva emojis', () => {
+  const sinEmoji = /^[\p{L}\p{N}\p{P}\p{Zs}]+$/u;
+  assert.match(M40_WA_MENSAJE_GENERAL, sinEmoji);
+  assert.match(waMensajeAutoevaluacion('Apto', 'Ana'), sinEmoji);
+});
+
+test('WhatsApp de la autoevaluación: interpola resultado y nombre', () => {
+  assert.equal(
+    waMensajeAutoevaluacion('Apto', 'Ana'),
+    'Hola, hice la prueba de Modalidad 40 en lgo.mx. Resultado: Apto. Mi nombre es Ana.'
+  );
 });
 
 // ── La función de leads no puede desincronizarse de la configuración ──

@@ -13,7 +13,7 @@
 import Base from '@layouts/Base.astro';
 import CtaBand from '@components/CtaBand.astro';
 import { business } from '@data/business';
-import { M40, M40_WHATSAPP_URL, precioTexto } from '@data/amparo-m40';
+import { M40, M40_WHATSAPP_GENERAL, precioTexto } from '@data/amparo-m40';
 
 const path = '/pensiones/';
 const title = 'Pensiones y Modalidad 40 | LGO Abogados & Consultores';
@@ -128,7 +128,7 @@ const collectionLd = {
     title="¿Tu caso no está en la lista?"
     body="Cuéntanos tu situación y te decimos si es algo que atendemos y con qué alcance. Revisarlo contigo no tiene costo."
     primaryLabel="Escríbenos por WhatsApp"
-    primaryHref={M40_WHATSAPP_URL}
+    primaryHref={M40_WHATSAPP_GENERAL}
     secondaryLabel="Ir a contacto"
     secondaryHref="/contacto/"
     variant="dark"

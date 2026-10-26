@@ -23,8 +23,9 @@ const corte = fechaLarga(M40.plazos.corteInterno);
 
 export const faqsAmparoM40: FaqItem[] = [
   {
+    // La respuesta abre con la fecha: es el dato que la gente busca aquí.
     q: '¿Hasta cuándo puedo ampararme?',
-    a: `El plazo para impugnar el acuerdo de forma directa es breve y ya está corriendo. Para trabajar con margen, recibimos expedientes hasta el ${corte}. Si el IMSS ya respondió una solicitud tuya aplicando el tope, el plazo es distinto y más corto: escríbenos de inmediato.`
+    a: `Recibimos expedientes hasta el ${corte}. El plazo para impugnar el acuerdo de forma directa es breve y ya corre. Si el IMSS ya respondió una solicitud tuya aplicando el tope, tu plazo es más corto: escríbenos de inmediato.`
   },
   {
     q: '¿Me sirve si empecé a cotizar después de 1997?',

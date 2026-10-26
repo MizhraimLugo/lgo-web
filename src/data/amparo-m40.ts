@@ -44,6 +44,16 @@ export const M40 = {
     /** Descuento por persona cuando se amparan dos o más del mismo hogar. */
     descuentoFamiliar: 0.1
   },
+  /**
+   * Valor diario de la UMA. De aquí salen los DOS topes que la landing
+   * enfrenta (el de antes y el de ahora): actualizar este número en enero
+   * los recalcula a los dos sin tocar la página.
+   *
+   * [VERIFICAR] valor diario de la UMA 2026 (DOF 09/01/2026).
+   */
+  uma2026: 117.31,
+  /** Tope general de cotización, en veces UMA. [VERIFICAR] */
+  topeAnteriorVecesUMA: 25,
   /** Fecha de la última revisión del contenido de la página. */
   ultimaActualizacion: '2026-10-26',
   /** WhatsApp de captación de la sección (distinto del conmutador del sitio). */
@@ -70,6 +80,24 @@ export const M40 = {
 
 /** Liga de WhatsApp de captación de la sección. */
 export const M40_WHATSAPP_URL = `https://wa.me/${M40.whatsapp}`;
+
+/**
+ * Mensajes prellenados de WhatsApp. Dos, y solo dos: el de los botones
+ * generales de la página y el de la autoevaluación (que agrega el resultado y
+ * el nombre). Sin emojis.
+ */
+export const M40_WA_MENSAJE_GENERAL =
+  'Hola, vi la página de Amparo Modalidad 40 en lgo.mx y quiero revisar mi caso.';
+
+/** Liga que usan todos los botones generales de WhatsApp de la sección. */
+export const M40_WHATSAPP_GENERAL = `${M40_WHATSAPP_URL}?text=${encodeURIComponent(
+  M40_WA_MENSAJE_GENERAL
+)}`;
+
+/** Mensaje de la autoevaluación, con el resultado y el nombre del visitante. */
+export function waMensajeAutoevaluacion(clasificacion: string, nombre: string): string {
+  return `Hola, hice la prueba de Modalidad 40 en lgo.mx. Resultado: ${clasificacion}. Mi nombre es ${nombre}.`;
+}
 
 /** Zona horaria de referencia para todo cómputo de plazos de la sección. */
 export const M40_TZ = 'America/Mexico_City';
@@ -101,6 +129,43 @@ export function precioTexto(montoSinIva: number): string {
   return `${fmtMXN(montoSinIva)} + IVA (${fmtMXN(conIva(montoSinIva))})`;
 }
 
+/**
+ * Versión corta del precio, sin el total entre paréntesis: `"$500 + IVA"`.
+ *
+ * Es la que usan los rótulos donde el total estorbaría —el ancla de precio del
+ * encabezado y la barra fija del móvil—. El total con IVA aparece completo en
+ * la sección de precios, que es donde vive la letra chica.
+ */
+export function precioCorto(montoSinIva: number): string {
+  return `${fmtMXN(montoSinIva)} + IVA`;
+}
+
+// ── Topes de cotización ────────────────────────────────────────────
+
+/** Equivalencia de un mes en días de cotización. */
+export const DIAS_MES_COTIZACION = 30.4;
+
+/**
+ * Formatea un TOPE redondeando hacia ABAJO: un máximo no debe mostrarse más
+ * alto de lo que es. 2 932.75 → `"$2,932"`.
+ */
+export function fmtTope(monto: number): string {
+  return fmtMXN(Math.floor(monto));
+}
+
+/** Tope general de cotización, en pesos diarios (veces UMA). */
+export function topeAnteriorDiario(): number {
+  return M40.uma2026 * M40.topeAnteriorVecesUMA;
+}
+
+/**
+ * El mismo tope, aproximado al mes. Se muestra con `fmtMXN` (redondeo normal)
+ * y no con `fmtTope`: la cifra se presenta como aproximada, no como un máximo.
+ */
+export function topeAnteriorMensual(): number {
+  return topeAnteriorDiario() * DIAS_MES_COTIZACION;
+}
+
 // ── Fechas ─────────────────────────────────────────────────────────
 
 const MESES = [
@@ -113,6 +178,13 @@ export function fechaLarga(iso: string): string {
   const d = parseISO(iso);
   if (!d) return iso;
   return `${d.getUTCDate()} de ${MESES[d.getUTCMonth()]} de ${d.getUTCFullYear()}`;
+}
+
+/** Formatea 'YYYY-MM-DD' como "26 de noviembre", sin año. Para rótulos cortos. */
+export function fechaCorta(iso: string): string {
+  const d = parseISO(iso);
+  if (!d) return iso;
+  return `${d.getUTCDate()} de ${MESES[d.getUTCMonth()]}`;
 }
 
 /**
@@ -161,10 +233,13 @@ export function cortePasado(hoy: Date = hoyEnMexico()): boolean {
 
 // ── Textos derivados (una sola redacción para toda la sección) ─────
 
-/** Texto del contador mientras la fecha de corte no ha pasado. */
+/**
+ * Texto del contador mientras la fecha de corte no ha pasado: la fecha
+ * primero (el dato útil) y la cuenta después (la urgencia).
+ */
 export function textoContador(dias: number): string {
   const cuenta = dias === 1 ? 'Falta 1 día' : `Faltan ${dias} días`;
-  return `${cuenta} para la fecha límite de recepción de expedientes (${fechaLarga(M40.plazos.corteInterno)}).`;
+  return `Recibimos expedientes hasta el ${fechaCorta(M40.plazos.corteInterno)} · ${cuenta}`;
 }
 
 /** Texto del contador una vez que la fecha de corte pasó. */

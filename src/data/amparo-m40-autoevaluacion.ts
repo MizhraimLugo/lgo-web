@@ -38,7 +38,10 @@ export type Clasificacion = {
   id: ClasificacionId;
   /** Etiqueta legible: encabezado del resultado y nombre de la tarea en ClickUp. */
   etiqueta: string;
-  /** Mensaje principal que ve el visitante. */
+  /**
+   * Mensaje principal que ve el visitante: el gancho del resultado. La otra
+   * mitad del texto —el siguiente paso— es la nota de Autoevaluacion.astro.
+   */
   mensaje: string;
   /** Motivos concretos del resultado. Vacío salvo en 'no-apto'. */
   motivos: string[];
@@ -159,7 +162,7 @@ export function clasificar(r: Respuestas): Clasificacion {
     return {
       id: 'dudoso-urgente',
       etiqueta: 'Dudoso urgente',
-      mensaje: 'Tu plazo puede ser más corto. Escríbenos hoy.',
+      mensaje: 'Atención: si el IMSS ya te respondió, tu plazo es más corto.',
       motivos: []
     };
   }
@@ -170,7 +173,7 @@ export function clasificar(r: Respuestas): Clasificacion {
     return {
       id: 'no-apto',
       etiqueta: 'No apto',
-      mensaje: 'Por ahora el amparo no parece ser para ti.',
+      mensaje: 'Por ahora el amparo no parece ser para ti, y preferimos decírtelo.',
       motivos
     };
   }
@@ -186,7 +189,7 @@ export function clasificar(r: Respuestas): Clasificacion {
     return {
       id: 'apto',
       etiqueta: 'Apto',
-      mensaje: 'Tu perfil coincide. El siguiente paso es el diagnóstico.',
+      mensaje: 'Tu perfil coincide.',
       motivos: []
     };
   }
@@ -195,7 +198,7 @@ export function clasificar(r: Respuestas): Clasificacion {
   return {
     id: 'dudoso',
     etiqueta: 'Dudoso',
-    mensaje: 'Necesitamos revisar tus documentos.',
+    mensaje: 'Puede que sí.',
     motivos: []
   };
 }

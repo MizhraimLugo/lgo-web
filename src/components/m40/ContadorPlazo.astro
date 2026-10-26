@@ -39,14 +39,17 @@ const yaPaso = cortePasado();
 // Fallback sin JavaScript: la fecha, no el conteo.
 const textoEstatico = yaPaso
   ? TEXTO_CONTADOR_VENCIDO
-  : `Fecha límite de recepción de expedientes: ${corteLargo}.`;
+  : `Recibimos expedientes hasta el ${corteLargo}.`;
 ---
 <div
   class:list={['contador', `contador--${tono}`, className]}
   data-contador
   data-corte={corte}
 >
-  <span class="contador-icono" aria-hidden="true"></span>
+  <svg class="contador-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+  </svg>
   <p class="contador-texto" data-contador-texto>{textoEstatico}</p>
 </div>
 
@@ -62,19 +65,33 @@ const textoEstatico = yaPaso
     max-width: 44rem;
   }
   .contador-icono {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background: var(--color-accent);
+    width: 1.125rem;
+    height: 1.125rem;
     flex-shrink: 0;
-    margin-top: 0.55rem;
+    margin-top: 0.1rem;
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
   }
   .contador-texto {
     margin: 0;
     font-size: var(--text-sm);
     line-height: 1.6;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-accent-deep);
+  }
+  /* Animación mínima: el conteo que calcula el cliente entra con un fundido
+     en lugar de sustituir el texto de golpe. Va atada a `data-estado`, que
+     solo existe si el script corrió: sin JavaScript el texto estático se ve
+     completo desde el inicio. La regla global de `prefers-reduced-motion`
+     reduce la duración a cero. */
+  .contador[data-estado] .contador-texto {
+    animation: contador-aparece 320ms ease both;
+  }
+  @keyframes contador-aparece {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
   }
 
   /* Sobre banda oscura: sin relleno de color, el texto hereda el de la banda. */
@@ -82,7 +99,7 @@ const textoEstatico = yaPaso
     background: rgba(250, 248, 244, 0.08);
     border-left-color: var(--color-accent-soft);
   }
-  .contador--oscuro .contador-icono { background: var(--color-accent-soft); }
+  .contador--oscuro .contador-icono { stroke: var(--color-accent-soft); }
   .contador--oscuro .contador-texto { color: var(--color-on-dark); }
 </style>
 
