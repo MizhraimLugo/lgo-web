@@ -1,7 +1,8 @@
-# Netlify Functions — /contratos
+# Netlify Functions
 
-Endpoints serverless del autoservicio de contratos. El sitio sigue **estático
-(SSG)**; estas funciones corren aparte y se sirven en `/.netlify/functions/<nombre>`.
+Endpoints serverless del sitio: el autoservicio de `/contratos` y la captura de
+leads de `/pensiones/amparo-modalidad-40`. El sitio sigue **estático (SSG)**;
+estas funciones corren aparte y se sirven en `/.netlify/functions/<nombre>`.
 
 ## Funciones
 
@@ -15,6 +16,14 @@ Endpoints serverless del autoservicio de contratos. El sitio sigue **estático
 | `mp-estado` | ✅ | El frontend consulta si el pago está aprobado y obtiene el token | `MP_ACCESS_TOKEN` |
 | `registrar-documento` | ✅ (interino) | Tras pago verificado, envía el documento al despacho (ClickUp + correo) | ClickUp + Resend |
 | `generar` | ⬜ Paso 5 | Genera el .docx con docxtemplater (re-verifica el token) | — |
+| `m40-lead` | ✅ | Lead de la autoevaluación de Modalidad 40 → tarea en la lista "Amparo M40" | `CLICKUP_API_TOKEN`, `CLICKUP_M40_LIST_ID` |
+
+> `m40-lead` usa su **propia** lista (`CLICKUP_M40_LIST_ID`): `CLICKUP_LIST_ID`
+> ya apunta a la lista de `/contratos`. Si la lista aún no tiene la etiqueta de
+> clasificación o el estatus `Lead`, la función reintenta el alta sin ellos y lo
+> anota en la descripción — un lead nunca se pierde por una lista a medio
+> configurar. Sus constantes de fecha y clasificación están atadas a
+> `src/data/amparo-m40.ts` por `src/data/amparo-m40.test.ts`.
 
 ## Flujo de pago (Checkout Pro)
 

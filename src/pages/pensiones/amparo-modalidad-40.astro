@@ -1,0 +1,636 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  LANDING — Amparo Modalidad 40 (/pensiones/amparo-modalidad-40/)
+// ════════════════════════════════════════════════════════════════
+//
+// Landing principal del hub /pensiones. Patrón de landing comercial del sitio
+// (Base + secciones propias), el mismo de /abogados y /contratos; la isla de
+// autoevaluación y el contador viven en src/components/m40/.
+//
+// NINGUNA fecha ni precio está escrito a mano en este archivo: todo sale de
+// `@data/amparo-m40` y sus helpers. Cambiar `corteInterno` o un precio allí
+// lo cambia en el hero, el contador, las tarjetas, las FAQ y el pie.
+//
+// Los comentarios VERIFICAR marcan afirmaciones jurídicas pendientes de cotejo
+// contra fuente oficial. Se enlistan en la descripción del PR y son requisito
+// de merge (sección 9 del encargo).
+
+import Base from '@layouts/Base.astro';
+import Faq from '@components/Faq.astro';
+import Autoevaluacion from '@components/m40/Autoevaluacion.astro';
+import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
+import { business } from '@data/business';
+import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
+import {
+  M40,
+  M40_WHATSAPP_URL,
+  precioTexto,
+  fechaLarga,
+  lanzamientoVigente
+} from '@data/amparo-m40';
+
+const path = '/pensiones/amparo-modalidad-40/';
+const title = 'Amparo Modalidad 40 IMSS en Guadalajara | LGO Abogados';
+const description =
+  '¿El IMSS topó tu Modalidad 40? Revisamos si procede un amparo en tu caso. Diagnóstico $500 + IVA. Abogados en Guadalajara y Zapopan.';
+const ogImage = '/og-amparo-modalidad-40.jpg';
+
+// Teléfono de captación de la sección en E.164, derivado del WhatsApp.
+const telefonoE164 = `+${M40.whatsapp}`;
+
+// La tarjeta de lanzamiento se decide en el build y se vuelve a comprobar en el
+// cliente (ver el <script> del final): así desaparece sola aunque no haya un
+// deploy nuevo justo después de la fecha.
+const hayLanzamiento = lanzamientoVigente();
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Pensiones', item: business.url + '/pensiones/' },
+    { '@type': 'ListItem', position: 3, name: 'Amparo Modalidad 40', item: business.url + path }
+  ]
+};
+
+// LegalService del servicio concreto. @id propio: no se pisa con la
+// Organization `#abogados` que Base.astro ya declara para la sub-marca.
+// Sin schema de reseñas ni calificaciones, por decisión editorial.
+const legalServiceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LegalService',
+  '@id': `${business.url}${path}#legalservice`,
+  name: 'LGO Abogados & Consultores',
+  description,
+  url: business.url + path,
+  image: business.url + ogImage,
+  telephone: telefonoE164,
+  email: business.email,
+  inLanguage: 'es-MX',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.locality,
+    addressRegion: business.address.regionCode,
+    postalCode: business.address.postalCode,
+    addressCountry: business.address.countryCode
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: business.geo.latitude,
+    longitude: business.geo.longitude
+  },
+  areaServed: { '@type': 'AdministrativeArea', name: 'Zona Metropolitana de Guadalajara' },
+  serviceType: 'Juicio de amparo contra el tope salarial de la Modalidad 40 del IMSS',
+  parentOrganization: { '@id': `${business.url}/#organization` },
+  provider: { '@id': `${business.url}/#abogados` }
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqsAmparoM40.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a }
+  }))
+};
+
+const pasos = [
+  {
+    titulo: 'Diagnóstico',
+    texto: 'Revisamos tus documentos y te decimos, por escrito, si te conviene el amparo y por qué vía.'
+  },
+  {
+    titulo: 'Elección de la vía',
+    texto: 'Impugnar el acuerdo directamente o esperar la respuesta del IMSS a tu solicitud. Cada ruta tiene plazos distintos.'
+  },
+  {
+    titulo: 'Demanda y suspensión',
+    texto: 'Preparamos y presentamos tu demanda de amparo.'
+  },
+  {
+    titulo: 'Seguimiento',
+    texto: 'Atendemos el juicio hasta la sentencia y, si hace falta, el recurso de revisión.'
+  },
+  {
+    titulo: 'Te mantenemos informado',
+    texto: 'En cada etapa, por WhatsApp o correo.'
+  }
+];
+
+const riesgos = [
+  'Todavía no hay sentencias sobre este acuerdo. Ningún despacho puede asegurarte el resultado.',
+  'El acuerdo es una medida temporal. Si el IMSS lo modifica o el Congreso reforma la ley, el juicio podría quedar sin materia.',
+  // VERIFICAR: reforma de 2025 a la Ley de Amparo (requisitos y suspensión).
+  'La reforma de 2025 a la Ley de Amparo hizo más estrictos los requisitos para promoverlo y para obtener la suspensión.',
+  'Una sentencia favorable protege solo a quien promovió el amparo.',
+  'El juicio toma tiempo, y mientras se resuelve podrías no estar cotizando con el salario que buscas.'
+];
+
+const documentos = [
+  'Constancia de semanas cotizadas (se obtiene en IMSS Digital).',
+  'Constancia de baja o reporte de movimientos afiliatorios con tu último salario y fecha de baja.',
+  'Número de Seguridad Social, CURP e INE.',
+  'Si ya estás en Modalidad 40: comprobante de inscripción y pagos.',
+  'Cualquier respuesta o acuse que te haya dado el IMSS.'
+];
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  ogImage={ogImage}
+  extraJsonLd={[breadcrumbLd, legalServiceLd, faqLd]}
+>
+
+  <!-- ═══ 4.1 ENCABEZADO ═══ -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up reveal-up--immediate">LGO Abogados &amp; Consultores · Pensiones</span>
+      <h1 class="reveal-up reveal-up--immediate">
+        ¿El IMSS limitó tu Modalidad 40? Revisamos si procede un amparo en tu caso.
+      </h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Desde el {fechaLarga(M40.acuerdo.vigenciaDesde)}, las nuevas inscripciones a la
+        Modalidad 40 tienen un tope de salario más bajo. Si estabas por inscribirte, el
+        tiempo para defenderte es corto.
+      </p>
+      <div class="hero-ctas reveal-up reveal-up--immediate">
+        <a href="#autoevaluacion" class="btn btn-primary">Haz tu autoevaluación</a>
+        <a href={M40_WHATSAPP_URL} class="btn btn-ghost" target="_blank" rel="noopener">
+          Escríbenos por WhatsApp
+        </a>
+      </div>
+      <ContadorPlazo class="hero-contador reveal-up reveal-up--immediate" />
+    </div>
+  </section>
+
+  <!-- ═══ 4.2 QUÉ CAMBIÓ ═══ -->
+  <section id="que-cambio" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Qué cambió</span>
+        <h2>El tope que cambió las reglas de la Modalidad 40.</h2>
+      </header>
+
+      <ol class="cambios">
+        <li class="cambio">
+          <span class="cambio-rotulo">Antes</span>
+          <p>
+            Podías inscribirte a la Modalidad 40 con un salario superior al último que
+            tuviste, hasta el tope general de cotización.
+          </p>
+        </li>
+        <!-- VERIFICAR: tope de las nuevas inscripciones al último salario de baja más una UMA. -->
+        <li class="cambio">
+          <span class="cambio-rotulo">Ahora</span>
+          <p>
+            Las nuevas inscripciones quedan limitadas a tu último salario al darte de baja
+            más una UMA.
+          </p>
+        </li>
+        <!-- VERIFICAR: fin de los pagos retroactivos y trámite exclusivamente digital. -->
+        <li class="cambio">
+          <span class="cambio-rotulo">Además</span>
+          <p>
+            Ya no se pueden pagar periodos hacia atrás y el trámite es solo digital.
+          </p>
+        </li>
+      </ol>
+
+      <!-- VERIFICAR: respeto de las condiciones contratadas a quien ya está inscrito. -->
+      <p class="nota-chica">
+        Si ya estás inscrito, conservas tus condiciones hasta que termine el periodo que
+        contrataste.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4.3 POR QUÉ PODRÍA IMPUGNARSE ═══ -->
+  <section id="por-que" class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">El argumento</span>
+        <h2>Por qué podría impugnarse.</h2>
+      </header>
+
+      <div class="argumento">
+        <!-- VERIFICAR: artículo 218 de la Ley del Seguro Social en su texto vigente. -->
+        <p>
+          La Ley del Seguro Social permite que, al darte de baja, continúes cotizando con
+          tu último salario <strong>o uno superior</strong>. El nuevo tope no viene de una
+          reforma a la ley, sino de un acuerdo del Consejo Técnico del IMSS. Un acuerdo
+          administrativo no puede restringir un derecho que la ley concede. Ese es el
+          argumento central del amparo.
+        </p>
+        <p>
+          Es un argumento con fundamento, pero todavía no hay sentencias sobre este
+          acuerdo. Por eso revisamos cada caso antes de recomendar litigar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4.4 ¿ES TU CASO? (autoevaluación) ═══ -->
+  <Autoevaluacion />
+
+  <!-- ═══ 4.5 CÓMO TRABAJAMOS ═══ -->
+  <section id="como-trabajamos" class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Cómo trabajamos</span>
+        <h2>De la revisión de tus documentos a la sentencia.</h2>
+      </header>
+
+      <ol class="pasos">
+        {pasos.map((p, i) => (
+          <li class="paso reveal-up">
+            <span class="paso-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══ 4.6 PRECIOS ═══ -->
+  <section id="precios" class="section band-cream">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Precios</span>
+        <h2>Precio cerrado, sin letra chica.</h2>
+      </header>
+
+      <div class="precios">
+        <article class="precio-card">
+          <h3>Diagnóstico Modalidad 40</h3>
+          <p class="precio-monto">{precioTexto(M40.precios.diagnostico)}</p>
+          <p class="precio-desc">
+            Revisión de documentos, dictamen breve con la vía recomendada y explicación de
+            los riesgos. Se descuenta del precio del amparo si lo contratas.
+          </p>
+        </article>
+
+        <article class="precio-card precio-card--destacada">
+          <h3>Amparo Modalidad 40</h3>
+          <p class="precio-monto">
+            {precioTexto(M40.precios.amparo)}
+            <span class="precio-nota">precio máximo</span>
+          </p>
+          <p class="precio-desc">
+            Incluye la demanda, la solicitud de suspensión, el seguimiento del juicio, la
+            audiencia, la sentencia y el recurso de revisión si hace falta.
+          </p>
+        </article>
+      </div>
+
+      <div class="descuentos">
+        <h3>Descuentos</h3>
+        <ul class="descuentos-lista">
+          {hayLanzamiento && (
+            <li data-lanzamiento data-hasta={M40.plazos.lanzamientoHasta}>
+              <strong>Precio de lanzamiento:</strong>
+              {' '}{precioTexto(M40.precios.amparoLanzamiento)} si contratas antes del
+              {' '}{fechaLarga(M40.plazos.lanzamientoHasta)}.
+            </li>
+          )}
+          <li>
+            <strong>Descuento familiar:</strong> {Math.round(M40.precios.descuentoFamiliar * 100)} %
+            por persona cuando se amparan dos o más integrantes del mismo hogar.
+          </li>
+          <li>
+            Los descuentos no se acumulan entre sí. El pago del diagnóstico siempre se
+            descuenta.
+          </li>
+        </ul>
+
+        <p class="no-incluye">
+          <strong>No incluye:</strong> cuotas al IMSS, trámites de inscripción ni otros
+          juicios o procedimientos distintos al amparo descrito.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4.7 RIESGOS ═══ -->
+  <section id="riesgos" class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Antes de contratar</span>
+        <h2>Riesgos que debes conocer.</h2>
+      </header>
+
+      <ul class="riesgos">
+        {riesgos.map((r) => <li>{r}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 4.8 PREGUNTAS FRECUENTES ═══ -->
+  <section id="preguntas" class="section band-cream">
+    <div class="container-base">
+      <Faq items={faqsAmparoM40} title="Preguntas frecuentes" />
+    </div>
+  </section>
+
+  <!-- ═══ 4.9 DOCUMENTOS ═══ -->
+  <section id="documentos" class="section">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Para tu diagnóstico</span>
+        <h2>Lo que vamos a necesitar.</h2>
+      </header>
+
+      <ul class="documentos">
+        {documentos.map((d) => <li>{d}</li>)}
+      </ul>
+
+      <p class="nota-chica">
+        No envíes documentos por este sitio. Te indicaremos por WhatsApp o correo cómo
+        hacerlo de forma segura.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4.10 QUIÉN TE ATIENDE ═══ -->
+  <section id="quien" class="section band-cream">
+    <div class="container-base">
+      <div class="quien">
+        <span class="eyebrow">Quién te atiende</span>
+        <h2>{M40.firma.nombre}</h2>
+        <p class="quien-cargo">{M40.firma.puesto}, {M40.firma.division} | {business.brand}</p>
+        <p class="quien-sede">
+          {M40.sede}. {business.address.street}, {business.address.neighborhood},
+          C.P. {business.address.postalCode}, {business.address.locality},
+          {' '}{business.address.region}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4.11 CIERRE ═══ -->
+  <section id="cierre" class="section-roomy band-dark">
+    <div class="container-narrow cierre">
+      <h2>El plazo corre. Revisa tu caso hoy.</h2>
+      <ContadorPlazo tono="oscuro" class="cierre-contador" />
+      <div class="cierre-ctas">
+        <a href={M40_WHATSAPP_URL} class="btn btn-primary" target="_blank" rel="noopener">
+          Escríbenos por WhatsApp
+        </a>
+        <a href="#autoevaluacion" class="btn btn-ghost">Haz tu autoevaluación</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4.12 AVISOS ═══ -->
+  <section class="section-tight avisos-wrap">
+    <div class="container-base">
+      <ul class="avisos">
+        <li>La información de esta página es general y no constituye asesoría para un caso concreto.</li>
+        <li>
+          El resultado de un juicio de amparo depende de la valoración de la autoridad
+          judicial; no garantizamos resultados.
+        </li>
+        <li>
+          El acuerdo del IMSS es una medida temporal que puede modificarse. Actualizamos
+          esta página conforme a publicaciones oficiales. Última actualización:
+          {' '}{fechaLarga(M40.ultimaActualizacion)}.
+        </li>
+        <li>La sentencia de amparo beneficia solo a quien lo promueve.</li>
+        <li>
+          Grupo LGO no realiza inscripciones al IMSS fuera de sus canales oficiales ni
+          ofrece inscribir con las reglas anteriores.
+        </li>
+        <li>
+          {/* VERIFICAR: el sitio aún no publica un aviso de privacidad.
+              Al publicarlo, basta llenar `avisoPrivacidadUrl` en @data/amparo-m40. */}
+          {M40.avisoPrivacidadUrl
+            ? <a href={M40.avisoPrivacidadUrl}>Consulta el aviso de privacidad del sitio.</a>
+            : <span>El aviso de privacidad del sitio aplica a los datos que nos compartes.</span>}
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* ── HERO ── */
+  .hero h1 { max-width: 20ch; margin: 1.25rem 0 1.5rem; font-size: var(--text-display); }
+  .hero .lead { max-width: 46rem; }
+  .hero-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+  .hero-contador { margin-top: 2rem; }
+
+  /* ── Encabezados de sección (mismo tratamiento que /abogados) ── */
+  .section-head { margin-bottom: 2.5rem; max-width: 42rem; }
+  .section-head h2 { margin: 1rem 0 0.75rem; max-width: 24ch; }
+
+  .nota-chica {
+    margin-top: 2rem;
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    max-width: 62ch;
+  }
+
+  /* ── 4.2 QUÉ CAMBIÓ ── */
+  .cambios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 900px) { .cambios { grid-template-columns: repeat(3, 1fr); } }
+
+  .cambio {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    padding: 1.5rem;
+  }
+  /* El acento marca solo lo que cambió: "Ahora" y "Además". */
+  .cambio:nth-child(2), .cambio:nth-child(3) { border-top-color: var(--color-accent); }
+
+  .cambio-rotulo {
+    display: block;
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-muted);
+    margin-bottom: 0.75rem;
+  }
+  .cambio:nth-child(2) .cambio-rotulo,
+  .cambio:nth-child(3) .cambio-rotulo { color: var(--color-accent); }
+  .cambio p { margin: 0; font-size: var(--text-base); }
+
+  /* ── 4.3 ARGUMENTO ── */
+  .argumento {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1.75rem;
+    max-width: var(--container-prose);
+  }
+  .argumento p { font-size: var(--text-lg); line-height: 1.65; }
+  .argumento p + p { margin-top: 1.25rem; color: var(--color-muted); }
+  .argumento strong { color: var(--color-foreground-strong); }
+
+  /* ── 4.5 PASOS ── */
+  .pasos { display: flex; flex-direction: column; gap: 0; }
+  .paso {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-divider);
+  }
+  .paso:last-child { border-bottom: 1px solid var(--color-divider); }
+  .paso-num {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    padding-top: 0.25rem;
+  }
+  .paso h3 { font-size: var(--text-lg); margin: 0 0 0.375rem; }
+  .paso p { margin: 0; font-size: var(--text-base); max-width: 58ch; }
+
+  /* ── 4.6 PRECIOS ── */
+  .precios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 820px) { .precios { grid-template-columns: 1fr 1fr; } }
+
+  .precio-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 2rem;
+  }
+  .precio-card--destacada { border-color: var(--color-accent); }
+  .precio-card h3 { font-size: var(--text-xl); margin: 0 0 1rem; }
+  .precio-monto {
+    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--color-foreground-strong);
+  }
+  .precio-nota {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-top: 0.375rem;
+  }
+  .precio-desc { margin: 0; font-size: var(--text-sm); line-height: 1.65; }
+
+  .descuentos { margin-top: 2.5rem; max-width: var(--container-prose); }
+  .descuentos h3 { font-size: var(--text-lg); margin: 0 0 1rem; }
+  .descuentos-lista { display: flex; flex-direction: column; gap: 0.75rem; }
+  .descuentos-lista li {
+    position: relative;
+    padding-left: 1.125rem;
+    font-size: var(--text-base);
+  }
+  .descuentos-lista li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .descuentos-lista strong, .no-incluye strong { color: var(--color-foreground-strong); }
+  .no-incluye {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  /* ── 4.7 RIESGOS / 4.9 DOCUMENTOS ── */
+  .riesgos, .documentos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: var(--container-prose);
+  }
+  .riesgos li, .documentos li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+  .riesgos li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--color-alert);
+    border-radius: 1px;
+    transform: rotate(45deg);
+  }
+  .documentos li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  /* ── 4.10 QUIÉN TE ATIENDE ── */
+  .quien { max-width: 42rem; }
+  .quien h2 { margin: 1rem 0 0.5rem; font-size: var(--text-3xl); }
+  .quien-cargo {
+    font-size: var(--text-lg);
+    color: var(--color-foreground-strong);
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+  }
+  .quien-sede { font-size: var(--text-sm); color: var(--color-muted); margin: 0; }
+
+  /* ── 4.11 CIERRE ── */
+  .cierre { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+  .cierre h2 { max-width: 20ch; }
+  .cierre-contador { text-align: left; }
+  .cierre-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+
+  /* ── 4.12 AVISOS ── */
+  .avisos-wrap { background: var(--color-surface-alt); }
+  .avisos { display: flex; flex-direction: column; gap: 0.625rem; max-width: var(--container-prose); }
+  .avisos li {
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-muted-soft);
+  }
+  .avisos a { color: var(--color-muted); font-weight: 600; }
+</style>
+
+<script>
+  import { lanzamientoVigente } from '@data/amparo-m40';
+
+  // La página es estática: si nadie publica un deploy justo después de la
+  // fecha, la tarjeta de lanzamiento seguiría visible. Esta comprobación en el
+  // cliente la retira igualmente, con la zona horaria de la sección.
+  if (!lanzamientoVigente()) {
+    document.querySelectorAll<HTMLElement>('[data-lanzamiento]').forEach((el) => el.remove());
+  }
+</script>

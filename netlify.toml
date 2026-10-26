@@ -62,3 +62,21 @@
   from = "/cursos/diagnostico-salud-empresarial"
   to = "/diagnostico/"
   status = 301
+
+# ── Atajo de campaña: Amparo Modalidad 40 ──
+# /amparo-modalidad-40 es la URL corta que se usa en anuncios y en WhatsApp.
+# La canónica es /pensiones/amparo-modalidad-40/ (hub de pensiones), así que el
+# atajo manda un 301 permanente y nunca compite con ella por indexación.
+#
+# Se declaran AMBAS formas (con y sin diagonal final), igual que en el 301 del
+# diagnóstico: la normalización del `from` no está garantizada. No lleva
+# force=true porque no existe página estática en esa ruta que pudiera ganarle.
+[[redirects]]
+  from = "/amparo-modalidad-40/"
+  to = "/pensiones/amparo-modalidad-40/"
+  status = 301
+
+[[redirects]]
+  from = "/amparo-modalidad-40"
+  to = "/pensiones/amparo-modalidad-40/"
+  status = 301

@@ -1,0 +1,208 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  ÍNDICE — Herramientas (/herramientas/)
+// ════════════════════════════════════════════════════════════════
+//
+// Índice de las herramientas interactivas del sitio. El patrón de landing de
+// herramienta (src/layouts/README-herramientas.md) lo tenía previsto: "cuando
+// exista /herramientas, ese índice las listará". Esta página lo estrena para
+// alojar la tarjeta de la autoevaluación de Amparo Modalidad 40.
+//
+// Regla de descubrimiento del sitio: las herramientas NO van al nav principal.
+// Se llega a ellas por los teasers de Inicio, el cruce entre secciones afines
+// y este índice.
+//
+// Para agregar una herramienta: una entrada en `herramientas`. La tarjeta y el
+// ItemList del JSON-LD se actualizan solos.
+
+import Base from '@layouts/Base.astro';
+import CtaBand from '@components/CtaBand.astro';
+import { business } from '@data/business';
+
+const path = '/herramientas/';
+const title = 'Herramientas | Grupo LGO';
+const description =
+  'Herramientas interactivas de Grupo LGO: diagnóstico de salud empresarial, calculadora de plazos de marca ante el IMPI y autoevaluación del amparo contra el tope de la Modalidad 40.';
+
+type Herramienta = {
+  nombre: string;
+  resumen: string;
+  /** Lo que devuelve la herramienta, en etiquetas cortas. */
+  etiquetas: string[];
+  href: string;
+  /** Línea de contexto: a qué práctica pertenece y si tiene costo. */
+  marca: string;
+};
+
+const herramientas: Herramienta[] = [
+  {
+    nombre: 'Diagnóstico de Salud Empresarial',
+    resumen:
+      'Cincuenta preguntas en cinco territorios: orden financiero, régimen fiscal, utilidad y flujo, riesgos cotidianos, socios y patrimonio. Al final, un puntaje, un nivel de salud y una ruta de acción.',
+    etiquetas: ['50 preguntas', 'Puntaje y nivel', '~10 minutos'],
+    href: '/diagnostico/',
+    marca: 'Grupo LGO · gratuita'
+  },
+  {
+    nombre: 'Calculadora de plazos de marca (IMPI)',
+    resumen:
+      'Captura las fechas de tu registro y calcula el vencimiento, la ventana de renovación, el periodo de gracia y la declaración de uso de tercer año — de varias marcas a la vez.',
+    etiquetas: ['Renovación', 'Declaración de uso', 'Periodo de gracia'],
+    href: '/marcas/',
+    marca: 'LGO Abogados · gratuita'
+  },
+  {
+    nombre: 'Autoevaluación · Amparo Modalidad 40',
+    resumen:
+      'El IMSS limitó el salario con el que puedes inscribirte a la Modalidad 40. Cinco preguntas te dicen si tu caso coincide con los supuestos del amparo y con qué urgencia conviene revisarlo.',
+    etiquetas: ['5 preguntas', 'Sin documentos', 'Resultado inmediato'],
+    href: '/pensiones/amparo-modalidad-40/#autoevaluacion',
+    marca: 'LGO Abogados · gratuita'
+  }
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Herramientas', item: business.url + path }
+  ]
+};
+
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${business.url}${path}#collection`,
+  name: 'Herramientas — Grupo LGO',
+  description,
+  url: business.url + path,
+  inLanguage: 'es-MX',
+  isPartOf: { '@id': `${business.url}/#website` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: herramientas.length,
+    itemListElement: herramientas.map((h, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: h.nombre,
+      url: business.url + h.href
+    }))
+  }
+};
+---
+<Base
+  title={title}
+  description={description}
+  path={path}
+  extraJsonLd={[breadcrumbLd, collectionLd]}
+>
+
+  <!-- HERO -->
+  <section class="hero section-roomy">
+    <div class="container-base">
+      <span class="eyebrow reveal-up reveal-up--immediate">Herramientas</span>
+      <h1 class="reveal-up reveal-up--immediate">Calcula, revisa, decide.</h1>
+      <p class="lead reveal-up reveal-up--immediate">
+        Herramientas que resuelven una pregunta concreta en minutos y sin costo. Las
+        construimos con el mismo criterio con que atendemos un asunto: primero el dato,
+        después la recomendación.
+      </p>
+    </div>
+  </section>
+
+  <!-- LISTA -->
+  <section id="lista" class="section band-cream">
+    <div class="container-base">
+      <div class="tools">
+        {herramientas.map((h) => (
+          <article class="tool reveal-up">
+            <span class="tool-marca">{h.marca}</span>
+            <h2 class="tool-nombre">{h.nombre}</h2>
+            <p class="tool-resumen">{h.resumen}</p>
+            <ul class="tool-chips">
+              {h.etiquetas.map((e) => <li>{e}</li>)}
+            </ul>
+            <a href={h.href} class="tool-cta">Abrir la herramienta →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Grupo LGO"
+    title="¿Prefieres que lo revisemos contigo?"
+    body="Las herramientas dan el dato; el criterio lo ponemos nosotros. Cuéntanos tu situación y te decimos qué conviene hacer con ella."
+    primaryLabel="Hablar con el despacho"
+    primaryHref="/contacto/"
+    secondaryLabel="WhatsApp"
+    secondaryHref={business.whatsappUrl}
+    variant="dark"
+  />
+
+</Base>
+
+<style>
+  .hero h1 { max-width: 18ch; margin: 1.25rem 0 1.5rem; }
+  .hero .lead { max-width: 46rem; }
+
+  .tools {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  @media (min-width: 900px) {
+    .tools { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+  }
+
+  .tool {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 1.75rem;
+  }
+  .tool-marca {
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--color-muted);
+  }
+  .tool-nombre {
+    font-size: var(--text-xl);
+    margin: 0.75rem 0 0.75rem;
+    max-width: 22ch;
+  }
+  .tool-resumen { margin: 0; font-size: var(--text-sm); line-height: 1.65; }
+
+  .tool-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1.5rem;
+  }
+  .tool-chips li {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-muted);
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+    padding: 0.3rem 0.6rem;
+  }
+
+  .tool-cta {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-divider);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  .tool-cta:hover { color: var(--color-accent-hover); }
+</style>

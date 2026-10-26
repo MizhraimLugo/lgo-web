@@ -1,0 +1,108 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  CONTADOR DE PLAZO — Amparo Modalidad 40
+// ════════════════════════════════════════════════════════════════
+//
+// Días naturales que faltan para la fecha de corte interno de recepción de
+// expedientes (`M40.plazos.corteInterno`). Dos reglas del encargo:
+//
+//   · Se calcula en el CLIENTE con zona horaria America/Mexico_City, para que
+//     el número no se quede congelado en la fecha del último build.
+//   · Si JavaScript falla, se muestra la FECHA ESTÁTICA — nunca un conteo
+//     viejo, que sería peor que no dar ninguno.
+//
+// Cuando la fecha pasa, el texto cambia solo (en el build y en el cliente) y
+// la página sigue publicada: la vía del acto concreto sigue abierta.
+
+import {
+  M40,
+  fechaLarga,
+  cortePasado,
+  TEXTO_CONTADOR_VENCIDO
+} from '@data/amparo-m40';
+
+export interface Props {
+  /** 'oscuro' para usarlo sobre una banda oscura (hereda el color del texto). */
+  tono?: 'claro' | 'oscuro';
+  class?: string;
+}
+
+const { tono = 'claro', class: className } = Astro.props;
+
+const corte = M40.plazos.corteInterno;
+const corteLargo = fechaLarga(corte);
+
+// Estado al momento del build. El cliente lo recalcula y, si el corte ya pasó,
+// aquí mismo se sirve el texto vencido sin esperar a que corra JavaScript.
+const yaPaso = cortePasado();
+
+// Fallback sin JavaScript: la fecha, no el conteo.
+const textoEstatico = yaPaso
+  ? TEXTO_CONTADOR_VENCIDO
+  : `Fecha límite de recepción de expedientes: ${corteLargo}.`;
+---
+<div
+  class:list={['contador', `contador--${tono}`, className]}
+  data-contador
+  data-corte={corte}
+>
+  <span class="contador-icono" aria-hidden="true"></span>
+  <p class="contador-texto" data-contador-texto>{textoEstatico}</p>
+</div>
+
+<style>
+  .contador {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--color-accent-soft);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-xs);
+    padding: 0.9rem 1.1rem;
+    max-width: 44rem;
+  }
+  .contador-icono {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 0.55rem;
+  }
+  .contador-texto {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--color-accent-deep);
+  }
+
+  /* Sobre banda oscura: sin relleno de color, el texto hereda el de la banda. */
+  .contador--oscuro {
+    background: rgba(250, 248, 244, 0.08);
+    border-left-color: var(--color-accent-soft);
+  }
+  .contador--oscuro .contador-icono { background: var(--color-accent-soft); }
+  .contador--oscuro .contador-texto { color: var(--color-on-dark); }
+</style>
+
+<script>
+  import { diasHasta, hoyEnMexico, textoContador, TEXTO_CONTADOR_VENCIDO } from '@data/amparo-m40';
+
+  // Puede haber más de un contador en la página (hero y cierre): se actualizan
+  // todos con el mismo cómputo.
+  const nodos = document.querySelectorAll<HTMLElement>('[data-contador]');
+  if (nodos.length) {
+    const hoy = hoyEnMexico();
+
+    nodos.forEach((nodo) => {
+      const corte = nodo.dataset.corte;
+      const texto = nodo.querySelector<HTMLElement>('[data-contador-texto]');
+      if (!corte || !texto) return;
+
+      const dias = diasHasta(corte, hoy);
+      texto.textContent = dias >= 0 ? textoContador(dias) : TEXTO_CONTADOR_VENCIDO;
+      nodo.dataset.estado = dias >= 0 ? 'vigente' : 'vencido';
+    });
+  }
+</script>

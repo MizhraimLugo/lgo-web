@@ -1,0 +1,172 @@
+// ════════════════════════════════════════════════════════════════
+//  CONFIGURACIÓN — Amparo Modalidad 40 (/pensiones/amparo-modalidad-40)
+// ════════════════════════════════════════════════════════════════
+//
+// FUENTE ÚNICA de fechas, precios y datos de contacto de la sección.
+// Ningún componente ni página lleva una fecha o un precio escrito a mano:
+// todo sale de aquí o de los helpers de este archivo. Cambiar una fecha
+// en `M40` la cambia en el contador, las FAQ, las tarjetas de precio,
+// la función de leads y los avisos del pie.
+//
+// Módulo PURO (sin DOM, sin fetch): se importa desde el frontmatter de las
+// páginas .astro, desde el <script> cliente de las islas y desde las pruebas
+// en Node. Node 24 corre TypeScript nativo, así que las pruebas importan
+// este mismo archivo sin paso de compilación.
+//
+// Las utilidades de aritmética de fechas UTC (`parseISO`, `diffDays`) se
+// reutilizan del motor de /marcas en lugar de duplicarlas: son genéricas y
+// ya están cubiertas por src/data/marcas.test.ts.
+
+// Import relativo con extensión explícita (no el alias `@data/`): así este
+// módulo se resuelve igual bajo Vite/Astro y bajo `node --test`, que corre el
+// TypeScript nativo sin conocer los paths del tsconfig.
+import { parseISO, diffDays } from './marcas.ts';
+
+export const M40 = {
+  acuerdo: {
+    /** Publicación en el DOF del acuerdo del Consejo Técnico del IMSS. [VERIFICAR] contra dof.gob.mx */
+    fechaDOF: '2026-10-21',
+    /** Inicio de vigencia del tope para nuevas inscripciones. [VERIFICAR] */
+    vigenciaDesde: '2026-10-22'
+  },
+  plazos: {
+    /** Fecha de corte interno de recepción de expedientes. Es la que se muestra al público. */
+    corteInterno: '2026-11-26',
+    /** Último día de vigencia del precio de lanzamiento. */
+    lanzamientoHasta: '2026-11-15'
+  },
+  precios: {
+    /** Tasa de IVA aplicable. Los montos de abajo son ANTES de IVA, en MXN. */
+    iva: 0.16,
+    diagnostico: 500,
+    amparo: 5500,
+    amparoLanzamiento: 4500,
+    /** Descuento por persona cuando se amparan dos o más del mismo hogar. */
+    descuentoFamiliar: 0.1
+  },
+  /** Fecha de la última revisión del contenido de la página. */
+  ultimaActualizacion: '2026-10-26',
+  /** WhatsApp de captación de la sección (distinto del conmutador del sitio). */
+  whatsapp: '523318761361',
+  /**
+   * Aviso de privacidad del sitio, enlazado desde la casilla de consentimiento
+   * de la autoevaluación y desde los avisos del pie de la landing.
+   *
+   * [VERIFICAR] Hoy el sitio NO publica un aviso de privacidad. Mientras esta
+   * cadena esté vacía, la casilla y el pie muestran el texto SIN hipervínculo
+   * (preferible a un enlace roto). Al publicar el aviso, basta poner su ruta
+   * aquí —p. ej. '/aviso-de-privacidad/'— y el enlace aparece en toda la sección.
+   */
+  avisoPrivacidadUrl: '',
+  /** Firma visible de la sección. Sin número de cédula, por decisión editorial. */
+  firma: {
+    nombre: 'Edgar Lugo',
+    puesto: 'Socio',
+    division: 'LGO Abogados & Consultores'
+  },
+  /** Nombre del inmueble donde se atiende (complementa business.address). */
+  sede: 'Casa Empresarial Lorenzana 781'
+} as const;
+
+/** Liga de WhatsApp de captación de la sección. */
+export const M40_WHATSAPP_URL = `https://wa.me/${M40.whatsapp}`;
+
+/** Zona horaria de referencia para todo cómputo de plazos de la sección. */
+export const M40_TZ = 'America/Mexico_City';
+
+// ── Dinero ─────────────────────────────────────────────────────────
+
+/** Agrega el IVA a un monto en MXN. Redondeado al peso. */
+export function conIva(montoSinIva: number): number {
+  return Math.round(montoSinIva * (1 + M40.precios.iva));
+}
+
+/**
+ * Formatea un entero de pesos como "$5,500".
+ *
+ * Implementado a mano (no con Intl) para que el string sea idéntico en el
+ * build de Node, en el navegador y en las pruebas, sin depender de la versión
+ * de ICU disponible.
+ */
+export function fmtMXN(monto: number): string {
+  const entero = Math.round(monto).toString();
+  return '$' + entero.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+/**
+ * Precio tal como se muestra al público: el monto sin IVA, la leyenda "+ IVA"
+ * y entre paréntesis el total con IVA. P. ej. `"$5,500 + IVA ($6,380)"`.
+ */
+export function precioTexto(montoSinIva: number): string {
+  return `${fmtMXN(montoSinIva)} + IVA (${fmtMXN(conIva(montoSinIva))})`;
+}
+
+// ── Fechas ─────────────────────────────────────────────────────────
+
+const MESES = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+] as const;
+
+/** Formatea 'YYYY-MM-DD' como "26 de noviembre de 2026". */
+export function fechaLarga(iso: string): string {
+  const d = parseISO(iso);
+  if (!d) return iso;
+  return `${d.getUTCDate()} de ${MESES[d.getUTCMonth()]} de ${d.getUTCFullYear()}`;
+}
+
+/**
+ * "Hoy" en la zona horaria de la sección (America/Mexico_City), como Date a
+ * medianoche UTC para poder restarlo contra las fechas de `M40`.
+ *
+ * Se resuelve con Intl en lugar de un offset fijo: así sigue siendo correcto
+ * si México volviera a aplicar horario de verano.
+ */
+export function hoyEnMexico(now: Date = new Date()): Date {
+  // 'en-CA' entrega 'YYYY-MM-DD', el formato que parseISO espera.
+  const iso = new Intl.DateTimeFormat('en-CA', {
+    timeZone: M40_TZ,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(now);
+  return parseISO(iso) ?? new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+}
+
+/**
+ * Días naturales que faltan para una fecha 'YYYY-MM-DD'. Negativo si ya pasó,
+ * 0 el día mismo.
+ */
+export function diasHasta(iso: string, hoy: Date = hoyEnMexico()): number {
+  const objetivo = parseISO(iso);
+  if (!objetivo) return 0;
+  return diffDays(objetivo, hoy);
+}
+
+/**
+ * ¿Sigue vigente el precio de lanzamiento?
+ *
+ * Vigente mientras "hoy" no haya pasado de `plazos.lanzamientoHasta` — es
+ * decir, el último día cuenta. Regla de render del encargo: *después* de esa
+ * fecha la tarjeta de lanzamiento desaparece sola.
+ */
+export function lanzamientoVigente(hoy: Date = hoyEnMexico()): boolean {
+  return diasHasta(M40.plazos.lanzamientoHasta, hoy) >= 0;
+}
+
+/** ¿Ya pasó la fecha de corte interno de recepción de expedientes? */
+export function cortePasado(hoy: Date = hoyEnMexico()): boolean {
+  return diasHasta(M40.plazos.corteInterno, hoy) < 0;
+}
+
+// ── Textos derivados (una sola redacción para toda la sección) ─────
+
+/** Texto del contador mientras la fecha de corte no ha pasado. */
+export function textoContador(dias: number): string {
+  const cuenta = dias === 1 ? 'Falta 1 día' : `Faltan ${dias} días`;
+  return `${cuenta} para la fecha límite de recepción de expedientes (${fechaLarga(M40.plazos.corteInterno)}).`;
+}
+
+/** Texto del contador una vez que la fecha de corte pasó. */
+export const TEXTO_CONTADOR_VENCIDO =
+  'La fecha de recepción para impugnar el acuerdo directamente ya pasó. Si el IMSS te aplicó el tope en una solicitud, aún podemos revisar tu caso.';

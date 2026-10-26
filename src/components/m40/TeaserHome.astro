@@ -1,0 +1,22 @@
+---
+// Ficha destacada de Amparo Modalidad 40 para Inicio (y cualquier otra página
+// que quiera cruzarla). Reutiliza HerramientaFeature —el mismo bloque con que
+// Inicio promociona /marcas y /diagnostico— y le pasa el mock de la
+// autoevaluación como slot "visual".
+//
+// La fecha de vigencia del acuerdo sale de @data/amparo-m40, no del copy.
+
+import HerramientaFeature from '@components/herramientas/HerramientaFeature.astro';
+import M40Mock from '@components/m40/M40Mock.astro';
+import { M40, fechaLarga } from '@data/amparo-m40';
+---
+<HerramientaFeature
+  eyebrow="Nuevo · Pensiones"
+  title="¿El IMSS limitó tu Modalidad 40?"
+  body={`Desde el ${fechaLarga(M40.acuerdo.vigenciaDesde)}, las nuevas inscripciones tienen un tope de salario más bajo. Contesta cinco preguntas y te decimos si tu caso coincide con los supuestos del amparo — sin costo y sin dejar documentos.`}
+  bullets={['Cinco preguntas', 'Resultado inmediato', 'Sin documentos', 'El plazo es corto']}
+  ctaLabel="Revisar mi caso →"
+  ctaHref="/pensiones/amparo-modalidad-40/"
+>
+  <M40Mock slot="visual" />
+</HerramientaFeature>
