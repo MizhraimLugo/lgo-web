@@ -78,7 +78,9 @@ export const M40 = {
    * enfrenta (el de antes y el de ahora): actualizar este número en enero
    * los recalcula a los dos sin tocar la página.
    *
-   * [VERIFICAR] valor diario de la UMA 2026 (DOF 09/01/2026).
+   * [COTEJADO 2026-10-26] valor diario de la UMA 2026 (DOF 09/01/2026).
+   * En enero hay que volver aquí: este número caduca cada año y de él salen
+   * las dos cifras grandes de la sección y toda la calculadora del tope.
    */
   uma2026: 117.31,
   /** Tope general de cotización, en veces UMA. [COTEJADO 2026-10-26] */
