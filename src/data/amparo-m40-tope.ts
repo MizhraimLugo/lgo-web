@@ -73,8 +73,21 @@ export function calcularTope(ultimoMensual: number, metaMensual: number): Result
   const ultimoDiario = Math.min(ultimoMensual / DIAS_MES_COTIZACION, topeGeneral);
   const metaDiaria = metaMensual / DIAS_MES_COTIZACION;
 
-  // VERIFICAR: que el límite del artículo 28 LSS siga acotando el tope nuevo,
-  // es decir, que "último salario más una UMA" no pueda rebasar las 25 UMA.
+  // El "último salario más una UMA" del acuerdo no puede rebasar el techo de
+  // cotización. Es la misma coherencia que sostiene la página frente al IMSS:
+  // si un acuerdo del Consejo Técnico no puede recortar lo que la ley concede,
+  // tampoco puede autorizar por encima de lo que la ley permite.
+  //
+  // Fundamento, cotejado contra el texto oficial: el artículo 26 de la Ley del
+  // Seguro Social manda aplicar, en lo conducente, las disposiciones sobre
+  // patrones y trabajadores a los demás sujetos obligados y de aseguramiento,
+  // de modo que el límite de veinticinco veces el salario mínimo del artículo
+  // 28 alcanza también a la continuación voluntaria. El artículo 33 confirma
+  // que ese límite es el techo de cotización en todo el sistema.
+  //
+  // VERIFICAR: artículo 64 del Reglamento de Afiliación, que refuerza lo
+  // anterior por vía reglamentaria. Es refuerzo, no sostén: el acotamiento se
+  // sostiene con los artículos 26 y 28 aunque el reglamento dijera otra cosa.
   const topeNuevo = Math.min(ultimoDiario + M40.uma2026, topeGeneral);
 
   const antesDiario = Math.min(metaDiaria, topeGeneral);

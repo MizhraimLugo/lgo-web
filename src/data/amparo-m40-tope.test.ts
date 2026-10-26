@@ -67,7 +67,8 @@ test('La meta que excedía el tope general se acota por los dos lados', () => {
 
 test('A quien ya cotizaba en el tope no se le anuncia un recorte', () => {
   // Su último salario ya estaba en el máximo, así que sumarle una UMA no lo
-  // sube: el tope del artículo 28 lo detiene y el acuerdo no le quita nada.
+  // sube: el techo de los artículos 26 y 28 lo detiene, y el acuerdo no le
+  // quita nada.
   const r = calcularTope(topeGeneralMensual(), 120000);
   assert.equal(r.afecta, false);
   assert.equal(peso(r.recorte), 0);
