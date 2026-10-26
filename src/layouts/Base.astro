@@ -39,50 +39,32 @@ const subBrandOrgs = publishedSubBrands.map((b) => ({
   parentOrganization: { '@id': `${business.url}/#organization` }
 }));
 
-// Organization paraguas (Grupo LGO) — la entidad raíz del ecosistema.
+// Grupo LGO: UNA entidad, no dos.
+//
+// Esto eran dos nodos —una Organization y un ProfessionalService— con el mismo
+// nombre, la misma URL, la misma dirección y el mismo teléfono, unidos por un
+// `parentOrganization` que venía a decir que la empresa es hija de sí misma.
+// Para un rastreador eso son dos candidatos a la misma entidad y la señal se
+// reparte entre los dos.
+//
+// `ProfessionalService` desciende de `LocalBusiness`, que desciende de
+// `Organization`, así que un solo nodo con los dos tipos es a la vez la
+// organización raíz del ecosistema y el negocio con domicilio y horario. Todo
+// lo que ya apuntaba a `#organization` —las sub-marcas, el sitio— sigue
+// apuntando al mismo sitio, y `#localbusiness` no lo referenciaba nadie.
 const organizationLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'ProfessionalService'],
   '@id': `${business.url}/#organization`,
   name: business.brand,
-  alternateName: 'Grupo LGO',
   description: business.description,
   url: business.url,
-  logo: `${business.url}/favicon.svg`,
-  email: business.email,
-  telephone: business.phoneE164,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: business.address.street,
-    addressLocality: business.address.locality,
-    addressRegion: business.address.regionCode,
-    postalCode: business.address.postalCode,
-    addressCountry: business.address.countryCode
-  },
-  subOrganization: publishedSubBrands.map((b) => ({ '@id': `${business.url}/#${b.id}` })),
-  contactPoint: [{
-    '@type': 'ContactPoint',
-    telephone: business.phoneE164,
-    contactType: 'customer service',
-    email: business.email,
-    areaServed: 'MX',
-    availableLanguage: ['Spanish']
-  }]
-};
-
-// LocalBusiness para SEO local (geo + horario + dirección).
-// Tipo: ProfessionalService — más general que LegalService o AccountingService,
-// abarca cualquier práctica del ecosistema actual y futura (tecnología, marketing).
-const localBusinessLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  '@id': `${business.url}/#localbusiness`,
-  name: business.brand,
-  description: business.description,
-  url: business.url,
-  telephone: business.phoneE164,
-  email: business.email,
+  // El favicon no sirve de logotipo: Google pide una imagen de verdad, y
+  // `grupo-lgo.png` mide 629 × 246, por encima del mínimo que exige.
+  logo: `${business.url}/images/logos/grupo-lgo.png`,
   image: `${business.url}/og-default.jpg`,
+  email: business.email,
+  telephone: business.phoneE164,
   priceRange: '$$',
   address: {
     '@type': 'PostalAddress',
@@ -92,6 +74,9 @@ const localBusinessLd = {
     postalCode: business.address.postalCode,
     addressCountry: business.address.countryCode
   },
+  // VERIFICAR: coordenadas exactas de la sede. Las actuales llevan cuatro
+  // decimales (unos 11 m de margen) y Google pide al menos cinco. No se
+  // inventan dígitos: salen de Google Maps, con clic derecho sobre el edificio.
   geo: {
     '@type': 'GeoCoordinates',
     latitude: business.geo.latitude,
@@ -104,7 +89,15 @@ const localBusinessLd = {
     { '@type': 'Country', name: 'México' }
   ],
   openingHoursSpecification: business.hours.openingHoursSpec,
-  parentOrganization: { '@id': `${business.url}/#organization` }
+  subOrganization: publishedSubBrands.map((b) => ({ '@id': `${business.url}/#${b.id}` })),
+  contactPoint: [{
+    '@type': 'ContactPoint',
+    telephone: business.phoneE164,
+    contactType: 'customer service',
+    email: business.email,
+    areaServed: 'MX',
+    availableLanguage: ['Spanish']
+  }]
 };
 
 const websiteLd = {
@@ -119,7 +112,6 @@ const websiteLd = {
 
 const baseLd: Record<string, unknown>[] = [
   organizationLd,
-  localBusinessLd,
   websiteLd,
   ...subBrandOrgs
 ];
