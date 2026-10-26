@@ -14,6 +14,12 @@
 // respuesta directa, después el porqué— y ahora el FAQPage lleva contenido
 // con sustancia en lugar de tres renglones.
 //
+// REGISTRO: sin tecnicismos. Nada de "recurso", "interponer", "informe de
+// la autoridad", "el fondo", "prevención", "sin materia" ni "acto de
+// aplicación": quien lee esto no conoce esas palabras y no tiene por qué.
+// Se describe QUÉ PASA, no cómo se llama el acto procesal. Profesional no
+// es sonar a escrito judicial.
+//
 // VERIFICAR (sección 9 del encargo) — afirmaciones jurídicas pendientes de
 // cotejo contra fuente oficial antes del merge:
 //   · P1 «¿Hasta cuándo puedo ampararme?» — las dos vías (impugnar el acuerdo
@@ -40,43 +46,43 @@ export const faqsAmparoM40: FaqItem[] = [
     // La respuesta abre con la fecha: es el dato que la gente busca aquí.
     // VERIFICAR: las dos vías y que sus plazos corren por separado.
     q: '¿Hasta cuándo puedo ampararme?',
-    a: `Recibimos expedientes hasta el ${corte}. Hay dos caminos y cada uno tiene su propio plazo: impugnar el acuerdo por sí mismo, cuyo término es breve y ya está corriendo, o esperar a que el IMSS te aplique el tope en un trámite concreto y reclamar ese acto. Si el IMSS ya respondió una solicitud tuya aplicando el tope, el plazo que corre es el más corto de los dos, así que conviene escribirnos de inmediato. Y la fecha de corte que ves arriba no es el plazo legal: es el nuestro, el margen que necesitamos para revisar tus documentos y preparar la demanda sin prisas.`
+    a: `Recibimos expedientes hasta el ${corte}. Hay dos caminos y cada uno tiene su propio tiempo: pelear el acuerdo en sí, cuyo plazo es corto y ya está corriendo, o esperar a que el IMSS te aplique el tope en un trámite tuyo y pelear esa respuesta. Si el IMSS ya te contestó aplicando el tope, el tiempo que corre es el más corto de los dos, así que conviene escribirnos de inmediato. Y la fecha que ves arriba no es el plazo de la ley: es el nuestro, el margen que necesitamos para revisar tus documentos y preparar el caso sin prisas.`
   },
   {
     // VERIFICAR: cómo se calcula la pensión en cada régimen.
     q: '¿Me sirve si empecé a cotizar después de 1997?',
-    a: 'Por lo general no. La Modalidad 40 le sirve sobre todo a quien se pensiona con la Ley de 1973, porque ahí el monto depende del salario promedio de tus últimos años cotizados: subir ese salario mueve el resultado. Quien se pensiona con la Ley de 1997 recibe lo que haya acumulado en su cuenta individual, de modo que el efecto es distinto. Entre un régimen y otro hay casos de transición que conviene mirar con calma, y eso es justo lo que confirmamos en el diagnóstico con tus semanas cotizadas.'
+    a: 'Por lo general no. La Modalidad 40 le sirve sobre todo a quien se pensiona con la Ley de 1973, porque ahí la pensión se calcula con el promedio del salario de tus últimos años cotizados: subir ese salario cambia el resultado. Con la Ley de 1997 la pensión sale de lo que hayas acumulado en tu Afore, así que el efecto es distinto. Entre una ley y otra hay situaciones mixtas que conviene mirar con calma, y eso es justo lo que revisamos en el diagnóstico con tus semanas cotizadas.'
   },
   {
     // VERIFICAR: respeto de condiciones a quien ya está inscrito, y régimen
     // aplicable a una reinscripción.
     q: 'Ya pago Modalidad 40, ¿me afecta?',
-    a: 'Mientras dure el periodo que contrataste, conservas las condiciones con las que te inscribiste. El tope nuevo entra en juego cuando vuelves a inscribirte, porque una reinscripción se rige por las reglas vigentes el día que la solicitas. Por eso, si tu periodo está por terminar y piensas continuar, conviene revisar tu caso antes de que venza y no después: con el periodo cerrado, las opciones son otras.'
+    a: 'Mientras dure el periodo que contrataste, conservas las condiciones con las que entraste. El tope nuevo aparece cuando vuelves a inscribirte, porque una reinscripción se rige por las reglas que estén vigentes el día que la pides. Por eso, si tu periodo está por terminar y piensas seguir, conviene revisar tu caso antes de que se venza y no después: una vez cerrado, las opciones son otras.'
   },
   {
     // VERIFICAR: fin de la retroactividad en las inscripciones.
     q: '¿Puedo pagar meses atrasados?',
-    a: 'Con las reglas nuevas, no: la inscripción cuenta desde la fecha de tu solicitud y no se pueden cubrir periodos anteriores. Antes era posible recuperar meses hacia atrás, y para mucha gente esa era una parte importante del plan, porque permitía acomodar el promedio salarial en menos tiempo. Si en tu caso hay algo que defender sobre este punto en concreto, te lo decimos en el diagnóstico.'
+    a: 'Con las reglas nuevas, no: tu inscripción cuenta desde el día que la solicitas y ya no se pueden cubrir meses anteriores. Antes sí se podía, y para mucha gente era parte importante del plan, porque permitía subir el promedio de su salario en menos tiempo. Si en tu caso hay algo que defender sobre este punto, te lo decimos en el diagnóstico.'
   },
   {
     // VERIFICAR: etapas del juicio y tramitación separada de la suspensión.
     q: '¿Cuánto tarda el juicio?',
-    a: 'No hay un tiempo fijo: depende de la carga del juzgado y de si se interponen recursos. El camino pasa por la demanda, la solicitud de suspensión, el informe de la autoridad, la audiencia y la sentencia; si hay revisión, se suma esa etapa. La suspensión se tramita por separado y se resuelve antes que el fondo, así que es lo primero de lo que tendrás noticia. Te avisamos en cada etapa sin que tengas que preguntar.'
+    a: 'No hay un tiempo fijo: depende de qué tan cargado esté el juzgado y de si alguna de las partes pide que otro tribunal revise la decisión, lo que suma meses. El orden es este: presentamos tu caso, le pedimos al juez una medida provisional para mientras dura el juicio, el IMSS responde por escrito, hay una audiencia y al final el juez decide. Esa medida provisional se resuelve aparte y mucho antes que lo demás, así que suele ser la primera noticia que recibes. Te avisamos en cada paso sin que tengas que preguntar.'
   },
   {
     q: '¿Y si el Congreso cambia la ley?',
-    a: 'Es posible, y es uno de los riesgos que te explicamos antes de que contrates. Si el acuerdo se deroga o la ley se reforma, el juicio puede quedar sin materia: ya no habría acto que reclamar. También puede pasar lo contrario, que un cambio confirme el tope. Por eso el diagnóstico incluye el escenario de riesgo y no solo el favorable: si en tu caso el margen es estrecho, preferimos decírtelo antes de cobrarte el amparo.'
+    a: 'Es posible, y es uno de los riesgos que te explicamos antes de que contrates. Si el IMSS da marcha atrás o el Congreso cambia la ley, el juicio puede quedarse sin objeto: ya no habría nada que pelear. También puede pasar lo contrario, que un cambio confirme el tope. Por eso el diagnóstico incluye el escenario malo y no solo el bueno: si en tu caso el margen es estrecho, preferimos decírtelo antes de cobrarte el amparo.'
   },
   {
     q: '¿Por qué no usar un formato gratuito?',
-    a: 'Un formato no revisa si tu caso procede, no decide qué vía te conviene según tus fechas, no lo adapta a tu régimen y no le da seguimiento al juicio. Tampoco responde cuando el juzgado previene la demanda ni interpone el recurso de revisión si hace falta. Elegir mal la vía o dejar pasar una prevención puede costarte el plazo, y el plazo no se recupera. Si aun así prefieres intentarlo por tu cuenta, el diagnóstico te sirve igual: te decimos por escrito qué vía va con tus fechas.'
+    a: 'Un formato no revisa si tu caso procede, no decide qué camino te conviene según tus fechas, no se adapta a tu situación y no le da seguimiento al juicio. Tampoco contesta cuando el juzgado pide corregir algo del escrito, ni insiste ante otro tribunal si el juez no te da la razón. Equivocarte de camino o dejar pasar una de esas peticiones puede costarte el plazo, y el plazo no se recupera. Si aun así prefieres intentarlo por tu cuenta, el diagnóstico te sirve igual: te decimos por escrito qué camino va con tus fechas.'
   },
   {
     q: '¿Atienden fuera de Jalisco?',
-    a: 'Sí, revisamos casos de cualquier estado. Dónde se presenta el amparo no depende de dónde vives, sino de dónde se ejecuta el acto que reclamas, y eso lo confirmamos en el diagnóstico con tus documentos. Buena parte del seguimiento es a distancia: te acompañamos por WhatsApp o correo y te avisamos de cada avance. Los documentos los pedimos por un canal seguro, nunca por este sitio.'
+    a: 'Sí, revisamos casos de cualquier estado. Dónde se presenta el amparo no depende de dónde vives, sino del lugar donde el IMSS aplica la decisión que reclamas, y eso lo confirmamos en el diagnóstico con tus documentos. Buena parte del seguimiento es a distancia: te acompañamos por WhatsApp o correo y te avisamos de cada avance. Los documentos los pedimos por un canal seguro, nunca por este sitio.'
   },
   {
     q: '¿Garantizan el resultado?',
-    a: 'No. Nadie puede hacerlo: el resultado lo decide un juez y todavía no hay sentencias sobre este acuerdo. Lo que sí está en nuestras manos sí lo comprometemos: un diagnóstico por escrito antes de que contrates, la vía que corresponde a tus fechas, un precio cerrado sin cobros sorpresa y aviso de cada avance del juicio. Y si al revisar tu caso vemos que no tiene sentido, te lo decimos antes de cobrarte el amparo.'
+    a: 'No. Nadie puede hacerlo: la decisión es del juez y todavía no hay sentencias sobre este acuerdo. Lo que sí está en nuestras manos sí lo comprometemos: un diagnóstico por escrito antes de que contrates, el camino que corresponde a tus fechas, un precio cerrado sin cobros sorpresa y aviso de cada avance. Y si al revisar tu caso vemos que no tiene sentido, te lo decimos antes de cobrarte el amparo.'
   }
 ];
