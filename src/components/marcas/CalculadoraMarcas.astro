@@ -541,9 +541,36 @@
     });
   };
 
+  // Las etiquetas del <template> no pueden traer `for`: la tarjeta se clona
+  // una vez por marca y los id se repetirían. Se emparejan al clonar, con un
+  // contador que no se reinicia, y de paso el texto de ayuda queda atado al
+  // campo por `aria-describedby`.
+  let contadorCampos = 0;
+
+  const emparejarEtiquetas = (card: HTMLElement) => {
+    card.querySelectorAll<HTMLElement>('.field').forEach((campo) => {
+      const etiqueta = campo.querySelector('label');
+      const control = campo.querySelector<HTMLInputElement>('input');
+      // La etiqueta del interruptor ya envuelve su casilla: no necesita `for`.
+      if (!etiqueta || !control || etiqueta.contains(control)) return;
+
+      const id = `marca-campo-${++contadorCampos}`;
+      control.id = id;
+      etiqueta.setAttribute('for', id);
+
+      const ayuda = campo.querySelector<HTMLElement>('.field-help');
+      if (ayuda) {
+        ayuda.id = `${id}-ayuda`;
+        control.setAttribute('aria-describedby', ayuda.id);
+      }
+    });
+  };
+
   const agregarMarca = (): HTMLElement => {
     const frag = tpl.content.cloneNode(true) as DocumentFragment;
     const card = frag.querySelector<HTMLElement>('[data-marca]')!;
+
+    emparejarEtiquetas(card);
 
     // Toggle → muestra/oculta la fecha de presentación
     const toggle = card.querySelector<HTMLInputElement>('[data-toggle]')!;

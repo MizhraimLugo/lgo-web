@@ -45,6 +45,10 @@ const itemListLd = {
 
   <section class="section">
     <div class="container-base">
+      {/* El título de la rejilla no se dibuja, pero tiene que existir: sin él
+          el documento salta del <h1> a los <h3> de las tarjetas y el orden de
+          encabezados queda roto para quien navega por estructura. */}
+      <h2 class="sr-only">Cursos disponibles</h2>
       <div class="cursos-grid">
         {cursos.map((c) => (
           <CourseCard course={c} layout="standard" />
