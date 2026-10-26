@@ -461,12 +461,7 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
     type RespuestasParciales,
     type ClasificacionId
   } from '@data/amparo-m40-autoevaluacion';
-  import {
-    M40,
-    M40_WHATSAPP_URL,
-    precioCorto,
-    waMensajeAutoevaluacion
-  } from '@data/amparo-m40';
+  import { M40_WHATSAPP_URL, waMensajeAutoevaluacion } from '@data/amparo-m40';
   import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
 
   const raiz = document.querySelector<HTMLElement>('[data-ae]');
@@ -529,7 +524,8 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
     const NOTAS: Record<ClasificacionId, string> = {
       'dudoso-urgente': 'Escríbenos hoy mismo.',
       'no-apto': 'Si tienes dudas sobre tu pensión, escríbenos sin costo.',
-      apto: `El siguiente paso es tu diagnóstico de ${precioCorto(M40.precios.diagnostico)}. Escríbenos y lo agendamos hoy.`,
+      apto:
+        'El siguiente paso es el diagnóstico: revisamos tus documentos y te decimos, por escrito, si te conviene el amparo y por qué vía. Escríbenos y lo agendamos hoy.',
       dudoso: 'Necesitamos ver tus documentos para confirmarlo. Escríbenos y te decimos qué enviar.'
     };
 
