@@ -59,33 +59,77 @@ const corte = fechaCorta(M40.plazos.corteInterno);
 const reforma = fechaLarga(M40.reformaAmparo.fechaDOF);
 
 // ── A. El plazo ───────────────────────────────────────────────────
+//
+// Este bloque NO es un BloqueAutoridad: tiene forma propia porque se presenta
+// como una elección. Explicar los dos relojes en texto corrido obligaba a leer
+// 243 palabras para descubrir cuál de los dos aplicaba, y la mayoría no las
+// leía. Ahora el visitante dice en qué situación está y ve un solo reloj.
+//
+// Cada dato vive en UN campo y en uno solo: la cifra grande no se repite en los
+// párrafos, y el vencimiento no se repite en el destacado. Si algo aparece dos
+// veces es un error, porque los dos sitios pueden divergir.
 
-export const BLOQUE_PLAZO: BloqueAutoridad = {
+export type Reloj = {
+  id: string;
+  /** La situación, dicha como la diría quien llega a la página. */
+  opcion: string;
+  /** Una línea más para que nadie elija el reloj equivocado. */
+  pista: string;
+  /** La cifra grande. */
+  dias: number;
+  /** De cuándo arranca el conteo. */
+  desde: string;
+  /** El vencimiento, o qué hacer cuando no se puede calcular sin su fecha. */
+  destacado: string;
+  parrafos: string[];
+};
+
+export type BloquePlazo = {
+  id: string;
+  eyebrow: string;
+  titulo: string;
+  pregunta: string;
+  relojes: Reloj[];
+  /** Lo que aplica en los dos casos, fuera de la elección. */
+  comun: string;
+  fundamento: string[];
+  fundamentoNota?: string;
+};
+
+export const BLOQUE_PLAZO: BloquePlazo = {
   id: 'plazo',
   eyebrow: 'El plazo',
   titulo: 'Hay dos relojes, y el tuyo depende de tu situación',
-  cuerpo: [
+  pregunta: '¿En qué situación estás?',
+  relojes: [
     {
-      tipo: 'apartado',
-      titulo: 'Reloj 1 — Impugnar el acuerdo directamente',
+      id: 'acuerdo',
+      opcion: 'Todavía no le he pedido nada al IMSS',
+      pista: 'No has presentado tu solicitud de inscripción en Modalidad 40.',
+      dias: M40.plazos.diasAcuerdo,
+      desde: `Desde el ${vigencia}, cuando entró en vigor el acuerdo del IMSS.`,
+      destacado: `Por nuestro cómputo, tu plazo vence el <strong>${vence}</strong>.`,
       parrafos: [
-        `El acuerdo del IMSS entró en vigor el ${vigencia}. Cuando se impugna una norma general que afecta por su sola vigencia, la Ley de Amparo da <strong>${M40.plazos.diasAcuerdo} días hábiles contados desde el día en que entra en vigor</strong>. Se descuentan sábados, domingos y los días inhábiles del Poder Judicial de la Federación.`,
-        `Con ese conteo, el plazo vence el <strong>${vence}</strong>. Si los juzgados declaran inhábiles algún día de noviembre, el vencimiento podría correrse unos días, pero nunca adelantarse.`,
+        'Cuando se impugna una norma general que afecta por su sola vigencia, la Ley de Amparo cuenta ese plazo desde el día en que entra en vigor. Se descuentan sábados, domingos y los días inhábiles del Poder Judicial de la Federación.',
+        'Si los juzgados declaran inhábiles algún día de noviembre, el vencimiento podría correrse unos días, pero nunca adelantarse.',
         `Por eso trabajamos con un <strong>corte interno al ${corte}</strong>: necesitamos días para revisar tus documentos, redactar y presentar sin depender de un cómputo ajeno.`
       ]
     },
     {
-      tipo: 'apartado',
-      titulo: 'Reloj 2 — Impugnar la respuesta del IMSS a tu caso',
+      id: 'respuesta',
+      opcion: 'Ya le pedí y me contestó',
+      pista: 'Presentaste tu solicitud y el IMSS te la negó o te la limitó al tope nuevo.',
+      dias: M40.plazos.diasRespuesta,
+      desde: 'Desde el día siguiente a aquel en que surta efectos la notificación de esa respuesta.',
+      destacado:
+        'Este reloj corre con independencia del otro. Escríbenos hoy con la fecha de tu notificación y lo calculamos contigo.',
       parrafos: [
-        `Si ya solicitaste tu inscripción con un salario superior y el IMSS te la negó o te la limitó al tope nuevo, tu plazo es distinto: <strong>${M40.plazos.diasRespuesta} días hábiles</strong> contados a partir del día siguiente a aquel en que surta efectos la notificación de esa respuesta. Ese reloj corre con independencia del primero. Si estás en este caso, escríbenos hoy.`
+        'Si ya solicitaste tu inscripción con un salario superior y el IMSS te la negó o te la limitó al tope nuevo, tu plazo es distinto del que corre contra el acuerdo.',
+        'No necesitas haber impugnado el acuerdo para usar esta vía: la respuesta que te dieron es, por sí misma, el acto que se puede combatir.'
       ]
-    },
-    {
-      tipo: 'parrafo',
-      texto: `<strong>Lo que no cambia con ningún reloj:</strong> el derecho a la continuación voluntaria solo puede ejercerse dentro de los <strong>${M40.plazos.aniosContinuacion} años</strong> siguientes a la baja. Cada mes que pasa sin resolver tu situación es un mes menos de esa ventana.`
     }
   ],
+  comun: `<strong>Lo que no cambia con ningún reloj:</strong> el derecho a la continuación voluntaria solo puede ejercerse dentro de los <strong>${M40.plazos.aniosContinuacion} años</strong> siguientes a la baja. Cada mes que pasa sin resolver tu situación es un mes menos de esa ventana.`,
   fundamento: [
     'Ley de Amparo, artículo 17: el plazo general para presentar la demanda es de quince días; la fracción I lo amplía a treinta días cuando se reclama una norma general autoaplicativa.',
     'Ley de Amparo, artículo 18: los plazos se computan a partir del día siguiente a aquel en que surte efectos la notificación del acto reclamado, salvo el caso de la fracción I del artículo 17, en que se computa a partir del día de la entrada en vigor de la norma.',
@@ -95,7 +139,7 @@ export const BLOQUE_PLAZO: BloqueAutoridad = {
     'Ley del Seguro Social, artículo 219: el asegurado puede solicitar la continuación voluntaria dentro de los cinco años siguientes a la fecha de baja.'
   ],
   fundamentoNota:
-    'Cómputo del Reloj 1 (treinta días hábiles, iniciando el 22 de octubre de 2026 y descontando el 20 de noviembre): días 1 a 7 del 22 al 30 de octubre; días 8 a 21 del 2 al 19 de noviembre; días 22 a 27 del 23 al 30 de noviembre; días 28 a 30 del 1 al 3 de diciembre. Si el 2 y el 16 de noviembre resultan inhábiles por acuerdo del Órgano de Administración Judicial, el vencimiento se recorre al 7 de diciembre.'
+    'Cómputo del primer reloj (treinta días hábiles, iniciando el 22 de octubre de 2026 y descontando el 20 de noviembre): días 1 a 7 del 22 al 30 de octubre; días 8 a 21 del 2 al 19 de noviembre; días 22 a 27 del 23 al 30 de noviembre; días 28 a 30 del 1 al 3 de diciembre. Si el 2 y el 16 de noviembre resultan inhábiles por acuerdo del Órgano de Administración Judicial, el vencimiento se recorre al 7 de diciembre.'
 };
 
 // ── B. La reforma de 2025 ─────────────────────────────────────────

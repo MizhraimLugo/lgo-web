@@ -21,6 +21,7 @@ import Base from '@layouts/Base.astro';
 import Faq from '@components/Faq.astro';
 import Autoevaluacion from '@components/m40/Autoevaluacion.astro';
 import BloqueAutoridad from '@components/m40/BloqueAutoridad.astro';
+import SelectorPlazo from '@components/m40/SelectorPlazo.astro';
 import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
 import { business } from '@data/business';
 import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
@@ -433,7 +434,7 @@ const documentos = [
   </section>
 
   <!-- ═══ A · EL PLAZO (bloques de autoridad) ═══ -->
-  <BloqueAutoridad bloque={BLOQUE_PLAZO} banda="blanco" />
+  <SelectorPlazo bloque={BLOQUE_PLAZO} banda="blanco" />
 
   <!-- ═══ 4.3 POR QUÉ HAY DEFENSA ═══ -->
   <section id="por-que" class="section band-cream">
@@ -466,7 +467,7 @@ const documentos = [
   </section>
 
   <!-- ═══ C · LA DEFENSA DEL IMSS (bloques de autoridad) ═══ -->
-  <BloqueAutoridad bloque={BLOQUE_DEFENSA} banda="blanco" />
+  <BloqueAutoridad bloque={BLOQUE_DEFENSA} banda="blanco" apartados="plegables" />
 
   <!-- ═══ 4.4 ¿APLICO? (autoevaluación) ═══ -->
   <Autoevaluacion />

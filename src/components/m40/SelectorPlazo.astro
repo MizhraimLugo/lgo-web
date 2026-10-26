@@ -1,0 +1,233 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  SELECTOR DE PLAZO — los dos relojes, uno a la vez
+// ════════════════════════════════════════════════════════════════
+//
+// La Ley de Amparo da dos plazos distintos según lo que se impugne, y antes los
+// explicábamos uno tras otro: 243 palabras para que el visitante descubriera al
+// final cuál era el suyo. Ahora dice en qué situación está y ve un solo reloj.
+//
+// Funciona sin JavaScript. Son radios nativos y `:has()` en CSS:
+//
+//   · Con CSS, se ve el reloj elegido.
+//   · Sin CSS (o sin `:has()`), se ven los dos — exactamente el estado
+//     anterior, que ya era correcto, solo más largo.
+//
+// Nada aquí dice que un plazo se venció. Un contador equivocado o un texto
+// ambiguo puede hacer que alguien crea que perdió un derecho que todavía
+// tiene, y eso es un daño que no se repara con una disculpa. El reloj dice de
+// cuándo arranca el conteo y manda a revisarlo con nosotros; el día exacto de
+// un caso concreto no sale de una página web.
+//
+// Los radios van sin `name` compartido con otros formularios de la página y
+// SIN `data-aviso`: no se envía nada, no hay consentimiento que recabar.
+
+import FundamentoLegal from './FundamentoLegal.astro';
+import type { BloquePlazo } from '@data/amparo-m40-autoridad';
+
+export interface Props {
+  bloque: BloquePlazo;
+  banda?: 'blanco' | 'crema';
+}
+
+const { bloque, banda = 'blanco' } = Astro.props;
+const { relojes } = bloque;
+---
+<section id={bloque.id} class:list={['section', banda === 'crema' ? 'band-cream' : 'band-blanco']}>
+  <div class="container-base">
+    <header class="section-head">
+      <span class="eyebrow">{bloque.eyebrow}</span>
+      <h2>{bloque.titulo}</h2>
+    </header>
+
+    <div class="relojes">
+      <fieldset class="relojes-eleccion">
+        <legend>{bloque.pregunta}</legend>
+        <div class="relojes-opciones">
+          {relojes.map((r, i) => (
+            <label class="reloj-opcion">
+              <input
+                type="radio"
+                name="reloj-plazo-m40"
+                value={r.id}
+                data-pos={i}
+                checked={i === 0}
+              />
+              <span class="reloj-opcion-cuerpo">
+                <span class="reloj-opcion-titulo">{r.opcion}</span>
+                <span class="reloj-opcion-pista">{r.pista}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {relojes.map((r, i) => (
+        <div class="reloj-panel" data-pos={i}>
+          <h3 class="reloj-cifra">
+            <strong>{r.dias}</strong>
+            <span>días hábiles</span>
+          </h3>
+          <p class="reloj-desde">{r.desde}</p>
+          <p class="reloj-destacado" set:html={r.destacado} />
+          {r.parrafos.map((p) => <p class="reloj-parrafo" set:html={p} />)}
+        </div>
+      ))}
+    </div>
+
+    <p class="plazo-comun" set:html={bloque.comun} />
+
+    <div class="plazo-fundamento">
+      <FundamentoLegal citas={bloque.fundamento} nota={bloque.fundamentoNota} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .band-blanco { background: var(--color-surface); }
+
+  /* Mismo encabezado que el resto de la página: sus estilos viven en la
+     plantilla y el ámbito de Astro no los trae hasta aquí. */
+  .section-head { margin-bottom: 2.5rem; max-width: 44rem; }
+  .section-head h2 {
+    margin: 1rem 0 0;
+    font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.018em;
+    max-width: 26ch;
+  }
+
+  .relojes { max-width: var(--container-prose); }
+
+  /* ── La elección ── */
+  .relojes-eleccion {
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: 0;
+  }
+  .relojes-eleccion legend {
+    padding: 0;
+    margin-bottom: 0.875rem;
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
+  .relojes-opciones {
+    display: grid;
+    gap: 0.75rem;
+  }
+  @media (min-width: 48rem) {
+    .relojes-opciones { grid-template-columns: 1fr 1fr; }
+  }
+
+  .reloj-opcion {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+    min-height: 48px;
+    padding: 0.9375rem 1.125rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color 160ms ease, background-color 160ms ease;
+  }
+  .reloj-opcion:hover { border-color: var(--color-border-strong); }
+  /* El radio nativo se queda a la vista: foco, teclado y lector de pantalla
+     funcionan sin que tengamos que reimplementarlos. */
+  .reloj-opcion input {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0.1875rem 0 0;
+    accent-color: var(--color-accent);
+  }
+  .reloj-opcion:has(input:checked) {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+  .reloj-opcion-cuerpo { display: flex; flex-direction: column; gap: 0.1875rem; }
+  .reloj-opcion-titulo {
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-foreground-strong);
+  }
+  .reloj-opcion-pista {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  /* ── El reloj ── */
+  .reloj-panel {
+    padding: 1.5rem 1.5rem 1.5rem 1.625rem;
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-background);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  /* Se muestra el reloj elegido y se esconde el otro. Si el navegador no
+     entiende `:has()`, ninguna de las dos reglas aplica y se ven los dos. */
+  .relojes:has(input[data-pos='0']:checked) .reloj-panel[data-pos='1'],
+  .relojes:has(input[data-pos='1']:checked) .reloj-panel[data-pos='0'] {
+    display: none;
+  }
+
+  .reloj-cifra {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    margin: 0 0 0.75rem;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-foreground-strong);
+  }
+  .reloj-cifra strong {
+    font-size: clamp(2.75rem, 2rem + 3.5vw, 4rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reloj-desde {
+    margin: 0 0 1.125rem;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+  .reloj-destacado {
+    margin: 0 0 1.125rem;
+    padding-bottom: 1.125rem;
+    border-bottom: 1px solid var(--color-divider);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-foreground-strong);
+  }
+  .reloj-parrafo {
+    margin: 0 0 0.875rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  .reloj-parrafo:last-child { margin-bottom: 0; }
+
+  /* ── Lo que aplica en los dos casos ── */
+  .plazo-comun {
+    max-width: var(--container-prose);
+    margin: 1.75rem 0;
+    padding-left: 1.125rem;
+    border-left: 3px solid var(--color-accent);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+
+  .plazo-fundamento { max-width: var(--container-prose); }
+
+  .relojes :global(strong),
+  .plazo-comun :global(strong) {
+    color: var(--color-foreground-strong);
+    font-weight: 700;
+  }
+</style>

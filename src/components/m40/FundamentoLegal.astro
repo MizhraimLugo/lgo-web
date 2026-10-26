@@ -1,0 +1,102 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  FUNDAMENTO LEGAL — el desplegable con las citas
+// ════════════════════════════════════════════════════════════════
+//
+// La segunda capa de los bloques de autoridad: artículos, fracciones y tesis,
+// en tipografía menor y dentro de un <details>.
+//
+// Vive aparte porque lo usan dos presentaciones distintas —el bloque de texto
+// corrido y el selector de plazo— y duplicar su CSS era garantizar que los dos
+// se vieran diferente a la primera corrección.
+//
+// Es un <details> nativo: funciona sin JavaScript, el buscador lo indexa aunque
+// esté cerrado y el lector de pantalla lo anuncia como lo que es. El fundamento
+// NO se oculta a los rastreadores —es precisamente la parte que demuestra que
+// la página sabe de lo que habla—, solo se guarda para no estorbarle a quien no
+// es abogado.
+
+export interface Props {
+  citas: string[];
+  /** Nota final, cuando hace falta mostrar un cómputo. */
+  nota?: string;
+}
+
+const { citas, nota } = Astro.props;
+---
+<details class="fundamento">
+  <summary>
+    Ver fundamento legal
+    <span class="fundamento-icono" aria-hidden="true">+</span>
+  </summary>
+  <div class="fundamento-cuerpo">
+    <ul>
+      {citas.map((c) => <li>{c}</li>)}
+    </ul>
+    {nota && <p class="fundamento-nota">{nota}</p>}
+  </div>
+</details>
+
+<style>
+  .fundamento {
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--color-divider);
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .fundamento > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 48px;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-accent-strong);
+  }
+  .fundamento > summary::-webkit-details-marker { display: none; }
+  .fundamento > summary:hover { color: var(--color-accent-deep); }
+  .fundamento-icono {
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform 200ms ease;
+  }
+  .fundamento[open] .fundamento-icono { transform: rotate(45deg); }
+
+  .fundamento-cuerpo { padding-bottom: 1.5rem; }
+  .fundamento-cuerpo ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+  }
+  .fundamento-cuerpo li {
+    position: relative;
+    padding-left: 1.125rem;
+    /* Tipografía menor: es material de consulta, no de lectura corrida. */
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+  .fundamento-cuerpo li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: var(--color-border-strong);
+  }
+  .fundamento-nota {
+    margin: 1.25rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider);
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+</style>
