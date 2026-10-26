@@ -595,8 +595,12 @@ const faqLd = {
     color: var(--color-muted);
   }
   .tec-frentes strong { color: var(--color-foreground-strong); }
-  .tec-detail a { color: var(--color-accent-strong); text-decoration: none; }
-  .tec-detail a:hover { color: var(--color-accent-hover); }
+  /* Enlace dentro de un párrafo: va subrayado a propósito. Sin subrayado
+     solo lo distinguiría el color, y contra el texto del cuerpo no llega a
+     3:1 — ni con el naranja base (2.6) ni con el acento fuerte (2.0). El
+     subrayado hay que declararlo: el preflight de Tailwind lo quita. */
+  .tec-detail a { color: var(--color-accent-strong); text-decoration: underline; }
+  .tec-detail a:hover { color: var(--color-accent-deep); }
 
   .segmento-item,
   .tec-item {
