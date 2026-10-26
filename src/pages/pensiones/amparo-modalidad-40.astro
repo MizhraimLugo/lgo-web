@@ -174,7 +174,14 @@ const pasos = [
 ];
 
 /** 4.7 — Lo que incluye el precio cerrado del amparo. */
-const incluye = ['demanda', 'suspensión', 'seguimiento', 'audiencia', 'sentencia', 'recurso de revisión'];
+const incluye = [
+  'Demanda',
+  'Suspensión',
+  'Seguimiento',
+  'Audiencia',
+  'Sentencia',
+  'Recurso de revisión'
+];
 
 /** 4.8 — Lo que decimos antes de cobrar. */
 const claridades = [
@@ -391,8 +398,38 @@ const documentos = [
   <!-- ═══ 4.4 ¿APLICO? (autoevaluación) ═══ -->
   <Autoevaluacion />
 
+  <!-- ═══ 4.10 QUÉ NECESITAS ═══
+       Va aquí, y no en el lugar que le daba el encargo: quien acaba de ver
+       que su perfil coincide necesita saber qué juntar antes que por qué
+       contratarnos. Conserva su número para poder rastrearla al brief. -->
+  <section id="documentos" class="section band-blanco">
+    <div class="container-base">
+      <header class="section-head">
+        <span class="eyebrow">Qué necesitas</span>
+        <h2>Ten esto a la mano</h2>
+      </header>
+
+      <ul class="checklist">
+        {documentos.map((d) => (
+          <li>
+            <span class="casilla" aria-hidden="true">
+              <svg class="ico" focusable="false"><use href="#ico-check" /></svg>
+            </span>
+            {d}
+          </li>
+        ))}
+      </ul>
+
+      <p class="nota-chica">
+        No necesitas tenerlo todo para escribirnos. Te guiamos para obtener lo que falte. No
+        envíes documentos por este sitio: te indicamos por WhatsApp o correo cómo hacerlo de
+        forma segura.
+      </p>
+    </div>
+  </section>
+
   <!-- ═══ 4.5 POR QUÉ CON NOSOTROS ═══ -->
-  <section id="por-que-nosotros" class="section band-blanco">
+  <section id="por-que-nosotros" class="section band-cream">
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Por qué con nosotros</span>
@@ -445,7 +482,7 @@ const documentos = [
   </section>
 
   <!-- ═══ 4.6 CÓMO FUNCIONA ═══ -->
-  <section id="como-funciona" class="section band-cream">
+  <section id="como-funciona" class="section band-blanco">
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Cómo funciona</span>
@@ -467,7 +504,7 @@ const documentos = [
   </section>
 
   <!-- ═══ 4.7 PRECIO ═══ -->
-  <section id="precio" class="section band-blanco">
+  <section id="precio" class="section band-cream">
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Precio</span>
@@ -484,7 +521,7 @@ const documentos = [
               <span class="precio-ahora">{precioCorto(M40.precios.amparoLanzamiento)}</span>
               <span class="precio-iva">{fmtMXN(conIva(M40.precios.amparoLanzamiento))} con IVA</span>
               <span class="precio-cond">
-                si contratas antes del {fechaCorta(M40.plazos.lanzamientoHasta)}
+                Si contratas antes del {fechaCorta(M40.plazos.lanzamientoHasta)}
               </span>
             </p>
           )}
@@ -539,7 +576,7 @@ const documentos = [
   </section>
 
   <!-- ═══ 4.8 TE LO DECIMOS CLARO ═══ -->
-  <section id="claro" class="section band-cream">
+  <section id="claro" class="section band-blanco">
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Te lo decimos claro</span>
@@ -554,47 +591,16 @@ const documentos = [
           </li>
         ))}
       </ul>
-
-      <p class="remate remate--centrado">
-        Preferimos perder una venta que hacerte perder tu dinero.
-      </p>
     </div>
   </section>
 
   <!-- ═══ 4.9 PREGUNTAS FRECUENTES ═══ -->
-  <section id="preguntas" class="section band-blanco">
+  <section id="preguntas" class="section band-cream">
     <div class="container-base">
       <Faq items={faqsAmparoM40} title="Preguntas frecuentes" />
       <a href={M40_WHATSAPP_GENERAL} class="btn btn-outline faq-cta" target="_blank" rel="noopener">
         ¿Tienes otra duda? Pregúntanos.
       </a>
-    </div>
-  </section>
-
-  <!-- ═══ 4.10 QUÉ NECESITAS ═══ -->
-  <section id="documentos" class="section band-cream">
-    <div class="container-base">
-      <header class="section-head">
-        <span class="eyebrow">Qué necesitas</span>
-        <h2>Ten esto a la mano</h2>
-      </header>
-
-      <ul class="checklist">
-        {documentos.map((d) => (
-          <li>
-            <span class="casilla" aria-hidden="true">
-              <svg class="ico" focusable="false"><use href="#ico-check" /></svg>
-            </span>
-            {d}
-          </li>
-        ))}
-      </ul>
-
-      <p class="nota-chica">
-        No necesitas tenerlo todo para escribirnos. Te guiamos para obtener lo que falte. No
-        envíes documentos por este sitio: te indicamos por WhatsApp o correo cómo hacerlo de
-        forma segura.
-      </p>
     </div>
   </section>
 
@@ -801,7 +807,6 @@ const documentos = [
     color: var(--color-foreground-strong);
     max-width: 46ch;
   }
-  .remate--centrado { margin-inline: auto; text-align: center; max-width: 34ch; }
 
   /* El naranja base no alcanza 4.5:1 sobre crema en texto chico; este enlace
      usa el tono profundo del mismo token para cumplir contraste. */
@@ -903,6 +908,11 @@ const documentos = [
 
   /* ── 4.5 COMPARATIVA ── */
   .comparativa table { width: 100%; border-collapse: collapse; }
+  @media (min-width: 820px) {
+    .comparativa table { table-layout: fixed; }
+    .comparativa thead th:first-child { width: 31%; }
+    .comparativa thead th:not(:first-child) { width: 23%; }
+  }
   .comparativa th, .comparativa td {
     text-align: left;
     padding: 1rem;
@@ -927,7 +937,9 @@ const documentos = [
   .comparativa .comp-lgo {
     font-weight: 700;
     color: var(--color-foreground-strong);
-    background: var(--color-surface-alt);
+    /* Blanco, no crema: la sección va sobre banda crema y el relleno
+       tiene que despegarse de ella. */
+    background: var(--color-surface);
   }
 
   @media (max-width: 819px) {
@@ -990,7 +1002,9 @@ const documentos = [
   @media (min-width: 860px) { .precios { grid-template-columns: 1.3fr 1fr; gap: 1.5rem; } }
 
   .precio {
-    background: var(--color-surface-alt);
+    /* Las dos tarjetas van en blanco sobre la banda crema; a la destacada
+       la distingue su borde de acento, no el relleno. */
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     padding: 1.75rem;
@@ -1084,7 +1098,8 @@ const documentos = [
   @media (min-width: 680px) { .claridades { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1100px) { .claridades { grid-template-columns: repeat(3, 1fr); } }
   .claridad {
-    background: var(--color-surface);
+    /* Crema sobre banda blanca: antes era al revés. */
+    background: var(--color-surface-alt);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     padding: 1.375rem;
