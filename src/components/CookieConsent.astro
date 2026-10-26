@@ -134,21 +134,6 @@ import { CATEGORIAS } from '@data/analytics';
     font-weight: 700;
     color: var(--color-on-dark);
   }
-  /* En móvil el banner se queda con lo imprescindible: en una landing el
-     primer pantallazo tiene que seguir mostrando su oferta. El título sigue
-     ahí para `aria-labelledby`, solo deja de pintarse. */
-  @media (max-width: 899px) {
-    .cookie-banner { gap: 0.625rem; padding-block: 0.75rem; }
-    .cookie-banner-titulo {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
-    .cookie-banner p { font-size: var(--text-xs); }
-  }
   .cookie-banner p {
     margin: 0;
     font-size: var(--text-sm);
@@ -171,6 +156,57 @@ import { CATEGORIAS } from '@data/analytics';
   .cookie-banner .btn-ghost:hover {
     background: rgba(250, 248, 244, 0.08);
     border-color: var(--color-on-dark);
+  }
+
+  /* En móvil el banner se queda con lo imprescindible: en una landing el
+     primer pantallazo tiene que seguir mostrando su oferta. El título sigue
+     ahí para `aria-labelledby`, solo deja de pintarse.
+     
+     Las dos decisiones —aceptar todas y solo las necesarias— comparten una
+     sola fila y conservan el mismo peso, que es lo que un banner honesto
+     exige. «Configurar» pasa a enlace: sigue visible y con área de toque
+     suficiente, pero no gasta una fila de 48 px. Entre eso y el título
+     oculto, el banner baja de 188 a ~140 px, que es lo que necesitaba el
+     encabezado de la landing para caber en una pantalla de 360 px. */
+  @media (max-width: 899px) {
+    .cookie-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 0.625rem;
+      padding-block: 0.75rem;
+    }
+    .cookie-banner-titulo {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .cookie-banner-texto { grid-column: 1 / -1; }
+    .cookie-banner p { font-size: var(--text-xs); }
+
+    .cookie-banner-acciones { display: contents; }
+
+    /* «Configurar» como enlace, en la misma línea del texto. */
+    .cookie-banner [data-cookie-configurar] {
+      grid-column: 1 / -1;
+      justify-self: start;
+      /* Enlace, pero con área de toque: 32 px de alto cumple el mínimo de
+         24 x 24 de WCAG 2.2 sin gastar una fila de botón de 48. */
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 0.125rem;
+      border: 0;
+      background: none;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--color-accent-soft);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+    .cookie-banner [data-cookie-configurar]:hover { color: var(--color-on-dark); background: none; }
   }
 
   /* ── Panel ── */
