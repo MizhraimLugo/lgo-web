@@ -99,6 +99,58 @@ export const services: Service[] = [
     brand: 'contadores',
     blurb:
       'Tableros mensuales en lenguaje claro: cuánto vendiste, cuánto cobraste, qué quedó, cuánto debes. Para decidir con visibilidad.'
+  },
+
+  // LGO ADMINISTRADORES INMOBILIARIOS
+  // Los seis frentes del alcance del servicio. Describen qué recibe el
+  // condominio en cada frente, sin detallar formatos ni herramientas internas.
+  {
+    slug: 'financiero',
+    name: 'Financiero',
+    shortName: 'Financiero',
+    brand: 'administradores',
+    blurb:
+      'Llevamos las cuentas del condominio con soporte documental de cada movimiento: ingresos, egresos, saldos y estado del presupuesto, con información mensual que la asamblea puede revisar y cuestionar. Además, el Consejo de Administración cuenta con un tablero en vivo para consultar la situación financiera en cualquier momento, sin esperar al corte del mes.'
+  },
+  {
+    slug: 'cobranza',
+    name: 'Cobranza',
+    shortName: 'Cobranza',
+    brand: 'administradores',
+    blurb:
+      'Damos seguimiento individual a las cuotas pendientes, con recordatorios y contacto directo con quien debe. Cuando el atraso rebasa lo que puede resolver la administración, canalizamos el caso a la firma legal del grupo, que lo atiende como un asunto legal aparte de la administración.'
+  },
+  {
+    slug: 'incidencias-y-mantenimiento',
+    name: 'Incidencias y mantenimiento',
+    shortName: 'Incidencias y mantenimiento',
+    brand: 'administradores',
+    blurb:
+      'Registramos cada reporte y lo seguimos hasta su cierre, con evidencia de lo que se hizo y de quién lo hizo. El mantenimiento de instalaciones y áreas comunes se programa, en lugar de atenderse solo cuando algo se descompone.'
+  },
+  {
+    slug: 'comunicacion',
+    name: 'Comunicación',
+    shortName: 'Comunicación',
+    brand: 'administradores',
+    blurb:
+      'Un canal definido para que los condóminos reporten, pregunten y reciban respuesta, y avisos oportunos de lo que afecta al inmueble. Nadie tiene que perseguir a la administración para enterarse de lo que pasa en su condominio.'
+  },
+  {
+    slug: 'documental',
+    name: 'Documental',
+    shortName: 'Documental',
+    brand: 'administradores',
+    blurb:
+      'Mantenemos ordenado el expediente del condominio: actas, contratos, comprobantes y documentación de la operación. Cuando la asamblea lo solicita, o cuando cambia la administración, la información se entrega completa.'
+  },
+  {
+    slug: 'gobernanza',
+    name: 'Gobernanza',
+    shortName: 'Gobernanza',
+    brand: 'administradores',
+    blurb:
+      'Preparamos las asambleas, las convocamos en forma y levantamos las actas con los acuerdos que efectivamente se tomaron. El proceso lo revisa la firma legal del grupo, para que las decisiones se sostengan si alguien las cuestiona.'
   }
 ];
 

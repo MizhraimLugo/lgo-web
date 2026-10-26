@@ -27,13 +27,13 @@ refactor**. Es flip de un flag + creación de una página + (opcional) FAQs y se
 ## Taxonomía de marcas
 
 ```ts
-LgoPracticeId = 'abogados' | 'contadores' | 'tecnologia' | 'marketing'
+LgoPracticeId = 'abogados' | 'contadores' | 'administradores' | 'tecnologia' | 'marketing'
 BrandId       = 'grupo' | LgoPracticeId | 'facturacion' | 'lorenzana'
 ```
 
 - **`grupo`** — entidad paraguas. Representa el ecosistema completo.
-- **`LgoPracticeId`** — las cuatro firmas internas. Tipo cerrado deliberadamente:
-  añadir una quinta es decisión estratégica, no solo data entry.
+- **`LgoPracticeId`** — las divisiones internas con página propia. Tipo cerrado deliberadamente:
+  añadir una nueva es decisión estratégica, no solo data entry.
 - **`facturacion`** — servicio LGO con sitio externo propio (lgo-facturacion.com).
   No es una práctica con página interna. Enlace externo (target=_blank, ↗), sin
   logo en el sitio.
@@ -56,6 +56,7 @@ Cada brand tiene `published: boolean`.
 | `grupo` | ✅ |
 | `abogados` | ✅ |
 | `contadores` | ✅ |
+| `administradores` | ✅ |
 | `tecnologia` | ❌ (reservada) |
 | `marketing` | ❌ (reservada) |
 | `facturacion` | ✅ (externa) |

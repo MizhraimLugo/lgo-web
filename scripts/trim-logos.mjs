@@ -40,6 +40,7 @@ const NAME_MAP = {
   'grupolgo.png':      'grupo-lgo.png',
   'lgoabogados.png':   'lgo-abogados.png',
   'lgocontadores.png': 'lgo-contadores.png',
+  'lgoadministradores.png': 'lgo-administradores.png',
   'lgotecnologia.png': 'lgo-tecnologia.png',
   'lgomarketing.png':  'lgo-marketing.png'
 };

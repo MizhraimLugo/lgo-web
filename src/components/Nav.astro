@@ -2,7 +2,8 @@
 import Logo from '@components/Logo.astro';
 import { nav, type NavItem } from '@data/nav';
 import { business } from '@data/business';
-import { ecosystemBrands, type Brand } from '@data/brands';
+import { ecosystemBrands } from '@data/brands';
+import { publishedHerramientas } from '@data/herramientas';
 
 const currentPath = Astro.url.pathname;
 
@@ -11,9 +12,25 @@ const isPathActive = (href: string) => {
   return currentPath.startsWith(href);
 };
 
+// Forma común que consume el render del dropdown, sea cual sea la fuente.
+// `Brand` (ecosystemBrands) ya la cumple; las herramientas se mapean a ella.
+type NavChild = {
+  url: string;
+  shortName: string;
+  specialty: string;
+  internal: boolean;
+};
+
 // Resuelve los hijos dinámicos de un grupo desde el data layer.
-const resolveChildren = (item: NavItem): Brand[] => {
+const resolveChildren = (item: NavItem): NavChild[] => {
   if (item.childSource === 'ecosystemBrands') return ecosystemBrands;
+  if (item.childSource === 'tools')
+    return publishedHerramientas.map((h) => ({
+      url: h.url,
+      shortName: h.name,
+      specialty: h.tagline,
+      internal: true
+    }));
   return [];
 };
 
@@ -44,18 +61,45 @@ const isItemActive = (item: NavItem) => {
           if (isGroup) {
             return (
               <li class="nav-group" data-nav-group>
-                <button
-                  type="button"
-                  class:list={['nav-link', 'nav-group-trigger', { 'is-active': active }]}
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  data-nav-group-trigger
-                >
-                  {item.shortLabel ?? item.label}
-                  <svg class="nav-chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                    <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
+                {item.href ? (
+                  /* Grupo con página propia (Herramientas): el label navega al
+                     índice; el chevron abre el dropdown (mismo JS que Servicios). */
+                  <span class="nav-group-linked">
+                    <a
+                      href={item.href}
+                      class:list={['nav-link', 'nav-group-link', { 'is-active': active }]}
+                      aria-current={active ? 'page' : undefined}
+                    >
+                      {item.shortLabel ?? item.label}
+                    </a>
+                    <button
+                      type="button"
+                      class="nav-link nav-group-trigger nav-group-trigger--chevron"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-label={`Ver ${item.label.toLowerCase()}`}
+                      data-nav-group-trigger
+                    >
+                      <svg class="nav-chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                        <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  </span>
+                ) : (
+                  /* Grupo sin página (Servicios): el botón entero abre el dropdown. */
+                  <button
+                    type="button"
+                    class:list={['nav-link', 'nav-group-trigger', { 'is-active': active }]}
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    data-nav-group-trigger
+                  >
+                    {item.shortLabel ?? item.label}
+                    <svg class="nav-chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                      <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                )}
                 <div class="nav-dropdown" hidden data-nav-dropdown>
                   <ul role="menu">
                     {children.map((child) => (
@@ -124,17 +168,41 @@ const isItemActive = (item: NavItem) => {
         if (isGroup) {
           return (
             <li class="mobile-group" data-mobile-group>
-              <button
-                type="button"
-                class:list={['mobile-link', 'mobile-group-trigger', { 'is-active': active }]}
-                aria-expanded={active ? 'true' : 'false'}
-                data-mobile-group-trigger
-              >
-                {item.label}
-                <svg class="mobile-chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                  <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
+              {item.href ? (
+                /* Grupo con página propia (Herramientas): el label navega al
+                   índice; el chevron expande el subnav. */
+                <div class="mobile-linked">
+                  <a
+                    href={item.href}
+                    class:list={['mobile-link', 'mobile-group-link', { 'is-active': active }]}
+                  >
+                    {item.label}
+                  </a>
+                  <button
+                    type="button"
+                    class="mobile-group-chevron"
+                    aria-expanded={active ? 'true' : 'false'}
+                    aria-label={`Ver ${item.label.toLowerCase()}`}
+                    data-mobile-group-trigger
+                  >
+                    <svg class="mobile-chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  class:list={['mobile-link', 'mobile-group-trigger', { 'is-active': active }]}
+                  aria-expanded={active ? 'true' : 'false'}
+                  data-mobile-group-trigger
+                >
+                  {item.label}
+                  <svg class="mobile-chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              )}
               <ul class="mobile-subnav" hidden={!active} data-mobile-subnav>
                 {children.map((child) => (
                   <li>
@@ -239,6 +307,18 @@ const isItemActive = (item: NavItem) => {
   }
   .nav-group-trigger[aria-expanded="true"] {
     color: var(--color-accent);
+  }
+
+  /* Grupo con página propia (Herramientas): label-enlace + chevron contiguos,
+     leídos como un solo item "Herramientas ▾". */
+  .nav-group-linked {
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav-group-link { padding-right: 0.15rem; }
+  .nav-group-trigger--chevron {
+    padding-inline: 0.3rem;
+    min-height: auto;
   }
 
   .nav-dropdown {
@@ -375,6 +455,36 @@ const isItemActive = (item: NavItem) => {
   .mobile-group-trigger { display: flex; }
   .mobile-chevron { transition: transform 200ms ease; flex-shrink: 0; }
   .mobile-group-trigger[aria-expanded="true"] .mobile-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Grupo con página propia (Herramientas) en móvil: label-enlace + chevron.
+     El borde inferior va en la fila; el label lo cede al contenedor. */
+  .mobile-linked {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-divider);
+  }
+  .mobile-group-link {
+    flex: 1;
+    border-bottom: none;
+  }
+  .mobile-group-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-foreground);
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .mobile-group-chevron[aria-expanded="true"] { color: var(--color-accent); }
+  .mobile-group-chevron[aria-expanded="true"] .mobile-chevron {
     transform: rotate(180deg);
   }
 

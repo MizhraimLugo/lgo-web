@@ -3,15 +3,12 @@ import Base from '@layouts/Base.astro';
 import CourseCard from '@components/CourseCard.astro';
 import CtaBand from '@components/CtaBand.astro';
 import { business } from '@data/business';
-import { cursos, featuredCourse, nonFeaturedCourses } from '@data/cursos-preview';
+import { cursos } from '@data/cursos-preview';
 
-const title = 'Cursos y herramientas | Grupo LGO';
+const title = 'Cursos | Grupo LGO';
 const description =
-  'Diagnósticos gratuitos, cursos online y masterclasses presenciales del ecosistema Grupo LGO. Aprende cómo decidimos y aplícalo a tu negocio.';
+  'Cursos online y masterclasses presenciales del ecosistema Grupo LGO. Aprende cómo decidimos y aplícalo a tu negocio.';
 const path = '/cursos/';
-
-const featured = featuredCourse();
-const others = nonFeaturedCourses();
 
 const breadcrumbLd = {
   '@context': 'https://schema.org',
@@ -37,30 +34,22 @@ const itemListLd = {
 
   <section class="hero section-roomy">
     <div class="container-base">
-      <span class="eyebrow reveal-up reveal-up--immediate">Cursos y herramientas</span>
+      <span class="eyebrow reveal-up reveal-up--immediate">Cursos</span>
       <h1 class="reveal-up reveal-up--immediate">Aprende cómo decidimos. Aplícalo a tu negocio.</h1>
       <p class="lead reveal-up reveal-up--immediate">
-        Tres formatos para tres maneras de aprender. Empieza por el diagnóstico
-        gratuito si quieres saber dónde está tu negocio antes de invertir en cualquier otro paso.
+        Cursos online y masterclasses presenciales en Lorenzana 781, con el mismo
+        criterio con el que asesoramos a las empresas del ecosistema.
       </p>
     </div>
   </section>
 
   <section class="section">
     <div class="container-base">
-
-      {featured && (
-        <div class="cursos-featured-wrap">
-          <CourseCard course={featured} layout="featured" />
-        </div>
-      )}
-
       <div class="cursos-grid">
-        {others.map((c) => (
+        {cursos.map((c) => (
           <CourseCard course={c} layout="standard" />
         ))}
       </div>
-
     </div>
   </section>
 
@@ -75,9 +64,9 @@ const itemListLd = {
         <li>
           <span class="format-badge format-badge--gratuito">Gratuito</span>
           <div>
-            <strong>Diagnósticos y herramientas.</strong> Cuestionarios interactivos
-            para autoevaluar tu situación. Sin compromiso. Te quedas con un resultado
-            personalizado y, si quieres, un consultor te contacta.
+            <strong>Herramientas de autoservicio.</strong> Diagnósticos y calculadoras
+            interactivas para evaluar tu negocio, sin costo ni registro — en nuestra
+            <a href="/herramientas/">sección de herramientas</a>.
           </div>
         </li>
         <li>
@@ -115,8 +104,6 @@ const itemListLd = {
 
 <style>
   .hero h1 { max-width: 22ch; margin: 1.25rem 0 1.5rem; }
-
-  .cursos-featured-wrap { margin-bottom: 1.25rem; }
 
   .cursos-grid {
     display: grid;
@@ -161,6 +148,12 @@ const itemListLd = {
     color: var(--color-muted);
     line-height: 1.65;
   }
+  .formats-list a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .formats-list a:hover { color: var(--color-accent-deep); }
 
   .format-badge {
     display: inline-flex;

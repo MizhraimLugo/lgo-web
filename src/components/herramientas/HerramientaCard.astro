@@ -1,0 +1,80 @@
+---
+// Tarjeta de una herramienta gratuita, para el "estante" de /herramientas y la
+// sección del home. Mismo lenguaje visual que CourseCard/ContratoCard (tarjeta
+// surface, filete de acento superior, hover que la levanta). El contenido sale
+// del data layer (src/data/herramientas.ts) — no se hardcodea aquí.
+import type { Herramienta } from '@data/herramientas';
+
+export interface Props {
+  herramienta: Herramienta;
+}
+
+const { herramienta } = Astro.props;
+const { name, description, cta, url } = herramienta;
+---
+<a class="tool-card" href={url}>
+  <div class="tool-card-body">
+    <h3 class="tool-card-title">{name}</h3>
+    <p class="tool-card-desc">{description}</p>
+  </div>
+
+  <div class="tool-card-footer">
+    <span class="tool-card-cta">{cta} →</span>
+  </div>
+</a>
+
+<style>
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    padding: 1.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+  .tool-card:hover {
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-2px);
+    border-top-color: var(--color-accent-deep);
+  }
+
+  .tool-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    flex: 1;
+  }
+  .tool-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--color-foreground-strong);
+    margin: 0;
+  }
+  .tool-card-desc {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .tool-card-footer {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-divider);
+    margin-top: auto;
+  }
+  .tool-card-cta {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+</style>

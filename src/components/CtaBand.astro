@@ -34,6 +34,9 @@ const bandClass = variant === 'dark' ? 'band-dark' : variant === 'cream' ? 'band
         <a href={secondaryHref} class="btn btn-ghost">{secondaryLabel}</a>
       )}
     </div>
+    {/* Cierre opcional bajo los botones (p. ej. quién responde por la sección).
+        Las páginas que usan el componente auto-cerrado no renderizan nada. */}
+    <slot />
   </div>
 </section>
 

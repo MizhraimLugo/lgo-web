@@ -10,6 +10,19 @@ export default defineConfig({
   build: {
     format: 'directory'
   },
+
+  // ── Alias de la división de administración inmobiliaria ──
+  // La URL canónica de la sección es /administracion-de-condominios/.
+  // /administradores/ queda como alias permanente para no perder enlaces
+  // escritos a mano ni referencias externas al nombre corto.
+  //
+  // Nota: en build estático (sin adapter) Astro resuelve esto con una página de
+  // redirección HTML (meta refresh + rel=canonical), no con un 301 HTTP real.
+  // Si se necesita el 301 a nivel de servidor, se declara además en netlify.toml
+  // como los de /contratos y /diagnostico.
+  redirects: {
+    '/administradores': { status: 301, destination: '/administracion-de-condominios/' }
+  },
   integrations: [
     sitemap({
       // Páginas excluidas del sitemap:
