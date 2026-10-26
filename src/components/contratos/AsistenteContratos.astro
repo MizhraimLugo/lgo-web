@@ -212,7 +212,7 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
     padding: 0.75rem 1rem; border-radius: var(--radius-md); max-width: 85%;
   }
   .chat-msg--bot { background: var(--color-surface-alt); color: var(--color-foreground); align-self: flex-start; border-bottom-left-radius: var(--radius-xs); }
-  .chat-msg--user { background: var(--color-accent); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
+  .chat-msg--user { background: var(--color-accent-strong); color: var(--color-on-accent); align-self: flex-end; border-bottom-right-radius: var(--radius-xs); }
   .chat-msg :global(a) { color: inherit; font-weight: 700; text-decoration: underline; }
   .chat-typing { opacity: 0.55; letter-spacing: 0.25em; }
 
@@ -225,7 +225,7 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
   .chat-input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
   .chat-send {
     display: inline-flex; align-items: center; justify-content: center; width: 46px; flex-shrink: 0;
-    background: var(--color-accent); color: var(--color-on-accent); border: none;
+    background: var(--color-accent-strong); color: var(--color-on-accent); border: none;
     border-radius: var(--radius-sm); cursor: pointer; transition: background 200ms ease;
   }
   .chat-send:hover { background: var(--color-accent-hover); }

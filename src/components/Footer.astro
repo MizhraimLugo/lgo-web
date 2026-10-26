@@ -12,7 +12,8 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
 
     <div class="footer-brand">
       <a href="/" class="footer-logo" aria-label={`${business.brand} — Inicio`}>
-        <Logo brand="grupo" height={44} alt={business.brand} />
+        {/* Igual que en el nav: el nombre lo pone el aria-label del enlace. */}
+        <Logo brand="grupo" height={44} alt="" />
       </a>
       <p class="footer-tagline">{business.tagline}</p>
       <p class="footer-address">{business.address.full}</p>
@@ -23,8 +24,10 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
       <ul class="footer-nav footer-ecosistema">
         {publishedSubBrands.map((b) => (
           <li>
+            {/* El nombre lo pone el <span class="sr-only">; el alt del
+                logotipo lo repetiría, así que la imagen va como decorativa. */}
             <a href={b.url} class="footer-ecosistema-item">
-              <Logo brand={b.id as any} height={26} alt={b.name} />
+              <Logo brand={b.id as any} height={26} alt="" />
               <span class="sr-only">{b.name}</span>
             </a>
           </li>
@@ -127,7 +130,8 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
     font-size: var(--text-eyebrow);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(250,248,244,0.45);
+    /* 0.55 sobre el fondo del pie da 5.7:1; con 0.45 se quedaba en 4.3. */
+    color: rgba(250,248,244,0.55);
     font-weight: 700;
     margin-bottom: 1rem;
   }
@@ -182,7 +186,8 @@ const year = 2026;  // estampado en build; actualizar manualmente (no Date.now p
     gap: 1rem;
     justify-content: space-between;
     font-size: var(--text-xs);
-    color: rgba(250,248,244,0.38);
+    /* Misma razón que .footer-col-title: 0.38 se quedaba en 3.4:1. */
+    color: rgba(250,248,244,0.55);
   }
 
   .footer-legal {

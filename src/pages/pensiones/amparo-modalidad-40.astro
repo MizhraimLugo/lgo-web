@@ -840,7 +840,7 @@ const documentos = [
     color: var(--color-muted);
     margin-bottom: 1rem;
   }
-  .tope--ahora .tope-rotulo { color: var(--color-accent); }
+  .tope--ahora .tope-rotulo { color: var(--color-accent-strong); }
 
   .tope-intro { margin: 0 0 0.375rem; font-size: var(--text-base); color: var(--color-muted); }
 
@@ -853,7 +853,7 @@ const documentos = [
     letter-spacing: -0.035em;
     color: var(--color-foreground-strong);
   }
-  .tope--ahora .tope-cifra { color: var(--color-accent); }
+  .tope--ahora .tope-cifra { color: var(--color-accent-strong); }
   .tope-unidad {
     display: block;
     margin-top: 0.5rem;
@@ -875,7 +875,7 @@ const documentos = [
     font-size: var(--text-base);
     line-height: 1.55;
   }
-  .cambios .ico { color: var(--color-accent); margin-top: 0.15rem; }
+  .cambios .ico { color: var(--color-accent-strong); margin-top: 0.15rem; }
 
   /* ── 4.3 ARGUMENTO ── */
   .argumento { max-width: var(--container-prose); }
@@ -916,7 +916,7 @@ const documentos = [
     color: var(--color-muted);
     border-bottom: 2px solid var(--color-border-strong);
   }
-  .comparativa .comp-col--lgo { color: var(--color-accent); }
+  .comparativa .comp-col--lgo { color: var(--color-accent-strong); }
   .comparativa tbody th {
     width: 32%;
     padding-left: 0;
@@ -965,7 +965,7 @@ const documentos = [
       flex-shrink: 0;
       font-size: var(--text-xs);
       font-weight: 600;
-      color: var(--color-muted-soft);
+      color: var(--color-muted);
     }
   }
 
@@ -979,7 +979,7 @@ const documentos = [
     font-size: var(--text-4xl);
     font-weight: 700;
     line-height: 0.9;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
     font-variant-numeric: tabular-nums;
   }
   .paso h3 { margin: 0 0 0.375rem; font-size: var(--text-lg); }
@@ -1006,7 +1006,7 @@ const documentos = [
   .precio-monto { display: flex; flex-direction: column; gap: 0.3rem; margin: 0 0 1.5rem; }
   .precio-antes {
     font-size: var(--text-lg);
-    color: var(--color-muted-soft);
+    color: var(--color-muted);
     text-decoration-thickness: 2px;
   }
   .precio-ahora {
@@ -1015,7 +1015,7 @@ const documentos = [
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
   }
   .precio-ahora--chico { font-size: var(--text-3xl); color: var(--color-foreground-strong); }
   .precio-iva {
@@ -1023,7 +1023,7 @@ const documentos = [
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-muted-soft);
+    color: var(--color-muted);
   }
   .precio-cond {
     margin-top: 0.25rem;
@@ -1067,7 +1067,7 @@ const documentos = [
     line-height: 1.55;
     color: var(--color-accent-deep);
   }
-  .familia .ico { color: var(--color-accent); margin-top: 0.1rem; }
+  .familia .ico { color: var(--color-accent-strong); margin-top: 0.1rem; }
   .familia strong { font-weight: 700; }
   @media (max-width: 520px) { .familia { border-radius: var(--radius-sm); } }
 
@@ -1075,7 +1075,7 @@ const documentos = [
     margin: 1.5rem 0 0;
     font-size: var(--text-xs);
     line-height: 1.6;
-    color: var(--color-muted-soft);
+    color: var(--color-muted);
     max-width: 62ch;
   }
 
@@ -1115,7 +1115,7 @@ const documentos = [
     border: 1.5px solid var(--color-border-strong);
     border-radius: var(--radius-xs);
     background: var(--color-surface);
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
   }
   .casilla .ico { width: 0.875rem; height: 0.875rem; stroke-width: 2.4; }
 
@@ -1157,7 +1157,9 @@ const documentos = [
     gap: 0.625rem;
     max-width: var(--container-prose);
   }
-  .avisos li { font-size: var(--text-xs); line-height: 1.6; color: var(--color-muted-soft); }
+  /* `muted-soft` (#909090) se queda en 2.9:1 sobre el fondo del sitio: en
+     texto chico no alcanza, así que los avisos van con el gris medio. */
+  .avisos li { font-size: var(--text-xs); line-height: 1.6; color: var(--color-muted); }
   .avisos a { color: var(--color-muted); font-weight: 600; }
 
   /* ── BARRA FIJA (móvil) ── */

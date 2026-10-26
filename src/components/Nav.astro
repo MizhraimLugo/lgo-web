@@ -48,7 +48,8 @@ const isItemActive = (item: NavItem) => {
 
   <div class="container-base nav-row">
     <a href="/" class="brand" aria-label={`${business.brand} — Inicio`}>
-      <Logo brand="grupo" height={36} alt={business.brand} />
+      {/* El enlace ya se llama por su aria-label: el logotipo va decorativo. */}
+      <Logo brand="grupo" height={36} alt="" />
     </a>
 
     <nav class="primary-nav" aria-label="Navegación principal">
@@ -289,8 +290,8 @@ const isItemActive = (item: NavItem) => {
     cursor: pointer;
     font-family: inherit;
   }
-  .nav-link:hover { color: var(--color-accent); }
-  .nav-link.is-active { color: var(--color-accent); }
+  .nav-link:hover { color: var(--color-accent-strong); }
+  .nav-link.is-active { color: var(--color-accent-strong); }
 
   /* DROPDOWN DESKTOP */
   .nav-group { position: relative; }
@@ -306,7 +307,7 @@ const isItemActive = (item: NavItem) => {
     transform: rotate(180deg);
   }
   .nav-group-trigger[aria-expanded="true"] {
-    color: var(--color-accent);
+    color: var(--color-accent-strong);
   }
 
   /* Grupo con página propia (Herramientas): label-enlace + chevron contiguos,
@@ -450,7 +451,7 @@ const isItemActive = (item: NavItem) => {
     width: 100%;
     text-align: left;
   }
-  .mobile-link.is-active { color: var(--color-accent); }
+  .mobile-link.is-active { color: var(--color-accent-strong); }
 
   .mobile-group-trigger { display: flex; }
   .mobile-chevron { transition: transform 200ms ease; flex-shrink: 0; }
@@ -483,7 +484,7 @@ const isItemActive = (item: NavItem) => {
     padding: 0;
     flex-shrink: 0;
   }
-  .mobile-group-chevron[aria-expanded="true"] { color: var(--color-accent); }
+  .mobile-group-chevron[aria-expanded="true"] { color: var(--color-accent-strong); }
   .mobile-group-chevron[aria-expanded="true"] .mobile-chevron {
     transform: rotate(180deg);
   }
@@ -505,7 +506,7 @@ const isItemActive = (item: NavItem) => {
     transition: color 150ms ease, background 150ms ease;
   }
   .mobile-sublink:hover { color: var(--color-foreground-strong); background: var(--color-surface-alt); }
-  .mobile-sublink.is-active { color: var(--color-accent); font-weight: 700; }
+  .mobile-sublink.is-active { color: var(--color-accent-strong); font-weight: 700; }
 
   .mobile-cta { margin-top: 1rem; width: 100%; }
 
