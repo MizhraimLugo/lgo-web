@@ -145,9 +145,24 @@ export const DIAS_MES_COTIZACION = 30.4;
 /**
  * Formatea un TOPE redondeando hacia ABAJO: un máximo no debe mostrarse más
  * alto de lo que es. 2 932.75 → `"$2,932"`.
+ *
+ * Se usa solo en la cifra grande. La cuenta exacta va debajo con
+ * `fmtMXNExacto`, para que el lector pueda rehacerla: con el número truncado
+ * no cuadra (25 × 117 = 2,925, no 2,932).
  */
 export function fmtTope(monto: number): string {
   return fmtMXN(Math.floor(monto));
+}
+
+/** Monto con centavos: `"$2,932.75"`. Para enseñar la cuenta, no el titular. */
+export function fmtMXNExacto(monto: number): string {
+  const [entero, decimales] = monto.toFixed(2).split('.');
+  return '$' + entero.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.' + decimales;
+}
+
+/** Monto redondeado al millar: `"$89,000"`. Para cifras aproximadas. */
+export function fmtMXNAproximado(monto: number): string {
+  return fmtMXN(Math.round(monto / 1000) * 1000);
 }
 
 /** Tope general de cotización, en pesos diarios (veces UMA). */
@@ -239,6 +254,21 @@ export function textoContador(dias: number): string {
   return `Recibimos expedientes hasta el ${fechaCorta(M40.plazos.corteInterno)} · ${cuenta}`;
 }
 
-/** Texto del contador una vez que la fecha de corte pasó. */
+/**
+ * Aclaración de a quién pertenece la fecha del contador. Va junto a él en el
+ * encabezado y en el cierre: sin esto, el 26 de noviembre se lee —y se cita—
+ * como si fuera el plazo que da la ley.
+ */
+export const TEXTO_FECHA_INTERNA =
+  'Es nuestra fecha de recepción, no el plazo de la ley.';
+
+/**
+ * Texto del contador una vez que la fecha de corte pasó.
+ *
+ * Dice que cerramos NUESTRA recepción, no que se haya vencido un plazo de la
+ * ley: el corte interno no es el término legal, y una frase que los confunda
+ * puede hacer que alguien se dé por vencido sin estarlo. Misma razón por la
+ * que la primera pregunta frecuente abre distinguiéndolos.
+ */
 export const TEXTO_CONTADOR_VENCIDO =
-  'La fecha de recepción para impugnar el acuerdo directamente ya pasó. Si el IMSS te aplicó el tope en una solicitud, aún podemos revisar tu caso.';
+  'Cerramos la recepción de expedientes de esta campaña. El plazo de la ley es otro y depende de tu caso: si el IMSS te aplicó el tope, escríbenos y lo revisamos.';

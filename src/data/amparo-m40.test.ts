@@ -32,6 +32,9 @@ import {
   cortePasado,
   textoContador,
   TEXTO_CONTADOR_VENCIDO,
+  TEXTO_FECHA_INTERNA,
+  fmtMXNExacto,
+  fmtMXNAproximado,
   M40_WHATSAPP_GENERAL,
   M40_WA_MENSAJE_GENERAL,
   waMensajeAutoevaluacion
@@ -152,9 +155,27 @@ test('textoContador: la fecha primero, la cuenta después', () => {
   assert.match(textoContador(1), /· Falta 1 día$/);
 });
 
-test('TEXTO_CONTADOR_VENCIDO: deja abierta la vía del acto concreto', () => {
-  assert.match(TEXTO_CONTADOR_VENCIDO, /ya pasó/);
-  assert.match(TEXTO_CONTADOR_VENCIDO, /aún podemos revisar tu caso/);
+test('TEXTO_CONTADOR_VENCIDO: cierra NUESTRA recepción, no un plazo de la ley', () => {
+  // Lo que se cierra es la campaña, no el término legal. Una frase que los
+  // confunda puede hacer que alguien se dé por vencido sin estarlo, y es
+  // justo la que un modelo citaría suelta.
+  assert.match(TEXTO_CONTADOR_VENCIDO, /recepción de expedientes/);
+  assert.match(TEXTO_CONTADOR_VENCIDO, /El plazo de la ley es otro/);
+  assert.doesNotMatch(TEXTO_CONTADOR_VENCIDO, /plazo .{0,20}ya pasó|venció|perdiste/i);
+  assert.match(TEXTO_CONTADOR_VENCIDO, /escríbenos/i);
+});
+
+test('TEXTO_FECHA_INTERNA: dice de quién es la fecha del contador', () => {
+  assert.match(TEXTO_FECHA_INTERNA, /nuestra fecha/i);
+  assert.match(TEXTO_FECHA_INTERNA, /no el plazo de la ley/i);
+});
+
+test('los topes se muestran con una cuenta que el lector puede rehacer', () => {
+  // La cifra grande va truncada ($2,932) y por sí sola no cuadra con la UMA
+  // truncada (25 × 117 = 2,925). La nota lleva los valores exactos.
+  assert.equal(fmtMXNExacto(M40.uma2026), '$117.31');
+  assert.equal(fmtMXNExacto(topeAnteriorDiario()), '$2,932.75');
+  assert.equal(fmtMXNAproximado(topeAnteriorMensual()), '$89,000');
 });
 
 // ── Autoevaluación: los cuatro casos ───────────────────────────────
@@ -386,4 +407,21 @@ test('m40-lead: sin ClickUp configurado responde 200 sin registrar', async () =>
   const r = await post(LEAD_OK);
   assert.equal(r.statusCode, 200);
   assert.deepEqual(JSON.parse(r.body), { ok: true, registrado: false });
+});
+
+// ── Riesgo de citación ─────────────────────────────────────────────
+//
+// La fecha de corte es de LGO, no de la ley. Si la primera frase de la
+// respuesta sobre plazos la suelta sin rotular, quien la cite —una persona o
+// un modelo— la presentará como el término del amparo.
+
+test('la pregunta de plazos no abre con nuestra fecha de corte', async () => {
+  const { faqsAmparoM40 } = await import('./amparo-m40-faqs.ts');
+  const plazos = faqsAmparoM40.find((f) => /Hasta cuándo/.test(f.q));
+  assert.ok(plazos, 'debe existir la pregunta de plazos');
+
+  const primeraFrase = plazos.a.split('. ')[0];
+  assert.doesNotMatch(primeraFrase, /\d{1,2} de \w+ de \d{4}/, 'la primera frase no lleva la fecha');
+  assert.match(plazos.a, /no es el mismo que nuestra fecha|fecha interna/i);
+  assert.match(plazos.a, /plazo (de la ley|legal)/i);
 });

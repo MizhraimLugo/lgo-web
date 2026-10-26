@@ -18,7 +18,8 @@ import {
   M40,
   fechaLarga,
   cortePasado,
-  TEXTO_CONTADOR_VENCIDO
+  TEXTO_CONTADOR_VENCIDO,
+  TEXTO_FECHA_INTERNA
 } from '@data/amparo-m40';
 
 export interface Props {
@@ -50,7 +51,12 @@ const textoEstatico = yaPaso
     <rect x="3" y="5" width="18" height="16" rx="2" />
     <path d="M3 10h18M8 3v4M16 3v4" />
   </svg>
-  <p class="contador-texto" data-contador-texto>{textoEstatico}</p>
+  <div class="contador-cuerpo">
+    <p class="contador-texto" data-contador-texto>{textoEstatico}</p>
+    {/* Sin esta línea, el 26 de noviembre se lee —y se cita— como si fuera
+        el plazo que da la ley. Es nuestro corte interno. */}
+    {!yaPaso && <p class="contador-aclaracion">{TEXTO_FECHA_INTERNA}</p>}
+  </div>
 </div>
 
 <style>
@@ -74,6 +80,16 @@ const textoEstatico = yaPaso
     stroke-width: 1.6;
     stroke-linecap: round;
   }
+  .contador-cuerpo { display: flex; flex-direction: column; gap: 0.2rem; }
+  .contador-aclaracion {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--color-accent-deep);
+    opacity: 0.85;
+  }
+  .contador--oscuro .contador-aclaracion { color: rgba(250, 248, 244, 0.7); opacity: 1; }
   .contador-texto {
     margin: 0;
     font-size: var(--text-sm);

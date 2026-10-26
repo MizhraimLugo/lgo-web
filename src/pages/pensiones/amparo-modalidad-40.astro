@@ -30,9 +30,12 @@ import {
   conIva,
   fmtMXN,
   fmtTope,
+  fmtMXNExacto,
+  fmtMXNAproximado,
   fechaLarga,
   fechaCorta,
   lanzamientoVigente,
+  TEXTO_FECHA_INTERNA,
   topeAnteriorDiario,
   topeAnteriorMensual
 } from '@data/amparo-m40';
@@ -42,9 +45,6 @@ const title = 'Amparo Modalidad 40 IMSS en Guadalajara | LGO Abogados';
 const description =
   '¿El IMSS topó tu Modalidad 40? Revisamos si procede un amparo en tu caso. Diagnóstico $500 + IVA. Abogados en Guadalajara y Zapopan.';
 const ogImage = '/og-amparo-modalidad-40.jpg';
-
-// Teléfono de captación de la sección en E.164, derivado del WhatsApp.
-const telefonoE164 = `+${M40.whatsapp}`;
 
 // El precio de lanzamiento se decide en el build y se vuelve a comprobar en el
 // cliente (ver el <script> del final): así el tachado desaparece solo aunque no
@@ -57,6 +57,7 @@ const corteCorto = fechaCorta(M40.plazos.corteInterno);
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
+  '@id': `${business.url}${path}#breadcrumb`,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: business.url + '/' },
     { '@type': 'ListItem', position: 2, name: 'Pensiones', item: business.url + '/pensiones/' },
@@ -64,42 +65,82 @@ const breadcrumbLd = {
   ]
 };
 
-// LegalService del servicio concreto. @id propio: no se pisa con la
-// Organization `#abogados` que Base.astro ya declara para la sub-marca.
-// Sin schema de reseñas ni calificaciones, por decisión editorial.
-const legalServiceLd = {
+/**
+ * El servicio concreto, como `Service`.
+ *
+ * Antes era un `LegalService`, y eso creaba dos problemas: duplicaba la
+ * entidad "LGO Abogados & Consultores" que el layout ya declara en
+ * `#abogados` —la firma figuraba como proveedora de sí misma— y colgaba de
+ * un negocio local tres propiedades que no le pertenecen (`provider`,
+ * `serviceType`, `inLanguage` son de `Service`).
+ *
+ * Ahora la firma es una sola entidad, la de siempre, y esta página declara
+ * el SERVICIO que presta, con sus precios. Sin schema de reseñas ni
+ * calificaciones, por decisión editorial.
+ *
+ * Los precios salen de la misma configuración que pinta los visibles, así
+ * que no pueden desincronizarse. La oferta de lanzamiento solo se emite
+ * mientras está vigente.
+ */
+const oferta = (nombre: string, monto: number, validoHasta?: string) => ({
+  '@type': 'Offer',
+  name: nombre,
+  price: monto,
+  priceCurrency: 'MXN',
+  priceSpecification: {
+    '@type': 'PriceSpecification',
+    price: monto,
+    priceCurrency: 'MXN',
+    // Los montos publicados son ANTES de IVA.
+    valueAddedTaxIncluded: false
+  },
+  ...(validoHasta ? { priceValidUntil: validoHasta } : {})
+});
+
+const servicioLd = {
   '@context': 'https://schema.org',
-  '@type': 'LegalService',
-  '@id': `${business.url}${path}#legalservice`,
-  name: 'LGO Abogados & Consultores',
+  '@type': 'Service',
+  '@id': `${business.url}${path}#servicio`,
+  name: 'Amparo contra el tope salarial de la Modalidad 40 del IMSS',
+  serviceType: 'Juicio de amparo contra el tope salarial de la Modalidad 40 del IMSS',
   description,
   url: business.url + path,
   image: business.url + ogImage,
-  telephone: telefonoE164,
-  email: business.email,
-  inLanguage: 'es-MX',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: business.address.street,
-    addressLocality: business.address.locality,
-    addressRegion: business.address.regionCode,
-    postalCode: business.address.postalCode,
-    addressCountry: business.address.countryCode
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: business.geo.latitude,
-    longitude: business.geo.longitude
-  },
-  areaServed: { '@type': 'AdministrativeArea', name: 'Zona Metropolitana de Guadalajara' },
-  serviceType: 'Juicio de amparo contra el tope salarial de la Modalidad 40 del IMSS',
-  parentOrganization: { '@id': `${business.url}/#organization` },
-  provider: { '@id': `${business.url}/#abogados` }
+  provider: { '@id': `${business.url}/#abogados` },
+  // VERIFICAR: alcance del servicio. La pregunta frecuente dice que se
+  // revisan casos de cualquier estado, y el Organization del sitio ya
+  // declara México; antes este nodo decía solo la zona de Guadalajara y se
+  // contradecían.
+  areaServed: [
+    { '@type': 'City', name: business.address.locality },
+    { '@type': 'AdministrativeArea', name: business.address.region },
+    { '@type': 'Country', name: 'México' }
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Precios',
+    itemListElement: [
+      oferta('Diagnóstico', M40.precios.diagnostico),
+      hayLanzamiento
+        ? oferta('Amparo Modalidad 40, precio de lanzamiento', M40.precios.amparoLanzamiento, M40.plazos.lanzamientoHasta)
+        : oferta('Amparo Modalidad 40', M40.precios.amparo)
+    ]
+  }
 };
 
 const faqLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
+  '@id': `${business.url}${path}#webpage`,
+  url: business.url + path,
+  name: title,
+  inLanguage: 'es-MX',
+  // La fecha sale de la configuración, no se escribe a mano: es la señal de
+  // frescura que un buscador y un modelo pueden leer sin interpretar prosa.
+  dateModified: M40.ultimaActualizacion,
+  isPartOf: { '@id': `${business.url}/#website` },
+  about: { '@id': `${business.url}${path}#servicio` },
+  breadcrumb: { '@id': `${business.url}${path}#breadcrumb` },
   mainEntity: faqsAmparoM40.map(({ q, a }) => ({
     '@type': 'Question',
     name: q,
@@ -165,7 +206,7 @@ const pasos = [
   },
   {
     titulo: 'Presentamos tu amparo.',
-    texto: 'Demanda y solicitud de suspensión, listas antes del corte.'
+    texto: 'Presentamos tu caso y pedimos la medida provisional, listos antes del corte.'
   },
   {
     titulo: 'Te acompañamos hasta el final.',
@@ -187,7 +228,7 @@ const incluye = [
 const claridades = [
   {
     titulo: 'No hay garantías.',
-    texto: 'Aún no hay sentencias sobre este acuerdo. Nadie puede asegurarte el resultado.'
+    texto: `Al ${fechaLarga(M40.ultimaActualizacion)} no conocemos sentencias sobre este acuerdo. Nadie puede asegurarte el resultado.`
   },
   {
     titulo: 'Es una medida temporal.',
@@ -199,7 +240,7 @@ const claridades = [
   },
   {
     titulo: 'Toma tiempo.',
-    texto: 'Mientras se resuelve, quizá no coticen con el salario que buscas.'
+    texto: 'Mientras se resuelve, quizá no cotices con el salario que buscas.'
   },
   {
     // VERIFICAR: reforma de 2025 a la Ley de Amparo (requisitos y suspensión).
@@ -222,7 +263,7 @@ const documentos = [
   description={description}
   path={path}
   ogImage={ogImage}
-  extraJsonLd={[breadcrumbLd, legalServiceLd, faqLd]}
+  extraJsonLd={[breadcrumbLd, servicioLd, faqLd]}
 >
 
   <!-- Íconos lineales de la sección: un solo sprite y <use> donde se ocupan.
@@ -330,19 +371,23 @@ const documentos = [
             {fmtTope(topeAnteriorDiario())}<span class="tope-unidad">diarios</span>
           </p>
           <p class="tope-nota">
-            {M40.topeAnteriorVecesUMA} UMA, cerca de {fmtMXN(topeAnteriorMensual())} al mes.
-            Valores 2026.
+            El tope general: {M40.topeAnteriorVecesUMA} UMA. Con la UMA de 2026 en
+            {' '}{fmtMXNExacto(M40.uma2026)}, son {fmtMXNExacto(topeAnteriorDiario())} al día,
+            cerca de {fmtMXNAproximado(topeAnteriorMensual())} al mes.
           </p>
         </article>
 
         <!-- VERIFICAR: tope de las nuevas inscripciones al último salario de baja más una UMA. -->
         <article class="tope tope--ahora reveal-up reveal-up--delay-1">
           <span class="tope-rotulo">Desde el {vigenciaCorta}</span>
-          <p class="tope-intro">Solo con tu último salario</p>
+          <p class="tope-intro">Tu último salario, más</p>
           <p class="tope-cifra">
-            + {fmtTope(M40.uma2026)}<span class="tope-unidad">diarios</span>
+            {fmtTope(M40.uma2026)}<span class="tope-unidad">diarios</span>
           </p>
-          <p class="tope-nota">1 UMA. Valores 2026.</p>
+          <p class="tope-nota">
+            Una UMA: {fmtMXNExacto(M40.uma2026)} al día en 2026. El tope pasa a ser el
+            último salario con el que te diste de baja más esa cantidad.
+          </p>
         </article>
       </div>
 
@@ -354,6 +399,12 @@ const documentos = [
           </li>
         ))}
       </ul>
+
+      <!-- VERIFICAR: definición de la UMA y que el INEGI publica su valor. -->
+      <p class="nota-chica">
+        La UMA es la Unidad de Medida y Actualización, la referencia con la que se miden
+        estos topes. Su valor lo publica el INEGI cada año.
+      </p>
 
       <p class="remate">
         Si saliste con un salario modesto, el tope nuevo puede reducir de forma importante la
@@ -388,8 +439,9 @@ const documentos = [
       <aside class="honesto">
         <svg class="ico" aria-hidden="true" focusable="false"><use href="#ico-balanza" /></svg>
         <p>
-          Todavía no hay sentencias sobre este acuerdo. Por eso empezamos con un diagnóstico:
-          si tu caso no tiene sentido, te lo decimos antes de cobrarte el amparo.
+          Al {fechaLarga(M40.ultimaActualizacion)} no conocemos sentencias sobre este acuerdo.
+          Por eso empezamos con un diagnóstico: si tu caso no tiene sentido, te lo decimos
+          antes de cobrarte el amparo.
         </p>
       </aside>
     </div>
