@@ -302,6 +302,14 @@ const documentos = [
   <!-- ═══ 4.1 ENCABEZADO ═══ -->
   <section class="hero band-dark" data-hero>
     <div class="container-base">
+      <nav class="miga" aria-label="Ruta de navegación">
+        <ol>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/pensiones/">Pensiones</a></li>
+          <li><span aria-current="page">Amparo Modalidad 40</span></li>
+        </ol>
+      </nav>
+
       <p class="pildora">
         <span class="pildora-fuerte">Nuevas reglas IMSS</span> ·
         Vigentes desde el {fechaLarga(M40.acuerdo.vigenciaDesde)}
@@ -360,7 +368,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">El golpe en números</span>
-        <h2>Esto es lo que cambió</h2>
+        <h2>Esto es lo que cambió en la Modalidad 40</h2>
       </header>
 
       <div class="topes">
@@ -422,7 +430,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Por qué hay defensa</span>
-        <h2>La ley dice una cosa. El acuerdo, otra.</h2>
+        <h2>La ley dice una cosa. El acuerdo del IMSS, otra.</h2>
       </header>
 
       <div class="argumento">
@@ -458,7 +466,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Qué necesitas</span>
-        <h2>Ten esto a la mano</h2>
+        <h2>Ten esto a la mano para tu diagnóstico</h2>
       </header>
 
       <ul class="checklist">
@@ -485,7 +493,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Por qué con nosotros</span>
-        <h2>No es un formato. Es tu defensa.</h2>
+        <h2>Un amparo no es un formato. Es tu defensa.</h2>
       </header>
 
       <!-- Tabla real (semántica y legible por lectores de pantalla). En móvil
@@ -538,7 +546,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Cómo funciona</span>
-        <h2>Así de simple</h2>
+        <h2>Así de simple: cómo presentamos tu amparo</h2>
       </header>
 
       <ol class="pasos">
@@ -560,7 +568,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Precio</span>
-        <h2>Un precio. Todo incluido.</h2>
+        <h2>Cuánto cuesta el amparo. Un precio, todo incluido.</h2>
       </header>
 
       <div class="precios">
@@ -632,7 +640,7 @@ const documentos = [
     <div class="container-base">
       <header class="section-head">
         <span class="eyebrow">Te lo decimos claro</span>
-        <h2>Lo que nadie te dice (y nosotros sí)</h2>
+        <h2>Lo que nadie te dice del amparo (y nosotros sí)</h2>
       </header>
 
       <ul class="claridades">
@@ -649,7 +657,7 @@ const documentos = [
   <!-- ═══ 4.9 PREGUNTAS FRECUENTES ═══ -->
   <section id="preguntas" class="section band-cream">
     <div class="container-base">
-      <Faq items={faqsAmparoM40} title="Preguntas frecuentes" />
+      <Faq items={faqsAmparoM40} title="Preguntas frecuentes sobre la Modalidad 40" />
       <a href={M40_WHATSAPP_GENERAL} class="btn btn-outline faq-cta" target="_blank" rel="noopener">
         ¿Tienes otra duda? Pregúntanos.
       </a>
@@ -667,6 +675,10 @@ const documentos = [
           {M40.sede}, {business.address.locality}, {business.address.region}.
         </p>
         <p class="quien-frase">Te atiende un abogado, no un call center.</p>
+        <p class="quien-enlace">
+          Conoce <a href="/abogados/">LGO Abogados &amp; Consultores</a>, la división que
+          lleva este asunto, y el resto de los <a href="/pensiones/">servicios de pensiones</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -750,10 +762,27 @@ const documentos = [
      `band-blanco` es el blanco puro, que el fondo del sitio no da. */
   .band-blanco { background: var(--color-surface); }
 
+  /* ── Miga de pan ──
+     Existe porque el JSON-LD ya declaraba esta ruta: el dato estructurado
+     debe reflejar navegación real, no una que solo vea el buscador. */
+  /* En móvil la miga se aprieta: el ancla de precio tiene que seguir
+     cabiendo en el primer pantallazo, con el banner de cookies arriba. */
+  .miga { margin-bottom: 0.75rem; }
+  @media (min-width: 768px) { .miga { margin-bottom: 1.5rem; } }
+  .miga ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .miga li { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-xs); }
+  .miga li + li::before {
+    content: '›';
+    color: rgba(250, 248, 244, 0.4);
+  }
+  .miga a { color: rgba(250, 248, 244, 0.7); text-decoration: underline; }
+  .miga a:hover { color: var(--color-on-dark); }
+  .miga [aria-current] { color: rgba(250, 248, 244, 0.55); }
+
   /* ── 4.1 ENCABEZADO ──
      Padding propio (no `section-roomy`): el ancla de precio tiene que caber en
      el primer pantallazo de un móvil de 390 × 844. */
-  .hero { padding-block: 2.5rem 3.25rem; }
+  .hero { padding-block: 1.75rem 3.25rem; }
   @media (min-width: 768px) { .hero { padding-block: 4.5rem 4rem; } }
   @media (min-width: 1024px) { .hero { padding-block: 6rem 5rem; } }
 
@@ -761,7 +790,7 @@ const documentos = [
      párrafo y el separador viaja con él, en lugar de quedar colgando. */
   .pildora {
     display: inline-block;
-    margin: 0 0 1.5rem;
+    margin: 0 0 0.875rem;
     padding: 0.45rem 1rem;
     line-height: 1.5;
     border: 1px solid rgba(250, 248, 244, 0.28);
@@ -776,16 +805,16 @@ const documentos = [
   .hero h1 {
     margin: 0 0 1.125rem;
     font-size: clamp(2.125rem, 1.5rem + 3.2vw, 3.5rem);
-    line-height: 1.08;
+    line-height: 1.05;
     letter-spacing: -0.02em;
     max-width: 24ch;
   }
   .hero-h1-b { display: block; color: var(--color-accent-soft); }
 
   .hero-sub {
-    margin: 0 0 1.25rem;
+    margin: 0 0 1rem;
     font-size: var(--text-base);
-    line-height: 1.6;
+    line-height: 1.5;
     max-width: 52ch;
   }
   @media (min-width: 768px) { .hero-sub { font-size: var(--text-lg); } }
@@ -1204,6 +1233,14 @@ const documentos = [
     color: var(--color-foreground-strong);
   }
   .quien-sede { margin: 0 0 1.25rem; font-size: var(--text-sm); color: var(--color-muted); }
+  .quien-enlace {
+    margin: 1.25rem 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-muted);
+  }
+  .quien-enlace a { color: var(--color-accent-strong); font-weight: 600; text-decoration: underline; }
+
   .quien-frase {
     margin: 0;
     padding-left: 1.125rem;

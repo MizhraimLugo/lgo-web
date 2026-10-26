@@ -34,10 +34,10 @@ import { CATEGORIAS } from '@data/analytics';
     hidden
   >
     <div class="cookie-banner-texto">
-      <h2 id="cookie-banner-titulo">Cookies en lgo.mx</h2>
+      <p class="cookie-banner-titulo" id="cookie-banner-titulo">Cookies en lgo.mx</p>
       <p>
-        Las necesarias hacen funcionar el sitio. Las analíticas solo se activan si usted
-        las acepta. {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
+        Las necesarias hacen funcionar el sitio. Las analíticas, solo si las aceptas.
+        {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
       </p>
     </div>
     <div class="cookie-banner-acciones">
@@ -64,7 +64,7 @@ import { CATEGORIAS } from '@data/analytics';
     hidden
   >
     <header class="cookie-panel-head">
-      <h2 id="cookie-panel-titulo">Configurar cookies</h2>
+      <p class="cookie-panel-titulo" id="cookie-panel-titulo">Configurar cookies</p>
       <button type="button" class="cookie-cerrar" data-cookie-cerrar aria-label="Cerrar">
         <span aria-hidden="true">×</span>
       </button>
@@ -128,17 +128,18 @@ import { CATEGORIAS } from '@data/analytics';
   }
 
   .cookie-banner-texto { max-width: 62ch; }
-  .cookie-banner h2 {
+  .cookie-banner-titulo {
     margin: 0 0 0.375rem;
     font-size: var(--text-base);
+    font-weight: 700;
     color: var(--color-on-dark);
   }
   /* En móvil el banner se queda con lo imprescindible: en una landing el
      primer pantallazo tiene que seguir mostrando su oferta. El título sigue
      ahí para `aria-labelledby`, solo deja de pintarse. */
   @media (max-width: 899px) {
-    .cookie-banner { gap: 0.75rem; padding-block: 0.875rem; }
-    .cookie-banner h2 {
+    .cookie-banner { gap: 0.625rem; padding-block: 0.75rem; }
+    .cookie-banner-titulo {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -202,7 +203,12 @@ import { CATEGORIAS } from '@data/analytics';
     gap: 1rem;
     margin-bottom: 1.25rem;
   }
-  .cookie-panel-head h2 { margin: 0; font-size: var(--text-xl); }
+  .cookie-panel-titulo {
+    margin: 0;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-foreground-strong);
+  }
   .cookie-cerrar {
     display: inline-flex;
     align-items: center;
