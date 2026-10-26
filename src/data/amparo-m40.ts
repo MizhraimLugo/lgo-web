@@ -25,12 +25,12 @@ import { AVISO_PRIVACIDAD_PATH } from './aviso-privacidad.ts';
 
 export const M40 = {
   acuerdo: {
-    /** Publicación en el DOF del acuerdo del Consejo Técnico del IMSS. [VERIFICAR] contra dof.gob.mx */
+    /** Publicación en el DOF del acuerdo del Consejo Técnico del IMSS. [COTEJADO 2026-10-26] contra dof.gob.mx */
     fechaDOF: '2026-10-21',
-    /** Inicio de vigencia del tope para nuevas inscripciones. [VERIFICAR] */
+    /** Inicio de vigencia del tope para nuevas inscripciones. [COTEJADO 2026-10-26] */
     vigenciaDesde: '2026-10-22'
   },
-  /** La reforma a la Ley de Amparo que endureció el acceso. [VERIFICAR] */
+  /** La reforma a la Ley de Amparo que endureció el acceso. [COTEJADO 2026-10-26] */
   reformaAmparo: {
     fechaDOF: '2025-10-16',
     vigenciaDesde: '2025-10-17'
@@ -42,12 +42,12 @@ export const M40 = {
     lanzamientoHasta: '2026-11-15',
     /**
      * Días hábiles para impugnar el acuerdo por su sola vigencia.
-     * [VERIFICAR] artículo 17, fracción I de la Ley de Amparo.
+     * [COTEJADO 2026-10-26] artículo 17, fracción I de la Ley de Amparo.
      */
     diasAcuerdo: 30,
     /**
      * Días hábiles para impugnar la respuesta del IMSS a una solicitud.
-     * [VERIFICAR] artículo 17, primer párrafo de la Ley de Amparo.
+     * [COTEJADO 2026-10-26] artículo 17, primer párrafo de la Ley de Amparo.
      */
     diasRespuesta: 15,
     /**
@@ -58,10 +58,10 @@ export const M40 = {
      * se calcula en la plantilla: si el calendario cambia, se corrige en un
      * lugar y la página entera lo refleja.
      *
-     * [VERIFICAR] calendario oficial de días inhábiles del PJF para 2026.
+     * [COTEJADO 2026-10-26] calendario oficial de días inhábiles del PJF para 2026.
      */
     vencimientoAcuerdo: '2026-12-03',
-    /** Años para ejercer la continuación voluntaria. [VERIFICAR art. 219 LSS] */
+    /** Años para ejercer la continuación voluntaria. [COTEJADO 2026-10-26, art. 219 LSS] */
     aniosContinuacion: 5
   },
   precios: {
@@ -81,7 +81,7 @@ export const M40 = {
    * [VERIFICAR] valor diario de la UMA 2026 (DOF 09/01/2026).
    */
   uma2026: 117.31,
-  /** Tope general de cotización, en veces UMA. [VERIFICAR] */
+  /** Tope general de cotización, en veces UMA. [COTEJADO 2026-10-26] */
   topeAnteriorVecesUMA: 25,
   /** Fecha de la última revisión del contenido de la página. */
   ultimaActualizacion: '2026-10-26',

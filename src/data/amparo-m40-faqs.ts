@@ -20,8 +20,9 @@
 // Se describe QUÉ PASA, no cómo se llama el acto procesal. Profesional no
 // es sonar a escrito judicial.
 //
-// VERIFICAR (sección 9 del encargo) — afirmaciones jurídicas pendientes de
-// cotejo contra fuente oficial antes del merge:
+// COTEJADO 2026-10-26 — afirmaciones jurídicas de este archivo, verificadas
+// contra fuente oficial. Quedan listadas porque cuando cambie la ley son
+// exactamente lo que hay que volver a mirar:
 //   · P1 «¿Hasta cuándo puedo ampararme?» — los plazos concretos y el cómputo
 //     del vencimiento. El texto es el Bloque D del documento de autoridad de
 //     Edgar; las fechas y los días salen de `M40.plazos`, así que esta
@@ -51,28 +52,28 @@ export const faqsAmparoM40: FaqItem[] = [
     // —una persona o un modelo— presentaría el corte interno de LGO como si
     // fuera el plazo que da la ley, y alguien podría darse por vencido sin
     // estarlo. Primero la distinción, después la fecha, siempre rotulada.
-    // VERIFICAR: las dos vías y que sus plazos corren por separado.
+    // COTEJADO 2026-10-26: las dos vías y que sus plazos corren por separado.
     q: '¿Hasta cuándo puedo ampararme?',
     a: `Depende de tu caso. Contra el acuerdo, el plazo de ${M40.plazos.diasAcuerdo} días hábiles corre desde el ${fechaLarga(M40.acuerdo.vigenciaDesde)} y, por nuestro cómputo, vence el ${vence}; nosotros recibimos expedientes hasta el ${corte} para presentar con margen. Si el IMSS ya respondió una solicitud tuya aplicando el tope, tienes ${M40.plazos.diasRespuesta} días hábiles desde el día siguiente a que surta efectos esa notificación. Escríbenos y te decimos en qué reloj estás.`
   },
   {
-    // VERIFICAR: cómo se calcula la pensión en cada régimen.
+    // COTEJADO 2026-10-26: cómo se calcula la pensión en cada régimen.
     q: '¿Me sirve si empecé a cotizar después de 1997?',
     a: 'Por lo general no. La Modalidad 40 le sirve sobre todo a quien se pensiona con la Ley de 1973, porque ahí la pensión se calcula con el promedio del salario de tus últimos años cotizados: subir ese salario cambia el resultado. Con la Ley de 1997 la pensión sale de lo que hayas acumulado en tu Afore, así que el efecto es distinto. Entre una ley y otra hay situaciones mixtas que conviene mirar con calma, y eso es justo lo que revisamos en el diagnóstico con tus semanas cotizadas.'
   },
   {
-    // VERIFICAR: respeto de condiciones a quien ya está inscrito, y régimen
+    // COTEJADO 2026-10-26: respeto de condiciones a quien ya está inscrito, y régimen
     // aplicable a una reinscripción.
     q: 'Ya pago Modalidad 40, ¿me afecta?',
     a: 'Mientras dure el periodo que contrataste, conservas las condiciones con las que entraste. El tope nuevo aparece cuando vuelves a inscribirte, porque una reinscripción se rige por las reglas que estén vigentes el día que la pides. Por eso, si tu periodo está por terminar y piensas seguir, conviene revisar tu caso antes de que se venza y no después: una vez cerrado, las opciones son otras.'
   },
   {
-    // VERIFICAR: fin de la retroactividad en las inscripciones.
+    // COTEJADO 2026-10-26: fin de la retroactividad en las inscripciones.
     q: '¿Puedo pagar meses atrasados?',
     a: 'Con las reglas nuevas de la Modalidad 40, no: tu inscripción cuenta desde el día que la solicitas y ya no se pueden cubrir meses anteriores. Antes sí se podía, y para mucha gente era parte importante del plan, porque permitía subir el promedio de su salario en menos tiempo. Si en tu caso hay algo que defender sobre este punto, te lo decimos en el diagnóstico.'
   },
   {
-    // VERIFICAR: etapas del juicio y tramitación separada de la suspensión.
+    // COTEJADO 2026-10-26: etapas del juicio y tramitación separada de la suspensión.
     q: '¿Cuánto tarda el juicio?',
     a: 'No hay un tiempo fijo: depende de qué tan cargado esté el juzgado y de si alguna de las partes pide que otro tribunal revise la decisión, lo que suma meses. El orden es este: presentamos tu caso, le pedimos al juez una medida provisional —la suspensión— para mientras dura el juicio, el IMSS responde por escrito, hay una audiencia y al final el juez decide. Esa medida provisional se resuelve aparte y mucho antes que lo demás, así que suele ser la primera noticia que recibes. Te avisamos en cada paso sin que tengas que preguntar.'
   },

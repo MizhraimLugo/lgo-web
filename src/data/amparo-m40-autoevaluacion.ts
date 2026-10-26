@@ -10,8 +10,8 @@
 // Los criterios de las preguntas P2 y P3 (baja dentro de los últimos cinco
 // años y 52 semanas cotizadas en los cinco años previos a la baja) provienen
 // de los requisitos de la continuación voluntaria en el régimen obligatorio.
-// Están marcados para verificación jurídica antes del merge — ver el
-// comentario VERIFICAR de Autoevaluacion.astro y la sección 9 del encargo.
+// Cotejados contra los artículos 218 y 219 de la Ley del Seguro Social el
+// 26/10/2026 — ver el comentario de Autoevaluacion.astro.
 
 /** Id de la opción elegida en cada pregunta. */
 export type RespuestaP1 = 'si' | 'no' | 'no-se';

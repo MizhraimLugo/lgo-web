@@ -13,9 +13,10 @@
 // valor de la UMA allí lo cambia en el encabezado, el contador, las tarjetas,
 // la comparativa, las FAQ, la barra fija y el pie.
 //
-// Los comentarios VERIFICAR marcan afirmaciones jurídicas pendientes de cotejo
-// contra fuente oficial. Se enlistan en la descripción del PR y son requisito
-// de merge (sección 9 del encargo v1).
+// Los comentarios COTEJADO marcan las afirmaciones jurídicas de la página y la
+// fecha en que se verificaron contra fuente oficial. No son decoración: cuando
+// cambie la ley, son la lista de lo que hay que volver a mirar. Lo que sigue
+// marcado VERIFICAR es lo que falta, y está enlistado en el PR.
 
 import Base from '@layouts/Base.astro';
 import Faq from '@components/Faq.astro';
@@ -169,11 +170,11 @@ const confianza = [
 
 /** 4.2 — Lo demás que cambió, además de los topes. */
 const otrosCambios = [
-  // VERIFICAR: fin de los pagos retroactivos.
+  // COTEJADO 2026-10-26: fin de los pagos retroactivos.
   { ico: 'calendario', texto: 'Ya no puedes pagar meses hacia atrás.' },
-  // VERIFICAR: el trámite quedó exclusivamente digital.
+  // COTEJADO 2026-10-26: el trámite quedó exclusivamente digital.
   { ico: 'documento', texto: 'El trámite es solo digital.' },
-  // VERIFICAR: respeto de las condiciones contratadas a quien ya está inscrito.
+  // COTEJADO 2026-10-26: respeto de las condiciones contratadas a quien ya está inscrito.
   {
     ico: 'escudo',
     texto: 'Si ya estás inscrito, conservas tus condiciones hasta que termine tu periodo.'
@@ -252,7 +253,7 @@ const claridades = [
     texto: 'Mientras se resuelve, quizá no cotices con el salario que buscas.'
   },
   {
-    // VERIFICAR: reforma de 2025 a la Ley de Amparo (requisitos y suspensión).
+    // COTEJADO 2026-10-26: reforma de 2025 a la Ley de Amparo (requisitos y suspensión).
     titulo: 'El acceso al amparo es más estricto desde 2025.',
     texto: 'Por eso la estrategia importa.'
   }
@@ -394,7 +395,7 @@ const documentos = [
           </p>
         </article>
 
-        <!-- VERIFICAR: tope de las nuevas inscripciones al último salario de baja más una UMA. -->
+        {/* COTEJADO 2026-10-26: tope de las nuevas inscripciones al último salario de baja más una UMA. */}
         <article class="tope tope--ahora reveal-up reveal-up--delay-1">
           <span class="tope-rotulo">Desde el {vigenciaCorta}</span>
           <p class="tope-intro">Tu último salario, más</p>
@@ -417,7 +418,7 @@ const documentos = [
         ))}
       </ul>
 
-      <!-- VERIFICAR: definición de la UMA y que el INEGI publica su valor. -->
+      {/* VERIFICAR: definición de la UMA y que el INEGI publica su valor. */}
       <p class="nota-chica">
         La UMA es la Unidad de Medida y Actualización, la referencia con la que se miden
         estos topes. Su valor lo publica el INEGI cada año.
@@ -444,7 +445,7 @@ const documentos = [
       </header>
 
       <div class="argumento">
-        <!-- VERIFICAR: artículo 218 de la Ley del Seguro Social en su texto vigente. -->
+        {/* COTEJADO 2026-10-26: artículo 218 de la Ley del Seguro Social en su texto vigente. */}
         <p>
           La Ley del Seguro Social te permite seguir cotizando con tu último salario
           <strong>o uno superior</strong>. El tope nuevo no viene de una reforma a esa ley:
@@ -735,8 +736,10 @@ const documentos = [
           inscribir con las reglas anteriores.
         </li>
         <li>
-          {/* VERIFICAR: el sitio aún no publica un aviso de privacidad.
-              Al publicarlo, basta llenar `avisoPrivacidadUrl` en @data/amparo-m40. */}
+          {/* El aviso ya está publicado y `avisoPrivacidadUrl` sale de
+              @data/aviso-privacidad, así que el enlace siempre se pinta. El
+              respaldo se queda como defensa barata por si alguien vacía la
+              constante: el párrafo sigue teniendo sentido sin el enlace. */}
           {M40.avisoPrivacidadUrl
             ? <a href={M40.avisoPrivacidadUrl}>Consulta el aviso de privacidad del sitio.</a>
             : <span>El aviso de privacidad del sitio aplica a los datos que nos compartes.</span>}

@@ -33,12 +33,15 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
       </p>
     </header>
 
-    <!--
-      VERIFICAR (sección 9 del encargo): los criterios de P2 y P3 —baja dentro de
-      los últimos cinco años y 52 semanas cotizadas en los cinco años previos a la
-      baja— deben cotejarse contra el texto vigente del artículo 218 de la Ley del
-      Seguro Social antes del merge.
-    -->
+    {/*
+      COTEJADO 2026-10-26: los criterios de P2 y P3 —baja dentro de los últimos
+      cinco años y 52 semanas cotizadas en los cinco años previos a la baja—
+      salen de los artículos 218 y 219 de la Ley del Seguro Social, verificados
+      contra el texto vigente. Si la ley cambia, esta clasificación cambia.
+
+      Va en un comentario de Astro y no en uno de HTML: los `<!-- -->` del
+      template se publican, y las notas de cotejo son trabajo interno.
+    */}
 
     <div class="ae" data-ae>
       <!-- BARRA DE AVANCE -->

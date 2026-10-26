@@ -20,18 +20,22 @@
 // contenido es nuestro y está aquí literal —no viene de ninguna entrada de
 // usuario—, así que no hay superficie de inyección.
 //
-// VERIFICAR (sección 9 del encargo) — lo que Edgar marcó como pendiente de
-// cotejo contra fuente oficial antes del merge:
+// COTEJADO 2026-10-26 — Edgar verificó contra fuente oficial todo lo que este
+// archivo afirma:
 //   · Acuerdo del Consejo Técnico en dof.gob.mx (punto Séptimo, vigencia).
 //   · Ley del Seguro Social: artículos 218, 219, 251, 263, 264, 294 y 295.
 //   · Ley de Amparo: artículos 128, 129, 148 y el tercero transitorio del
 //     decreto de 2025.
-//   · Reglamento de Afiliación, artículo 64.
 //   · Tesis 2027614 y 2032691 en el Semanario Judicial de la Federación.
 //   · Calendario de días inhábiles del PJF para noviembre y diciembre 2026.
 //
-// Lo que Edgar SÍ verificó contra el PDF de la Cámara de Diputados queda
-// anotado en la descripción del PR, no aquí: esto es código, no bitácora.
+// Sigue pendiente el artículo 64 del Reglamento de Afiliación, que ningún
+// texto de este archivo necesita: vive marcado en @data/amparo-m40-tope, donde
+// solo refuerza un acotamiento que los artículos 26 y 28 ya sostienen.
+//
+// La lista se queda aquí porque cuando cambie la ley es exactamente lo que hay
+// que volver a mirar. Qué se cotejó contra qué fuente va en la descripción del
+// PR, no aquí: esto es código, no bitácora.
 
 import { M40, fechaLarga, fechaCorta } from './amparo-m40.ts';
 
