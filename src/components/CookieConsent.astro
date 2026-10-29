@@ -47,12 +47,12 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
       <p>
         {BANNER_TEXTO}
         {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
+        {' '}<button type="button" class="cookie-configurar" data-cookie-configurar>
+          Configurar
+        </button>
       </p>
     </div>
     <div class="cookie-banner-acciones">
-      <button type="button" class="btn btn-ghost cookie-btn" data-cookie-configurar>
-        Configurar
-      </button>
       <button type="button" class="btn btn-ghost cookie-btn" data-cookie-necesarias>
         Solo necesarias
       </button>
@@ -133,6 +133,12 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
       justify-content: space-between;
       gap: 2rem;
       padding-inline: 3rem;
+      /* «Configurar» dentro del párrafo le suma un renglón al texto, y en
+         escritorio el texto es lo más alto del banner. Estos 8 px menos de
+         aire arriba y abajo devuelven el banner a los 110 px que medía, que
+         es lo que un portátil de 1280 × 800 necesita para que el botón de
+         WhatsApp del encabezado siga completo. */
+      padding-block: 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
     }
   }
 
@@ -150,6 +156,26 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
     color: rgba(250, 248, 244, 0.85);
   }
   .cookie-banner a { color: var(--color-accent-soft); font-weight: 700; }
+
+  /* «Configurar» viaja dentro del párrafo y no en una fila propia: esa fila
+     costaba 40 px del primer pantallazo en móvil. Sigue siendo un botón de
+     verdad —el foco visible se lo da el `:focus-visible` global— y el relleno
+     vertical le da área de toque sin gastar alto, porque el relleno de un
+     elemento en línea no estira la línea que lo contiene. */
+  .cookie-configurar {
+    display: inline;
+    padding: 0.5rem 0.25rem;
+    margin: 0 -0.25rem;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 700;
+    color: var(--color-accent-soft);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .cookie-configurar:hover { color: var(--color-on-dark); }
 
   .cookie-banner-acciones {
     display: flex;
@@ -170,19 +196,22 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
   /* En móvil el banner se queda con lo imprescindible: en una landing el
      primer pantallazo tiene que seguir mostrando su oferta. El título sigue
      ahí para `aria-labelledby`, solo deja de pintarse.
-     
+
      Las dos decisiones —aceptar todas y solo las necesarias— comparten una
      sola fila y conservan el mismo peso, que es lo que un banner honesto
-     exige. «Configurar» pasa a enlace: sigue visible y con área de toque
-     suficiente, pero no gasta una fila de 48 px. Entre eso y el título
-     oculto, el banner baja de 188 a ~140 px, que es lo que necesitaba el
-     encabezado de la landing para caber en una pantalla de 360 px. */
+     exige. «Configurar» va dentro del párrafo, no en una fila propia.
+
+     Alto real medido a 360 × 740 con las tres categorías en el texto:
+     185 px antes de sacar «Configurar» de su fila, 157 px después. El
+     presupuesto de ~140 px que decía este comentario se escribió cuando el
+     texto nombraba dos categorías; con tres ocupa cuatro renglones y ese
+     número dejó de corresponder. En escritorio mide 110 px. */
   @media (max-width: 899px) {
     .cookie-banner {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.5rem 0.625rem;
-      padding-block: 0.75rem;
+      padding-block: 0.625rem;
     }
     .cookie-banner-titulo {
       position: absolute;
@@ -196,26 +225,6 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
     .cookie-banner p { font-size: var(--text-xs); }
 
     .cookie-banner-acciones { display: contents; }
-
-    /* «Configurar» como enlace, en la misma línea del texto. */
-    .cookie-banner [data-cookie-configurar] {
-      grid-column: 1 / -1;
-      justify-self: start;
-      /* Enlace, pero con área de toque: 32 px de alto cumple el mínimo de
-         24 x 24 de WCAG 2.2 sin gastar una fila de botón de 48. */
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 0.125rem;
-      border: 0;
-      background: none;
-      font-size: var(--text-xs);
-      font-weight: 600;
-      color: var(--color-accent-soft);
-      text-decoration: underline;
-      text-underline-offset: 0.2em;
-    }
-    .cookie-banner [data-cookie-configurar]:hover { color: var(--color-on-dark); background: none; }
   }
 
   /* ── Panel ── */

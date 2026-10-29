@@ -332,12 +332,6 @@ const documentos = [
         <span class="hero-h1-b">Tú puedes defenderte.</span>
       </h1>
 
-      <p class="hero-sub">
-        Si estabas por inscribirte para mejorar tu pensión, las reglas nuevas pueden dejarte
-        cotizando con mucho menos de lo que planeabas. Revisamos tu caso y, si procede,
-        presentamos tu amparo.
-      </p>
-
       <!-- Cada precio es UN solo elemento: así, cuando el ancla se apila en
            móvil, no se parte en "Diagnóstico" por un lado y el monto por otro. -->
       <p class="hero-precio">
@@ -361,6 +355,12 @@ const documentos = [
         </a>
         <a href="#autoevaluacion" class="btn btn-ghost">¿Aplico? Haz la prueba en 1 minuto</a>
       </div>
+
+      <p class="hero-sub">
+        Si estabas por inscribirte para mejorar tu pensión, las reglas nuevas pueden dejarte
+        cotizando con mucho menos de lo que planeabas. Revisamos tu caso y, si procede,
+        presentamos tu amparo.
+      </p>
 
       <ContadorPlazo tono="oscuro" class="hero-contador" />
 
@@ -810,6 +810,18 @@ const documentos = [
      Padding propio (no `section-roomy`): el ancla de precio tiene que caber en
      el primer pantallazo de un móvil de 390 × 844. */
   .hero { padding-block: 1.75rem 3.25rem; }
+
+  /* En el marcado el precio y los botones van justo después del h1, y el
+     subtítulo queda debajo. El motivo es el primer pantallazo de un móvil: a
+     360 × 740 el banner de cookies ocupa los últimos 157 px, y con el
+     subtítulo en medio el botón de WhatsApp caía en y=636, detrás del banner.
+     Así queda en 492–540, con 43 px de holgura.
+
+     De 820 px en adelante sobra altura y el orden vuelve a ser el de siempre
+     —subtítulo, precio, botones—, con `order`. El recorrido de teclado sigue
+     al marcado: en escritorio los botones se alcanzan antes de leer el
+     subtítulo, que es texto estático y no recibe foco. */
+  .hero .container-base { display: flex; flex-direction: column; }
   @media (min-width: 768px) { .hero { padding-block: 4.5rem 4rem; } }
   @media (min-width: 1024px) { .hero { padding-block: 6rem 5rem; } }
 
@@ -817,6 +829,8 @@ const documentos = [
      párrafo y el separador viaja con él, en lugar de quedar colgando. */
   .pildora {
     display: inline-block;
+    /* Hija de un contenedor flex: sin esto se estiraría a todo el ancho. */
+    align-self: flex-start;
     margin: 0 0 0.875rem;
     padding: 0.45rem 1rem;
     line-height: 1.5;
@@ -839,12 +853,27 @@ const documentos = [
   .hero-h1-b { display: block; color: var(--color-accent-soft); }
 
   .hero-sub {
-    margin: 0 0 1rem;
+    margin: 1.75rem 0 0;
     font-size: var(--text-base);
     line-height: 1.5;
     max-width: 52ch;
   }
   @media (min-width: 768px) { .hero-sub { font-size: var(--text-lg); } }
+  @media (min-width: 820px) {
+    .hero .miga { order: 1; }
+    .hero .pildora { order: 2; }
+    .hero h1 { order: 3; }
+    .hero-sub { order: 4; margin: 0 0 1rem; }
+    .hero-precio { order: 5; }
+    .hero-ctas { order: 6; }
+    /* El contador es un componente: su raíz lleva el ámbito de ContadorPlazo,
+       no el de esta página, así que una regla con ámbito no lo alcanza. Por
+       eso `:global`. (La regla de `margin-top` de más abajo nunca llegó a
+       aplicarse por lo mismo; se queda como está para no mover el espaciado
+       de hoy.) */
+    :global(.hero-contador) { order: 7; }
+    .confianza { order: 8; }
+  }
 
   .hero-precio {
     display: flex;
@@ -1288,7 +1317,15 @@ const documentos = [
   .avisos li { font-size: var(--text-xs); line-height: 1.6; color: var(--color-muted); }
   .avisos a { color: var(--color-muted); font-weight: 600; }
 
-  /* ── BARRA FIJA (móvil) ── */
+  /* ── BARRA FIJA (móvil) ──
+     PENDIENTE, para un PR posterior: mientras el banner de cookies está sin
+     responder, esta barra queda íntegramente debajo de él —los dos van en
+     `bottom: 0` y el banner tiene z-index 401 contra 150—, así que el CTA de
+     toda la página es inalcanzable para quien aún no ha elegido, que con
+     `CONSENT_VERSION` en 2 es todo el mundo. La solución estudiada es
+     apoyarla encima del banner (`bottom` igual al alto del banner, por arriba
+     en z-index), lo que exige que el banner publique su alto real como
+     variable CSS. Este PR arregla el encabezado; la barra sigue tapada. */
   .barra {
     position: fixed;
     left: 0;
