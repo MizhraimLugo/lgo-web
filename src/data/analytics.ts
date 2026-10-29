@@ -64,12 +64,10 @@ export const CATEGORIAS = [
     obligatoria: false
   },
   {
-    // [PENDIENTE DE APROBACIÓN] Este texto y el apartado VIII del aviso de
-    // privacidad se revisan juntos antes de publicarse.
     id: 'publicitarias',
     titulo: 'Publicitarias',
     texto:
-      'Pixel de Meta (Facebook e Instagram), para medir el resultado de nuestras campañas publicitarias y mostrar anuncios a quienes visitaron el sitio. Solo se activan si usted las acepta.',
+      'Pixel de Meta (Facebook e Instagram), para medir el resultado de nuestras campañas y mostrar anuncios a quienes visitaron el sitio. Meta recibe datos técnicos de su navegación en este sitio. Solo se activan si usted las acepta.',
     obligatoria: false
   }
 ] as const;

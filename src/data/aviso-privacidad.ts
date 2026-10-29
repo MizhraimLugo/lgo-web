@@ -25,7 +25,7 @@ export const AVISO_PRIVACIDAD_PATH = '/aviso-de-privacidad/';
  * texto aceptó la persona. DEBE coincidir con `privacyVersion` del frontmatter
  * de src/content/legal/aviso-de-privacidad.md; una prueba lo verifica.
  */
-export const AVISO_PRIVACIDAD_VERSION = '2026-10-26';
+export const AVISO_PRIVACIDAD_VERSION = '2026-10-28';
 
 /** Cómo se muestra esa ruta en texto corrido. */
 export const AVISO_PRIVACIDAD_ETIQUETA = 'www.lgo.mx/aviso-de-privacidad';

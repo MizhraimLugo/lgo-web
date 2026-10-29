@@ -1,8 +1,8 @@
 ---
 title: "Aviso de Privacidad Integral"
 description: "Aviso de privacidad integral de Grupo LGO: LGO Abogados & Consultores, S.C. y LGO Servicios Digitales Contables, S.A.S."
-lastUpdated: "2026-10-26"
-privacyVersion: "2026-10-26"
+lastUpdated: "2026-10-28"
+privacyVersion: "2026-10-28"
 ---
 
 Este aviso se emite conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, publicada en el Diario Oficial de la Federación el 20 de marzo de 2025 (en adelante, la Ley). Los artículos citados corresponden a esa Ley. Los plazos en días se cuentan en días hábiles (artículo 2, fracción VIII).
@@ -79,8 +79,10 @@ Son necesarias para la relación jurídica con usted y no requieren su consentim
 2. Invitarle a cursos, masterclasses, eventos y publicaciones.
 3. Realizar encuestas de satisfacción.
 4. Elaborar estadísticas y analítica para mejorar el sitio web.
+5. Medir el resultado de nuestras campañas publicitarias en Facebook e Instagram, mediante las cookies publicitarias del apartado VIII.
+6. Mostrarle anuncios nuestros en Facebook e Instagram si usted ya visitó este sitio (remercadeo), mediante esas mismas cookies.
 
-Puede negarse a estas finalidades en cualquier momento: desmarque la casilla correspondiente en el formulario, use el botón «Configurar cookies» o escriba a contacto@lgo.mx.
+Puede negarse a estas finalidades en cualquier momento: desmarque la casilla correspondiente en el formulario, use el botón «Configurar cookies» o escriba a contacto@lgo.mx. Las finalidades 5 y 6 dependen exclusivamente de la categoría «Publicitarias» de «Configurar cookies», que viene desactivada.
 
 ## IV. Personas encargadas del tratamiento
 
@@ -105,12 +107,15 @@ Algunos de estos proveedores pueden alojar información fuera de México. Estas 
 | Otras entidades de Grupo LGO | Atención integral de servicios que involucren a más de una división | No (artículo 36, fracción III) |
 | Autoridades administrativas, fiscales y jurisdiccionales, incluidos el Instituto Mexicano del Seguro Social y el Poder Judicial de la Federación | Trámites, cumplimiento, procuración de justicia y defensa de sus asuntos | No (artículo 36, fracciones I, V, VI y VII) |
 | Notarios, corredores públicos, peritos, traductores y corresponsales en el extranjero | Ejecución del encargo contratado | No (artículo 36, fracción IV) |
+| Meta Platforms, Inc., y sus filiales, con domicilio en Estados Unidos de América | Medición del resultado de nuestras campañas publicitarias en Facebook e Instagram y presentación de anuncios a quienes han visitado este sitio. Se transfieren únicamente datos técnicos de navegación, en los términos del apartado VIII | Sí. Usted la acepta o la rechaza desde «Configurar cookies» |
 
 </div>
 
-Fuera de estos supuestos no transferiremos sus datos sin su consentimiento. Todo receptor conocerá este aviso y asumirá las obligaciones que corresponden al responsable (artículo 35).
+Fuera de estos supuestos no transferiremos sus datos sin su consentimiento. Los receptores de las tres primeras filas conocerán este aviso y asumirán las obligaciones que corresponden al responsable (artículo 35). En el caso de Meta Platforms, Inc., la transferencia se rige por las condiciones que esa empresa establece para sus herramientas comerciales y por su propia política de privacidad, como se explica al final de este apartado.
 
 **Cláusula de aceptación de transferencias.** Si en algún momento requerimos transferir sus datos a un tercero no previsto en la tabla anterior, le informaremos y solicitaremos su consentimiento. Si usted no acepta esa transferencia, puede manifestarlo por escrito a contacto@lgo.mx; su negativa no afectará las transferencias que la Ley permite sin consentimiento.
+
+**Transferencia a Meta Platforms, Inc.** Esta transferencia requiere su consentimiento y usted lo otorga o lo niega desde el botón «Configurar cookies», al pie de cada página: la categoría «Publicitarias» viene desactivada y nada se transfiere mientras usted no la active. Si la activa y después cambia de opinión, puede desactivarla por el mismo medio y la transferencia cesa desde ese momento. Su negativa no afecta el funcionamiento del sitio ni la prestación de nuestros servicios. Meta Platforms, Inc. trata esos datos conforme a su propia política de privacidad y como responsable independiente, fuera del territorio nacional.
 
 ## VI. Opciones para limitar el uso o divulgación de sus datos
 
@@ -167,7 +172,7 @@ Si considera que su solicitud no fue atendida conforme a la Ley, puede presentar
 
 - **Necesarias:** permiten el funcionamiento del sitio, el envío de formularios, el procesamiento de pagos y el registro de su elección sobre cookies. No pueden desactivarse.
 - **Analíticas:** Google Analytics, mediante Google Tag Manager, para medir visitas y uso del sitio. **Solo se activan si usted las acepta.**
-- **Publicitarias:** no las utilizamos.
+- **Publicitarias:** Pixel de Meta, de Meta Platforms, Inc., para medir el resultado de nuestras campañas publicitarias en Facebook e Instagram y para mostrar anuncios a quienes han visitado este sitio. Si usted las acepta, Meta recibe datos técnicos de navegación: dirección IP, tipo de navegador y dispositivo, páginas de este sitio que visita, identificadores de cookies y las acciones de contacto que realiza en él, como el clic para escribirnos por WhatsApp. Meta puede relacionar estos datos con su cuenta de Facebook o Instagram y los trata conforme a su propia política de privacidad, incluso fuera del territorio nacional. No enviamos a Meta su nombre, correo electrónico, número telefónico ni el contenido de los formularios o mensajes. **Solo se activan si usted las acepta**; dejan de operar desde el momento en que retira su aceptación, y puede eliminar las cookies ya guardadas desde la configuración de su navegador.
 
 Puede cambiar su elección en cualquier momento desde «Configurar cookies», al pie de cada página.
 
