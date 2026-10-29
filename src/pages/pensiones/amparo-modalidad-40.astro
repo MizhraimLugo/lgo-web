@@ -27,6 +27,7 @@ import CalculadoraTope from '@components/m40/CalculadoraTope.astro';
 import ContadorPlazo from '@components/m40/ContadorPlazo.astro';
 import { business } from '@data/business';
 import { faqsAmparoM40 } from '@data/amparo-m40-faqs';
+import { CONTENT_NAME_M40 } from '@data/meta-pixel';
 import {
   BLOQUE_PLAZO,
   BLOQUE_REFORMA,
@@ -274,6 +275,7 @@ const documentos = [
   path={path}
   ogImage={ogImage}
   extraJsonLd={[breadcrumbLd, servicioLd, faqLd]}
+  pixelViewContent={CONTENT_NAME_M40}
 >
 
   <!-- Íconos lineales de la sección: un solo sprite y <use> donde se ocupan.

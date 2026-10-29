@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Seo from '@components/Seo.astro';
 import Nav from '@components/Nav.astro';
 import CookieConsent from '@components/CookieConsent.astro';
+import MetaPixel from '@components/MetaPixel.astro';
 import Footer from '@components/Footer.astro';
 import JsonLd from '@components/JsonLd.astro';
 import { business } from '@data/business';
@@ -18,9 +19,16 @@ export interface Props {
   noindex?: boolean;
   type?: 'website' | 'article' | 'business.business';
   extraJsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /**
+   * Nombre de la página para el `ViewContent` del pixel de Meta. Solo lo pasan
+   * las páginas que se miden como contenido propio (p. ej. la landing de
+   * Modalidad 40); el resto emite únicamente `PageView`.
+   */
+  pixelViewContent?: string;
 }
 
-const { title, description, path, canonical, ogImage, noindex, type, extraJsonLd } = Astro.props;
+const { title, description, path, canonical, ogImage, noindex, type, extraJsonLd, pixelViewContent } =
+  Astro.props;
 
 // Cada sub-marca publicada como Organization independiente.
 // Esto permite que Google y modelos de IA entiendan el ecosistema:
@@ -134,6 +142,7 @@ const allLd = [...baseLd, ...extraLd];
   </main>
   <Footer />
   <CookieConsent />
+  <MetaPixel viewContent={pixelViewContent} />
 
   <script>
     // Entrance choreography: una sola observación, sin scattered micro-interactions.

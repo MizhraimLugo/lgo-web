@@ -1,0 +1,183 @@
+---
+// ════════════════════════════════════════════════════════════════
+//  PIXEL DE META — carga condicionada al consentimiento
+// ════════════════════════════════════════════════════════════════
+//
+// Un solo componente para todo el sitio, montado una vez en Base.astro. Mide
+// tres cosas:
+//
+//   · PageView    → en todas las páginas, al inicializar.
+//   · ViewContent → solo donde la página lo pide por la prop `viewContent`,
+//                   con ese nombre como `content_name`.
+//   · Contact     → al salir a WhatsApp, por clic en enlace o por el evento
+//                   `lgo:whatsapp` de una isla que abre la ventana a mano.
+//
+// Qué NO hace, a propósito:
+//
+//   · No carga nada mientras la persona no haya aceptado las cookies
+//     publicitarias, y deja de enviar en el acto si las retira.
+//   · No incluye el bloque <noscript> de Meta: sin JavaScript no hay
+//     consentimiento que leer, así que ese píxel de imagen se dispararía
+//     siempre, sin haber preguntado.
+//   · No manda datos personales, ni parámetros de la URL, ni el texto
+//     prellenado del mensaje de WhatsApp. El único parámetro que viaja es
+//     `content_name`, y siempre es un nombre de página de nuestro catálogo.
+//
+// El consentimiento lo administra CookieConsent.astro. Este componente lo
+// consulta de dos maneras y hacen falta las dos; ver el comentario del
+// arranque, al final del script.
+
+import { pixelActivo } from '@data/meta-pixel';
+
+export interface Props {
+  /**
+   * Nombre de la página para `ViewContent`. Si se omite, la página no emite
+   * `ViewContent` (solo `PageView`). También se usa como `content_name` de los
+   * `Contact` que salgan de esta página.
+   */
+  viewContent?: string;
+}
+
+const { viewContent } = Astro.props;
+---
+{/*
+  El marcador es el interruptor del script: sin él no se registra ningún
+  escucha. Los scripts de Astro se empaquetan aunque la plantilla no los
+  renderice, así que la condición tiene que poder leerse en cliente, y un
+  atributo de datos es como el resto del sitio pasa configuración a sus islas.
+*/}
+{pixelActivo() && (
+  <div data-meta-pixel data-view-content={viewContent ?? ''} hidden></div>
+)}
+
+<script>
+  import {
+    META_PIXEL_ID,
+    EVENTO_WHATSAPP,
+    VENTANA_ANTIRREPETICION_MS
+  } from '@data/meta-pixel';
+  import { EVENTO_CONSENTIMIENTO, type ConsentimientoCookies } from '@data/analytics';
+
+  const marcador = document.querySelector<HTMLElement>('[data-meta-pixel]');
+
+  if (META_PIXEL_ID && marcador) {
+    const viewContent = marcador.dataset.viewContent || '';
+
+    /** El script de Meta ya está en la página. No se descarga dos veces. */
+    let cargado = false;
+    /** La persona tiene el consentimiento publicitario vigente. */
+    let permitido = false;
+    /** Momento del último `Contact`, para la ventana contra repetición. */
+    let ultimoContact = 0;
+
+    const fbq = (...args: unknown[]) => (window as any).fbq?.(...args);
+
+    /**
+     * El stub de Meta: encola las llamadas hasta que `fbevents.js` termina de
+     * descargarse. Es lo que permite llamar a `set`, `init` y `track` antes de
+     * que el script exista, igual que hace el fragmento oficial.
+     */
+    const instalarStub = () => {
+      const w = window as any;
+      if (w.fbq) return;
+      const n: any = (...args: unknown[]) =>
+        n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
+      n.push = n;
+      n.loaded = true;
+      n.version = '2.0';
+      n.queue = [];
+      w.fbq = n;
+      w._fbq = w._fbq || n;
+    };
+
+    const cargar = () => {
+      if (cargado) return;
+      cargado = true;
+      instalarStub();
+
+      // `autoConfig` en false ANTES de `init`, no después: apaga los eventos y
+      // los metadatos que el pixel recolecta por su cuenta —clics en botones,
+      // campos de formulario, estructura de la página— y esa decisión tiene
+      // que estar tomada en el momento en que el pixel se inicializa. Después
+      // de `init` llegaría tarde.
+      //
+      // La coincidencia avanzada automática es otra cosa y no se apaga aquí:
+      // está desactivada en la configuración del pixel en Meta.
+      fbq('set', 'autoConfig', false, META_PIXEL_ID);
+      fbq('init', META_PIXEL_ID);
+      fbq('track', 'PageView');
+      if (viewContent) fbq('track', 'ViewContent', { content_name: viewContent });
+
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      document.head.appendChild(s);
+    };
+
+    /**
+     * El sitio es estático y sin transiciones de vista: cada navegación es una
+     * carga completa, así que `PageView` y `ViewContent` ocurren una sola vez
+     * por página sin necesidad de más controles que `cargado`.
+     */
+    const aplicar = (dato: ConsentimientoCookies | null) => {
+      const autoriza = dato?.publicitarias === true;
+      if (autoriza === permitido) return;
+      permitido = autoriza;
+
+      if (!autoriza) {
+        // Retiro a mitad de la visita. El script descargado no se puede quitar
+        // de la página, así que el corte es doble: `permitido` bloquea en
+        // origen todo lo que mandaríamos nosotros, y `revoke` se lo dice a
+        // Meta para lo que recolecte por su cuenta.
+        if (cargado) fbq('consent', 'revoke');
+        return;
+      }
+
+      // Vuelve a aceptar: se reanuda sin descargar el script otra vez y sin
+      // repetir `PageView` ni `ViewContent`, que ya se enviaron en esta carga.
+      if (cargado) fbq('consent', 'grant');
+      else cargar();
+    };
+
+    /** Nombre de la página de origen. Nunca la URL con sus parámetros. */
+    const nombrePagina = () => viewContent || document.title || location.pathname;
+
+    const contact = (contentName: string) => {
+      if (!permitido || !cargado) return;
+      const ahora = Date.now();
+      if (ahora - ultimoContact < VENTANA_ANTIRREPETICION_MS) return;
+      ultimoContact = ahora;
+      fbq('track', 'Contact', { content_name: contentName });
+    };
+
+    // Enlaces a WhatsApp: un escucha delegado en el documento cubre los de
+    // todas las páginas sin tocar ni una plantilla, incluidos los que una isla
+    // pinta después de cargar.
+    document.addEventListener('click', (ev) => {
+      const destino = ev.target as Element | null;
+      const enlace = destino?.closest?.('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
+      if (enlace) contact(nombrePagina());
+    });
+
+    // Salidas a WhatsApp que no son clic en enlace. Misma puerta de entrada,
+    // misma ventana contra repetición.
+    window.addEventListener(EVENTO_WHATSAPP, (ev) => {
+      const detalle = (ev as CustomEvent<{ contentName?: string }>).detail;
+      contact(detalle?.contentName || nombrePagina());
+    });
+
+    // ── Arranque ──
+    //
+    // El escucha PRIMERO y la consulta DESPUÉS, en este orden y las dos cosas.
+    // Los scripts de la página se cargan en paralelo y el orden no está
+    // garantizado: si el banner ya aplicó el consentimiento guardado, el evento
+    // se perdió y solo la consulta lo recupera; si el banner todavía no ha
+    // corrido, la consulta devuelve null y solo el escucha lo verá llegar.
+    // Registrar el escucha antes de consultar cierra también la rendija de en
+    // medio.
+    window.addEventListener(EVENTO_CONSENTIMIENTO, (ev) =>
+      aplicar((ev as CustomEvent<ConsentimientoCookies>).detail)
+    );
+    aplicar(window.lgoConsentimiento?.() ?? null);
+  }
+</script>

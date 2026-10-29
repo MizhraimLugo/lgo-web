@@ -465,6 +465,7 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
     type ClasificacionId
   } from '@data/amparo-m40-autoevaluacion';
   import { M40_WHATSAPP_URL, waMensajeAutoevaluacion } from '@data/amparo-m40';
+  import { CONTENT_NAME_M40_AUTOEVALUACION, EVENTO_WHATSAPP } from '@data/meta-pixel';
   import { AVISO_PRIVACIDAD_VERSION } from '@data/aviso-privacidad';
 
   const raiz = document.querySelector<HTMLElement>('[data-ae]');
@@ -698,6 +699,17 @@ import AvisoSimplificado from '@components/AvisoSimplificado.astro';
       const texto = waMensajeAutoevaluacion(c.etiqueta, nombre);
       const waUrl = `${M40_WHATSAPP_URL}?text=${encodeURIComponent(texto)}`;
       waManual.href = waUrl;
+
+      // El pixel no puede ver esta salida: no hay clic en un enlace, la ventana
+      // la abrimos nosotros. Se avisa antes de abrirla, mientras la pestaña
+      // sigue siendo la activa. El nombre distingue este envío de los botones
+      // generales de la landing: aquí la persona terminó la prueba.
+      window.dispatchEvent(
+        new CustomEvent(EVENTO_WHATSAPP, {
+          detail: { contentName: CONTENT_NAME_M40_AUTOEVALUACION }
+        })
+      );
+
       window.open(waUrl, '_blank', 'noopener');
 
       // 2. El lead, después. `keepalive` lo entrega aunque la pestaña cambie;

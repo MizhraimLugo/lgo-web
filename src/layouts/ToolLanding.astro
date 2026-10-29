@@ -36,6 +36,8 @@ export interface Props {
   ogImage?: string;
   noindex?: boolean;
   extraJsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Nombre de la página para el `ViewContent` del pixel; se pasa tal cual a Base. */
+  pixelViewContent?: string;
 
   // ── Hero ──
   eyebrow: string;
@@ -49,7 +51,7 @@ export interface Props {
 }
 
 const {
-  title, description, path, canonical, ogImage, noindex, extraJsonLd,
+  title, description, path, canonical, ogImage, noindex, extraJsonLd, pixelViewContent,
   eyebrow, heading, lead, ctaLabel, ctaHref, stats = []
 } = Astro.props;
 
@@ -63,6 +65,7 @@ const hasStats = stats.length > 0;
   ogImage={ogImage}
   noindex={noindex}
   extraJsonLd={extraJsonLd}
+  pixelViewContent={pixelViewContent}
 >
 
   <!-- HERO -->
