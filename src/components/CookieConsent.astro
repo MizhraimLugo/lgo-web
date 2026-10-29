@@ -3,9 +3,13 @@
 //  COOKIES — banner de consentimiento y gestor de preferencias
 // ════════════════════════════════════════════════════════════════
 //
-// Cumple el apartado VIII del aviso de privacidad: las cookies analíticas
-// **solo se activan si la persona las acepta**, y puede cambiar su elección
-// cuando quiera desde «Configurar cookies», al pie de cada página.
+// Cumple el apartado VIII del aviso de privacidad: ninguna cookie opcional
+// —ni analíticas ni publicitarias— **se activa si la persona no la acepta**, y
+// puede cambiar su elección cuando quiera desde «Configurar cookies», al pie de
+// cada página.
+//
+// La copia del banner y las categorías viven las dos en @data/analytics: el
+// texto resume las categorías y no debe poder quedarse atrás cuando cambien.
 //
 // Cómo funciona:
 //   · Sin elección guardada, se muestra el banner. Nada de analítica corre
@@ -16,11 +20,16 @@
 //     aviso) y se vuelve a preguntar si cambia el esquema de categorías.
 //   · Al aceptar las analíticas se inyecta Google Tag Manager. Si el
 //     contenedor no está configurado en @data/analytics, no se carga nada.
+//   · Las publicitarias (pixel de Meta) NO se cargan aquí: este componente
+//     publica el consentimiento y MetaPixel.astro lo aplica. El banner es la
+//     única fuente de verdad; quien dependa de él consulta
+//     `window.lgoConsentimiento()` al arrancar y escucha `lgo:consentimiento`
+//     para los cambios posteriores, incluido el retiro.
 //
 // El botón del pie (`[data-configurar-cookies]`) reabre el panel; vive en
 // Footer.astro para que esté en todas las páginas.
 
-import { CATEGORIAS } from '@data/analytics';
+import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
 ---
 <div class="cookies" data-cookies hidden>
 
@@ -34,9 +43,9 @@ import { CATEGORIAS } from '@data/analytics';
     hidden
   >
     <div class="cookie-banner-texto">
-      <p class="cookie-banner-titulo" id="cookie-banner-titulo">Cookies en lgo.mx</p>
+      <p class="cookie-banner-titulo" id="cookie-banner-titulo">{BANNER_TITULO}</p>
       <p>
-        Las necesarias hacen funcionar el sitio. Las analíticas, solo si las aceptas.
+        {BANNER_TEXTO}
         {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
       </p>
     </div>
@@ -317,7 +326,13 @@ import { CATEGORIAS } from '@data/analytics';
 </style>
 
 <script>
-  import { GTM_ID, CONSENT_KEY, CONSENT_VERSION } from '@data/analytics';
+  import {
+    GTM_ID,
+    CONSENT_KEY,
+    CONSENT_VERSION,
+    EVENTO_CONSENTIMIENTO,
+    type ConsentimientoCookies
+  } from '@data/analytics';
 
   const raiz = document.querySelector<HTMLElement>('[data-cookies]');
 
@@ -325,30 +340,43 @@ import { CATEGORIAS } from '@data/analytics';
     const banner = raiz.querySelector<HTMLElement>('[data-cookie-banner]')!;
     const panel = raiz.querySelector<HTMLElement>('[data-cookie-panel]')!;
     const fondo = raiz.querySelector<HTMLElement>('[data-cookie-fondo]')!;
-    const casillaAnaliticas = raiz.querySelector<HTMLInputElement>('[data-cookie-categoria="analiticas"]')!;
 
-    type Consentimiento = { version: number; analiticas: boolean; fecha: string };
+    // Las casillas se resuelven por su categoría, no una por una: al agregar
+    // una categoría en @data/analytics el panel la pinta y este script la
+    // encuentra sin más cambios.
+    const casillas = new Map<string, HTMLInputElement>();
+    raiz.querySelectorAll<HTMLInputElement>('[data-cookie-categoria]').forEach((c) => {
+      casillas.set(c.dataset.cookieCategoria!, c);
+    });
+    const casillaAnaliticas = casillas.get('analiticas')!;
+    const casillaPublicitarias = casillas.get('publicitarias')!;
 
     // ── Almacenamiento ──
     // localStorage puede fallar (ventana privada, datos bloqueados): en ese
     // caso la elección vale para esta sesión y el banner volverá a aparecer,
     // que es el comportamiento seguro.
-    const leer = (): Consentimiento | null => {
+    const leer = (): ConsentimientoCookies | null => {
       try {
         const crudo = localStorage.getItem(CONSENT_KEY);
         if (!crudo) return null;
         const dato = JSON.parse(crudo);
         if (!dato || dato.version !== CONSENT_VERSION) return null;
-        return { version: dato.version, analiticas: dato.analiticas === true, fecha: dato.fecha };
+        return {
+          version: dato.version,
+          analiticas: dato.analiticas === true,
+          publicitarias: dato.publicitarias === true,
+          fecha: dato.fecha
+        };
       } catch {
         return null;
       }
     };
 
-    const guardar = (analiticas: boolean) => {
-      const dato: Consentimiento = {
+    const guardar = (analiticas: boolean, publicitarias: boolean) => {
+      const dato: ConsentimientoCookies = {
         version: CONSENT_VERSION,
         analiticas,
+        publicitarias,
         fecha: new Date().toISOString()
       };
       try {
@@ -372,9 +400,37 @@ import { CATEGORIAS } from '@data/analytics';
       document.head.appendChild(s);
     };
 
-    const aplicar = (dato: Consentimiento) => {
+    // ── Estado vigente, legible desde fuera ──
+    //
+    // Hacen falta DOS vías, no una. Los scripts que dependen del consentimiento
+    // se cargan en paralelo con este y el orden no está garantizado: si el
+    // banner aplica la elección guardada antes de que el otro script registre
+    // su escucha, el evento ya pasó y se perdería. Por eso el estado también
+    // queda consultable: `window.lgoConsentimiento()` al arrancar, y el evento
+    // para todo cambio posterior.
+    //
+    // Solo lectura y copia congelada: el banner sigue siendo la única fuente de
+    // verdad y nadie de fuera puede cambiar la elección de la persona.
+    let estado: ConsentimientoCookies | null = null;
+
+    if (!('lgoConsentimiento' in window)) {
+      Object.defineProperty(window, 'lgoConsentimiento', {
+        value: () => (estado ? Object.freeze({ ...estado }) : null),
+        writable: false,
+        configurable: false
+      });
+    }
+
+    const aplicar = (dato: ConsentimientoCookies) => {
+      estado = dato;
       if (dato.analiticas) cargarGtm();
       casillaAnaliticas.checked = dato.analiticas;
+      casillaPublicitarias.checked = dato.publicitarias;
+      // Se avisa siempre, también cuando se retira el consentimiento: quien
+      // dependa de él tiene que poder dejar de enviar en el acto.
+      window.dispatchEvent(
+        new CustomEvent(EVENTO_CONSENTIMIENTO, { detail: Object.freeze({ ...dato }) })
+      );
     };
 
     // ── Mostrar y ocultar ──
@@ -391,6 +447,7 @@ import { CATEGORIAS } from '@data/analytics';
     const abrirPanel = () => {
       const actual = leer();
       casillaAnaliticas.checked = actual ? actual.analiticas : false;
+      casillaPublicitarias.checked = actual ? actual.publicitarias : false;
       banner.hidden = true;
       fondo.hidden = false;
       panel.hidden = false;
@@ -398,21 +455,25 @@ import { CATEGORIAS } from '@data/analytics';
       panel.querySelector<HTMLElement>('[data-cookie-cerrar]')?.focus();
     };
 
-    const decidir = (analiticas: boolean) => {
-      guardar(analiticas);
+    const decidir = (analiticas: boolean, publicitarias: boolean) => {
+      guardar(analiticas, publicitarias);
       banner.hidden = true;
       cerrarPanel();
     };
 
     // ── Eventos ──
-    raiz.querySelector('[data-cookie-todas]')!.addEventListener('click', () => decidir(true));
-    raiz.querySelector('[data-cookie-necesarias]')!.addEventListener('click', () => decidir(false));
+    raiz.querySelector('[data-cookie-todas]')!.addEventListener('click', () => decidir(true, true));
+    raiz
+      .querySelector('[data-cookie-necesarias]')!
+      .addEventListener('click', () => decidir(false, false));
     raiz.querySelector('[data-cookie-configurar]')!.addEventListener('click', abrirPanel);
     raiz.querySelector('[data-cookie-cerrar]')!.addEventListener('click', cerrarPanel);
     fondo.addEventListener('click', cerrarPanel);
     raiz
       .querySelector('[data-cookie-guardar]')!
-      .addEventListener('click', () => decidir(casillaAnaliticas.checked));
+      .addEventListener('click', () =>
+        decidir(casillaAnaliticas.checked, casillaPublicitarias.checked)
+      );
 
     // «Configurar cookies» del pie: reabre el panel en cualquier momento.
     document.querySelectorAll('[data-configurar-cookies]').forEach((b) =>
