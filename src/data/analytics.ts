@@ -47,6 +47,22 @@ export const CONSENT_VERSION = 2;
  */
 export const EVENTO_CONSENTIMIENTO = 'lgo:consentimiento';
 
+/**
+ * Copia del banner, el primer nivel de la pregunta.
+ *
+ * Vive aquí, junto a CATEGORIAS, a propósito: el texto resume las categorías,
+ * así que si cambian las categorías tiene que cambiar en el mismo lugar.
+ * Tenerlo escrito a mano en la plantilla fue lo que dejó al banner hablando de
+ * dos categorías cuando ya eran tres, con el pixel activándose desde
+ * «Aceptar todas» sin que el texto lo dijera.
+ *
+ * Nombra el Pixel de Meta, que es un nombre comercial: otra razón para que sea
+ * una constante y no texto incrustado.
+ */
+export const BANNER_TITULO = 'Cookies en lgo.mx';
+export const BANNER_TEXTO =
+  'Las necesarias hacen funcionar el sitio. Las analíticas y las publicitarias (Pixel de Meta), solo si las aceptas.';
+
 /** Categorías de cookies del aviso. Las necesarias no se pueden desactivar. */
 export const CATEGORIAS = [
   {

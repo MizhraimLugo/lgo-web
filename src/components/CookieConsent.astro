@@ -3,9 +3,13 @@
 //  COOKIES — banner de consentimiento y gestor de preferencias
 // ════════════════════════════════════════════════════════════════
 //
-// Cumple el apartado VIII del aviso de privacidad: las cookies analíticas
-// **solo se activan si la persona las acepta**, y puede cambiar su elección
-// cuando quiera desde «Configurar cookies», al pie de cada página.
+// Cumple el apartado VIII del aviso de privacidad: ninguna cookie opcional
+// —ni analíticas ni publicitarias— **se activa si la persona no la acepta**, y
+// puede cambiar su elección cuando quiera desde «Configurar cookies», al pie de
+// cada página.
+//
+// La copia del banner y las categorías viven las dos en @data/analytics: el
+// texto resume las categorías y no debe poder quedarse atrás cuando cambien.
 //
 // Cómo funciona:
 //   · Sin elección guardada, se muestra el banner. Nada de analítica corre
@@ -25,7 +29,7 @@
 // El botón del pie (`[data-configurar-cookies]`) reabre el panel; vive en
 // Footer.astro para que esté en todas las páginas.
 
-import { CATEGORIAS } from '@data/analytics';
+import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
 ---
 <div class="cookies" data-cookies hidden>
 
@@ -39,9 +43,9 @@ import { CATEGORIAS } from '@data/analytics';
     hidden
   >
     <div class="cookie-banner-texto">
-      <p class="cookie-banner-titulo" id="cookie-banner-titulo">Cookies en lgo.mx</p>
+      <p class="cookie-banner-titulo" id="cookie-banner-titulo">{BANNER_TITULO}</p>
       <p>
-        Las necesarias hacen funcionar el sitio. Las analíticas, solo si las aceptas.
+        {BANNER_TEXTO}
         {' '}<a href="/aviso-de-privacidad/">Aviso de privacidad</a>.
       </p>
     </div>
