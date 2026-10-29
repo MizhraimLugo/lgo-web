@@ -1318,19 +1318,18 @@ const documentos = [
   .avisos a { color: var(--color-muted); font-weight: 600; }
 
   /* ── BARRA FIJA (móvil) ──
-     PENDIENTE, para un PR posterior: mientras el banner de cookies está sin
-     responder, esta barra queda íntegramente debajo de él —los dos van en
-     `bottom: 0` y el banner tiene z-index 401 contra 150—, así que el CTA de
-     toda la página es inalcanzable para quien aún no ha elegido, que con
-     `CONSENT_VERSION` en 2 es todo el mundo. La solución estudiada es
-     apoyarla encima del banner (`bottom` igual al alto del banner, por arriba
-     en z-index), lo que exige que el banner publique su alto real como
-     variable CSS. Este PR arregla el encabezado; la barra sigue tapada. */
+     Se apoya encima del banner de cookies en lugar de quedar debajo. Los dos
+     son fijos abajo y el banner tiene z-index 401 contra 150: sin esto, la
+     barra quedaba sepultada y su botón era inalcanzable mientras nadie
+     respondía el banner, que con `CONSENT_VERSION` en 2 es todo el mundo.
+     `--cookie-banner-alto` lo publica CookieConsent desde el cliente, medido;
+     vale `0px` cuando el banner no se ve, y entonces la barra vuelve al
+     fondo. El z-index se queda en 150: ya no se encima con el banner. */
   .barra {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: var(--cookie-banner-alto, 0px);
     z-index: 150;
     display: none;
     align-items: center;
@@ -1341,7 +1340,9 @@ const documentos = [
     background: var(--color-foreground-strong);
     border-top: 1px solid rgba(250, 248, 244, 0.16);
     transform: translateY(110%);
-    transition: transform 260ms ease;
+    /* `bottom` también se anima: al responder el banner, la barra baja al
+       fondo en lugar de dar un salto. */
+    transition: transform 260ms ease, bottom 260ms ease;
   }
   @media (max-width: 819px) { .barra { display: flex; } }
   .barra[data-visible='true'] { transform: translateY(0); }
@@ -1358,8 +1359,11 @@ const documentos = [
 
   @media (max-width: 819px) {
     /* Mientras la barra está arriba, el documento reserva su altura: así no
-       tapa el final del contenido ni el pie. */
-    :global(body:has([data-barra][data-visible='true'])) { padding-bottom: 4.5rem; }
+       tapa el final del contenido ni el pie. Con el banner sin responder la
+       barra va más arriba, y lo reservado tiene que crecer igual. */
+    :global(body:has([data-barra][data-visible='true'])) {
+      padding-bottom: calc(4.5rem + var(--cookie-banner-alto, 0px));
+    }
     /* Con el menú móvil abierto la barra se retira: son dos capas fijas. */
     :global(body:has([data-mobile-menu]:not([hidden]))) .barra { transform: translateY(110%); }
   }

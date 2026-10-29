@@ -28,6 +28,11 @@
 //
 // El botón del pie (`[data-configurar-cookies]`) reabre el panel; vive en
 // Footer.astro para que esté en todas las páginas.
+//
+// Mientras el banner se ve, publica su alto en `--cookie-banner-alto` sobre
+// `:root`, para que cualquier otro elemento fijo abajo pueda apoyarse encima
+// en lugar de quedar debajo. Hoy lo usa la barra fija de la landing de
+// Modalidad 40. Fuera de esos momentos vale `0px`.
 
 import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
 ---
@@ -442,6 +447,34 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
       );
     };
 
+    // ── Alto del banner, publicado para quien se apoye en él ──
+    //
+    // La landing de Modalidad 40 tiene su propia barra fija abajo. Las dos
+    // viven en `bottom: 0`, así que sin esto la barra queda sepultada bajo el
+    // banner y su botón es inalcanzable mientras nadie responde. El alto no se
+    // puede escribir a mano: depende del texto, del ancho de la pantalla y de
+    // la tipografía ya cargada. Se mide aquí y se publica en `:root`; vale
+    // `0px` cuando el banner no está a la vista.
+    const publicarAlto = () => {
+      const alto = banner.hidden ? 0 : Math.round(banner.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--cookie-banner-alto', `${alto}px`);
+    };
+
+    // El alto cambia al girar el teléfono y cuando la tipografía termina de
+    // cargar y el texto se reacomoda, no solo al mostrar u ocultar. Las dos
+    // primeras vías no dependen del ciclo de pintado; el observador es un
+    // extra para cualquier otro reflujo.
+    window.addEventListener('resize', publicarAlto);
+    document.fonts?.ready.then(publicarAlto);
+    if ('ResizeObserver' in window) new ResizeObserver(publicarAlto).observe(banner);
+
+    // Único lugar donde el banner aparece o se va: así el alto publicado no
+    // puede quedarse atrás si mañana se agrega otro camino.
+    const mostrarBanner = (visible: boolean) => {
+      banner.hidden = !visible;
+      publicarAlto();
+    };
+
     // ── Mostrar y ocultar ──
     const cerrarPanel = () => {
       panel.hidden = true;
@@ -457,7 +490,7 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
       const actual = leer();
       casillaAnaliticas.checked = actual ? actual.analiticas : false;
       casillaPublicitarias.checked = actual ? actual.publicitarias : false;
-      banner.hidden = true;
+      mostrarBanner(false);
       fondo.hidden = false;
       panel.hidden = false;
       document.addEventListener('keydown', alEscape);
@@ -466,7 +499,7 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
 
     const decidir = (analiticas: boolean, publicitarias: boolean) => {
       guardar(analiticas, publicitarias);
-      banner.hidden = true;
+      mostrarBanner(false);
       cerrarPanel();
     };
 
@@ -496,6 +529,6 @@ import { BANNER_TITULO, BANNER_TEXTO, CATEGORIAS } from '@data/analytics';
     raiz.hidden = false;
     const guardado = leer();
     if (guardado) aplicar(guardado);
-    else banner.hidden = false;
+    else mostrarBanner(true);
   }
 </script>
