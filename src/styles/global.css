@@ -131,6 +131,13 @@
     line-height: var(--leading-relaxed);
     color: var(--color-foreground);
     background-color: var(--color-background);
+    /* El banner de cookies es fijo abajo: sin esto, mientras nadie responde,
+       sus últimos píxeles tapan el final del pie —los enlaces legales y
+       «Configurar cookies»— y no hay forma de desplazarse más. El alto lo
+       publica CookieConsent, medido; vale `0px` cuando el banner no se ve, y
+       entonces esto no reserva nada. Una página con su propia capa fija abajo
+       reserva lo suyo encima de esto, como hace la landing de Modalidad 40. */
+    padding-bottom: var(--cookie-banner-alto, 0px);
   }
 
   h1, h2, h3, h4 {
